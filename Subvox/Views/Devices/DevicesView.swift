@@ -87,7 +87,7 @@ private struct MicrophoneCard: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
-            .disabled(model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy || model.sequenceLearning.isBusy)
+            .disabled(model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy || model.sequenceLearning.isBusy || model.observability.isBusy)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(6)
         }

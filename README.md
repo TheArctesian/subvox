@@ -29,6 +29,7 @@ Subvox/
   Collection/     paired sentence collection: data model, store, workflow, take quality
   Core/           shared enums, deterministic RNG, word-focus pacing
   Sequence/       Swift driver for the neural pipeline in ml/
+  Observability/  mouth signal check: can AirPods motion separate mouth shapes at all?
   Baselines/      historical pilots: WordDecoders (DTW/jaw HMM), SignalCheck + camera teacher, Representation
   Views/          SwiftUI, grouped like the folders above (Shared/ holds reusable components)
 SubvoxTests/      XCTest, mirrored by area
@@ -37,6 +38,20 @@ Corpus/           bundled sentence banks and lexicons
 Tools/corpus/     offline corpus generators (coverage, diphone bank, lexicon)
 Tools/data/       data-ops utilities (reset/archive training data)
 ```
+
+## Mouth signal check
+
+**Train → Check whether AirPods see mouth movement** asks the question that comes before any model: does AirPods motion carry mouth information at all? It records seven silent gestures (rest, jaw open, “ah”, “ee”, “oo”, “bat”, “pat”) in blocks; each block shows every gesture once in a seeded random order, with a 2 s relax and a 3 s timed cue. Only motion is recorded. Sessions are saved under `Application Support/Subvox/Observability/` and never enter sentence data or neural snapshots.
+
+Scoring runs locally. 30 features (per-axis deviation from the pre-cue baseline, and acceleration/rotation magnitude by thirds) feed a one-vs-rest ridge classifier, evaluated leave-one-block-out with balanced accuracy. A permutation null shuffles labels within blocks. Three contrasts are fixed in advance, with Bonferroni α = 0.05/3:
+
+| Contrast | Question |
+| --- | --- |
+| Jaw movement vs rest | Does any mouth movement reach the AirPods? |
+| Vowel shape (ah/ee/oo) | Is mouth shape, not just jaw motion, visible? |
+| Control: bat vs pat | Voicing-only difference; it must stay at chance |
+
+A separable control marks the session as an artifact (order, effort or timing leaking in). Otherwise the verdict is no signal, jaw only, or articulation. Relabelling every block identically preserves accuracy, so the smallest attainable p is 1/(k!)^(B−1). Contrasts with too few complete blocks are reported as insufficient, not negative, which is why at least 8 blocks are required (12 by default, about 10 minutes). A positive result shows separability within one seated session, not recognition. Reseating and cross-day stability need separate sessions.
 
 ## Sentence recording
 

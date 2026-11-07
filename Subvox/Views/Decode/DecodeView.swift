@@ -10,6 +10,7 @@ struct DecodeView: View {
                 Spacer()
                 Button("Sentence models", systemImage: "text.bubble") {
                     model.showNonSpeechCollection = false
+                    model.showObservability = false
                     model.showRepresentation = false
                     model.showSignalCheck = false
                     model.showSequenceLearning = true
@@ -26,6 +27,7 @@ struct DecodeView: View {
                     if model.isBuildingDecoder { ProgressView() }
                     Button("Record sentences") {
                         model.showNonSpeechCollection = false
+                        model.showObservability = false
                         model.showRepresentation = false
                         model.showSignalCheck = false
                         model.showSequenceLearning = false
@@ -51,7 +53,7 @@ struct DecodeView: View {
     }
 
     private var captureUnavailable: Bool {
-        model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy || model.sequenceLearning.isBusy
+        model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy || model.sequenceLearning.isBusy || model.observability.isBusy
     }
 
     private var controls: some View {

@@ -12,7 +12,8 @@ struct SentenceTrainingView: View {
     @State private var section = Section.record
 
     var body: some View {
-        if model.showNonSpeechCollection {SequenceLearningView(collectionOnly:true)}
+        if model.showObservability { ObservabilityView() }
+        else if model.showNonSpeechCollection {SequenceLearningView(collectionOnly:true)}
         else if model.showSequenceLearning { SequenceLearningView() }
         else if model.showRepresentation { RepresentationStudyView() }
         else if model.showSignalCheck { SignalCheckView() }
@@ -156,6 +157,10 @@ struct SentenceTrainingView: View {
                 model.showNonSpeechCollection=true
             } label: { Label("Record non-speech movements", systemImage: "figure.stand") }
                 .disabled(workflow.isBusy || model.sequenceLearning.isBusy)
+            Button {
+                model.showObservability = true
+            } label: { Label("Check whether AirPods see mouth movement", systemImage: "waveform.badge.magnifyingglass") }
+                .disabled(workflow.isBusy || model.observability.isBusy)
             if !workflow.plan.isEmpty {
                 Text("Next batch: \(workflow.plan.count) paired prompts, about \(max(1, Int(ceil(workflow.estimatedSeconds / 60)))) minutes.")
                     .font(.callout).foregroundStyle(.secondary)

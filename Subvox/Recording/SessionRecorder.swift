@@ -22,7 +22,14 @@ final class SessionRecorder {
     enum Condition: String, Codable {
         case paired = "Paired sentence training"
         case signalCheck = "Repeated sentence signal check"
-        var slug: String { self == .paired ? "paired" : "signal-check" }
+        case observability = "Mouth observability check"
+        var slug: String {
+            switch self {
+            case .paired: "paired"
+            case .signalCheck: "signal-check"
+            case .observability: "observability"
+            }
+        }
     }
 
     var condition: Condition = .paired
