@@ -134,6 +134,31 @@ class SequenceTests(unittest.TestCase):
         r=recording();r["samples"]=r["samples"][:200]+r["samples"][212:]
         with self.assertRaisesRegex(ValueError,"gap"):resample(r)
 
+    def test_automatic_pair_admission_ignores_word_timing_but_preserves_per_take_quality_and_overrides(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            def pair(identity,review="Needs review",match=1.0):
+                return dict(id=identity,text="pa ba",promptIDs=[],role="Training",review=review,transcriptMatchRate=match,
+                            error="Too few words have usable audio-aligned times.",alignment=None,recordingSessionID="S",
+                            spoken=dict(recording(quiet=True),id=identity+"-spoken"),silent=dict(recording(),id=identity+"-silent"))
+            partial=pair("partial")
+            partial["silent"]["samples"]=partial["silent"]["samples"][:200]+partial["silent"]["samples"][212:]
+            dropped=pair("dropped","Excluded")
+            reserved=pair("reserved");reserved["promptIDs"]=["final-group"]
+            confirmed=pair("confirmed","Accepted",.6)
+            path=Path(tmp)/"sentence-training.json"
+            atomic_json(path,dict(roles={"final-group":"Final test"},pairs=[partial,dropped,reserved,confirmed,pair("weak",match=.6)]))
+            original=path.read_bytes()
+            rows,_,_=discover(tmp,language())
+            self.assertEqual({r["provenance"]["pair"] for r in rows},{"partial","confirmed"})
+            valid,excluded={},{}
+            for row in rows:
+                try:valid[row["id"]]=resample(row["recording"])[1]
+                except ValueError as error:excluded[row["id"]]=str(error)
+            self.assertIn("partial-spoken",valid)
+            self.assertIn("low motion", " ".join(valid["partial-spoken"]["flags"]))
+            self.assertIn("gap",excluded["partial-silent"])
+            self.assertEqual(path.read_bytes(),original,"Automatic decisions must preserve original recordings and user overrides")
+
     def test_observed_tail_is_not_extended_and_derivatives_use_seconds(self):
         r=recording();r["samples"]=[s for s in r["samples"] if s["t"]<=105.84]
         raw,q=resample(r)

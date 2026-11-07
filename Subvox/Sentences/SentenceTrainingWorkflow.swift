@@ -10,6 +10,7 @@ final class SentenceTrainingWorkflow {
         var id: String { rawValue }
     }
     private(set) var data = SentenceTrainingData()
+    private(set) var pairUses: [UUID: SentencePairUse] = [:]
     private(set) var phase: Phase = .setup
     private(set) var error: String?
     private(set) var storageReady = true
@@ -91,6 +92,7 @@ final class SentenceTrainingWorkflow {
                 try persist()
             }
         } catch { self.error = error.localizedDescription; storageReady = false }
+        refreshPairUses()
         camera.onReading = { [weak self] reading in
             guard let self, let id = self.activeRecordingID, self.captureCameraPoints else { return }
             self.cameraReadings.append(reading)
@@ -303,8 +305,9 @@ final class SentenceTrainingWorkflow {
 
     func review(_ id: UUID, decision: ReviewDecision) {
         guard !isBusy, data.reservedUnlockedAt == nil,
-              let i = data.pairs.firstIndex(where: { $0.id == id }), data.pairs[i].role != .finalTest else { return }
-        guard decision != .accepted || data.pairs[i].canAccept else { return }
+              let i = data.pairs.firstIndex(where: { $0.id == id }), data.pairs[i].role != .finalTest,
+              !data.pairs[i].promptIDs.contains(where: { data.roles[$0] == .finalTest }) else { return }
+        guard decision != .accepted || data.pairs[i].canIncludeManually else { return }
         data.pairs[i].review = decision
         data.validationReport = nil
         save(notify: true)
@@ -444,9 +447,11 @@ final class SentenceTrainingWorkflow {
 
     private func process(_ id: UUID, whisper: LocalWhisper) async {
         guard let i = data.pairs.firstIndex(where: { $0.id == id }), data.pairs[i].spoken != nil,
-              data.pairs[i].role != .finalTest else { return }
+              data.pairs[i].role != .finalTest,
+              !data.pairs[i].promptIDs.contains(where: { data.roles[$0] == .finalTest }) else { return }
         var pair = data.pairs[i]
-        pair.alignment = nil; pair.review = .pending
+        // Reprocessing annotations does not undo the user's inclusion/exclusion override.
+        pair.alignment = nil
         pair.spokenPhones = nil; pair.mouthedPhones = nil; pair.phoneAlignmentNote = nil
         pair.transcriptMatchRate = nil; pair.timedWordCoverage = nil
         data.validationReport = nil
@@ -502,10 +507,10 @@ final class SentenceTrainingWorkflow {
             } else {
                 pair.phoneAlignmentNote = "No local phoneme aligner configured. Whisper word times remain word estimates; no phoneme boundaries were invented."
             }
-            pair.review = .pending; pair.error = nil
+            pair.error = nil
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try encoder.encode(pair).write(to: URL(fileURLWithPath: directory).appending(path: "sentence-pair-\(id).json"), options: .atomic)
-        } catch { pair.error = error.localizedDescription; pair.review = .pending }
+        } catch { pair.error = error.localizedDescription }
         if let current = data.pairs.firstIndex(where: { $0.id == id }) { data.pairs[current] = pair }
         save(notify: true)
     }
@@ -531,7 +536,19 @@ final class SentenceTrainingWorkflow {
         do { try persist(); if notify { onTrainingChanged?() }; return true }
         catch { storageReady = false; self.error = error.localizedDescription; return false }
     }
-    private func persist() throws { try SentenceStore.save(data, to: storeURL) }
+    private func refreshPairUses() {
+        // Sensor checks run when recordings change, not on every live-motion UI update.
+        pairUses = Dictionary(uniqueKeysWithValues: data.pairs.map { pair in
+            var assessed = pair
+            if pair.promptIDs.contains(where: { data.roles[$0] == .finalTest }) { assessed.role = .finalTest }
+            return (pair.id, assessed.automaticUse)
+        })
+    }
+    func use(for pair: SentencePair) -> SentencePairUse { pairUses[pair.id] ?? pair.automaticUse }
+    private func persist() throws {
+        try SentenceStore.save(data, to: storeURL)
+        refreshPairUses()
+    }
     private func countdown(_ seconds: Double, allowsAdvance: Bool = false, allowsRedo: Bool = false) async throws {
         let end = ProcessInfo.processInfo.systemUptime + seconds
         while ProcessInfo.processInfo.systemUptime < end {

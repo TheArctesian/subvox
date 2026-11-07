@@ -2,6 +2,64 @@ import XCTest
 @testable import Subvox
 
 final class NeuralSequenceTests:XCTestCase {
+    @MainActor func testNonSpeechTimerSavesUsableTakeAndContinueAdvances() throws {
+        let root=FileManager.default.temporaryDirectory.appending(path:"negative-timer-\(UUID())")
+        defer {try? FileManager.default.removeItem(at:root)}
+        var now=100.0
+        let workflow=SequenceLearningWorkflow(root:root,clock:{now}),recorder=SessionRecorder(root:root.appending(path:"raw"))
+        var sample=MotionSample(t:now);sample.sensorLocation=1;workflow.ingest(sample)
+        workflow.mode = .nonSpeech;workflow.startVisit(data:SentenceTrainingData(),audio:AudioService(),recorder:recorder)
+        XCTAssertEqual(workflow.captureDuration,8)
+        workflow.beginCapture(at:now)
+        for i in 0...400 {
+            now=100+Double(i)/50;sample.t=now;workflow.ingest(sample);recorder.record(sample)
+        }
+        workflow.finishAtTimeLimit()
+        XCTAssertEqual(workflow.phase,.ended);XCTAssertTrue(workflow.canAdvance);XCTAssertFalse(workflow.requiresRedo)
+        let take=try XCTUnwrap(workflow.visit?.takes.last)
+        XCTAssertNil(take.discardedReason);XCTAssertTrue(take.text.isEmpty)
+        XCTAssertEqual(take.recording.cueEnd-take.recording.cueStart,8,accuracy:0.001)
+        workflow.next();XCTAssertEqual(workflow.phase,.ready);XCTAssertEqual(workflow.index,1)
+        workflow.stop()
+        let saved=try JSONDecoder().decode(NeuralVisit.self,from:Data(contentsOf:workflow.collectionDirectory!.appending(path:"session.json")))
+        XCTAssertNil(saved.takes.last?.discardedReason)
+        XCTAssertEqual(workflow.resumableNonSpeechCount,15)
+    }
+
+    @MainActor func testSentenceTimeoutRequiresRedoAndContinueKeepsOriginalReason() throws {
+        let root=FileManager.default.temporaryDirectory.appending(path:"sentence-timer-\(UUID())")
+        defer {try? FileManager.default.removeItem(at:root)}
+        var now=100.0,data=SentenceTrainingData(),rng=SplitMix64(seed:4)
+        data.add(SentencePrompt.bundled,using:&rng)
+        let workflow=SequenceLearningWorkflow(root:root,clock:{now}),recorder=SessionRecorder(root:root.appending(path:"raw"))
+        var sample=MotionSample(t:now);sample.sensorLocation=1;workflow.ingest(sample)
+        workflow.startVisit(data:data,audio:AudioService(),recorder:recorder)
+        XCTAssertEqual(workflow.captureDuration,35)
+        workflow.beginCapture(at:now);now+=35;workflow.finishAtTimeLimit()
+        let reason=try XCTUnwrap(workflow.takeIssue)
+        XCTAssertTrue(reason.contains("Timed out"));XCTAssertTrue(workflow.requiresRedo);XCTAssertFalse(workflow.canAdvance)
+        workflow.next();XCTAssertEqual(workflow.index,0);XCTAssertEqual(workflow.error,reason)
+        workflow.redo();XCTAssertEqual(workflow.phase,.ready);XCTAssertNil(workflow.takeIssue)
+        XCTAssertTrue(workflow.canAdvance);XCTAssertNotNil(workflow.visit?.takes.last?.discardedReason)
+        workflow.stop()
+    }
+
+    @MainActor func testNonSpeechSignalInterruptionCannotBeAcceptedByTimerOrContinue() throws {
+        let root=FileManager.default.temporaryDirectory.appending(path:"negative-gap-\(UUID())")
+        defer {try? FileManager.default.removeItem(at:root)}
+        var now=100.0
+        let workflow=SequenceLearningWorkflow(root:root,clock:{now}),recorder=SessionRecorder(root:root.appending(path:"raw"))
+        var sample=MotionSample(t:now);sample.sensorLocation=1;workflow.ingest(sample)
+        workflow.mode = .nonSpeech;workflow.startVisit(data:SentenceTrainingData(),audio:AudioService(),recorder:recorder)
+        workflow.beginCapture(at:now);workflow.ingest(sample)
+        now+=0.2;sample.t=now;workflow.ingest(sample)
+        let reason=try XCTUnwrap(workflow.takeIssue)
+        workflow.finishAtTimeLimit();workflow.next()
+        XCTAssertTrue(workflow.requiresRedo);XCTAssertFalse(workflow.canAdvance);XCTAssertEqual(workflow.error,reason)
+        XCTAssertEqual(workflow.index,0);XCTAssertEqual(workflow.visit?.takes.count,1)
+        workflow.stop()
+    }
+
     @MainActor func testStoppedNonSpeechSessionResumesOnlyUnfinishedCellsWithoutRewritingOriginal() throws {
         let root=FileManager.default.temporaryDirectory.appending(path:"resume-negative-\(UUID())")
         defer {try? FileManager.default.removeItem(at:root)}

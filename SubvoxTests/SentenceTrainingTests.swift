@@ -40,6 +40,165 @@ final class SentenceTrainingTests: XCTestCase {
         for (id, role) in roles { XCTAssertEqual(data.roles[id], role) }
     }
 
+    private func automaticPair() -> SentencePair {
+        var item = pair(SentencePrompt(text: "bee bob"), role: .training)
+        item.review = .pending
+        item.transcriptMatchRate = 1
+        item.recordingSessionID = UUID()
+        return item
+    }
+
+    func testAutomaticAlignedPairSuppliesWordsWithoutChangingStoredReview() throws {
+        let item = automaticPair(), prompt = SentencePrompt(text: item.text)
+        let data = SentenceTrainingData(prompts: [prompt], roles: [prompt.id: .training], pairs: [item])
+        XCTAssertEqual(data.derivedWords(role: .training, lexicon: lexicon).map(\.label), ["bee", "bob"])
+        XCTAssertEqual(data.coverage(lexicon: lexicon), ["B": 3, "IY": 1, "AA": 1])
+        XCTAssertTrue(item.automaticUse.wordModel)
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy(\.included))
+        XCTAssertEqual(item.automaticUse.state, .included)
+        let restored = try JSONDecoder().decode(SentenceTrainingData.self, from: JSONEncoder().encode(data))
+        XCTAssertEqual(restored.pairs[0].review, .pending, "Automatic inclusion must not overwrite an explicit review decision")
+        XCTAssertEqual(restored.derivedWords(role: .training, lexicon: lexicon).count, 2)
+    }
+
+    func testWordTimingFailureStillAdmitsSentenceTakesAutomatically() {
+        var item = automaticPair()
+        item.alignment = nil; item.error = "Too few words have usable audio-aligned times."
+        XCTAssertEqual(item.automaticUse.state, .warnings)
+        XCTAssertFalse(item.usesAlignedWords)
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy(\.included))
+        XCTAssertTrue(item.canIncludeManually)
+    }
+
+    func testAutomaticGapExclusionIsPerTakeAndDoesNotDiscardValidPartner() {
+        var item = automaticPair()
+        item.silent!.samples.removeSubrange(30..<45)
+        item.alignment = nil; item.error = "Motion has a sampling gap or a sample rate below 10 Hz."
+        let use = item.automaticUse
+        XCTAssertEqual(use.state, .warnings)
+        XCTAssertTrue(use.takes[0].included)
+        XCTAssertFalse(use.takes[1].included)
+        XCTAssertTrue(use.takes[1].reason?.contains("Sensor gap") == true)
+        XCTAssertEqual(item.silent!.samples.count, 86, "Assessment must preserve the raw take")
+        item.spoken = item.silent
+        XCTAssertEqual(item.automaticUse.state, .attention)
+        XCTAssertFalse(item.canIncludeManually, "Confirmation must not bypass invalid motion")
+    }
+
+    func testSourceSwitchCannotEnterWordModelThroughCachedAlignmentOrManualConfirmation() {
+        var item = automaticPair()
+        item.silent!.samples = item.silent!.samples.map { var sample = $0; sample.sensorLocation = 1; return sample }
+        item.silent!.samples[40].sensorLocation = 2
+        XCTAssertFalse(item.usesAlignedWords)
+        XCTAssertTrue(item.automaticUse.takes[0].included)
+        XCTAssertFalse(item.automaticUse.takes[1].included)
+        item.review = .accepted
+        XCTAssertFalse(item.usesAlignedWords)
+        XCTAssertFalse(item.automaticUse.takes[1].included)
+    }
+
+    func testAutomaticUseRetainsSubtleAndLargeMotionAsWarnings() {
+        var item = automaticPair()
+        item.spoken!.samples = item.spoken!.samples.map { MotionSample(t: $0.t) }
+        item.silent!.samples[40].rx = 3
+        let use = item.automaticUse
+        XCTAssertEqual(use.state, .warnings)
+        XCTAssertTrue(use.takes.allSatisfy(\.included))
+        XCTAssertTrue(use.warnings.contains { $0.contains("Very little motion") })
+        XCTAssertTrue(use.warnings.contains { $0.contains("Large motion") })
+    }
+
+    func testAutomaticUseSeparatesWordAndNeuralSamplingRequirements() {
+        var item = automaticPair()
+        item.spoken!.samples = item.spoken!.samples.enumerated().filter { $0.offset.isMultiple(of: 2) }.map(\.element)
+        item.silent!.samples = item.spoken!.samples
+        XCTAssertTrue(item.usesAlignedWords, "The existing word alignment supports lower rates")
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy { !$0.included && $0.reason == "Motion rate below 40 Hz" })
+        XCTAssertEqual(item.automaticUse.state, .warnings)
+    }
+
+    func testAutomaticUseHoldsWeakTranscriptAndPreservesManualOverrides() {
+        var item = automaticPair()
+        item.transcriptMatchRate = 0.8
+        XCTAssertEqual(item.automaticUse.state, .attention)
+        XCTAssertFalse(item.usesAlignedWords)
+        item.review = .accepted
+        XCTAssertTrue(item.usesAlignedWords)
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy(\.included))
+        item.review = .excluded
+        XCTAssertEqual(item.automaticUse.state, .excluded)
+        XCTAssertFalse(item.usesAlignedWords)
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy { !$0.included })
+        item.review = .pending; item.transcriptMatchRate = .nan
+        XCTAssertEqual(item.automaticUse.state, .attention)
+    }
+
+    func testAutomaticUseKeepsFinalTestReservedDespiteManualAcceptance() {
+        var item = automaticPair()
+        item.role = .finalTest; item.review = .accepted
+        XCTAssertEqual(item.automaticUse.state, .reserved)
+        XCTAssertFalse(item.canIncludeManually)
+        XCTAssertFalse(item.automaticUse.wordModel)
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy { !$0.included })
+    }
+
+    @MainActor func testManualConfirmationAndReturnToAutomaticPersistWithoutInventingWordTimes() async throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "sentence-auto-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        var item = automaticPair()
+        item.transcriptMatchRate = 0.8; item.alignment = nil; item.error = "Word timing unavailable"
+        let prompt = SentencePrompt(text: item.text), url = root.appending(path: "sentences.json")
+        let data = SentenceTrainingData(prompts: [prompt], roles: [prompt.id: .training], pairs: [item])
+        try SentenceStore.save(data, to: url)
+        let workflow = SentenceTrainingWorkflow(storeURL: url)
+        var changes = 0; workflow.onTrainingChanged = { changes += 1 }
+        workflow.review(item.id, decision: .accepted)
+        XCTAssertEqual(workflow.data.pairs[0].review, .accepted)
+        XCTAssertEqual(workflow.use(for: workflow.data.pairs[0]).state, .warnings)
+        XCTAssertTrue(workflow.data.pairs[0].automaticUse.takes.allSatisfy(\.included))
+        XCTAssertFalse(workflow.data.pairs[0].usesAlignedWords)
+        workflow.review(item.id, decision: .excluded)
+        XCTAssertEqual(workflow.data.pairs[0].automaticUse.state, .excluded)
+        XCTAssertEqual(workflow.pairUses[item.id]?.state, .excluded)
+        // This fixture has no audio directory: even a failed retry must retain exclusion.
+        workflow.retryProcessing(item.id, whisper: LocalWhisper())
+        for _ in 0..<200 {
+            if !workflow.isBusy { break }
+            try await Task.sleep(for: .milliseconds(5))
+        }
+        XCTAssertFalse(workflow.isBusy)
+        XCTAssertEqual(workflow.data.pairs[0].review, .excluded)
+        XCTAssertEqual(workflow.pairUses[item.id]?.state, .excluded)
+        workflow.review(item.id, decision: .pending)
+        XCTAssertEqual(workflow.data.pairs[0].automaticUse.state, .attention)
+        XCTAssertEqual(try SentenceStore.load(from: url).pairs[0].review, .pending)
+        XCTAssertEqual(changes, 4)
+    }
+
+    @MainActor func testReservedPromptAssignmentOverridesPairRoleAndCannotBeManuallyPromoted() throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "sentence-auto-reserved-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let item = automaticPair(), prompt = SentencePrompt(text: item.text), url = root.appending(path: "sentences.json")
+        try SentenceStore.save(SentenceTrainingData(prompts: [prompt], roles: [prompt.id: .finalTest], pairs: [item]), to: url)
+        let workflow = SentenceTrainingWorkflow(storeURL: url)
+        XCTAssertEqual(workflow.use(for: item).state, .reserved)
+        workflow.review(item.id, decision: .accepted)
+        XCTAssertEqual(workflow.data.pairs[0].review, .pending)
+        XCTAssertTrue(workflow.fittingWords.isEmpty)
+    }
+
+    func testAutomaticValidationIncludesEligiblePairsWithoutApprovalClicks() throws {
+        let train = SentencePrompt(text: "bee bob"), validation = SentencePrompt(text: "bob bee")
+        var a = pair(train, role: .training), b = pair(validation, role: .validation)
+        a.review = .pending; a.transcriptMatchRate = 1
+        b.review = .pending; b.transcriptMatchRate = 1
+        let data = SentenceTrainingData(prompts: [train, validation], roles: [train.id: .training, validation.id: .validation], pairs: [a, b])
+        let result = try SentenceValidation.run(data: data, settings: DecoderSettings(), lexicon: lexicon, vocabulary: [("bee", 1), ("bob", 1)])
+        XCTAssertEqual(result.trainingPairIDs, [a.id])
+        XCTAssertEqual(result.validationPairIDs, [b.id])
+        XCTAssertEqual(result.expectedValidationWordCount, 2)
+    }
+
     func testPassagesNeverCrossRolesOrPromptReservedText() {
         var data = SentenceTrainingData(), rng = SplitMix64(seed: 6)
         data.add((0..<32).map { SentencePrompt(text: String(repeating: "bee ", count: $0 + 1)) }, using: &rng)

@@ -114,6 +114,12 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         return WordFocusGuide.comfortable.wordIndex(elapsed:clock()-cueStart,count:WordFocusGuide.words(in:currentText).count)
     }
     var canRedo:Bool {phase == .recording || phase == .ended}
+    var takeIssue:String? {phase == .ended ? visit?.takes.last?.discardedReason:nil}
+    var requiresRedo:Bool {takeIssue != nil}
+    var canAdvance:Bool {
+        phase == .ready || phase == .recording || (phase == .ended && visit?.takes.last != nil && !requiresRedo)
+    }
+    var captureDuration:Double {recordingNonSpeech ? 8:35}
     var hasModel:Bool {modelURL(condition:.silent) != nil && modelURL(condition:.normal) != nil}
     init(root:URL?=nil,clock:@escaping ()->Double={ProcessInfo.processInfo.systemUptime}) {
         self.root=root ?? SentenceStore.directory.appending(path:"SequenceLearning")
@@ -378,7 +384,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         case .ready:startTake()
         case .recording:finishTake()
         case .ended:
-            guard visit?.takes.last?.discardedReason==nil else {error="Redo the interrupted take before continuing.";return}
+            guard canAdvance else {error=takeIssue ?? "Redo the interrupted take before continuing.";return}
             if index+1<(visit?.planned.count ?? 0) {index+=1;phase = .ready}
             else {endVisit()}
         default:break
@@ -392,13 +398,13 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
                 let rest=clock()+3
                 while clock()<rest {try Task.checkCancellation();secondsRemaining=max(0,rest-clock());try await Task.sleep(for:.milliseconds(40))}
                 beginCapture(at:clock())
-                let end=cueStart!+35
+                let end=cueStart!+captureDuration
                 while phase == .recording,clock()<end {
                     try Task.checkCancellation();secondsRemaining=max(0,end-clock())
                     if self.latest.map({clock()-$0.t>0.3})==true {finishTake(reason:"Motion stopped; redo this take.");return}
                     try await Task.sleep(for:.milliseconds(40))
                 }
-                if phase == .recording {finishTake(reason:"Timed out without END; redo.")}
+                if phase == .recording {finishAtTimeLimit()}
             } catch is CancellationError {} catch {self.error=error.localizedDescription;stop()}
         }
     }
@@ -406,6 +412,12 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         guard phase == .relax || phase == .ready,visit != nil,time.isFinite else {return}
         cueStart=time;selectedSource=latest?.sensorLocation;phase = .recording
         recorder?.logMarker(uptime:time,kind:"neural-start",label:currentText)
+    }
+    func finishAtTimeLimit() {
+        // Non-speech examples have no word boundary to mark manually. Their
+        // measured timer boundary is valid; sentence takes still require Done.
+        guard phase == .recording else {return}
+        finishTake(reason:recordingNonSpeech ? nil:"Timed out without Done. Redo this sentence and choose Done when finished.")
     }
     private func finishTake(reason:String?=nil) {
         guard phase == .recording,let cueStart,let visit else {return}

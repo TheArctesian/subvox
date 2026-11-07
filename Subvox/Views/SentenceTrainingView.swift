@@ -50,7 +50,7 @@ struct SentenceTrainingView: View {
               VStack(spacing: 0) {
                 Picker("Training section", selection: $section) {
                     Text("Record").tag(Section.record)
-                    Text("Review" + (pendingCount > 0 ? " (\(pendingCount))" : "")).tag(Section.review)
+                    Text("Review" + (attentionCount > 0 ? " (\(attentionCount))" : "")).tag(Section.review)
                     Text("Progress").tag(Section.progress)
                 }.pickerStyle(.segmented).labelsHidden().frame(maxWidth: 460).padding(.top, 20)
                 ScrollView {
@@ -59,9 +59,9 @@ struct SentenceTrainingView: View {
                         switch section {
                         case .record:
                             setup
-                            if pendingCount > 0 {
+                            if attentionCount > 0 {
                                 HStack {
-                                    Label("\(pendingCount) pairs ready to review", systemImage: "waveform.path")
+                                    Label("\(attentionCount) pairs need attention; usable recordings are included automatically", systemImage: "waveform.path")
                                     Spacer()
                                     Button("Review recordings") { section = .review }
                                 }.font(.callout)
@@ -73,7 +73,7 @@ struct SentenceTrainingView: View {
                             } else { review }
                         case .progress:
                             if !workflow.fittingWords.isEmpty { coverage; validation }
-                            else { ContentUnavailableView("Review your recordings first", systemImage: "chart.bar", description: Text("Usable, accepted pairs build sound coverage and the word baseline.")) }
+                            else { ContentUnavailableView("No aligned word examples yet", systemImage: "chart.bar", description: Text("Usable pairs build the word baseline automatically. Sentence models can use recordings even when word alignment fails.")) }
                             reservation
                         }
                     }.frame(maxWidth: 1000, alignment: .leading)
@@ -84,7 +84,7 @@ struct SentenceTrainingView: View {
         }
     }
 
-    private var pendingCount: Int { model.sentenceTraining.data.pairs.filter { $0.review == .pending }.count }
+    private var attentionCount: Int { model.sentenceTraining.pairUses.values.filter(\.needsAttention).count }
 
     private var canStart: Bool {
         model.motion.status == .streaming && model.localWhisper.isConfigured && model.sentenceTraining.storageReady
@@ -229,36 +229,57 @@ struct SentenceTrainingView: View {
 
     private var review: some View {
         let pairs = Array(model.sentenceTraining.data.pairs.reversed())
-        let pending = pairs.filter { $0.review == .pending }
-        let reviewed = pairs.filter { $0.review != .pending }
+        let attention = pairs.filter { model.sentenceTraining.use(for: $0).needsAttention }
+        let included = pairs.filter { [.included, .warnings].contains(model.sentenceTraining.use(for: $0).state) }
+        let other = pairs.filter { [.excluded, .reserved].contains(model.sentenceTraining.use(for: $0).state) }
         return LazyVStack(alignment: .leading, spacing: 14) {
             HStack {
-                Text(pending.isEmpty ? "Recordings reviewed" : "Review \(pending.count) recording pairs").font(.title2.weight(.semibold))
+                Text("Recording decisions").font(.title2.weight(.semibold))
                 Spacer()
                 Picker("Motion channels", selection: $channel) {
                     ForEach(MotionPlotChannel.allCases) { Text($0.rawValue).tag($0) }
                 }.labelsHidden().frame(maxWidth: 190)
             }
-            if !pending.isEmpty {
-                Text("Compare both traces and the spoken transcript before using a pair. Word timings are estimates.")
-                    .font(.callout).foregroundStyle(.secondary)
-                ForEach(pending) { pairCard($0) }
+            Text("Usable recordings are included automatically. Word timing failures do not block sentence training; each take is checked separately. Original recordings are kept.")
+                .font(.callout).foregroundStyle(.secondary)
+            Text("Sentence eligibility applies to the next dataset preparation, which also checks pronunciation coverage. Existing datasets and frozen models do not change. Validation and final-test roles stay separate from training.")
+                .font(.caption).foregroundStyle(.secondary)
+            if !attention.isEmpty {
+                Text("Needs attention (\(attention.count))").font(.headline)
+                ForEach(attention) { pairCard($0) }
             }
-            if !reviewed.isEmpty {
-                DisclosureGroup("Reviewed recordings (\(reviewed.count))") {
-                    ForEach(reviewed) { pairCard($0) }
+            if !included.isEmpty {
+                Text("Included automatically or by you (\(included.count))").font(.headline)
+                ForEach(included) { pairCard($0) }
+            }
+            if !other.isEmpty {
+                DisclosureGroup("Excluded or reserved recordings (\(other.count))") {
+                    ForEach(other) { pairCard($0) }
                 }
             }
         }
     }
 
     private func pairCard(_ pair: SentencePair) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let use = model.sentenceTraining.use(for: pair)
+        return VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top) {
                 Text(pair.text).font(.headline)
                 Spacer()
                 Text(pair.role.rawValue).font(.caption).foregroundStyle(.secondary)
             }
+            HStack {
+                Label(use.state.rawValue, systemImage: use.state == .included ? "checkmark.circle.fill" : use.state == .excluded ? "minus.circle" : "info.circle")
+                    .foregroundStyle(use.state == .included ? Color.green : use.state == .warnings || use.state == .attention ? Color.orange : Color.secondary)
+                Text(pair.review == .pending ? "Automatic" : "Manual override").font(.caption).foregroundStyle(.secondary)
+            }.font(.headline)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Word model: " + (use.wordModel ? "eligible" : "not eligible for aligned word examples"))
+                ForEach(use.takes.indices, id: \.self) { i in
+                    let take = use.takes[i]
+                    Text("Sentence model · " + take.name + ": " + (take.included ? "eligible for next dataset" : "not included — " + (take.reason ?? "unavailable")))
+                }
+            }.font(.caption).foregroundStyle(.secondary)
             if let spoken = pair.spoken {
                 SignalPlot(title: "Spoken", samples: spoken.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
                 qualityLabel(spoken)
@@ -271,7 +292,7 @@ struct SentenceTrainingView: View {
                 Text("Heard: " + transcript.text).font(.callout)
                 if pair.review != .excluded,let match=pair.transcriptMatchRate,match>=0.85 {
                     DisclosureGroup("Transcript agreement: \(Int(match*100))%") {
-                        Text("A new neural dataset can include this pending sentence even if word alignment failed. Motion quality and pronunciation coverage are checked separately. Transcript agreement does not measure motion accuracy.")
+                        Text("Sentence training can include this recording automatically even if word alignment failed. Motion quality and pronunciation coverage are checked separately. Transcript agreement does not measure motion accuracy.")
                     }.font(.caption).foregroundStyle(.secondary)
                 }
                 if let directory = pair.directory, transcript.timingReview != nil {
@@ -285,7 +306,7 @@ struct SentenceTrainingView: View {
                 }
             }
             if !pair.complete { Text("Incomplete pair. Re-record to collect both takes.").font(.caption).foregroundStyle(.orange) }
-            if let error = pair.error { Text(error).font(.caption).foregroundStyle(.orange) }
+            if let error = pair.error { Text("Word alignment: " + error).font(.caption).foregroundStyle(.secondary) }
             if let note = pair.phoneAlignmentNote { Text(note).font(.caption).foregroundStyle(.secondary) }
             if pair.spokenPhones != nil {
                 DisclosureGroup("Phoneme alignment estimates · review before supervision") {
@@ -329,10 +350,15 @@ struct SentenceTrainingView: View {
                 Text($0).font(.caption).foregroundStyle(.orange)
             }
             HStack {
-                Button(pair.review == .accepted ? "In use" : "Use pair") { model.sentenceTraining.review(pair.id, decision: .accepted) }
-                    .disabled(!pair.canAccept || pair.review == .accepted)
+                Menu("Override") {
+                    Button("Confirm prompt and include") { model.sentenceTraining.review(pair.id, decision: .accepted) }
+                        .disabled(!use.manualInclusionAllowed || pair.review == .accepted)
+                    Button("Use automatic decision") { model.sentenceTraining.review(pair.id, decision: .pending) }
+                        .disabled(pair.review == .pending)
+                }.disabled(use.state == .reserved)
+                    .help("Confirmation approves the prompt as the label. Invalid motion and unavailable word timings are still excluded from the affected method.")
                 Button(pair.review == .excluded ? "Excluded" : "Exclude pair") { model.sentenceTraining.review(pair.id, decision: .excluded) }
-                    .disabled(pair.review == .excluded)
+                    .disabled(pair.review == .excluded || use.state == .reserved)
                     .help("Exclude this pair from future training snapshots. The recording is kept.")
                 Spacer()
                 if pair.complete {
@@ -379,7 +405,7 @@ struct SentenceTrainingView: View {
         let validationCount = workflow.data.derivedWords(role: .validation, lexicon: .bundled).count
         return VStack(alignment: .leading, spacing: 12) {
             Text("Check your model").font(.title2.weight(.semibold))
-            Text("\(words.count) reviewed word examples. " + (model.isBuildingDecoder ? "Building model…" : model.decoder == nil ? "More usable motion is needed." : "Ready in Try model."))
+            Text("\(words.count) eligible word examples. " + (model.isBuildingDecoder ? "Building model…" : model.decoder == nil ? "More usable motion is needed." : "Ready in Try model."))
                 .font(.callout).foregroundStyle(.secondary)
             if validationCount > 0 {
                 Button("Check validation words") { workflow.validate() }

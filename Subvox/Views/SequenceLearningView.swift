@@ -22,7 +22,7 @@ struct SequenceLearningView:View {
                 VStack(spacing:0) {
                     ScrollView {
                         VStack(alignment:.leading,spacing:18) {
-                            Text("Preview a movement, then start when ready. During recording, choose Done when finished and redo any mistake.")
+                            Text("Preview a movement, then start when ready. Each movement records for eight seconds and saves automatically. Choose Done to finish sooner, or Redo for mistakes.")
                             Picker("Movement example",selection:$previewMovement) {
                                 ForEach(NonSpeechMovement.allCases) {movement in Text(movement.title).tag(movement)}
                             }.pickerStyle(.segmented)
@@ -213,6 +213,7 @@ struct SequenceLearningView:View {
     }
     private var cueColor:Color {
         if workflow.phase == .relax {return .orange}
+        if workflow.requiresRedo {return .orange}
         if workflow.phase == .ended {return .green}
         if workflow.recordingNonSpeech {return workflow.phase == .ready ? .cyan:.purple}
         return workflow.condition == .normal ? .green:.blue
@@ -221,15 +222,16 @@ struct SequenceLearningView:View {
         switch workflow.phase {
         case .ready:return workflow.recordingNonSpeech ? "Watch the example, then choose Start take when ready.":"Read the sentence, then choose Start take when ready."
         case .relax:return "Relax your mouth and wait for START."
-        case .ended:return "Take saved. Choose Next take to continue, or Redo take to repeat it."
-        default:return workflow.recordingNonSpeech ? "Follow the movement example. Choose Done when finished.":"Choose Done when finished. Redo any mistake."
+        case .ended:return workflow.requiresRedo ? "This take is excluded. Choose Redo to try again.":"Take saved. Choose Continue, or Redo to repeat it."
+        default:return workflow.recordingNonSpeech ? "Follow the movement example. Saves automatically at zero; choose Done to finish sooner.":"Choose Done when finished. Redo any mistake."
         }
     }
     private var stageName:String {
-        switch workflow.phase {case .ready:"Ready";case .relax:"Relax";case .recording:"Recording";case .ended:"Saved";default:"Ready"}
+        if workflow.requiresRedo {return "Redo required"}
+        return switch workflow.phase {case .ready:"Ready";case .relax:"Relax";case .recording:"Recording";case .ended:"Saved";default:"Ready"}
     }
     private var timerText:String {
-        if workflow.phase == .ready {return "Preview the movement"}
+        if workflow.phase == .ready {return workflow.recordingNonSpeech ? "Preview the movement":"Preview the sentence"}
         if workflow.phase == .ended,let take=workflow.visit?.takes.last {return String(format:"%.1f s recorded",take.recording.cueEnd-take.recording.cueStart)}
         return String(format:"%.1f s",workflow.secondsRemaining)
     }
@@ -268,7 +270,7 @@ struct SequenceLearningView:View {
                         Label(workflow.phase == .ready ? (workflow.recordingNonSpeech ? "Start movement":"Start take"):workflow.phase == .recording ? "Done":"Continue",
                               systemImage:workflow.phase == .recording ? "checkmark":"chevron.right").frame(minWidth:130)
                     }.buttonStyle(.borderedProminent).tint(.accentColor)
-                        .disabled(workflow.phase == .relax || (workflow.phase == .ready && model.motion.status != .streaming))
+                        .disabled(!workflow.canAdvance || (workflow.phase == .ready && model.motion.status != .streaming))
                 }.controlSize(.large)
                 if let error=workflow.error {Text(error).font(.caption).foregroundStyle(.orange)}
                 else if workflow.phase == .ready,model.motion.status != .streaming {Label("Connect your AirPods to begin",systemImage:"headphones").font(.caption).foregroundStyle(.orange)}

@@ -42,7 +42,7 @@ enum SentenceValidation {
             validationPairIDs: Array(Set(testing.compactMap(\.sourcePairID))), settings: settings,
             manifest: decoder.manifest, expected: testing.map(\.label), predicted: guesses, accepted: accepted,
             expectedValidationWordCount: data.pairs.filter {
-                $0.role == .validation && $0.review == .accepted && $0.canAccept
+                $0.role == .validation && $0.usesAlignedWords
                     && !$0.promptIDs.isEmpty && $0.promptIDs.allSatisfy { data.roles[$0] == .validation }
             }.reduce(0) { $0 + Lexicon.words(in: $1.text).count })
     }
@@ -50,7 +50,7 @@ enum SentenceValidation {
         case notEnoughData, overlap
         var errorDescription: String? {
             self == .overlap ? "Sentence groups overlap between fitting and validation."
-                : "Accept aligned training and validation pairs before checking the word model."
+                : "Collect usable aligned training and validation pairs before checking the word model."
         }
     }
 }

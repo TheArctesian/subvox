@@ -95,14 +95,120 @@ struct SentencePair: Codable, Identifiable, Sendable {
     var phoneAlignmentNote: String?
     var cameraReadings: [CameraPoseReading]?
     var complete: Bool { spoken != nil && silent != nil }
-    var canAccept: Bool { complete && error == nil && alignment?.words.isEmpty == false }
+    var canAccept: Bool {
+        guard let spoken, let silent, error == nil, alignment?.words.isEmpty == false else { return false }
+        // A cached alignment cannot make a left/right source switch safe to learn from.
+        return [spoken, silent].allSatisfy {
+            Set($0.cueSamples.map { sample in
+                let side = sample.sensorLocation ?? -1
+                return side == 0 ? -1 : side
+            }).count == 1
+        }
+    }
+
+    /// Pending is automatic mode. Accepted/Excluded are persistent user overrides;
+    /// automatic decisions never overwrite them or approve phone-level annotations.
+    var hasReliableTranscript: Bool {
+        review == .accepted || transcriptMatchRate.map { $0.isFinite && (0.85...1).contains($0) } == true
+    }
+    var usesAlignedWords: Bool {
+        role != .finalTest && review != .excluded && hasReliableTranscript && canAccept
+    }
+    var canIncludeManually: Bool {
+        role != .finalTest && (canAccept || (recordingSessionID != nil && [spoken, silent].contains {
+            $0.map { SentenceMotionEligibility.inspect($0).reason == nil } == true
+        }))
+    }
+    var automaticUse: SentencePairUse { SentencePairUse(self) }
+}
+
+/// Mirrors the timestamp/source checks of the neural dataset resampler. These are
+/// eligibility checks, not recognition accuracy; pronunciation/CTC checks run at preparation.
+struct SentenceMotionEligibility: Sendable {
+    var reason: String?
+    static func inspect(_ recording: SentenceRecording) -> Self {
+        let samples = recording.samples
+        guard samples.count >= 12 else { return .init(reason: "Too few motion samples") }
+        guard samples.allSatisfy({ [$0.t, $0.ax, $0.ay, $0.az, $0.rx, $0.ry, $0.rz, $0.gx, $0.gy, $0.gz].allSatisfy(\.isFinite) }) else {
+            return .init(reason: "Invalid sensor values")
+        }
+        let intervals = zip(samples, samples.dropFirst()).map { $1.t - $0.t }
+        guard intervals.allSatisfy({ $0 > 0 }) else { return .init(reason: "Sensor timestamps are not increasing") }
+        let start = recording.cueStart, end = recording.cueEnd
+        guard start.isFinite, end.isFinite, (0.5...48).contains(end - start) else { return .init(reason: "Invalid cue duration") }
+        let lo = max(start, samples[0].t), hi = min(end, samples[samples.count - 1].t)
+        guard lo - start <= 0.1, end - hi <= 0.1, hi - lo >= 0.9 * (end - start) else {
+            return .init(reason: "Motion does not cover the cue")
+        }
+        let context = samples.filter { $0.t >= lo - 0.1 && $0.t <= hi + 0.1 }
+        let sides = Set(context.map { [nil, 0, -1].contains($0.sensorLocation) ? -1 : $0.sensorLocation! })
+        guard sides.count == 1 else { return .init(reason: "Sensor source switched during the take") }
+        let gaps = zip(context, context.dropFirst()).map { $1.t - $0.t }.sorted()
+        guard !gaps.isEmpty else { return .init(reason: "Too few motion samples") }
+        if let gap = gaps.last, gap > 0.12 { return .init(reason: String(format: "Sensor gap of %.3f s (maximum 0.120 s)", gap)) }
+        let middle = gaps.count / 2
+        let median = gaps.count.isMultiple(of: 2) ? (gaps[middle - 1] + gaps[middle]) / 2 : gaps[middle]
+        guard 1 / median >= 40 else { return .init(reason: "Motion rate below 40 Hz") }
+        let frames = Int(floor((hi - lo) * 50)) + 1
+        guard frames >= 25, context.allSatisfy({ sqrt($0.gx * $0.gx + $0.gy * $0.gy + $0.gz * $0.gz) >= 0.1 }) else {
+            return .init(reason: "Short sequence or invalid gravity vector")
+        }
+        return .init(reason: nil)
+    }
+}
+
+struct SentencePairUse: Sendable {
+    enum State: String, Sendable {
+        case included = "Included", warnings = "Included with warnings", attention = "Needs attention"
+        case excluded = "Excluded", reserved = "Reserved final test"
+    }
+    struct Take: Sendable {
+        var name: String
+        var included: Bool
+        var reason: String?
+    }
+    var state: State
+    var wordModel: Bool
+    var manualInclusionAllowed: Bool
+    var takes: [Take]
+    var warnings: [String]
+    var needsAttention: Bool { state == .attention }
+
+    init(_ pair: SentencePair) {
+        wordModel = pair.usesAlignedWords
+        manualInclusionAllowed = pair.role != .finalTest && pair.canAccept
+        warnings = []
+        takes = []
+        for (name, recording) in [("Spoken", pair.spoken), ("Mouthed", pair.silent)] {
+            let motion = recording.map { SentenceMotionEligibility.inspect($0) }
+            if pair.role != .finalTest, pair.recordingSessionID != nil, let motion, motion.reason == nil {
+                manualInclusionAllowed = true
+            }
+            let reason: String?
+            if pair.role == .finalTest { reason = "Reserved for the final test" }
+            else if pair.review == .excluded { reason = "Excluded by you" }
+            else if recording == nil { reason = "Not recorded" }
+            else if !pair.hasReliableTranscript { reason = "Transcript needs confirmation" }
+            else if pair.recordingSessionID == nil { reason = "Recording session metadata is missing" }
+            else { reason = motion?.reason }
+            takes.append(.init(name: name, included: reason == nil, reason: reason))
+            if let recording { warnings += recording.quality.issues.map { name + ": " + $0 } }
+        }
+        if let error = pair.error { warnings.append("Word alignment unavailable: " + error) }
+        warnings += pair.alignment?.warnings.filter { !$0.hasPrefix("Transferred word times") } ?? []
+        if pair.role == .finalTest { state = .reserved }
+        else if pair.review == .excluded { state = .excluded }
+        else if wordModel || takes.contains(where: \.included) {
+            state = warnings.isEmpty && takes.allSatisfy(\.included) && wordModel ? .included : .warnings
+        } else { state = .attention }
+    }
 }
 
 extension SentencePair {
     /// Only explicit, reviewed phone annotations can supply time-local supervision.
     /// Paragraphs stay atomic and are excluded from this first single-sentence pilot.
     func representationTakes(profile:PronunciationProfile) throws -> [RepresentationTake] {
-        guard role == .training,review == .accepted,promptIDs.count==1,
+        guard role == .training,review != .excluded,hasReliableTranscript,promptIDs.count==1,
               promptIDs[0]==SentencePrompt.identity(text),let recordingSessionID,
               let pronunciationProfile,try pronunciationProfile.fingerprint()==profile.fingerprint(),
               let cameraReadings,!cameraReadings.isEmpty else {return []}
@@ -166,7 +272,7 @@ struct SentenceTrainingData: Codable, Sendable {
 
     func derivedWords(role: DataRole, lexicon: Lexicon) -> [Template] {
         guard role != .finalTest else { return [] }
-        return pairs.filter { $0.role == role && $0.review == .accepted }.flatMap { pair -> [Template] in
+        return pairs.filter { $0.role == role && $0.usesAlignedWords }.flatMap { pair -> [Template] in
             guard pair.canAccept, !pair.promptIDs.isEmpty,
                   pair.promptIDs.allSatisfy({ roles[$0] == role }), let silent = pair.silent,
                   let transfer = pair.alignment else { return [] }
@@ -189,7 +295,7 @@ struct SentenceTrainingData: Codable, Sendable {
                            bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]))
     }
 
-    /// Counts dictionary phone occurrences in accepted, aligned TRAINING words only.
+    /// Counts dictionary phone occurrences in eligible, aligned TRAINING words only.
     /// This is annotation coverage, never evidence that these phones were recognised.
     func coverage(lexicon: Lexicon) -> [String: Int] {
         var result: [String: Int] = [:]
@@ -227,7 +333,7 @@ struct SentenceTrainingData: Codable, Sendable {
         let development = prompts.filter { $0.kind == .sentence && roles[$0.id] == .training }
         guard !development.isEmpty,
               development.allSatisfy({ prompt in pairs.contains {
-                  $0.promptIDs.contains(prompt.id) && $0.role == .training && $0.review == .accepted && $0.canAccept
+                  $0.promptIDs.contains(prompt.id) && $0.role == .training && $0.usesAlignedWords
               } }) else { return [] }
         let counts = coverage(lexicon: lexicon)
         let needs = Dictionary(uniqueKeysWithValues: Phoneme.all.map { ($0.symbol, target - counts[$0.symbol, default: 0]) })
