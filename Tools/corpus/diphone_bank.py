@@ -7,7 +7,7 @@ until every diphone in the target (the set making up 99% of running English) has
 `--reps` times or no candidate helps. Candidates are natural sentences from the public-domain
 pool books, so the bank reads as ordinary English rather than tongue-twisters.
 
-Usage: Tools/diphone_bank.py [--seed Corpus/harbor.txt] [--reps 2] [--out Corpus/diphones.txt]
+Usage: Tools/corpus/diphone_bank.py [--seed Corpus/harbor.txt] [--reps 2] [--out Corpus/diphones.txt]
 """
 
 import argparse
@@ -85,7 +85,7 @@ def build(seed_pairs, pool, target, reps):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    root = Path(__file__).resolve().parent.parent
+    root = Path(__file__).resolve().parents[2]
     parser.add_argument("--seed", type=Path, default=root / "Corpus/harbor.txt")
     parser.add_argument("--reps", type=int, default=2, help="times each diphone should be heard (default 2)")
     parser.add_argument("--out", type=Path, default=root / "Corpus/diphones.txt")

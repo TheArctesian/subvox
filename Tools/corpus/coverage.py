@@ -12,7 +12,7 @@ the jaw-specific classes Subvox can plausibly sense:
   shapes          syllable counts and stress patterns per word
   jaw             vowel height classes and the height-to-height transitions between syllables
 
-Usage: Tools/coverage.py PASSAGE.txt [MORE.txt ...] [--dict cmudict.dict] [--missing]
+Usage: Tools/corpus/coverage.py PASSAGE.txt [MORE.txt ...] [--dict cmudict.dict] [--missing]
 """
 
 import argparse

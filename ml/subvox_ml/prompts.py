@@ -59,7 +59,7 @@ def generate_frames():
     return rows
 
 
-def write_banks(corpus=Path(__file__).resolve().parents[3] / "Corpus", lexicon=None):
+def write_banks(corpus=Path(__file__).resolve().parents[2] / "Corpus", lexicon=None):
     """Writes grid-sentences.txt, frames.txt and frames.tsv; every word must have a pronunciation."""
     grid = generate_grid()
     frames = generate_frames()

@@ -8,7 +8,7 @@
 
 Rerun after editing a corpus text.
 
-Usage: Tools/lexicon.py [--dict cmudict.dict]
+Usage: Tools/corpus/lexicon.py [--dict cmudict.dict]
 """
 
 import argparse
@@ -33,7 +33,7 @@ def main():
     parser.add_argument("--dict", type=Path)
     args = parser.parse_args()
 
-    corpus = Path(__file__).resolve().parent.parent / "Corpus"
+    corpus = Path(__file__).resolve().parents[2] / "Corpus"
     cmu = load_dict(args.dict)
 
     words = sorted({w for path in corpus.glob("*.txt") for w in words_of(path.read_text())})

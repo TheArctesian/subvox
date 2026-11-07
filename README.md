@@ -16,6 +16,28 @@ open build/Build/Products/Release/Subvox.app
 
 Use Release: matching thousands of vocabulary templates is much slower in Debug. Grant Motion and Microphone access when requested. All transcription uses existing local Whisper files; no speech-recognition service is used.
 
+## Repository layout
+
+```
+Subvox/
+  App/            entry point, AppModel, ContentView (sidebar)
+  Capture/        Motion (AirPods IMU), Audio (engine/devices), Camera (pose + mouth landmarks)
+  Recording/      SessionRecorder: archival session folders (motion.csv, audio.caf, …)
+  Transcription/  local Whisper server + word timing
+  Linguistics/    IPA inventory, pronunciation graph, lexicon, phoneme table, MFA aligner
+  Alignment/      LCS, spoken→mouthed motion DTW, camera phone-boundary transfer
+  Collection/     paired sentence collection: data model, store, workflow, take quality
+  Core/           shared enums, deterministic RNG, word-focus pacing
+  Sequence/       Swift driver for the neural pipeline in ml/
+  Baselines/      historical pilots: WordDecoders (DTW/jaw HMM), SignalCheck + camera teacher, Representation
+  Views/          SwiftUI, grouped like the folders above (Shared/ holds reusable components)
+SubvoxTests/      XCTest, mirrored by area
+ml/               subvox_ml: PyTorch CTC pipeline, bundled into the app as SequenceRuntime
+Corpus/           bundled sentence banks and lexicons
+Tools/corpus/     offline corpus generators (coverage, diphone bank, lexicon)
+Tools/data/       data-ops utilities (reset/archive training data)
+```
+
 ## Sentence recording
 
 **Train** opens ordinary paired sentence collection using the recording interface from block A: preview each sentence, choose Start, wait through Relax, speak or mouth with highlighted words, choose Done, then review END before Next. Left/Up redoes the current take; Right/Down starts, finishes or advances. The large coloured prompt, centred timer above START/END, live motion and numeric camera markers stay visible. Pacing is a visual guide saved as provenance, never measured word/phone timing. Source switches or capture gaps discard an interrupted attempt and return to Ready. There is no mandatory A/freeze/reseat/B sequence in collection.
@@ -75,17 +97,17 @@ The optional second-stage controls route to explicit voiced/camera **training** 
 Artifacts live under `~/Library/Application Support/Subvox/SequenceLearning/`: dataset snapshots, model weights, pronunciation snapshots, feature schema, training/development identities, source hashes, coverage, training curves, seeds, dependency versions, source-code snapshots and reports. `initial-dataset`, `initial-neural-run`, `initial-teacher-dataset` and `initial-teacher-run` contain the measured runs above. The app exports a fresh `language.json` from the production Swift graph when preparing a dataset; an earlier snapshot can be reused for a repeat with identical pronunciation proposals.
 
 ```sh
-uv run --project Tools/sequence python -m unittest discover -s Tools/sequence -p test_sequence.py
-uv run --project Tools/sequence subvox-ml prepare --root "$HOME/Library/Application Support/Subvox" \
+uv run --project ml python -m unittest discover -s ml -p test_sequence.py
+uv run --project ml subvox-ml prepare --root "$HOME/Library/Application Support/Subvox" \
   --language /path/to/language.json --output /path/to/new-dataset
-uv run --project Tools/sequence subvox-ml train --dataset /path/to/new-dataset \
+uv run --project ml subvox-ml train --dataset /path/to/new-dataset \
   --output /path/to/new-run --epochs 60
-uv run --project Tools/sequence subvox-ml infer --model /path/to/new-run/plain-mouthed \
+uv run --project ml subvox-ml infer --model /path/to/new-run/plain-mouthed \
   --input /path/to/input.json --output /path/to/prediction.json
-uv run --project Tools/sequence subvox-ml evaluate-fresh --session /path/to/closed-test/session.json
-uv run --project Tools/sequence subvox-ml prepare-teachers --dataset /path/to/new-dataset \
+uv run --project ml subvox-ml evaluate-fresh --session /path/to/closed-test/session.json
+uv run --project ml subvox-ml prepare-teachers --dataset /path/to/new-dataset \
   --base-run /path/to/new-run --output /path/to/new-teacher-dataset
-uv run --project Tools/sequence subvox-ml train --dataset /path/to/new-teacher-dataset \
+uv run --project ml subvox-ml train --dataset /path/to/new-teacher-dataset \
   --output /path/to/new-teacher-run --experiments teacher --epochs 60
 ```
 
@@ -208,8 +230,8 @@ Whisper runs in an owned child process bound to `127.0.0.1`. Requests contain no
 To start clean again, close Subvox, inspect the reset paths, then archive active training:
 
 ```sh
-python3 Tools/reset_training.py
-python3 Tools/reset_training.py --execute
+python3 Tools/data/reset_training.py
+python3 Tools/data/reset_training.py --execute
 ```
 
 Reset archives datasets, prior snapshots and recording folders with SHA-256 verification, recreates empty active folders, and retains local Whisper model files/preferences. Failed moves roll back; no permanent deletion is performed.
@@ -230,9 +252,9 @@ Tests cover audio-attention timing and acoustic rejection, explicit signal-check
 `Corpus/paired-sentences.txt` supplies paired prompts. The pronunciation/vocabulary tables support fitting and decoding. `harbor.txt` and `diphones.txt` remain reference material for corpus development; the retired teleprompter does not run them.
 
 ```sh
-python3 Tools/coverage.py Corpus/paired-sentences.txt --missing
-python3 Tools/diphone_bank.py --reps 2
-python3 Tools/lexicon.py
+python3 Tools/corpus/coverage.py Corpus/paired-sentences.txt --missing
+python3 Tools/corpus/diphone_bank.py --reps 2
+python3 Tools/corpus/lexicon.py
 ```
 
 Corpus tools cache pronunciation and public-domain source material under `~/Library/Caches/Subvox`. Those shared resources are not personal training examples.

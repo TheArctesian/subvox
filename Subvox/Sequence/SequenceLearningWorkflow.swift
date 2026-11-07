@@ -73,7 +73,9 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     private(set) var status="Ready for local neural training"
     private(set) var datasetURL:URL?
     private(set) var datasetSchema:Int?
-    var datasetCompatible:Bool {datasetSchema==2}
+    /// Mirrors `load_dataset` in ml/subvox_ml/data.py, which accepts any snapshot with cross-validation folds (schema 2+).
+    static let minimumDatasetSchema=2
+    var datasetCompatible:Bool {(datasetSchema ?? 0)>=Self.minimumDatasetSchema}
     private(set) var runURL:URL?
     private(set) var comparison:NeuralComparison?
     private(set) var prediction:NeuralPrediction?
@@ -244,16 +246,20 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
 
     private func runtime() throws -> URL {
         let bundled=Bundle.main.resourceURL!.appending(path:"SequenceRuntime")
-        let development=URL(fileURLWithPath:#filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appending(path:"Tools/sequence")
-        let source=FileManager.default.fileExists(atPath:bundled.appending(path:"uv.lock").path) ? bundled:development
-        let files=["pyproject.toml","uv.lock"]+(try FileManager.default.contentsOfDirectory(atPath:source.appending(path:"subvox_ml").path)).filter {$0.hasSuffix(".py")}.sorted().map {"subvox_ml/"+$0}
+        let development=URL(fileURLWithPath:#filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appending(path:"ml")
+        let isBundled=FileManager.default.fileExists(atPath:bundled.appending(path:"uv.lock").path)
+        let source=isBundled ? bundled:development
+        // evaluation.py reads the distractor bank from <runtime>/Corpus, so it travels with the runtime.
+        let corpus=isBundled ? Bundle.main.resourceURL!.appending(path:"Corpus"):development.deletingLastPathComponent().appending(path:"Corpus")
+        let python=["pyproject.toml","uv.lock"]+(try FileManager.default.contentsOfDirectory(atPath:source.appending(path:"subvox_ml").path)).filter {$0.hasSuffix(".py")}.sorted().map {"subvox_ml/"+$0}
+        let files=python.map {($0,source.appending(path:$0))}+[("Corpus/diphones.txt",corpus.appending(path:"diphones.txt"))]
         var hash=SHA256()
-        for file in files {hash.update(data:Data(file.utf8));hash.update(data:try Data(contentsOf:source.appending(path:file)))}
+        for (file,url) in files {hash.update(data:Data(file.utf8));hash.update(data:try Data(contentsOf:url))}
         let identity=hash.finalize().map {String(format:"%02x",$0)}.joined()
         let destination=root.appending(path:"Runtime/\(identity)")
         if !FileManager.default.fileExists(atPath:destination.path) {
-            try FileManager.default.createDirectory(at:destination.appending(path:"subvox_ml"),withIntermediateDirectories:true)
-            for file in files {try FileManager.default.copyItem(at:source.appending(path:file),to:destination.appending(path:file))}
+            for directory in ["subvox_ml","Corpus"] {try FileManager.default.createDirectory(at:destination.appending(path:directory),withIntermediateDirectories:true)}
+            for (file,url) in files {try FileManager.default.copyItem(at:url,to:destination.appending(path:file))}
         }
         return destination
     }
