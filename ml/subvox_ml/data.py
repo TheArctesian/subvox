@@ -71,7 +71,7 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
         sources[str(path)] = hashlib.sha256(raw).hexdigest()
         return json.loads(raw)
 
-    def add(identity, text, groups, session, recording, provenance, original_role="flexible", prior_test=False, reference=None, confidence=None):
+    def add(identity, text, groups, session, recording, provenance, original_role="flexible", prior_test=False, reference=None, confidence=None, camera=None):
         # Empty targets describe non-speech; keep its explicit movement group,
         # rather than connecting every negative through the empty-text hash.
         groups = sorted(set(groups + ([group_id(text)] if words(text) else [])))
@@ -84,7 +84,7 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
         if reserved.intersection(groups):
             raise ValueError("A correction duplicates a reserved final sentence")
         row = dict(id=identity, text=text, groups=groups, session=session, condition=recording["condition"],
-                   recording=recording, original_role=original_role,
+                   recording=recording, original_role=original_role, camera_readings=camera or [],
                    provenance=dict(**provenance, reference="user correction" if correction is not None else reference or "recorded prompt; not acoustically verified",
                                    confidence=confidence, estimated_phone_boundaries=False, former_test=prior_test))
         fingerprint = digest(row)
@@ -108,7 +108,7 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
                 text = language["diagnosticSentences"][take["prompt"]["sentence"]]
                 add(take["id"], text, [], run["session"]["id"], take["recording"],
                     dict(source=str(path), kind="controlled diagnostic", comparison=comparison["id"]),
-                    prior_test=run.get("control", {}).get("block") == "reseated")
+                    prior_test=run.get("control", {}).get("block") == "reseated", camera=run.get("control", {}).get("readings", []))
     for path in sorted((root / "RepresentationStudies").glob("*/study.json")):
         study = load(path)
         training = {p["text"] for p in study["training"]}
@@ -121,7 +121,7 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
                 continue
             add(take["id"], take["text"], [take["sentenceID"]], take["sessionID"], take["recording"],
                 dict(source=str(path), kind="representation pilot", comparison=study["id"]),
-                original_role="flexible" if is_test else "Training", prior_test=is_test)
+                original_role="flexible" if is_test else "Training", prior_test=is_test, camera=take.get("camera", []))
     for path in sorted((root / "SequenceLearning" / "Collections").glob("*/session.json")):
         visit = load(path)
         # Prospective tests/inference NEVER flow back into preparation implicitly.
@@ -135,7 +135,7 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
                 raise ValueError("Non-speech recordings must have empty text labels; instructions are not transcripts")
             add(take["id"], take["text"], [take["sentenceID"]], visit["session"]["id"], take["recording"],
                 dict(source=str(path),kind="non-speech motion" if negative else "motion-only neural collection",visit=visit["id"]),
-                original_role="Training" if visit["role"] in ("training","negativeTraining") else "Validation")
+                original_role="Training" if visit["role"] in ("training","negativeTraining") else "Validation", camera=take.get("camera", []))
     if sentence_data.exists():
         paired = load(sentence_data)
         for pair in paired["pairs"]:
@@ -153,7 +153,7 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
                 if pair.get(key) and pair.get("recordingSessionID"):
                     add(pair[key]["id"], pair["text"], groups, pair["recordingSessionID"], pair[key],
                         dict(source=str(sentence_data), kind="reviewed sentence pair", pair=pair["id"], review=pair["review"]),
-                        original_role=pair["role"], reference=reference, confidence=match)
+                        original_role=pair["role"], reference=reference, confidence=match, camera=pair.get("cameraReadings", []))
     return rows, sources, reserved
 
 
@@ -367,6 +367,7 @@ def pronunciations(text, language, max_paths=32):
 
 def prepare(root, language_path, output, corrections=None, folds=4, min_transcript_match=MIN_TRANSCRIPT_MATCH):
     output = Path(output)
+    from .camera import grid as camera_grid, RAW_NAMES as CAMERA_RAW_NAMES  # camera.py imports RATE from here
     if output.exists():
         raise ValueError("Dataset output already exists; create a new immutable snapshot")
     language = json.loads(Path(language_path).read_text())
@@ -382,7 +383,9 @@ def prepare(root, language_path, output, corrections=None, folds=4, min_transcri
             targets, proposals = pronunciations(row["text"], language)
             if not targets or min(len(p) + sum(a == b for a, b in zip(p, p[1:])) for p in targets) > len(raw):
                 raise ValueError("insufficient CTC frames for transcript/repeated phones")
-            item = {k:v for k,v in row.items() if k != "recording"}
+            item = {k:v for k,v in row.items() if k not in ("recording", "camera_readings")}
+            if row["camera_readings"]:
+                item["camera"] = camera_grid(row["camera_readings"], quality["start"], len(raw)).tolist()
             item.update(raw=raw.tolist(), targets=targets, quality=quality, unconfirmed_pronunciations=proposals, activity=int(bool(words(row["text"]))),
                         alignment_provenance="CTC will marginalise alignment; no phone boundaries supplied")
             examples.append(item)
@@ -391,6 +394,8 @@ def prepare(root, language_path, output, corrections=None, folds=4, min_transcri
                 rest, q = resample(row["recording"], baseline=True)
                 negative = dict(item, id=row["id"]+"/rest", text="", raw=rest.tolist(), targets=[[]], quality=q, activity=0,
                                 alignment_provenance="instructed relaxed-mouth baseline; not acoustic VAD ground truth")
+                if row["camera_readings"]:
+                    negative["camera"] = camera_grid(row["camera_readings"], q["start"], len(rest)).tolist()
                 examples.append(negative)
             except ValueError:
                 pass
@@ -424,6 +429,9 @@ def prepare(root, language_path, output, corrections=None, folds=4, min_transcri
                                                             if e["provenance"].get("review") not in (None, "Accepted")})),
                     warning="Former diagnostic tests used in training are NOT independent tests of this model. Historical models/reports are unchanged.",
                     features=dict(version="timestamp-50hz-raw-invariant-derivative-v1", rate=RATE, names=FEATURE_NAMES, low_energy="retain"),
+                    camera=dict(version="vision-landmarks-eye-frame-v1", names=CAMERA_RAW_NAMES,
+                                rows_with_camera=sum("camera" in e for e in examples),
+                                note="Numeric Vision points/measurements only, no images; interpolated onto the motion grid within 120 ms"),
                     side_inference=side_report, examples_hash=digest(examples))
     snapshots={};historical=[];material={}
     for name,sha in sources.items():

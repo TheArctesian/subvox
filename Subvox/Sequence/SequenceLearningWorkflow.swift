@@ -98,6 +98,11 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     static let negativePrompts=NonSpeechMovement.allCases.map(\.instruction)
     var recordingNonSpeech:Bool {visit?.role=="negativeTraining" || visit?.role=="negativeDevelopment"}
     var currentMovement:NonSpeechMovement? {recordingNonSpeech ? NonSpeechMovement.allCases.first {$0.instruction==currentText}:nil}
+    /// Started only for models that take camera landmarks as input (`modalities` camera/fused).
+    let camera=CameraPoseService()
+    private(set) var faceTracked=false
+    private var cameraReadings:[CameraPoseReading]=[]
+    private var capturingCamera=false
     private let root:URL
     private var task:Task<Void,Never>?
     private var process:Process?
@@ -137,6 +142,27 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
             }
         } catch {self.error=error.localizedDescription}
         loadResumableNonSpeech()
+        camera.onReading={[weak self] reading in
+            guard let self else {return}
+            faceTracked=reading.mouth != nil
+            guard capturingCamera,phase == .relax || phase == .recording else {return}
+            cameraReadings.append(reading)
+            if let id=visit?.session.id {_=recorder?.recordCamera(reading,sessionID:id)}
+        }
+    }
+    /// The frozen model's input set, from its manifest: "imu", "camera" or "fused".
+    func modalities(condition:SpeechCondition)->String {
+        guard let url=modelURL(condition:condition),let bytes=try? Data(contentsOf:url.appending(path:"model.json")),
+              let manifest=(try? JSONSerialization.jsonObject(with:bytes)) as? [String:Any] else {return "imu"}
+        return manifest["modalities"] as? String ?? "imu"
+    }
+    /// Camera is captured for a visit whose frozen model reads it; training collection stays motion-only.
+    var needsCamera:Bool {
+        switch mode {
+        case .inference:modalities(condition:inferenceCondition) != "imu"
+        case .sameFit,.reseated:[SpeechCondition.normal,.silent].contains {modalities(condition:$0) != "imu"}
+        default:false
+        }
     }
     private func remainingNonSpeech(_ value:NeuralVisit)->[NeuralVisit.Planned] {
         value.planned.filter {item in !value.takes.contains {take in
@@ -214,6 +240,21 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
             do {
                 try await execute(["train","--dataset",datasetURL.path,"--output",destination.path,"--epochs",String(epochs)])
                 runURL=destination;try loadComparison();try persistUI();status="Neural comparisons trained and frozen. See development errors below."
+            } catch {self.error=error.localizedDescription}
+            phase = .idle
+        }
+    }
+    /// IMU only, camera only and fused, on the same camera-covered recordings, folds and settings.
+    func trainFusion() {
+        guard !isBusy,let datasetURL else {return}
+        guard datasetCompatible else {error="Prepare a new dataset snapshot first; older snapshots have no camera inputs.";return}
+        phase = .working;error=nil
+        let destination=root.appending(path:"runs/fusion-\(UUID())"),epochs=epochs
+        task=Task {
+            do {
+                try await execute(["train","--dataset",datasetURL.path,"--output",destination.path,"--epochs",String(epochs),"--experiments","imu,camera,fused"])
+                runURL=destination;experiment="fused";try loadComparison();try persistUI()
+                status="Fusion comparison trained: AirPods only, camera only and fused, on the same recordings."
             } catch {self.error=error.localizedDescription}
             phase = .idle
         }
@@ -375,13 +416,18 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
                 }
             }
         }
-        audio.stop();recorder.condition = .signalCheck;recorder.prompt="Motion-only neural CTC \(role.rawValue); no camera/audio/video"
-        guard let session=recorder.start(audioSink:nil,cameraPoints:false) else {error=recorder.error;return}
+        let withCamera=needsCamera
+        guard !withCamera || camera.isRunning else {error=camera.error ?? "This model reads camera landmarks. Allow camera access and try again.";return}
+        audio.stop();recorder.condition = .signalCheck
+        recorder.prompt="Neural CTC \(role.rawValue); motion\(withCamera ? " + numeric camera points":""); no audio/video"
+        guard let session=recorder.start(audioSink:nil,cameraPoints:withCamera) else {error=recorder.error;return}
+        capturingCamera=withCamera;cameraReadings=[]
         self.recorder=recorder
         let plan: [NeuralVisit.Planned] = role == .inference ? [.init(text:expectedText,condition:inferenceCondition,repetition:0)] :
             (0..<2).flatMap {rep in prompts.flatMap {p in [SpeechCondition.normal,.silent].map {.init(text:p.text,condition:$0,repetition:rep)}}}
         let visitRole=role == .nonSpeech ? (negativeRole == .training ? "negativeTraining":"negativeDevelopment"):role.rawValue
         visit=NeuralVisit(role:visitRole,session:session,planned:plan,modelPaths:paths,modelFingerprints:fingerprints)
+        if withCamera {visit?.modalities=["AirPods motion","Camera landmarks"]}
         if role == .nonSpeech {visit?.movementGuideVersion="illustrated-v1"}
         index=0;error=nil;prediction=nil;phase = .ready;saveVisit()
     }
@@ -398,7 +444,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     }
     private func startTake() {
         guard phase == .ready,let latest,clock()-latest.t>=0,clock()-latest.t<0.3 else {error="Waiting for fresh AirPods motion.";return}
-        buffer=[];selectedSource=latest.sensorLocation;phase = .relax;error=nil
+        buffer=[];cameraReadings=[];selectedSource=latest.sensorLocation;phase = .relax;error=nil
         task=Task {
             do {
                 let rest=clock()+3
@@ -431,7 +477,8 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         let recording=SentenceRecording(condition:item.condition,samples:buffer.filter {$0.t<=end},cueStart:cueStart,cueEnd:end)
         let label=(visit.role=="negativeTraining" || visit.role=="negativeDevelopment") ? "":item.text
         self.visit?.takes.append(.init(sentenceID:SentencePrompt.identity(item.text),text:label,sessionID:visit.session.id,repetition:item.repetition,
-            recording:recording,camera:[],discardedReason:reason,wordFocusGuide:.comfortable))
+            recording:recording,camera:capturingCamera ? cameraReadings.filter {$0.t>=cueStart-2.6 && $0.t<=end}:[],discardedReason:reason,wordFocusGuide:.comfortable))
+        cameraReadings=[]
         recorder?.logMarker(uptime:end,kind:reason==nil ? "neural-end":"neural-interrupted",label:item.text)
         self.cueStart=nil;buffer=[];secondsRemaining=0;phase = .ended;error=reason;saveVisit()
     }
@@ -444,6 +491,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     private func endVisit(evaluate:Bool=true) {
         guard let visit else {return}
         _=recorder?.stop(sessionID:visit.session.id);self.visit?.endedUnix=Date().timeIntervalSince1970;self.visit?.complete=true
+        if capturingCamera {camera.stop();capturingCamera=false;faceTracked=false}
         saveVisit();phase = .idle
         loadResumableNonSpeech()
         guard evaluate else {return}
@@ -451,11 +499,11 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
             phase = .working;task=Task {
                 do {
                     let input=root.appending(path:"input-\(UUID()).json"),output=root.appending(path:"prediction-\(UUID()).json")
-                    struct Input:Encodable {let recording:SentenceRecording;let expectedText:String?}
-                    try JSONEncoder().encode(Input(recording:take.recording,expectedText:take.text.isEmpty ? nil:take.text)).write(to:input)
+                    struct Input:Encodable {let recording:SentenceRecording;let expectedText:String?;let camera:[CameraPoseReading]}
+                    try JSONEncoder().encode(Input(recording:take.recording,expectedText:take.text.isEmpty ? nil:take.text,camera:take.camera)).write(to:input)
                     try await execute(["infer","--model",path,"--input",input.path,"--output",output.path])
                     let decoder=JSONDecoder();decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    prediction=try decoder.decode(NeuralPrediction.self,from:Data(contentsOf:output));status="Motion-only decoding complete. Scores are uncalibrated hypotheses."
+                    prediction=try decoder.decode(NeuralPrediction.self,from:Data(contentsOf:output));status="Decoding complete. Scores are uncalibrated hypotheses."
                 } catch {self.error=error.localizedDescription}
                 phase = .idle
             }
@@ -489,6 +537,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         task?.cancel();if let process,process.isRunning {process.terminate()}
         if phase == .recording {finishTake(reason:"Stopped during capture")}
         if isAcquiring {endVisit(evaluate:false)}
+        camera.stop();capturingCamera=false;faceTracked=false
         phase = .idle
     }
     enum Failure:LocalizedError {

@@ -47,7 +47,8 @@ def prediction(model, checkpoint, language, row):
                 invariant_fallback=fallback,source=row["quality"]["source"],
                 mean_blank_probability=float(probabilities[:,0].mean()),mean_posterior_entropy=float(-(probabilities*lp).sum(1).mean()),
                 rejection_reason=reason,
-                provenance="motion-only neural CTC; word/phone scores and temporal correspondences are model estimates")
+                modalities=checkpoint["normalisation"].get("modalities","imu"),
+                provenance=f"{checkpoint['normalisation'].get('modalities','imu')} neural CTC; word/phone scores and temporal correspondences are model estimates")
 
 
 def fold_split(examples, fold):
@@ -243,7 +244,20 @@ EXPERIMENTS={
     "contrast":dict(augmentation=True,motion_contrast=True),
     "local":dict(augmentation=True,encoder="local"),
     "no_attitude":dict(augmentation=True,drop_attitude=True),
+    # Input fusion: the same recordings (those with camera landmarks) under three input sets.
+    "imu":dict(augmentation=True,cohort="camera"),
+    "camera":dict(augmentation=True,cohort="camera",modalities="camera"),
+    "fused":dict(augmentation=True,cohort="camera",modalities="fused"),
 }
+FUSION_EXPERIMENTS=("imu","camera","fused")
+CAMERA_COVERAGE=.8
+
+
+def camera_cohort(examples):
+    """Recordings whose camera landmarks cover most of the clip, with their rest windows only when
+    those are covered too. Every fusion arm trains and scores on exactly this set."""
+    from .camera import coverage
+    return [r for r in examples if r.get("camera") and coverage(r["camera"])>=CAMERA_COVERAGE]
 
 
 def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented","activity")):
@@ -264,18 +278,23 @@ def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented"
         if source.exists():shutil.copy2(source,snapshot/name)
     code_hash=digest({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path(__file__).parent.glob("*.py")})
     folds=[f["fold"] for f in manifest["split"]["folds"] if f["training"] and f["validation"]]
-    comparisons=[];model_paths=[]
+    comparisons=[];model_paths=[];cohorts={}
     for experiment in experiments:
         if experiment not in EXPERIMENTS:
             raise ValueError("Unknown ablation")
         # A shared model fits both conditions at once; its scores are still reported per condition.
         conditions=(("shared","shared"),) if EXPERIMENTS[experiment].get("shared") else (("Normal speech","spoken"),("Silent mouthing","mouthed"))
+        rows=examples
+        if EXPERIMENTS[experiment].get("cohort")=="camera":
+            rows=camera_cohort(examples)
+            cohorts["camera"]=dict(rows=len(rows),utterances={c:sum(r["condition"]==c and r["activity"] for r in rows) for c in ("Normal speech","Silent mouthing")},
+                                   min_coverage=CAMERA_COVERAGE,interpretation="imu, camera and fused arms share these recordings, folds and settings; only the inputs differ")
         for condition,slug in conditions:
             config=dict(BASE_EXPERIMENT,**EXPERIMENTS[experiment],name=experiment,condition=condition,epochs=epochs,seed=42,code_hash=code_hash,
                         dataset_hash=manifest["examples_hash"],language_hash=digest(language),reserved_final_groups=manifest["reserved_final_groups"])
             reports=[];finals=[];selected=[]
             for fold in folds:
-                training,validation=fold_split(examples,fold)
+                training,validation=fold_split(rows,fold)
                 if not any((condition=="shared" or r["condition"]==condition) and r["activity"] for r in validation):continue
                 destination=output/"folds"/f"fold-{fold}"/(experiment+"-"+slug)
                 fitted=fit(training,validation,language,destination,dict(config,fold=fold))
@@ -285,7 +304,7 @@ def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented"
             if not reports:raise ValueError(f"No fold has {condition} development recordings")
             refit_epochs=max(5,int(np.median(selected)))
             destination=output/(experiment+"-"+slug)
-            fit(examples,[],language,destination,dict(config,epochs=refit_epochs,fold=None,cross_validated_epochs=selected))
+            fit(rows,[],language,destination,dict(config,epochs=refit_epochs,fold=None,cross_validated_epochs=selected))
             from .network import load_model
             tokens=[t for t in load_model(destination)[1]["tokens"] if t!="|"]
             def pool(group,name,interpretation):
@@ -308,7 +327,7 @@ def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented"
     from .articulatory import cohort_entropy,ALPHABETS
     lexical_ceiling={a:cohort_entropy(language,a) for a in ALPHABETS}
     report=dict(schema=2,version=VERSION,dataset=str(dataset),models=model_paths,
-                comparisons=comparisons,raw_sequence_baseline=baseline,jaw_cycle_gate=rhythm_report(examples,language),
+                comparisons=comparisons,raw_sequence_baseline=baseline,cohorts=cohorts,jaw_cycle_gate=rhythm_report(examples,language),
                 lexical_ceiling=lexical_ceiling,split=manifest["split"],promoted_former_tests=manifest["promoted_former_tests"],
                 admission=manifest.get("admission"),
                 final_test_consumed=False,teacher_stage=manifest.get("teacher_stage","not used in stage-one training"),code_hash=code_hash,
@@ -356,6 +375,9 @@ def infer(model_path, sample_path):
     recording=value.get("recording",value)
     raw,quality=resample(recording)
     row=dict(raw=raw.tolist(),quality=quality,condition=recording.get("condition"))
+    if value.get("camera"):
+        from .camera import grid
+        row["camera"]=grid(value["camera"],quality["start"],len(raw)).tolist()
     try:row["baseline_raw"]=resample(recording,baseline=True)[0].tolist()
     except ValueError:pass  # no usable pre-cue window: rest-baseline models fall back to clip statistics
     model,checkpoint,manifest,language=load_model(model_path)
@@ -374,8 +396,8 @@ def infer(model_path, sample_path):
 def evaluate_fresh(session_path):
     from .network import load_model
     visit=json.loads(Path(session_path).read_text())
-    if not visit["complete"] or visit["role"] not in ("sameFit","reseated") or visit.get("modalities") != ["AirPods motion"]:
-        raise ValueError("Need a closed, explicitly confirmed motion-only prospective test session")
+    if not visit["complete"] or visit["role"] not in ("sameFit","reseated") or (visit.get("modalities") or [None])[0] != "AirPods motion":
+        raise ValueError("Need a closed, explicitly confirmed prospective test session")
     reports=[]
     for condition,path in visit["modelPaths"].items():
         model,checkpoint,manifest,language=load_model(path)
@@ -398,7 +420,13 @@ def evaluate_fresh(session_path):
             if take:
                 try:
                     raw,q=resample(take["recording"])
-                    result=prediction(model,checkpoint,language,dict(raw=raw.tolist(),quality=q))
+                    row=dict(raw=raw.tolist(),quality=q)
+                    if take.get("camera"):
+                        from .camera import grid
+                        row["camera"]=grid(take["camera"],q["start"],len(raw)).tolist()
+                    if checkpoint["normalisation"].get("modalities","imu")=="camera" and not row.get("camera"):
+                        raise ValueError("Camera-only model needs camera landmarks for this take")
+                    result=prediction(model,checkpoint,language,row)
                 except ValueError as error:result["rejection_reason"]=str(error)
             targets,_=pronunciations(prompt["text"],language)
             refs=[[p for p in t if p!="|"] for t in targets]

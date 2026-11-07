@@ -11,6 +11,7 @@ import numpy as np
 import torch
 from torch import nn
 from .data import features, words, digest, atomic_json, FEATURE_NAMES, FEATURE_WIDTH, DIRECTIONAL, quaternion_multiply
+from . import camera as camera_input
 from .decoding import edit_alignment, without_separator, SEPARATOR
 
 # Results are deterministic for a given thread count; it's recorded with each model.
@@ -196,12 +197,15 @@ def next_phone_targets(log_probs, target):
     return soft[0],mass[0]
 
 
-def augment(raw, rng, minimum_frames=25):
-    """Train-only perturbations of actual observations; no anatomy or generated speech."""
+def augment(raw, rng, minimum_frames=25, extra=None):
+    """Train-only perturbations of actual observations; no anatomy or generated speech.
+    `extra` (camera channels on the same grid) gets the same time warp and is returned alongside."""
     raw=raw.copy()
     speed=rng.uniform(.85,1.15)
     grid=np.linspace(0,len(raw)-1,max(25,minimum_frames,round(len(raw)*speed)))
     raw=np.stack([np.interp(grid,np.arange(len(raw)),raw[:,k]) for k in range(raw.shape[1])],axis=1).astype(np.float32)
+    if extra is not None:
+        extra=np.stack([np.interp(grid,np.arange(len(extra)),extra[:,k]) for k in range(extra.shape[1])],axis=1).astype(np.float32)
     if raw.shape[1]>=13:
         raw[:,9:13]/=np.linalg.norm(raw[:,9:13],axis=1,keepdims=True).clip(1e-9)
     # Apply the same small sensor rotation to acceleration, rotation and gravity (and attitude).
@@ -214,7 +218,7 @@ def augment(raw, rng, minimum_frames=25):
         # A sensor-frame rotation R turns attitude q into q ⊗ r⁻¹, so jaw-angle axes rotate with the rest.
         inverse=np.array([math.cos(angle/2),*(-math.sin(angle/2)*axis)])
         raw[:,9:13]=quaternion_multiply(raw[:,9:13],inverse).astype(np.float32)
-    return raw
+    return raw if extra is None else (raw,extra)
 
 
 BASELINE_CLIP = 50.0
@@ -250,11 +254,45 @@ def baseline_stats(row, floor, columns=None):
     return median,scale,reference is None
 
 
-def standardise(raw, normalisation, source, trained_sources, rng=None,minimum_frames=25,baseline=None):
+def fit_length(values, frames):
+    """Stretch per-frame channels to `frames` rows (a derived row may borrow another clip's motion)."""
+    values=np.asarray(values,dtype=np.float32)
+    if len(values)==frames:return values
+    if len(values)<2:return np.zeros((frames,values.shape[1] if values.ndim==2 else camera_input.RAW_WIDTH),np.float32)
+    grid=np.linspace(0,len(values)-1,frames)
+    return np.stack([np.interp(grid,np.arange(len(values)),values[:,k]) for k in range(values.shape[1])],1).astype(np.float32)
+
+
+def camera_block(camera, frames, normalisation, rng=None):
+    """Standardised camera features; invalid frames read as 0 with their mask columns 0."""
+    values=camera_input.features(fit_length(camera if camera is not None else np.zeros((frames,camera_input.RAW_WIDTH)),frames))
+    valid=camera_input.valid_columns(values)
+    stats=normalisation["camera"]
+    z=(values-np.asarray(stats["mean"]))/np.asarray(stats["scale"])
+    z[~valid]=0
+    if rng is not None:
+        noisy=valid.copy();noisy[:,-2:]=False
+        z[noisy]+=rng.normal(0,.02,size=int(noisy.sum()))
+        # Modality dropout: a fused model must still work when the face is lost or the camera is off.
+        if normalisation.get("modalities")=="fused" and rng.random()<CAMERA_DROPOUT:z[:]=0
+    return z
+
+
+CAMERA_DROPOUT = .3
+
+
+def standardise(raw, normalisation, source, trained_sources, rng=None,minimum_frames=25,baseline=None,camera=None):
     """`baseline` (median, scale) puts features in units of this recording's own resting noise
-    before the global standardisation: insertion depth and seal change gain and offset per fit."""
+    before the global standardisation: insertion depth and seal change gain and offset per fit.
+    `normalisation["modalities"]` picks the inputs: "imu" (default), "camera", or "fused" (both)."""
     columns=normalisation.get("columns")
-    value=columns_of(features(augment(raw,rng,minimum_frames) if rng is not None else raw),columns)
+    modalities=normalisation.get("modalities","imu")
+    if modalities!="imu":
+        camera=fit_length(camera if camera is not None else np.zeros((len(raw),camera_input.RAW_WIDTH)),len(raw))
+        if rng is not None:raw,camera=augment(raw,rng,minimum_frames,extra=camera)
+    elif rng is not None:
+        raw=augment(raw,rng,minimum_frames)
+    value=columns_of(features(raw),columns)
     if baseline is not None:
         # Clipped: a channel nearly flat at rest would otherwise swamp the rest at ±thousands.
         value=np.clip((value-baseline[0])/baseline[1],-BASELINE_CLIP,BASELINE_CLIP)
@@ -268,6 +306,9 @@ def standardise(raw, normalisation, source, trained_sources, rng=None,minimum_fr
         for _ in range(2):
             start=int(rng.integers(0,len(z)));z[start:start+int(rng.integers(1,6))]=0
         channels=rng.choice(z.shape[1],size=int(rng.integers(0,5)),replace=False);z[:,channels]=0
+    if modalities!="imu":
+        zc=camera_block(camera,len(z),normalisation,rng)
+        z=zc if modalities=="camera" else np.concatenate([z,zc],1)
     return torch.tensor(z,dtype=torch.float32),fallback
 
 
@@ -277,7 +318,8 @@ def batch(rows, norm, sources, rng=None):
         possible=[len(p)+sum(a==b for a,b in zip(p,p[1:])) for p in row.get("label_paths",[[]])]
         minimum=max((n for n in possible if n<=len(row["raw"])),default=25)
         baseline=baseline_stats(row,norm["baseline"]["floor"],norm.get("columns"))[:2] if norm.get("baseline") else None
-        frames.append(standardise(np.asarray(row["raw"]),norm,row["quality"]["source"],sources,rng,minimum,baseline)[0])
+        camera=np.asarray(row["camera"]) if norm.get("modalities","imu")!="imu" and row.get("camera") else None
+        frames.append(standardise(np.asarray(row["raw"]),norm,row["quality"]["source"],sources,rng,minimum,baseline,camera)[0])
     lengths=torch.tensor([len(x) for x in frames],dtype=torch.long)
     return nn.utils.rnn.pad_sequence(frames,batch_first=True),lengths
 
@@ -294,6 +336,24 @@ def greedy_phones(log_probs):
 def evidence(log_probs):
     """Share of frames the model spends off blank: low for rest and head motion it rejects."""
     return float(1-np.exp(np.asarray(log_probs)[:,0]).mean())
+
+
+def input_width(imu_width, modalities):
+    return (imu_width if modalities!="camera" else 0)+(camera_input.FEATURE_WIDTH if modalities!="imu" else 0)
+
+
+def camera_normalisation(rows):
+    """Training-only mean/scale per camera feature, over the frames where that feature is valid."""
+    blocks=[camera_input.features(np.asarray(r["camera"])) for r in rows if r.get("camera")]
+    if not blocks:raise ValueError("No training recordings have camera landmarks; record paired sentences with the camera on")
+    values=np.concatenate(blocks);valid=camera_input.valid_columns(values)
+    if not valid[:,0].any():raise ValueError("No valid camera mouth frames in training")
+    count=valid.sum(0).clip(1)
+    mean=np.where(valid,values,0).sum(0)/count
+    scale=np.sqrt(np.where(valid,(values-mean)**2,0).sum(0)/count).clip(1e-3)
+    mean[-2:]=0;scale[-2:]=1
+    return dict(mean=mean.tolist(),scale=scale.tolist(),names=camera_input.FEATURE_NAMES,
+                frames=int(valid[:,0].sum()),face_frames=int(valid[:,camera_input.FACE.start].sum()))
 
 
 def fit(training, validation, language, output, config):
@@ -328,6 +388,9 @@ def fit(training, validation, language, output, config):
         all_frames=np.concatenate([np.clip((columns_of(features(np.asarray(r["raw"])),columns)-m)/sc,-BASELINE_CLIP,BASELINE_CLIP) for r in training for m,sc,_ in [baseline_stats(r,floor,columns)]])
     norm=dict(mean=all_frames.mean(0).tolist(),scale=np.maximum(all_frames.std(0),1e-4).tolist(),fitted_recordings=[r["id"] for r in training],
               **({"baseline":baseline} if baseline else {}),**({"columns":columns} if columns else {}))
+    modalities=config.get("modalities","imu")
+    if modalities!="imu":
+        norm["modalities"]=modalities;norm["camera"]=camera_normalisation(training)
     sources=sorted({r["quality"]["source"] for r in training})
     teacher=config.get("teacher_aux",False)
     coarse_alphabet,coarse_map,coarse_count=coarse_units(tokens,language) if config.get("coarse_aux") else (None,None,0)
@@ -335,7 +398,7 @@ def fit(training, validation, language, output, config):
         for row in training+validation:
             row["coarse_paths"]=[list(q) for q in sorted({tuple(coarse_map[t] for t in p) for p in row["label_paths"]})]
     model=MotionCTC(len(tokens),teacher=teacher,coarse=coarse_count,conditions=len(CONDITIONS) if shared else 0,encoder=config.get("encoder","gru"),
-                    inputs=len(columns) if columns else FEATURE_WIDTH)
+                    inputs=input_width(len(columns) if columns else FEATURE_WIDTH,modalities))
     teacher_norm=None
     if teacher:
         values=np.concatenate([np.asarray(r["camera_teacher"])[np.asarray(r["camera_weight"])>0] for r in training if "camera_weight" in r])
@@ -510,7 +573,8 @@ def fit(training, validation, language, output, config):
                   torch_version=str(torch.__version__),threads=THREADS,numpy_version=np.__version__,parameters=sum(p.numel() for p in model.parameters()),
                   fit_seconds=time.time()-started,created_unix=time.time(),feature_names=[FEATURE_NAMES[i] for i in columns] if columns else FEATURE_NAMES,
                   coverage=dict(coverage),diphone_coverage=dict(diphones),normalisation=norm,teacher_normalisation=teacher_norm,
-                  reserved_final_groups=config.get("reserved_final_groups",[]))
+                  reserved_final_groups=config.get("reserved_final_groups",[]),
+                  modalities=modalities,**({"camera_feature_names":camera_input.FEATURE_NAMES} if modalities!="imu" else {}))
     import hashlib
     manifest["weights_sha256"]=hashlib.sha256((output/"weights.pt").read_bytes()).hexdigest()
     if validation:
@@ -534,6 +598,9 @@ def load_model(path, which="selected"):
     names=manifest.get("feature_names") or []
     if any(n not in FEATURE_NAMES for n in names) or not names or checkpoint["config"]!=manifest["config"] or checkpoint["normalisation"]!=manifest["normalisation"]:
         raise ValueError("Incompatible feature schema or altered frozen configuration/normalisation")
+    modalities=checkpoint["normalisation"].get("modalities","imu")
+    if modalities!="imu" and manifest.get("camera_feature_names")!=camera_input.FEATURE_NAMES:
+        raise ValueError("Camera feature schema changed since this model was frozen")
     if names!=FEATURE_NAMES:
         # Older models used a subset of today's features; select exactly those, in their order.
         checkpoint["normalisation"]=dict(checkpoint["normalisation"],columns=[FEATURE_NAMES.index(n) for n in names])
@@ -547,7 +614,7 @@ def load_model(path, which="selected"):
             if dataset_manifest["examples_hash"]!=checkpoint["config"]["dataset_hash"]:
                 raise ValueError("Frozen dataset identity mismatch")
             manifest={**manifest,"reserved_final_groups":dataset_manifest["reserved_final_groups"]}
-    model=MotionCTC(len(checkpoint["tokens"]),teacher=checkpoint["config"].get("teacher_aux",False),coarse=checkpoint.get("coarse_classes") or 0,inputs=len(names),encoder=checkpoint["config"].get("encoder","gru"),
+    model=MotionCTC(len(checkpoint["tokens"]),teacher=checkpoint["config"].get("teacher_aux",False),coarse=checkpoint.get("coarse_classes") or 0,inputs=input_width(len(names),modalities),encoder=checkpoint["config"].get("encoder","gru"),
                     conditions=len(CONDITIONS) if checkpoint["config"].get("condition")=="shared" else 0)
     model.load_state_dict(checkpoint["state_dict"]);model.eval()
     torch.set_num_threads(THREADS)
@@ -559,7 +626,8 @@ def emission(model,checkpoint,row):
     """Phone and next-phone log-probabilities with any legacy "|" column folded away."""
     norm=checkpoint["normalisation"]
     baseline=baseline_stats(row,norm["baseline"]["floor"],norm.get("columns"))[:2] if norm.get("baseline") else None
-    x,fallback=standardise(np.asarray(row["raw"]),norm,row["quality"]["source"],checkpoint["trained_sources"],baseline=baseline)
+    camera=np.asarray(row["camera"]) if norm.get("modalities","imu")!="imu" and row.get("camera") else None
+    x,fallback=standardise(np.asarray(row["raw"]),norm,row["quality"]["source"],checkpoint["trained_sources"],baseline=baseline,camera=camera)
     shared=checkpoint.get("config",{}).get("condition")=="shared"
     phones,following,activity,_=model(x[None],torch.tensor([len(x)]),conditions=conditions_of([row]) if shared else None)
     lp,tokens=without_separator(phones[0].log_softmax(-1).numpy(),checkpoint["tokens"])

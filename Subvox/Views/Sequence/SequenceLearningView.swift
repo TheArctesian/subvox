@@ -66,7 +66,7 @@ struct SequenceLearningView:View {
                         collection
                         teachers
                         corrections
-                        Text("This trains a small convolutional/GRU network with CTC. Sentence labels supply phone sequences, with editable pronunciation alternatives; phone boundaries are not spread over word durations. Diphone context uses a next-phone auxiliary head, not a giant pair vocabulary. Spoken and mouthed models are separate. Camera/audio are absent at inference.")
+                        Text("This trains a small convolutional/GRU network with CTC. Sentence labels supply phone sequences, with editable pronunciation alternatives; phone boundaries are not spread over word durations. Diphone context uses a next-phone auxiliary head, not a giant pair vocabulary. Spoken and mouthed models are separate. Only the fusion models read camera points at inference; all others use AirPods motion alone.")
                             .font(.caption).foregroundStyle(.secondary)
                         Text("Training snapshots exclude the reserved 25% sentence final test and quarantine overlapping session/sentence cells. Prior diagnostic tests explicitly become training data for this new model when included. Development scores are used for checkpoint selection and cannot establish fresh-session accuracy. All prompts and teacher labels remain fallible.")
                             .font(.caption).foregroundStyle(.secondary)
@@ -83,8 +83,11 @@ struct SequenceLearningView:View {
                 Button("Prepare dataset snapshot",action:workflow.prepareDataset)
                 Stepper("\(workflow.epochs) epochs",value:$workflow.epochs,in:10...200,step:10).frame(width:170)
                 Button("Train neural comparisons",action:workflow.train).buttonStyle(.borderedProminent).disabled(!workflow.datasetCompatible)
+                Button("Train camera + motion fusion",action:workflow.trainFusion).disabled(!workflow.datasetCompatible)
             }.disabled(workflow.isBusy || model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy)
             Text("Prepare a snapshot of your recordings, then train the comparisons. All processing runs on this Mac. Saved models remain available for fixed-model tests.")
+                .font(.callout).foregroundStyle(.secondary)
+            Text("Fusion trains three models on the paired recordings that have camera lip and jaw points: AirPods only, camera only, and both together. Comparing them shows what each sensor adds. Prepare a new snapshot first so it includes the camera points.")
                 .font(.callout).foregroundStyle(.secondary)
             DisclosureGroup("Model methods and local runtime") {
                 Text("Compares plain CTC, diphone context, train-only augmentation, and activity supervision. PyTorch runs locally on CPU; the first run prepares a pinned runtime. Original recordings and frozen baselines stay intact.")
@@ -107,10 +110,12 @@ struct SequenceLearningView:View {
                     Text("Plain CTC").tag("plain");Text("Diphone context").tag("diphone")
                     Text("Augmented").tag("augmented");Text("Activity supervised").tag("activity")
                     Text("Camera teacher").tag("teacher")
+                    Text("Fusion · AirPods only").tag("imu");Text("Fusion · camera only").tag("camera");Text("Fusion · camera + AirPods").tag("fused")
                 }.frame(maxWidth:320)
                 Picker("Condition",selection:$workflow.inferenceCondition) {ForEach(SpeechCondition.allCasesForSequence) {Text($0.rawValue).tag($0)}}
             }
             TextField("Optional expected sentence, for focus and evaluation after inference",text:$workflow.expectedText)
+            if workflow.needsCamera {Label("This model reads camera lip and jaw points. Face the camera while recording; only numeric points are saved.",systemImage:"camera").font(.callout)}
             Button("Record a sentence for the frozen model") {
                 workflow.mode = .inference;startVisit()
             }.buttonStyle(.borderedProminent).disabled(!canCollect || !workflow.hasModel)
@@ -209,7 +214,10 @@ struct SequenceLearningView:View {
     private var canCollect:Bool {canPrepareCollection && model.motion.status == .streaming}
     private func startVisit() {
         model.representation.camera.stop();model.signalCheck.camera.stop();model.sentenceTraining.camera.stop()
-        workflow.startVisit(data:model.sentenceTraining.data,audio:model.audio,recorder:model.recorder)
+        Task {
+            if workflow.needsCamera {await workflow.camera.start()}
+            workflow.startVisit(data:model.sentenceTraining.data,audio:model.audio,recorder:model.recorder)
+        }
     }
     private var cueColor:Color {
         if workflow.phase == .relax {return .orange}
@@ -255,6 +263,10 @@ struct SequenceLearningView:View {
                         Label("No speaking or mouthing words",systemImage:"speaker.slash").font(.callout).foregroundStyle(.secondary)
                     } else {
                         Text(workflow.condition == .normal ? "Speak aloud":"Mouth silently").font(.title2.weight(.semibold)).foregroundStyle(cueColor)
+                        if workflow.camera.isRunning {
+                            Label(workflow.faceTracked ? "Camera: lips and jaw tracked":"Camera: face not found",systemImage:workflow.faceTracked ? "camera":"camera.badge.ellipsis")
+                                .font(.caption).foregroundStyle(workflow.faceTracked ? Color.secondary:Color.orange)
+                        }
                         WordFocusPrompt(text:workflow.currentText.isEmpty ? "Mouth any sentence":workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:.primary)
                     }
                     Text(captureHelp).font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)

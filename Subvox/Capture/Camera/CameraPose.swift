@@ -15,6 +15,8 @@ struct CameraPoseReading: Codable, Sendable {
     var pose: CameraHeadPose?
     var usedReceiptTime: Bool?
     var mouth: CameraMouthObservation?
+    /// Jaw-line and nose-crest landmarks (full-image normalized, lower-left origin). Absent in older readings.
+    var face: CameraFaceLandmarks?
     var imageWidth: Int?
     var imageHeight: Int?
     var receivedAt: Double?
@@ -65,3 +67,11 @@ struct CameraPoseTarget: Codable, Identifiable, Sendable {
 }
 
 extension CameraPoseTarget: Equatable {}
+
+/// Extra Vision face points for camera+motion fusion: the face contour follows the jaw line,
+/// and the nose crest is a rigid reference the jaw moves against.
+struct CameraFaceLandmarks: Codable, Sendable, Equatable {
+    var faceContour: [CameraLandmarkPoint]
+    var noseCrest: [CameraLandmarkPoint]
+    var valid: Bool { faceContour.count >= 3 && !noseCrest.isEmpty && (faceContour + noseCrest).allSatisfy(\.valid) }
+}

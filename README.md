@@ -107,12 +107,34 @@ Use the main **Train** screen to collect varied paired sentences. Prepare a new 
 
 The optional second-stage controls route to explicit voiced/camera **training** or **development** paired collection. These record microphone audio and numeric camera points, never video. Local Whisper proposes transcripts/quality; review and correction stay in pair review. The separate optional local acoustic aligner described below retains estimated timing, confidence and provenance; Whisper word durations are never converted into measured phone boundaries. Mouthed teacher intervals use a separate camera warp and can differ in pacing. The neural camera auxiliary uses eligible training-frame landmarks only; neither audio nor camera is required at inference. Acoustic phone annotations are preserved as fallible provenance, not yet an additional neural timing loss. Self-supervised unlabelled-motion pretraining is deferred.
 
+### Camera + AirPods input fusion
+
+The mouth signal check found that AirPods motion separates jaw movement from rest, but not "ee" from "oo". That points to jaw height without lip shape. Fusion adds the camera as an input at inference, not only as a training teacher:
+
+| Arm | Inputs |
+| --- | --- |
+| `imu` | AirPods motion only (the augmented CTC model) |
+| `camera` | Camera landmarks only |
+| `fused` | Both, concatenated per 50 Hz frame |
+
+All three train on the same recordings: those whose camera points cover at least 80% of the clip. They share folds, settings and seed, so a difference in error comes from the inputs alone. Choose **Train → Advanced → Sentence models → Train camera + motion fusion** after preparing a new snapshot, or run `subvox-ml train --experiments imu,camera,fused`.
+
+Camera inputs are numeric Vision points only, never images:
+- mouth width, opening, inner area and aspect
+- mouth centre relative to the eyes
+- outer and inner lip contours, resampled by arc length to 12 and 8 points
+- from new recordings, the face contour along the jaw line and the nose crest
+
+All points sit in an eye frame (origin between the eyes, inter-eye units), so head position, roll and distance in the image do not read as mouth movement. Yaw and pitch remain uncorrected. Frames are interpolated onto the motion grid only within 120 ms of a camera reading, and gaps are marked with mask channels. During training the fused model drops the whole camera input on 30% of clips, so it still works when the face is lost.
+
+A frozen fused or camera model records camera points during **Try** and fresh tests, and refuses to run without the camera. Training collection stays motion-only. Paired sentence collection already saves camera points, so existing pairs feed the fusion arms. If lip points prove too coarse, the next step is local mouth-crop images, which would change the no-images policy.
+
 ### Reproduce locally
 
 Artifacts live under `~/Library/Application Support/Subvox/SequenceLearning/`: dataset snapshots, model weights, pronunciation snapshots, feature schema, training/development identities, source hashes, coverage, training curves, seeds, dependency versions, source-code snapshots and reports. `initial-dataset`, `initial-neural-run`, `initial-teacher-dataset` and `initial-teacher-run` contain the measured runs above. The app exports a fresh `language.json` from the production Swift graph when preparing a dataset; an earlier snapshot can be reused for a repeat with identical pronunciation proposals.
 
 ```sh
-uv run --project ml python -m unittest discover -s ml -p test_sequence.py
+uv run --project ml python -m unittest discover -s ml -p "test_*.py"
 uv run --project ml subvox-ml prepare --root "$HOME/Library/Application Support/Subvox" \
   --language /path/to/language.json --output /path/to/new-dataset
 uv run --project ml subvox-ml train --dataset /path/to/new-dataset \

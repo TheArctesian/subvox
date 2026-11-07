@@ -144,6 +144,8 @@ private final class CameraPoseProcessor: NSObject, AVCaptureVideoDataOutputSampl
                         guard !values.isEmpty else { return nil }
                         return .init(x: values.map(\.x).reduce(0,+)/Double(values.count), y: values.map(\.y).reduce(0,+)/Double(values.count))
                     }
+                    let contour = CameraFaceLandmarks(faceContour: points(landmarks.faceContour), noseCrest: points(landmarks.noseCrest))
+                    reading.face = contour.valid ? contour : nil
                     if let left = centre(points(landmarks.leftEye)), let right = centre(points(landmarks.rightEye)) {
                         reading.mouth = CameraMouthObservation.measure(outer: points(landmarks.outerLips), inner: points(landmarks.innerLips),
                             leftEye: left, rightEye: right, imageWidth: width, imageHeight: height,

@@ -1,3 +1,4 @@
+import CryptoKit
 import XCTest
 @testable import Subvox
 
@@ -218,5 +219,52 @@ final class NeuralSequenceTests:XCTestCase {
         XCTAssertFalse(recorder.isRecording);XCTAssertNil(workflow.visit);XCTAssertNotNil(workflow.error)
         workflow.stop();now += 1
         XCTAssertFalse(FileManager.default.fileExists(atPath:root.path))
+    }
+    @MainActor func testCameraModelsRequireTheCameraAndMotionModelsDoNot() throws {
+        let root=FileManager.default.temporaryDirectory.appending(path:"neural-fusion-\(UUID())")
+        defer {try? FileManager.default.removeItem(at:root)}
+        let run=root.appending(path:"runs/fusion")
+        let weights=Data("frozen".utf8),fingerprint=SHA256.hash(data:weights).map {String(format:"%02x",$0)}.joined()
+        for (experiment,modalities) in [("fused","fused"),("imu","imu")] {
+            for slug in ["spoken","mouthed"] {
+                let model=run.appending(path:"\(experiment)-\(slug)")
+                try FileManager.default.createDirectory(at:model,withIntermediateDirectories:true)
+                try weights.write(to:model.appending(path:"weights.pt"))
+                try JSONSerialization.data(withJSONObject:["modalities":modalities,"weights_sha256":fingerprint]).write(to:model.appending(path:"model.json"))
+            }
+        }
+        try JSONEncoder().encode(["dataset":"","run":run.path]).write(to:root.appending(path:"latest-ui.json"))
+        var now=100.0
+        let workflow=SequenceLearningWorkflow(root:root,clock:{now}),recorder=SessionRecorder(root:root.appending(path:"raw"))
+        defer {recorder.stop()}
+        workflow.mode = .inference;workflow.inferenceCondition = .silent;workflow.expectedText="pack my blue bag"
+        workflow.experiment="fused"
+        XCTAssertEqual(workflow.modalities(condition:.silent),"fused")
+        XCTAssertTrue(workflow.needsCamera)
+        var sample=MotionSample(t:now);sample.sensorLocation=1;workflow.ingest(sample)
+        workflow.startVisit(data:SentenceTrainingData(),audio:AudioService(),recorder:recorder)
+        XCTAssertNil(workflow.visit,"A camera model never silently runs on motion alone")
+        XCTAssertFalse(recorder.isRecording)
+        XCTAssertNotNil(workflow.error)
+
+        workflow.experiment="imu"
+        XCTAssertFalse(workflow.needsCamera)
+        now+=0.05;sample.t=now;workflow.ingest(sample)
+        workflow.startVisit(data:SentenceTrainingData(),audio:AudioService(),recorder:recorder)
+        XCTAssertEqual(workflow.visit?.modalities,["AirPods motion"])
+        workflow.mode = .training
+        XCTAssertFalse(workflow.needsCamera,"Training collection stays motion-only")
+        workflow.stop()
+    }
+    func testCameraReadingsWithFacePointsRoundTripAndOlderReadingsStillDecode() throws {
+        let point=CameraLandmarkPoint(x:0.4,y:0.3)
+        var reading=CameraPoseReading(t:1,cameraID:"front")
+        reading.face=CameraFaceLandmarks(faceContour:[point,point,point],noseCrest:[point])
+        let decoded=try JSONDecoder().decode(CameraPoseReading.self,from:JSONEncoder().encode(reading))
+        XCTAssertEqual(decoded.face,reading.face)
+        let older=try JSONDecoder().decode(CameraPoseReading.self,from:Data("{\"t\":2,\"cameraID\":\"front\"}".utf8))
+        XCTAssertNil(older.face)
+        XCTAssertFalse(String(decoding:try JSONEncoder().encode(older),as:UTF8.self).contains("face"),"Older readings re-encode unchanged")
+        XCTAssertFalse(CameraFaceLandmarks(faceContour:[point],noseCrest:[point]).valid)
     }
 }
