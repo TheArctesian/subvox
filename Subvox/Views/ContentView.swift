@@ -11,20 +11,14 @@ struct ContentView: View {
             .navigationSplitViewColumnWidth(min: 160, ideal: 180)
         } detail: {
             switch model.screen {
-            case .sensors: SensorsView()
-            case .sentences: SentenceTrainingView()
-            case .collect: SignalCheckView()
-            case .train: TrainView()
-            case .read: ReadView()
+            case .train: SentenceTrainingView()
             case .decode: DecodeView()
+            case .devices: DevicesView()
             }
         }
         .toolbar {
             ToolbarItem(placement: .status) {
                 MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate)
-            }
-            ToolbarItem {
-                RecordToolbarButton()
             }
         }
         .navigationTitle(model.screen.rawValue)
@@ -32,23 +26,5 @@ struct ContentView: View {
 
     private var screenSelection: Binding<AppModel.Screen?> {
         Binding(get: { model.screen }, set: { if let screen = $0 { model.screen = screen } })
-    }
-}
-
-private struct RecordToolbarButton: View {
-    @Environment(AppModel.self) private var model
-
-    var body: some View {
-        let recorder = model.recorder
-        Button {
-            if recorder.isRecording { recorder.stop() }
-            else { recorder.start(audio: model.audio) }
-        } label: {
-            Label(recorder.isRecording ? "Stop Recording" : "Record Session",
-                  systemImage: recorder.isRecording ? "stop.circle.fill" : "record.circle")
-        }
-        .tint(recorder.isRecording ? .red : nil)
-        .disabled(model.reading.isReading || model.signalCheck.isBusy || model.sentenceTraining.isBusy)
-        .help("Record synchronized motion CSV + audio to ~/Documents/Subvox/Sessions")
     }
 }

@@ -6,12 +6,6 @@ struct Template: Codable, Identifiable, Hashable, Sendable {
     var samples: [MotionSample]
     var createdAt = Date()
     var sessionID: UUID?
-    var condition: SpeechCondition?
-    var measuredSampleRate: Double?
-    var review: ReviewDecision?
-    var purpose: RecordingPurpose?
-    var cueStartUptime: TimeInterval?
-    var cueEndUptime: TimeInterval?
     var sourceSentenceID: String?
     var sourcePairID: UUID?
 

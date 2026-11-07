@@ -44,7 +44,7 @@ struct JawSequenceDecoder: Sendable {
         var skipped = 0
         for take in takes {
             if Task.isCancelled { return nil }
-            guard let phones = lexicon.phones(TrainingExperiment.key(take.label)), !phones.isEmpty,
+            guard let phones = lexicon.phones(Lexicon.wordKey(take.label)), !phones.isEmpty,
                   phones.count <= Self.maximumStates,
                   let frames = Self.features(take.samples, featureSet: featureSet) else {
                 skipped += 1; continue
@@ -115,7 +115,7 @@ struct JawSequenceDecoder: Sendable {
         var seenWords = Set<String>()
         var collisions: [String: Int] = [:]
         for entry in vocabulary.sorted(by: { $0.word < $1.word }) {
-            let word = TrainingExperiment.key(entry.word)
+            let word = Lexicon.wordKey(entry.word)
             guard !seenWords.contains(word), let phones = lexicon.phones(word), !phones.isEmpty,
                   phones.count <= Self.maximumStates else { continue }
             let mapped = phones.compactMap { JawUnits.unit(for: $0) }.compactMap { indices[$0] }

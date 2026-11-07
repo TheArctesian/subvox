@@ -92,9 +92,9 @@ struct SentenceVisit: Codable, Identifiable, Sendable {
     var recordingSessionID: UUID?
 }
 
-/// Separate sentence experiment. The original word experiment is never reassigned.
+/// The active personal training experiment, grouped and split by sentence.
 struct SentenceTrainingData: Codable, Sendable {
-    var schemaVersion = 1
+    var schemaVersion = 2
     var id = UUID()
     var createdAt = Date()
     var prompts: [SentencePrompt] = []
@@ -139,7 +139,6 @@ struct SentenceTrainingData: Codable, Sendable {
                 let samples = silent.cueSamples.filter { $0.t >= word.silentStart && $0.t <= word.silentEnd }
                 guard samples.count >= 3, !TakeQuality.inspect(samples).invalid else { return nil }
                 return Template(id: Self.wordID(pair: pair.id, index: index), label: word.word, samples: samples, createdAt: pair.createdAt, sessionID: pair.visitID,
-                                condition: .silent, review: .accepted, purpose: .training,
                                 sourceSentenceID: pair.promptIDs.joined(separator: ","), sourcePairID: pair.id)
             }
         }
@@ -195,7 +194,11 @@ struct SentenceTrainingData: Codable, Sendable {
 }
 
 enum SentenceStore {
-    static var url: URL { TemplateStore.url.deletingLastPathComponent().appending(path: "sentence-training.json") }
+    static var directory: URL {
+        let directory = URL.applicationSupportDirectory.appending(path: "Subvox", directoryHint: .isDirectory)
+        return directory
+    }
+    static var url: URL { directory.appending(path: "sentence-training.json") }
     static func load(from location: URL? = nil) throws -> SentenceTrainingData {
         let location = location ?? url
         guard FileManager.default.fileExists(atPath: location.path) else { return SentenceTrainingData() }
@@ -203,6 +206,8 @@ enum SentenceStore {
     }
     static func save(_ data: SentenceTrainingData, to location: URL? = nil) throws {
         let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
-        try encoder.encode(data).write(to: location ?? url, options: .atomic)
+        let target = location ?? url
+        try FileManager.default.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try encoder.encode(data).write(to: target, options: .atomic)
     }
 }

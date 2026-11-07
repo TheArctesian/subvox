@@ -3,22 +3,21 @@ import Foundation
 /// Open-vocabulary decoder: recognises words it was never trained on by building them from sounds.
 ///
 /// Every training take is a mouthed word; its phones are spread over the take's active motion
-/// (as in `PhoneEvaluation`) and the frames under each phone become an example of that sound.
+/// and the frames under each phone become an example of that sound.
 /// Each phoneme is modelled by its medoid example, the one closest by DTW to all the others.
 /// Every vocabulary word then gets a synthetic template: its pronunciation's phone models joined
 /// end to end. A mouthed segment is matched by DTW against the templates of similar length.
-/// The optional coarse control pools examples by `JawUnits` while keeping this guessed timing.
 ///
 /// Jaw motion can't separate many sounds (p/b/m look alike), so many words share a template.
 /// A small bias toward frequent words breaks those ties; sentence context is the real fix.
 struct PhoneticDecoder: Sendable {
     let featureSet: FeatureSet
-    /// Phonemes without a model (a shared jaw-unit model in coarse mode).
+    /// Phonemes without a fitted template.
     /// Words containing them can't be built.
     let missingPhones: [String]
     let wordCount: Int
     /// Number of buildable vocabulary words in unit-sequence buckets containing >1 word.
-    /// Uses exact phone sequences in legacy mode and jaw6-v1 sequences in coarse mode.
+    /// Uses exact phone sequences.
     /// Counts words, not buckets or pairs; repeated units remain separate positions.
     let collisionCount: Int
 
@@ -28,15 +27,16 @@ struct PhoneticDecoder: Sendable {
     private let vocabulary: [(word: String, frames: [Double], rarity: Double)]
 
     init?(takes: [Template], lexicon: Lexicon, vocabulary words: [(word: String, count: Int)],
-          featureSet: FeatureSet, coarseUnits: Bool = false) {
+          featureSet: FeatureSet) {
         guard !featureSet.isEmpty else { return nil }
         func unit(_ phone: String) -> String? {
-            coarseUnits ? JawUnits.unit(for: phone) : phone
+            Phoneme.bySymbol[phone] != nil ? phone : nil
         }
 
         var examples: [String: [[[Double]]]] = [:]
         var allFrames: [[[Double]]] = []
         for take in takes {
+            if Task.isCancelled { return nil }
             guard let phones = lexicon.phones(take.label) else { continue }
             let active = MotionFeatures.trim(take.samples)
             guard let first = active.first?.t, let last = active.last?.t, last > first else { continue }
@@ -63,6 +63,7 @@ struct PhoneticDecoder: Sendable {
         var vocabulary: [(String, [Double], Double)] = []
         var sequenceCounts: [[String]: Int] = [:]
         for entry in words {
+            if Task.isCancelled { return nil }
             guard let phones = lexicon.phones(entry.word) else { continue }
             let units = phones.compactMap(unit)
             guard units.count == phones.count else { continue }

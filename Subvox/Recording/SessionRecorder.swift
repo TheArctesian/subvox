@@ -19,34 +19,18 @@ struct RecordingSession: Codable, Equatable, Sendable {
 ///   meta.json   — condition, prompt, clock offsets
 @MainActor @Observable
 final class SessionRecorder {
-    enum Condition: String, CaseIterable, Identifiable, Codable {
-        case mixed = "Mixed diagnostic trials"
-        case normal = "Normal speech"
-        case whisper = "Whisper"
-        case silent = "Silent mouthing"
-        var id: String { rawValue }
-        var slug: String {
-            switch self {
-            case .mixed: "mixed"
-            case .normal: "normal"
-            case .whisper: "whisper"
-            case .silent: "silent"
-            }
-        }
+    enum Condition: String, Codable {
+        case paired = "Paired sentence training"
+        var slug: String { "paired" }
     }
 
-    var condition: Condition = .silent
+    var condition: Condition = .paired
     var prompt = ""
     private(set) var isRecording = false
     private(set) var startedAt: Date?
     private(set) var motionCount = 0
     private(set) var eventCount = 0
     private(set) var lastSession: RecordingSession?
-    var lastSessionURL: URL? { lastSession?.directory }
-    /// Clock of the last finished session: its start (seconds since boot) and where its audio
-    /// begins relative to that start, for anyone post-processing the files.
-    var lastStartUptime: TimeInterval { lastSession?.startUptime ?? 0 }
-    var lastAudioOffset: Double? { lastSession?.audioOffset }
     private(set) var activeSessionID: UUID?
     var currentSession: RecordingSession? {
         guard isRecording, let id = activeSessionID, let directory else { return nil }
@@ -60,7 +44,7 @@ final class SessionRecorder {
     }
 
     @ObservationIgnored private let recordingRoot: URL
-    @ObservationIgnored private var recordedCondition: Condition = .silent
+    @ObservationIgnored private var recordedCondition: Condition = .paired
     @ObservationIgnored private var recordedPrompt = ""
     @ObservationIgnored private var directory: URL?
     @ObservationIgnored private var startUptime: TimeInterval = 0

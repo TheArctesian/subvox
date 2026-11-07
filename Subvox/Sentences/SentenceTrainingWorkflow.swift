@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-/// One acquisition/review/coverage loop. Sentence data never enters the old word split.
+/// Paired acquisition, annotation review, coverage repairs and word validation.
 @MainActor @Observable
 final class SentenceTrainingWorkflow {
     enum Phase: Equatable { case setup, preparing, relax, speak, mouth, recovery, processing, finished }
@@ -20,7 +20,7 @@ final class SentenceTrainingWorkflow {
     private(set) var secondsRemaining = 0.0
     private(set) var processingText = ""
     var presentation: Presentation = .passage
-    var pace: SignalCheckPace = .comfortable
+    var pace: TrainingPace = .comfortable
     var sentenceCount = 6
     var notes = ""
     var onTrainingChanged: (() -> Void)?
@@ -57,20 +57,10 @@ final class SentenceTrainingWorkflow {
         } catch { self.error = error.localizedDescription; storageReady = false }
     }
 
-    /// One-time migration from the formerly shared word settings; later edits are independent.
-    func initializeSettings(from settings: DecoderSettings) {
-        guard storageReady, data.reservedUnlockedAt == nil, data.decoderSettings == nil else { return }
-        var next = settings
-        next.condition = .silent
-        data.decoderSettings = next
-        save()
-    }
-
     func changeSettings(_ change: (inout DecoderSettings) -> Void) {
         guard !settingsLocked else { return }
         var next = settings
         change(&next)
-        next.condition = .silent
         guard next != settings else { return }
         data.decoderSettings = next
         data.validationReport = nil
@@ -78,7 +68,7 @@ final class SentenceTrainingWorkflow {
     }
 
     @discardableResult
-    func beginVisit(session: RecordingSession, audioDevice: String?, timing: SignalCheckPace,
+    func beginVisit(session: RecordingSession, audioDevice: String?, timing: TrainingPace,
                     presentation: Presentation) throws -> SentenceVisit {
         let visit = SentenceVisit(notes: notes, directory: session.directory.path, audioDevice: audioDevice,
                                   pace: timing.rawValue, presentation: presentation.rawValue, recordingSessionID: session.id)
@@ -198,7 +188,7 @@ final class SentenceTrainingWorkflow {
                 if ownedAudio { audio.stop() }
                 error = audio.error ?? "Recording cancelled before the microphone started."; phase = .setup; return
             }
-            recorder.condition = .mixed
+            recorder.condition = .paired
             recorder.prompt = "Paired sentence training; spoken then silently mouthed; independent sentence split"
             guard let recordingSession = recorder.start(audio: audio) else {
                 if ownedAudio { audio.stop() }

@@ -42,6 +42,8 @@ struct Lexicon: Sendable {
         entries[word]?.map { $0.trimmingCharacters(in: .decimalDigits) }
     }
 
+    static func wordKey(_ word: String) -> String { word.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+
     /// Lower-cased words, keeping internal apostrophes ("they're"). Matches `words_of` in the tools.
     static func words(in text: String) -> [String] {
         text.lowercased().matches(of: /[a-z]+(?:'[a-z]+)?/).map { String($0.output) }
@@ -59,42 +61,5 @@ struct Lexicon: Sendable {
         case "OY": "mid>close"
         default: nil
         }
-    }
-}
-
-/// The texts in `Corpus/`, split into teleprompter lines.
-enum ReadingScript: String, CaseIterable, Identifiable {
-    case passage = "Harbor passage"
-    case bank = "Diphone sentences"
-    var id: String { rawValue }
-
-    var lines: [String] {
-        let file = self == .passage ? "harbor" : "diphones"
-        guard let url = Bundle.main.url(forResource: file, withExtension: "txt", subdirectory: "Corpus"),
-              let text = try? String(contentsOf: url, encoding: .utf8) else { return [] }
-        switch self {
-        case .bank:
-            return text.split(separator: "\n").map(String.init)
-        case .passage:
-            return Self.sentences(text)
-        }
-    }
-
-    /// Splits running prose at sentence ends, keeping a closing quote with its sentence.
-    static func sentences(_ text: String) -> [String] {
-        let tokens = text.split(whereSeparator: \.isWhitespace).map(String.init)
-        var sentences: [String] = []
-        var current: [String] = []
-        for (i, token) in tokens.enumerated() {
-            current.append(token)
-            let ending = token.trimmingCharacters(in: CharacterSet(charactersIn: "\"”"))
-            let next = i + 1 < tokens.count ? tokens[i + 1].trimmingCharacters(in: CharacterSet(charactersIn: "\"“")) : nil
-            if let last = ending.last, ".!?".contains(last), next?.first?.isUppercase ?? true {
-                sentences.append(current.joined(separator: " "))
-                current = []
-            }
-        }
-        if !current.isEmpty { sentences.append(current.joined(separator: " ")) }
-        return sentences
     }
 }

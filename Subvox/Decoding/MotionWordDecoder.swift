@@ -2,17 +2,15 @@ import Foundation
 import CryptoKit
 
 enum LearningMethod: String, Codable, CaseIterable, Identifiable, Sendable {
-    case legacyMedoids, coarseMedoids, jawHMMInitial, jawHMM
+    case motionTemplates, jawSequence
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .legacyMedoids: "Original phone templates"
-        case .coarseMedoids: "Coarse jaw templates (control)"
-        case .jawHMMInitial: "Jaw sequence, initial alignment (control)"
-        case .jawHMM: "Jaw sequence, learned alignment (experimental)"
+        case .motionTemplates: "Motion templates"
+        case .jawSequence: "Sequence model (experimental)"
         }
     }
-    var isSequence: Bool { self == .jawHMM || self == .jawHMMInitial }
+    var isSequence: Bool { self == .jawSequence }
 }
 
 enum VocabularyScope: String, Codable, CaseIterable, Identifiable, Sendable {
@@ -40,7 +38,7 @@ struct DecoderManifest: Codable, Equatable, Sendable {
     var settingsHash: String
 }
 
-/// Single entry point for live decoding, validation, ablations and the frozen final test.
+/// Single entry point for live decoding and sentence validation.
 struct MotionWordDecoder: Sendable {
     private var templates: PhoneticDecoder?
     private var sequence: JawSequenceDecoder?
@@ -51,7 +49,7 @@ struct MotionWordDecoder: Sendable {
     var missingPhones: [String] { templates?.missingPhones ?? sequence?.missingPhones ?? [] }
     var collisionCount: Int { templates?.collisionCount ?? sequence?.collisionCount ?? 0 }
     var trainingSummary: String {
-        sequence?.trainingSummary ?? (settings.method == .legacyMedoids ? "Original evenly allocated phone medoids." : "Six hypothesised jaw units; timing is still evenly allocated.")
+        sequence?.trainingSummary ?? ("Phone templates with estimated within-word timing.")
     }
 
     init?(takes: [Template], lexicon: Lexicon, vocabulary: [(word: String, count: Int)], settings: DecoderSettings) {
@@ -61,12 +59,12 @@ struct MotionWordDecoder: Sendable {
         manifest = Self.manifest(takes: takes, lexicon: lexicon, vocabulary: vocabulary, settings: settings)
         if settings.method.isSequence {
             sequence = JawSequenceDecoder(takes: takes, lexicon: lexicon, vocabulary: selected,
-                                          featureSet: settings.features, iterations: settings.method == .jawHMM ? 6 : 0)
+                                          featureSet: settings.features, iterations: 6)
             templates = nil
             guard sequence != nil else { return nil }
         } else {
             templates = PhoneticDecoder(takes: takes, lexicon: lexicon, vocabulary: selected,
-                                        featureSet: settings.features, coarseUnits: settings.method == .coarseMedoids)
+                                        featureSet: settings.features)
             sequence = nil
             guard templates != nil else { return nil }
         }
@@ -92,7 +90,7 @@ struct MotionWordDecoder: Sendable {
             guard let data = try? encoder.encode(value) else { return "encoding-failed" }
             return SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
         }
-        return DecoderManifest(units: settings.method == .legacyMedoids ? "arpabet39-v1" : JawUnits.version,
+        return DecoderManifest(units: settings.method == .motionTemplates ? "arpabet39-v1" : JawUnits.version,
             trainingHash: hash(TrainingMaterial(takes: takes, pronunciations: takes.map {
                 Entry(word: $0.label, count: 1, phones: lexicon.phones($0.label))
             })),

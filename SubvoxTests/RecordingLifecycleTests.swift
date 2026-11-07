@@ -10,50 +10,32 @@ final class RecordingLifecycleTests: XCTestCase {
     }
 
     @MainActor
-    func testReadCannotStopOrLabelAReplacementRecording() async throws {
+    func testRecorderCannotStopOrCheckpointAReplacementSession() async throws {
         let root = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: root) }
-        let recorder = SessionRecorder(root: root), audio = AudioService(), reading = ReadingController()
+        let recorder = SessionRecorder(root: root)
         defer { recorder.stop() }
-        await reading.start(recorder: recorder, audio: audio)
-        let original = try XCTUnwrap(recorder.currentSession)
-        XCTAssertTrue(reading.isReading)
-        reading.next()
+        let original = try XCTUnwrap(recorder.start(audioSink: nil))
         recorder.stop(sessionID: original.id)
-        let replacement = try XCTUnwrap(recorder.start(audio: audio))
+        let replacement = try XCTUnwrap(recorder.start(audioSink: nil))
         XCTAssertNotEqual(original.id, replacement.id)
-        reading.finish()
-        guard case .failed = reading.phase else { return XCTFail("Lost ownership must stop the reading workflow") }
-        XCTAssertTrue(recorder.isRecording)
-        XCTAssertEqual(recorder.activeSessionID, replacement.id)
-        XCTAssertFalse(FileManager.default.fileExists(atPath: replacement.directory.appending(path: "labels.csv").path))
         XCTAssertNil(recorder.stop(sessionID: original.id))
         XCTAssertNil(try recorder.checkpoint(sessionID: original.id))
         XCTAssertEqual(recorder.activeSessionID, replacement.id)
     }
 
     @MainActor
-    func testReadCapturesItsClockBeforeAnotherSessionFinishes() async throws {
+    func testFinishedSessionKeepsItsOwnClockAfterAnotherSessionFinishes() async throws {
         let root = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: root) }
-        let recorder = SessionRecorder(root: root), audio = AudioService(), reading = ReadingController()
-        defer { recorder.stop() }
-        await reading.start(recorder: recorder, audio: audio)
-        let original = try XCTUnwrap(recorder.currentSession)
-        reading.next()
-        reading.finish()
-        XCTAssertFalse(reading.isReading) // No second finish/next while processing is queued.
-        let replacement = try XCTUnwrap(recorder.start(audio: audio))
+        let recorder = SessionRecorder(root: root)
+        let original = try XCTUnwrap(recorder.start(audioSink: nil))
+        let finished = try XCTUnwrap(recorder.stop(sessionID: original.id))
+        let replacement = try XCTUnwrap(recorder.start(audioSink: nil))
         recorder.stop(sessionID: replacement.id)
-        for _ in 0..<100 {
-            guard case .processing = reading.phase else { break }
-            try await Task.sleep(for: .milliseconds(10))
-        }
-        guard case .finished(let summary) = reading.phase else { return XCTFail("Original reading should finish") }
-        XCTAssertEqual(summary.directory, original.directory)
-        XCTAssertEqual(summary.lines, 1)
-        XCTAssertTrue(FileManager.default.fileExists(atPath: original.directory.appending(path: "labels.csv").path))
-        XCTAssertFalse(FileManager.default.fileExists(atPath: replacement.directory.appending(path: "labels.csv").path))
+        XCTAssertEqual(finished.id, original.id)
+        XCTAssertEqual(finished.directory, original.directory)
+        XCTAssertEqual(finished.startUptime, original.startUptime)
         XCTAssertEqual(recorder.lastSession?.id, replacement.id)
     }
 

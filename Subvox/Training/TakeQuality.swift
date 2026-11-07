@@ -32,18 +32,3 @@ struct TakeQuality: Sendable {
         return TakeQuality(issues: issues, invalid: false, sampleRate: 1 / step)
     }
 }
-
-extension Template {
-    var quality: TakeQuality {
-        TakeQuality.inspect(samples, maximumDuration: purpose == nil || purpose == .training ? 6 : 15)
-    }
-    var reviewDecision: ReviewDecision {
-        review ?? (quality.issues.isEmpty ? .accepted : .pending)
-    }
-    var isUsable: Bool {
-        (purpose == nil || purpose == .training) && reviewDecision == .accepted && !quality.invalid
-    }
-    var isAuditableSpeech: Bool {
-        purpose != .cueOnly && reviewDecision == .accepted && !quality.invalid
-    }
-}

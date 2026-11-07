@@ -3,36 +3,35 @@ import SwiftUI
 
 struct SentenceTrainingView: View {
     @Environment(AppModel.self) private var model
-    private let speak = Color(red: 0.10, green: 0.46, blue: 0.30)
-    private let mouth = Color(red: 0.19, green: 0.37, blue: 0.78)
-    private let relax = Color(red: 0.62, green: 0.39, blue: 0.08)
+    @Environment(\.colorScheme) private var colorScheme
+    private var speak: Color { colorScheme == .dark ? Color(red: 0.34, green: 0.83, blue: 0.52) : Color(red: 0.10, green: 0.46, blue: 0.30) }
+    private var mouth: Color { colorScheme == .dark ? Color(red: 0.45, green: 0.67, blue: 1) : Color(red: 0.19, green: 0.37, blue: 0.78) }
+    private var relax: Color { colorScheme == .dark ? Color(red: 1, green: 0.74, blue: 0.35) : Color(red: 0.62, green: 0.39, blue: 0.08) }
     @State private var channel = MotionPlotChannel.rotation
 
     var body: some View {
         let workflow = model.sentenceTraining
         VStack(spacing: 0) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Sentence training").font(.largeTitle.weight(.semibold))
-                    Text("Record · Align · Review · Repair · Check").foregroundStyle(.secondary)
+            HStack(alignment: .center) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Train your model").font(.largeTitle.weight(.semibold))
+                    Text("Read aloud. Then mouth the same passage silently.").foregroundStyle(.secondary)
                 }
                 Spacer()
-                if !workflow.isBusy {
+                if !workflow.isBusy && !workflow.plan.isEmpty {
                     Button("Record next batch") { model.startSentenceTraining() }
-                        .buttonStyle(.borderedProminent).controlSize(.large)
-                        .disabled(!canStart || workflow.plan.isEmpty)
+                        .buttonStyle(.borderedProminent).controlSize(.large).disabled(!canStart)
                 }
             }.padding(24)
             Divider()
             if workflow.isAcquiring {
                 cue.padding(24)
             } else if workflow.isBusy {
-                VStack(spacing: 18) {
+                VStack(spacing: 16) {
                     ProgressView()
-                    Text(workflow.phase == .preparing ? "Starting local recording…" : workflow.processingText)
-                        .font(.title3)
-                    Text("Audio and motion stay on this Mac. Completed recordings are saved before alignment.")
-                        .foregroundStyle(.secondary)
+                    Text(workflow.phase == .preparing ? "Starting recording…" : workflow.processingText).font(.title3)
+                    Text("Processing stays on this Mac.").foregroundStyle(.secondary)
+                    if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
@@ -40,10 +39,10 @@ struct SentenceTrainingView: View {
                         setup
                         if let error = workflow.error { Text(error).foregroundStyle(.red) }
                         if !workflow.data.pairs.isEmpty { review }
-                        coverage
-                        validation
+                        if !workflow.fittingWords.isEmpty { coverage; validation }
                         reservation
-                    }.padding(24)
+                    }.frame(maxWidth: 1000, alignment: .leading)
+                        .padding(24).frame(maxWidth: .infinity)
                 }
             }
             Divider()
@@ -53,58 +52,72 @@ struct SentenceTrainingView: View {
 
     private var canStart: Bool {
         model.motion.status == .streaming && model.localWhisper.isConfigured && model.sentenceTraining.storageReady
-            && !model.sentenceTraining.isBusy && !model.signalCheck.isBusy && !model.isEvaluating
-            && !model.recorder.isRecording && !model.reading.isReading && model.session?.isFinished != false
+            && !model.sentenceTraining.isBusy && !model.recorder.isRecording
     }
 
     private var setup: some View {
         @Bindable var workflow = model.sentenceTraining
         @Bindable var audio = model.audio
         @Bindable var whisper = model.localWhisper
-        let groups = workflow.plan
-        return VStack(alignment: .leading, spacing: 14) {
-            Text("Speak it. Then mouth it.").font(.title2.weight(.medium))
-            Text("Read each sentence aloud, relax, then mouth the same text silently at a natural pace. Local Whisper checks the spoken recording. Motion alignment estimates where its words fall in the silent recording; you review those estimates before they enter training.")
-                .foregroundStyle(.secondary)
-            if model.motion.status != .streaming {
-                Label("Connect your AirPods to start recording.", systemImage: "headphones").foregroundStyle(.orange)
-            }
-            HStack {
-                Picker("Text", selection: $workflow.presentation) {
-                    ForEach(SentenceTrainingWorkflow.Presentation.allCases) { Text($0.rawValue).tag($0) }
-                }.pickerStyle(.segmented)
-                Picker("Pace", selection: $workflow.pace) {
-                    ForEach(SignalCheckPace.allCases) { Text($0.rawValue).tag($0) }
-                }.pickerStyle(.segmented)
-            }
-            Stepper("Up to \(workflow.sentenceCount) training sentences + validation material per visit", value: $workflow.sentenceCount, in: 2...8, step: 2)
-            Text("\(groups.count) paired prompts · about \(max(1, Int(ceil(workflow.estimatedSeconds / 60)))) minutes, plus local processing. Short passages join up to three sentences from the same split.")
-                .font(.caption).foregroundStyle(.secondary)
-            HStack(spacing: 22) {
+        let data = workflow.data
+        let acquired = Set(data.pairs.filter(\.complete).flatMap(\.promptIDs))
+        let development = data.prompts.filter { $0.kind == .sentence && data.roles[$0.id] != .finalTest }
+        return VStack(alignment: .leading, spacing: 16) {
+            Text("\(development.filter { acquired.contains($0.id) }.count) of \(development.count) sentences recorded")
+                .font(.title2.weight(.medium))
+            Text("Each prompt has a spoken take and a silent take. Relax between them, read once naturally, then wait for the next cue. No keypresses needed.")
+                .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+            HStack(spacing: 24) {
                 Label("Relax", systemImage: "leaf").foregroundStyle(relax)
                 Label("Speak aloud", systemImage: "speaker.wave.2").foregroundStyle(speak)
                 Label("Mouth silently", systemImage: "mouth").foregroundStyle(mouth)
             }.font(.headline)
-            TextField("Visit notes: fit, posture, pronunciation or changes", text: $workflow.notes).textFieldStyle(.roundedBorder)
-            Picker("Microphone", selection: $audio.selectedDeviceID) {
-                Text("System default").tag(Optional<UInt32>.none)
-                ForEach(audio.devices) { Text($0.name).tag(Optional($0.id)) }
+            if model.motion.status != .streaming {
+                Label("Connect your AirPods to start.", systemImage: "headphones").foregroundStyle(.orange)
             }
-            Text("Prefer the built-in microphone. No Space presses are needed. Say each prompt once, then wait; you do not need to stretch your speech to fill the cue.")
-                .font(.caption).foregroundStyle(.secondary)
-            DisclosureGroup(model.localWhisper.isConfigured ? "Local Whisper ready · \(URL(fileURLWithPath: model.localWhisper.modelPath).lastPathComponent)" : "Choose local Whisper files") {
-                TextField("GGML model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
-                TextField("Local Whisper server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
-                Text("Your existing OpenWhispr files are reused. No cloud API or expected-text hints.").font(.caption).foregroundStyle(.secondary)
+            if !model.localWhisper.isConfigured {
+                Label("Choose a local Whisper model in recording settings.", systemImage: "exclamationmark.triangle")
+                    .foregroundStyle(.orange)
             }
-            DisclosureGroup("Upcoming paired text") {
-                ForEach(groups.indices, id: \.self) { i in
-                    Text(groups[i].map(\.text).joined(separator: " ")).padding(.vertical, 4)
+            HStack {
+                Picker("Read as", selection: $workflow.presentation) {
+                    ForEach(SentenceTrainingWorkflow.Presentation.allCases) { Text($0.rawValue).tag($0) }
+                }.pickerStyle(.segmented)
+                Picker("Pace", selection: $workflow.pace) {
+                    ForEach(TrainingPace.allCases) { Text($0.rawValue).tag($0) }
+                }.pickerStyle(.segmented)
+            }
+            if !workflow.plan.isEmpty {
+                Text("Next batch: \(workflow.plan.count) paired prompts, about \(max(1, Int(ceil(workflow.estimatedSeconds / 60)))) minutes.")
+                    .font(.callout).foregroundStyle(.secondary)
+            }
+            DisclosureGroup("Recording settings") {
+                VStack(alignment: .leading, spacing: 12) {
+                    Stepper("Up to \(workflow.sentenceCount) training sentences per batch", value: $workflow.sentenceCount, in: 2...8, step: 2)
+                    Text("Validation sentences are added separately; passages join up to three sentences.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Picker("Microphone", selection: $audio.selectedDeviceID) {
+                        Text("System default").tag(Optional<UInt32>.none)
+                        ForEach(audio.devices) { Text($0.name).tag(Optional($0.id)) }
+                    }
+                    Text("Use the Mac microphone to keep AirPods in their normal audio mode.").font(.caption).foregroundStyle(.secondary)
+                    TextField("Session notes: fit, posture or pronunciation", text: $workflow.notes).textFieldStyle(.roundedBorder)
+                    DisclosureGroup("Local transcription" + (whisper.isConfigured ? " · ready" : " · setup needed")) {
+                        TextField("Whisper model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
+                        TextField("Whisper server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
+                        Text("Existing local model files are reused; no download is required.").font(.caption).foregroundStyle(.secondary)
+                    }
+                }.padding(.top, 8)
+            }
+            if !workflow.plan.isEmpty {
+                DisclosureGroup("Preview next batch") {
+                    ForEach(workflow.plan.indices, id: \.self) { i in
+                        Text(workflow.plan[i].map(\.text).joined(separator: " ")).padding(.vertical, 4)
+                    }
                 }
             }
         }
     }
-
     private var cue: some View {
         let workflow = model.sentenceTraining
         let active = workflow.phase == .speak || workflow.phase == .mouth
@@ -142,154 +155,145 @@ struct SentenceTrainingView: View {
     }
 
     private var review: some View {
-        let pairs = model.sentenceTraining.data.pairs.reversed()
+        let pairs = Array(model.sentenceTraining.data.pairs.reversed())
+        let pending = pairs.filter { $0.review == .pending }
+        let reviewed = pairs.filter { $0.review != .pending }
         return VStack(alignment: .leading, spacing: 14) {
             Divider()
-            Text("Review the pairs").font(.title2.weight(.semibold))
-            Text("Compare both traces, the transcript and the transferred intervals. Low alignment cost does not establish correct timing. Acceptance makes only training-split word slices available to the word model.")
-                .font(.callout).foregroundStyle(.secondary)
-            Picker("Motion channels", selection: $channel) {
-                ForEach(MotionPlotChannel.allCases) { Text($0.rawValue).tag($0) }
-            }.pickerStyle(.segmented)
-            ForEach(Array(pairs)) { pair in
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Text(pair.text).font(.headline)
-                        Spacer()
-                        Text("\(pair.role.rawValue) · \(pair.review.rawValue)").font(.caption).foregroundStyle(.secondary)
-                    }
-                    if let spoken = pair.spoken {
-                        SignalPlot(title: "Spoken reference", samples: spoken.cueSamples, channels: channel.channels,
-                                   minScale: channel.minScale, height: 65)
-                        qualityLabel("Spoken", recording: spoken)
-                    }
-                    if let silent = pair.silent {
-                        SignalPlot(title: "Silently mouthed", samples: silent.cueSamples, channels: channel.channels,
-                                   minScale: channel.minScale, height: 65)
-                        qualityLabel("Silent", recording: silent)
-                    }
-                    if let transcript = pair.transcript {
-                        Text("Whisper: \(transcript.text)").font(.callout)
-                        Text("\(Int((pair.transcriptMatchRate ?? 0) * 100))% of expected words matched in order. Word timing is estimated; no phoneme boundaries were measured.")
-                            .font(.caption).foregroundStyle(.secondary)
-                    }
-                    if let transfer = pair.alignment {
-                        Text(String(format: "%d transferred words · DTW cost %.3f · duration ratio %.2f", transfer.words.count, transfer.normalizedCost, transfer.durationRatio))
-                            .font(.caption.monospacedDigit())
-                        ForEach(transfer.warnings, id: \.self) { Text($0).font(.caption).foregroundStyle(.orange) }
-                        DisclosureGroup("Estimated silent word intervals") {
-                            ForEach(transfer.words.indices, id: \.self) { i in
-                                let word = transfer.words[i]
-                                Text(String(format: "%@ · %.2f–%.2f s", word.word,
-                                    word.silentStart - (pair.silent?.cueStart ?? 0), word.silentEnd - (pair.silent?.cueStart ?? 0)))
-                                    .font(.caption.monospacedDigit())
-                            }
-                        }
-                    }
-                    if !pair.complete { Text("Incomplete pair: the completed half is preserved. Re-record to collect both versions.").font(.caption).foregroundStyle(.orange) }
-                    if let error = pair.error { Text(error).font(.caption).foregroundStyle(.orange) }
-                    if let visit = model.sentenceTraining.data.visits.first(where: { $0.id == pair.visitID }) {
-                        DisclosureGroup("Visit details") {
-                            Text(visit.startedAt.formatted() + " · " + (visit.audioDevice ?? "Unknown microphone"))
-                            if !visit.notes.isEmpty { Text(visit.notes) }
-                            if let pace = visit.pace { Text("Pace: " + pace) }
-                            if let directory = pair.directory {
-                                Button("Open raw recording") { NSWorkspace.shared.open(URL(fileURLWithPath: directory)) }
-                            }
-                        }.font(.caption)
-                    }
-                    HStack {
-                        Button("Accept aligned pair") { model.sentenceTraining.review(pair.id, decision: .accepted) }
-                            .disabled(!pair.canAccept || pair.review == .accepted)
-                        Button("Exclude") { model.sentenceTraining.review(pair.id, decision: .excluded) }
-                        Button("Re-record") { model.startSentenceTraining(retry: pair.id) }.disabled(!canStart)
-                        if pair.complete {
-                            Button("Retry alignment") { model.sentenceTraining.retryProcessing(pair.id, whisper: model.localWhisper) }
-                        }
-                    }
+            HStack {
+                Text(pending.isEmpty ? "Recordings reviewed" : "Review \(pending.count) recording pairs").font(.title2.weight(.semibold))
+                Spacer()
+                Picker("Motion channels", selection: $channel) {
+                    ForEach(MotionPlotChannel.allCases) { Text($0.rawValue).tag($0) }
+                }.labelsHidden().frame(maxWidth: 190)
+            }
+            if !pending.isEmpty {
+                Text("Compare both traces and the spoken transcript before using a pair. Word timings are estimates.")
+                    .font(.callout).foregroundStyle(.secondary)
+                ForEach(pending) { pairCard($0) }
+            }
+            if !reviewed.isEmpty {
+                DisclosureGroup("Reviewed recordings (\(reviewed.count))") {
+                    ForEach(reviewed) { pairCard($0) }
                 }
-                .padding(14)
-                .background(.quaternary.opacity(0.3), in: RoundedRectangle(cornerRadius: 10))
             }
         }
     }
 
-    private func qualityLabel(_ name: String, recording: SentenceRecording) -> some View {
+    private func pairCard(_ pair: SentencePair) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top) {
+                Text(pair.text).font(.headline)
+                Spacer()
+                Text(pair.role.rawValue).font(.caption).foregroundStyle(.secondary)
+            }
+            if let spoken = pair.spoken {
+                SignalPlot(title: "Spoken", samples: spoken.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
+                qualityLabel(spoken)
+            }
+            if let silent = pair.silent {
+                SignalPlot(title: "Mouthed", samples: silent.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
+                qualityLabel(silent)
+            }
+            if let transcript = pair.transcript { Text("Heard: " + transcript.text).font(.callout) }
+            if !pair.complete { Text("Incomplete pair. Re-record to collect both takes.").font(.caption).foregroundStyle(.orange) }
+            if let error = pair.error { Text(error).font(.caption).foregroundStyle(.orange) }
+            DisclosureGroup("Recording details") {
+                if let transfer = pair.alignment {
+                    Text(String(format: "%d aligned words · cost %.3f · duration ratio %.2f", transfer.words.count, transfer.normalizedCost, transfer.durationRatio))
+                    ForEach(transfer.warnings, id: \.self) { Text($0) }
+                    ForEach(transfer.words.indices, id: \.self) { i in
+                        let word = transfer.words[i]
+                        Text(String(format: "%@ · %.2f–%.2f s", word.word,
+                            word.silentStart - (pair.silent?.cueStart ?? 0), word.silentEnd - (pair.silent?.cueStart ?? 0)))
+                    }
+                }
+                if let visit = model.sentenceTraining.data.visits.first(where: { $0.id == pair.visitID }) {
+                    Text(visit.startedAt.formatted() + " · " + (visit.audioDevice ?? "Unknown microphone"))
+                    if !visit.notes.isEmpty { Text(visit.notes) }
+                }
+                if let directory = pair.directory {
+                    Button("Open raw recording") { NSWorkspace.shared.open(URL(fileURLWithPath: directory)) }
+                }
+            }.font(.caption).foregroundStyle(.secondary)
+            // Non-default alignment warnings are visible before accepting, not hidden in details.
+            ForEach(pair.alignment?.warnings.filter { !$0.hasPrefix("Transferred word times") } ?? [], id: \.self) {
+                Text($0).font(.caption).foregroundStyle(.orange)
+            }
+            HStack {
+                Button(pair.review == .accepted ? "In use" : "Use pair") { model.sentenceTraining.review(pair.id, decision: .accepted) }
+                    .disabled(!pair.canAccept || pair.review == .accepted)
+                Button("Skip pair") { model.sentenceTraining.review(pair.id, decision: .excluded) }
+                    .disabled(pair.review == .excluded)
+                Spacer()
+                if pair.complete {
+                    Button("Retry alignment") { model.sentenceTraining.retryProcessing(pair.id, whisper: model.localWhisper) }
+                        .disabled(!model.localWhisper.isConfigured)
+                }
+                Button("Re-record") { model.startSentenceTraining(retry: pair.id) }.disabled(!canStart)
+            }
+        }.padding(16).background(.quaternary.opacity(0.3), in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    private func qualityLabel(_ recording: SentenceRecording) -> some View {
         let quality = recording.quality
-        return Text(String(format: "%@ · %d samples · %.1f Hz", name, recording.cueSamples.count, quality.sampleRate ?? 0)
-                    + (quality.issues.isEmpty ? "" : " · " + quality.issues.joined(separator: "; ")))
+        return Text(String(format: "%.1f Hz", quality.sampleRate ?? 0)
+            + (quality.issues.isEmpty ? "" : " · " + quality.issues.joined(separator: "; ")))
             .font(.caption).foregroundStyle(quality.issues.isEmpty ? Color.secondary : Color.orange)
     }
 
     private var coverage: some View {
-        let workflow = model.sentenceTraining
-        let counts = workflow.coverage
-        let missing = Phoneme.all.filter { counts[$0.symbol, default: 0] < 4 }
+        let workflow = model.sentenceTraining, counts = workflow.coverage
+        let covered = Phoneme.all.filter { counts[$0.symbol, default: 0] >= 4 }.count
         let repairs = workflow.repairWords
         return VStack(alignment: .leading, spacing: 12) {
             Divider()
-            Text("Coverage and targeted repairs").font(.title2.weight(.semibold))
-            Text("\(39 - missing.count)/39 pronunciation units have four examples in reviewed training words. This is dictionary coverage, not recognition accuracy. Reserved and validation sentences do not contribute.")
-                .font(.callout).foregroundStyle(.secondary)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], alignment: .leading, spacing: 10) {
-                ForEach(Phoneme.all) { phone in
-                    Text("/\(phone.ipa)/  \(counts[phone.symbol, default: 0])/4")
-                        .font(.callout).foregroundStyle(counts[phone.symbol, default: 0] >= 4 ? Color.secondary : Color.orange)
-                }
+            DisclosureGroup("Sound coverage: \(covered) of \(Phoneme.all.count) units at the collection target") {
+                Text("Four dictionary occurrences per sound. Coverage measures collected examples, not recognition accuracy; your pronunciation may differ.")
+                    .font(.caption).foregroundStyle(.secondary)
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], alignment: .leading, spacing: 10) {
+                    ForEach(Phoneme.all) { phone in
+                        Text("/\(phone.ipa)/  \(counts[phone.symbol, default: 0])/4").font(.callout)
+                    }
+                }.padding(.top, 8)
             }
             if !repairs.isEmpty {
-                Text("Word repairs: \(repairs.prefix(8).joined(separator: ", "))")
-                Button("Record targeted word repairs") { model.startSentenceTraining(repairs: true) }
-                    .disabled(!canStart)
-            } else if !missing.isEmpty {
-                Text("Finish collecting and accepting the training sentences first. Isolated-word repairs become available only for gaps that remain.")
-                    .font(.caption).foregroundStyle(.secondary)
+                Text("Fill remaining gaps: " + repairs.prefix(8).joined(separator: ", ")).font(.callout)
+                Button("Record missing sounds") { model.startSentenceTraining(repairs: true) }.disabled(!canStart)
             }
         }
     }
 
     private var validation: some View {
-        @Bindable var model = model
-        let workflow = model.sentenceTraining
+        @Bindable var workflow = model.sentenceTraining
+        let words = workflow.fittingWords
+        let validationCount = workflow.data.derivedWords(role: .validation, lexicon: .bundled).count
         return VStack(alignment: .leading, spacing: 12) {
-            Divider()
-            Text("Build and check the word model").font(.title2.weight(.semibold))
-            Text("\(workflow.fittingWords.count) reviewed silent word slices are available from training sentences. Motion-transferred boundaries are estimates.")
+            Text("Check your model").font(.title2.weight(.semibold))
+            Text("\(words.count) reviewed word examples. " + (model.isBuildingDecoder ? "Building model…" : model.decoder == nil ? "More usable motion is needed." : "Ready in Try model."))
                 .font(.callout).foregroundStyle(.secondary)
-            Picker("Learning method", selection: $model.sentenceLearningMethod) {
-                ForEach(LearningMethod.allCases) { Text($0.title).tag($0) }
+            if validationCount > 0 {
+                Button("Check validation words") { workflow.validate() }
+            } else {
+                Text("Review the validation pairs to enable the word check.").font(.caption).foregroundStyle(.secondary)
             }
-            .disabled(workflow.settingsLocked || model.isEvaluating)
-            HStack {
-                Button("Build from reviewed sentences", action: model.useReviewedSentenceModel)
-                    .disabled(workflow.fittingWords.isEmpty || model.isEvaluating)
-                Button("Check aligned validation words") { workflow.validate() }
-                    .disabled(workflow.fittingWords.isEmpty || model.isEvaluating)
-            }
-            if model.usesSentenceModel {
-                if model.isBuildingDecoder { Text("Building the sentence-derived word model…").font(.caption) }
-                else if let decoder = model.decoder {
-                    Text("Active in Decode · \(decoder.wordCount) candidate words · \(decoder.missingPhones.count) missing pronunciation units")
-                        .font(.caption).foregroundStyle(.secondary)
-                } else {
-                    Text("Not enough usable sentence-derived motion to build this method yet.")
-                        .font(.caption).foregroundStyle(.orange)
-                }
-            }
-            Text("The check uses supplied word boundaries in held-out sentences. It is an assisted segmentation diagnostic, not end-to-end sentence transcription or a final-test score.")
-                .font(.caption).foregroundStyle(.secondary)
             if let result = workflow.data.validationReport {
-                Text(String(format: "Assisted word check: top 1 %.1f%% · top 5 %.1f%% · %d word slices", result.top1 * 100, result.top5 * 100, result.expected.count))
-                    .font(.headline)
-                Text(String(format: "Accepted %.1f%% · correctly emitted %.1f%% of evaluated slices", result.acceptance * 100, result.acceptedCorrect * 100))
-                    .font(.callout)
-                Text(result.settings.method.title + (result.settings == workflow.settings ? "" : " · settings changed; check again"))
-                    .font(.caption).foregroundStyle(.secondary)
+                Text(String(format: "Correct output %.1f%% · accepted %.1f%%", result.acceptedCorrect * 100, result.acceptance * 100)).font(.headline)
+                Text(String(format: "Top 1 %.1f%% · top 5 %.1f%% · %d word examples", result.top1 * 100, result.top5 * 100, result.expected.count))
+                    .font(.callout).foregroundStyle(.secondary)
                 if let total = result.expectedValidationWordCount {
-                    Text("\(result.expected.count) of \(total) words in accepted validation text had usable estimated boundaries and dictionary pronunciations. Scores above apply to those slices.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    Text("\(result.expected.count) of \(total) validation words had usable boundaries and pronunciations.").font(.caption).foregroundStyle(.secondary)
                 }
             }
+            Text("This checks words using estimated boundaries. Continuous sentence decoding is not available yet.")
+                .font(.caption).foregroundStyle(.secondary)
+            DisclosureGroup("Model settings") {
+                Picker("Learning method", selection: $workflow.learningMethod) {
+                    ForEach(LearningMethod.allCases) { Text($0.title).tag($0) }
+                }
+                Text("Sequence units and word boundaries are estimates; compare their results on validation data.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }.disabled(workflow.settingsLocked)
         }
     }
 
@@ -297,14 +301,7 @@ struct SentenceTrainingView: View {
         let data = model.sentenceTraining.data
         let sentences = data.prompts.filter { $0.kind == .sentence }
         let reserved = sentences.filter { data.roles[$0.id] == .finalTest }
-        return VStack(alignment: .leading, spacing: 10) {
-            Divider()
-            Label("\(reserved.count) of \(sentences.count) sentences reserved for the final test", systemImage: "lock.fill")
-                .font(.headline)
-            Text("Their paired recordings and every repetition stay in the same sentence group. They are excluded from collection plans, alignment-driven coverage, repairs, model fitting and validation. Your previous word experiment has its own unchanged split.")
-                .font(.caption).foregroundStyle(.secondary)
-            Text("Continuous sentence decoding and its final evaluation are not yet implemented. This workflow creates reviewed, aligned training data and supports the assisted word check above.")
-                .font(.caption).foregroundStyle(.secondary)
-        }
+        return Label("\(reserved.count) of \(sentences.count) sentences reserved for the final test", systemImage: "lock.fill")
+            .font(.callout).foregroundStyle(.secondary)
     }
 }

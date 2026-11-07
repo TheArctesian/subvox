@@ -1,7 +1,7 @@
 import XCTest
 @testable import Subvox
 
-final class TrainingSessionTests: XCTestCase {
+final class CoveragePlannerTests: XCTestCase {
     private let lexicon = Lexicon(tsv: """
         bob\tB AA1 B
         bee\tB IY1
@@ -41,15 +41,4 @@ final class TrainingSessionTests: XCTestCase {
         XCTAssertTrue(stable.allSatisfy(CoveragePlanner.isAccentStable))            // red, very, cat, thought, bird
     }
 
-    func testUndoReturnsTheTakeToDeleteAndSkipRecordsNothing() {
-        var session = TrainingSession(prompts: ["yes", "no", "next"])
-        let take = UUID()
-        session.record(take)
-        session.skip()
-        XCTAssertEqual(session.current, "next")
-        XCTAssertNil(session.undo())
-        XCTAssertEqual(session.undo(), take)
-        XCTAssertEqual(session.current, "yes")
-        XCTAssertEqual(session.recordedCount, 0)
-    }
 }

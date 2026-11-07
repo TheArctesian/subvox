@@ -136,13 +136,22 @@ final class SentenceTrainingTests: XCTestCase {
         var data = SentenceTrainingData(prompts: [train, validation, final], roles: [train.id: .training, validation.id: .validation, final.id: .finalTest])
         data.pairs = [pair(train, role: .training), pair(validation, role: .validation), pair(final, role: .finalTest)]
         var settings = DecoderSettings(); settings.commonBias = 0
-        let report = try SentenceValidation.run(data: data, settings: settings, lexicon: lexicon, vocabulary: [("bee", 1), ("bob", 1)])
-        XCTAssertEqual(report.trainingPairIDs, [data.pairs[0].id])
-        XCTAssertEqual(report.validationPairIDs, [data.pairs[1].id])
-        XCTAssertEqual(report.expected, ["bee", "bob"])
-        XCTAssertEqual(report.predicted.count, 2)
-        XCTAssertFalse(report.validationPairIDs.contains(data.pairs[2].id))
-        XCTAssertTrue(report.top1.isFinite && report.top5.isFinite)
+        for method in LearningMethod.allCases {
+            settings.method = method
+            let vocabulary = [(word: "bee", count: 1), (word: "bob", count: 1)]
+            let report = try SentenceValidation.run(data: data, settings: settings, lexicon: lexicon, vocabulary: vocabulary)
+            XCTAssertEqual(report.trainingPairIDs, [data.pairs[0].id])
+            XCTAssertEqual(report.validationPairIDs, [data.pairs[1].id])
+            XCTAssertEqual(report.expected, ["bee", "bob"])
+            XCTAssertEqual(report.predicted.count, 2)
+            XCTAssertFalse(report.validationPairIDs.contains(data.pairs[2].id))
+            XCTAssertTrue(report.top1.isFinite && report.top5.isFinite)
+            let live = try XCTUnwrap(MotionWordDecoder(takes: data.derivedWords(role: .training, lexicon: lexicon),
+                                                       lexicon: lexicon, vocabulary: vocabulary, settings: settings))
+            let predictions = data.derivedWords(role: .validation, lexicon: lexicon).map { live.predict($0.samples) }
+            XCTAssertEqual(report.predicted, predictions.map { $0.ranked.map(\.label) })
+            XCTAssertEqual(report.accepted, predictions.map(\.accepted))
+        }
     }
 
     func testBundledSentenceCorpusIsPresentAndHasKnownPronunciations() {
