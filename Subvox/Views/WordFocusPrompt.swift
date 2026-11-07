@@ -21,7 +21,7 @@ struct WordFocusPrompt: View {
 
     var body: some View {
         Text(highlightedText)
-            .font(.system(size: 52, weight: .medium, design: .serif))
+            .font(.system(size: 52, weight: .medium))
             .multilineTextAlignment(.center)
             .lineSpacing(8)
             .frame(maxWidth: .infinity)

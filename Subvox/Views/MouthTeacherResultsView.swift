@@ -20,13 +20,14 @@ struct MouthTeacherResultsView: View {
                                 .font(.caption).foregroundStyle(.secondary)
                             Text(group.validationScope).font(.caption).foregroundStyle(.secondary)
                             if model.sourceValidationGain <= 0 || model.sourceValidationGain <= model.shiftedTeacherGain {
-                                Text("Source validation did not establish a useful aligned teacher advantage. The student remains experimental; the final B test is still reported.")
+                                Text("Source validation did not establish a useful aligned teacher advantage. The student remains experimental; the B transfer test is still reported.")
                                     .font(.caption).foregroundStyle(.orange)
                             }
                         }
                         if let note = group.note { Text(note).foregroundStyle(.orange) }
                         if let score = comparison.teacherScores?.first(where: { $0.condition == group.condition }) {
-                            Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: 7) {
+                            ScrollView(.horizontal) {
+                              Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: 7) {
                                 GridRow {
                                     Text("Input / control"); Text("Matched / planned"); Text("Scored"); Text("Time-shift")
                                 }.font(.caption.weight(.semibold)).foregroundStyle(.secondary)
@@ -39,6 +40,7 @@ struct MouthTeacherResultsView: View {
                                         Text("\(arm.shiftedCorrect) / \(arm.evaluated)").monospacedDigit()
                                     }.font(.callout)
                                 }
+                              }.fixedSize(horizontal: true, vertical: false).padding(.bottom, 6)
                             }
                             Text("\(score.collected) collected · \(9-score.collected) unrecorded. Unmatched valid takes count as incorrect.").font(.caption).foregroundStyle(.secondary)
                             if score.sensorSourceChanged {
@@ -47,7 +49,7 @@ struct MouthTeacherResultsView: View {
                                 Text("Headphone sensor side is unavailable in this recording.").font(.caption).foregroundStyle(.secondary)
                             }
                         } else {
-                            Text("Training A is saved. Block B is still needed for the final test.").foregroundStyle(.secondary)
+                            Text("Training A is saved. Block B is still needed for the transfer test.").foregroundStyle(.secondary)
                         }
                     }.padding(.vertical, 8)
                 }

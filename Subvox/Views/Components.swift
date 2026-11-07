@@ -1,5 +1,53 @@
 import SwiftUI
 
+/// Shared page hierarchy; the window chrome and system colours stay native.
+struct AppPageHeading: View {
+    var title: String
+    var subtitle: String
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title).font(.largeTitle.weight(.semibold))
+            Text(subtitle).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}
+
+struct RecordingCueStatus: View {
+    var timer: String
+    var title: String
+    var color: Color
+    var body: some View {
+        VStack(spacing: 8) {
+            Text(timer).font(.system(size: 20, weight: .medium).monospacedDigit()).foregroundStyle(.secondary)
+            HStack(spacing: 7) {
+                Circle().fill(color).frame(width: 6, height: 6)
+                Text(title).font(.system(size: 13, weight: .semibold))
+            }
+            .padding(.horizontal, 13).padding(.vertical, 7)
+            .background(color.opacity(0.12), in: Capsule())
+        }
+    }
+}
+
+/// A bounded content region keeps page titles and the live signal visible at
+/// the minimum window size, even for intrinsically tall empty states or forms.
+struct AppPageLayout<Header: View, Content: View>: View {
+    @ViewBuilder var header: () -> Header
+    @ViewBuilder var content: () -> Content
+    var body: some View {
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                header().padding(.horizontal, 24).frame(height: 108)
+                Divider()
+                content().frame(width: geometry.size.width, height: max(1, geometry.size.height - 286)).clipped()
+                Divider()
+                LiveMotionPanel(plotHeight: 56).padding(.horizontal, 16).frame(height: 176).clipped()
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .top).clipped()
+        }
+    }
+}
+
 /// Multi-channel line plot of motion samples, drawn with Canvas so it keeps up at sensor rate.
 struct SignalPlot: View {
     struct Channel {

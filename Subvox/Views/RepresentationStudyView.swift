@@ -6,23 +6,22 @@ struct RepresentationStudyView:View {
     @State private var word=""
     @State private var variants=""
     var body:some View {
-        VStack(spacing:0) {
+        if workflow.isAcquiring { capture } else { mainBody }
+    }
+    private var mainBody:some View {
+        AppPageLayout {
             HStack {
-                VStack(alignment:.leading,spacing:4) {
-                    Text("Saved frozen-model study").font(.largeTitle.weight(.semibold))
-                    Text("Record A → freeze the model → reseat → test B").foregroundStyle(.secondary)
-                }
+                AppPageHeading(title:"Frozen-model studies",subtitle:"Record A, freeze the model, then reseat and test B.")
                 Spacer()
                 Button("Back to recording") {model.showRepresentation=false}.disabled(workflow.isBusy)
                 Menu("Advanced") {
-                    Button("Neural model training and results") {model.showSequenceLearning=true}
+                    Button("Sentence models") {model.showSequenceLearning=true}
                     Button("Paired sentences with local Whisper") {model.showRepresentation=false}
                     Button("Motion signal checks") {model.showRepresentation=false;model.showSignalCheck=true}
                 }.disabled(workflow.isBusy)
-            }.padding(20)
-            Divider()
-            if workflow.isAcquiring {capture.padding(20)}
-            else if workflow.phase == .processing {
+            }
+        } content: {
+            if workflow.phase == .processing {
                 VStack(spacing:15) {ProgressView();Text("Saving points and evaluating frozen comparisons locally…")}
                     .frame(maxWidth:.infinity,maxHeight:.infinity)
             } else {
@@ -70,8 +69,6 @@ struct RepresentationStudyView:View {
                     }.frame(maxWidth:1000,alignment:.leading).padding(24).frame(maxWidth:.infinity)
                 }
             }
-            Divider()
-            LiveMotionPanel(plotHeight:65).padding(12)
         }
     }
     private var pronunciationEditor:some View {
@@ -122,39 +119,46 @@ struct RepresentationStudyView:View {
         workflow.phase == .relax ? .orange:workflow.condition == .normal ? .green:.blue
     }
     private var capture:some View {
-        VStack(spacing:14) {
-            HStack {
-                Text("\(workflow.block==0 ? "A · training":"B · frozen transfer") · \(workflow.index+1) of \(workflow.plan.count)").font(.headline)
-                Spacer()
-            }
-            ProgressView(value:Double(workflow.index),total:Double(max(1,workflow.plan.count))).tint(color)
-            CameraPoseGuide(camera:workflow.camera,compact:true,allowsMovement:true)
-            VStack(spacing:16) {
-                VStack(spacing:6) {
-                    Text(String(format:"%.1f s",workflow.secondsRemaining))
-                        .font(.system(size:28,weight:.semibold).monospacedDigit())
-                        .frame(maxWidth:.infinity,alignment:.center)
-                    Text(workflow.phase == .relax ? "Relax · wait for START":workflow.phase == .ready ? "Ready":workflow.phase == .ended ? "END":"START")
-                        .font(.system(size:32,weight:.bold))
+        RecordingViewport {
+            VStack(spacing:8) {
+                HStack {
+                    Text(workflow.block == 0 ? "A · training" : "B · frozen transfer").font(.headline)
+                    Spacer()
+                    Text("\(workflow.index+1) of \(workflow.plan.count)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
                 }
-                Label(workflow.condition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.condition == .normal ? "speaker.wave.2":"mouth")
-                    .font(.title.weight(.semibold))
-                WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
-                Text(workflow.phase == .relax ? "Relax your mouth and move your head comfortably. Keep your face visible.":"Follow the highlighted words. Choose Done when finished; redo any mistake.")
-                    .font(.title3).multilineTextAlignment(.center)
-            }.foregroundStyle(color).padding(20).frame(maxWidth:.infinity,maxHeight:.infinity)
-                .background(color.opacity(0.12),in:RoundedRectangle(cornerRadius:18))
-            if let message=workflow.sourceMessage {Text(message).foregroundStyle(.orange)}
-            if let error=workflow.error {Text(error).foregroundStyle(.orange)}
-            HStack {
-                Button("Stop and save",action:workflow.stop)
-                Spacer()
-                Button("Redo take",action:workflow.redo).disabled(!workflow.canRedo)
-                Button(workflow.phase == .ready ? "Start take":workflow.phase == .recording ? "Done / next":"Next take",action:workflow.next)
-                    .buttonStyle(.borderedProminent).controlSize(.large).disabled(workflow.phase == .relax)
+                ProgressView(value:Double(workflow.index),total:Double(max(1,workflow.plan.count))).tint(color)
             }
-            Text("← / ↑ redo    → / ↓ start, done or next · "+workflow.currentSource).font(.caption).foregroundStyle(.secondary)
-        }
+        } prompt: {
+            VStack(spacing:8) {
+                CameraPoseGuide(camera:workflow.camera,compact:true,allowsMovement:true).frame(height:70).padding(.horizontal,12)
+                RecordingPromptPanel(color:color) {
+                    VStack(spacing:18) {
+                        RecordingCueStatus(timer:workflow.phase == .ready ? "When you’re ready" : String(format:"%.1f s",workflow.secondsRemaining),
+                            title:workflow.phase == .relax ? "Relax" : workflow.phase == .ready ? "Ready" : workflow.phase == .ended ? "Saved" : "Recording", color:color)
+                        Label(workflow.condition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.condition == .normal ? "speaker.wave.2":"mouth")
+                            .font(.title3.weight(.medium)).foregroundStyle(color)
+                        WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
+                        Text(workflow.phase == .relax ? "Relax your mouth and move your head comfortably. Keep your face visible.":"Follow the highlighted words. Choose Done when finished; redo any mistake.")
+                            .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                        if let message=workflow.sourceMessage {Text(message).font(.caption).foregroundStyle(.orange)}
+                        if let error=workflow.error {Text(error).font(.caption).foregroundStyle(.orange)}
+                    }
+                }
+            }
+        } actions: {
+            VStack(spacing:10) {
+                HStack(spacing:12) {
+                    Button("Stop and save",action:workflow.stop).buttonStyle(.borderless).foregroundStyle(.secondary)
+                    Spacer()
+                    Button(action:workflow.redo) {Label("Redo",systemImage:"arrow.counterclockwise")}.disabled(!workflow.canRedo)
+                    Button(action:workflow.next) {
+                        Label(workflow.phase == .ready ? "Start take" : workflow.phase == .recording ? "Done" : "Continue",
+                              systemImage:workflow.phase == .recording ? "checkmark":"chevron.right").frame(minWidth:130)
+                    }.buttonStyle(.borderedProminent).disabled(workflow.phase == .relax)
+                }.controlSize(.large)
+                Text("← / ↑ Redo     → / ↓ Start, finish or continue · "+workflow.currentSource).font(.caption).foregroundStyle(.tertiary)
+            }
+        } motion: {LiveMotionPanel(plotHeight:44)}
     }
     private func results(_ study:RepresentationStudy)->some View {
         VStack(alignment:.leading,spacing:12) {
@@ -229,21 +233,23 @@ struct PhoneAlignmentSettingsView:View {
     @Bindable var workflow:SentenceTrainingWorkflow
     var body:some View {
         @Bindable var aligner=workflow.phoneAligner
-        DisclosureGroup("Optional local phoneme alignment and camera points") {
+        VStack(alignment: .leading, spacing: 10) {
+          Toggle("Collect numeric camera points", isOn: $workflow.captureCameraPoints).disabled(workflow.isBusy)
+          DisclosureGroup("Local phoneme alignment (optional)") {
             VStack(alignment:.leading,spacing:10) {
                 Text("Whisper supplies word estimates. Phoneme boundaries require a separate local acoustic model and an explicit model-phone → IPA mapping. No model is downloaded. Leave these empty to keep phone timings unavailable.")
                     .font(.caption).foregroundStyle(.secondary)
                 TextField("MFA 3.x executable path",text:$aligner.executablePath)
                 TextField("Local acoustic model file path",text:$aligner.modelPath)
                 TextField("Model phone → IPA JSON map path",text:$aligner.phoneMapPath)
-                Toggle("Collect numeric camera points during spoken/mouthed sentence training",isOn:$workflow.captureCameraPoints)
-                if let role=workflow.collectionRole {
+                if let role=workflow.collectionRole, !workflow.variedSentences {
                     Text("Teacher collection · \(role.rawValue) sentences only in this recording session.").font(.caption.weight(.semibold))
                     Button("Return to regular paired training") {workflow.collectionRole=nil}
                 }
-                Text("Camera frames stay local and video is not saved. Normal spoken sentence training records microphone audio as before; diagnostic pilots never do. Silent phone alignment uses its own camera warp, allowing different pacing.")
+                Text("Silent phone alignment uses its own camera warp, allowing different pacing. Camera frames stay local; video is not saved.")
                     .font(.caption).foregroundStyle(.secondary)
             }.disabled(workflow.isBusy)
+          }
         }
     }
 }

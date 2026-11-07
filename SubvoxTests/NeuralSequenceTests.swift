@@ -29,6 +29,8 @@ final class NeuralSequenceTests:XCTestCase {
         XCTAssertEqual(resumed.currentMovement,.nodAndTurn)
         XCTAssertEqual(try Data(contentsOf:file),before)
         resumed.stop()
+        XCTAssertEqual(resumed.resumableNonSpeech?.id,resumed.visit?.id,"Resume must be available without relaunching the app")
+        XCTAssertEqual(resumed.resumableNonSpeechCount,15)
         let loaded=SequenceLearningWorkflow(root:root,clock:{now})
         XCTAssertEqual(loaded.resumableNonSpeech?.id,resumed.visit?.id,"Do not reopen an ancestor after it has a continuation")
         XCTAssertEqual(try Data(contentsOf:file),before)
@@ -51,6 +53,7 @@ final class NeuralSequenceTests:XCTestCase {
         }
         XCTAssertEqual(workflow.visit?.modalities,["AirPods motion"])
         XCTAssertTrue(workflow.visit?.complete==true)
+        XCTAssertNil(workflow.resumableNonSpeech,"A completed movement collection must not offer Resume")
         XCTAssertTrue(workflow.visit!.takes.allSatisfy {$0.text.isEmpty && $0.camera.isEmpty})
         XCTAssertEqual(Set(workflow.visit!.takes.map(\.sentenceID)).count,4)
         XCTAssertFalse(FileManager.default.fileExists(atPath:workflow.visit!.session.directory.appending(path:"audio.caf").path))

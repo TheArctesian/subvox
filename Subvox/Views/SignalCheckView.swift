@@ -14,22 +14,21 @@ struct SignalCheckView: View {
     }
 
     var body: some View {
-        if workflow.controlledActive { controlledBody }
+        if workflow.isAcquiring { capture }
+        else if workflow.controlledActive { controlledBody }
         else { normalBody }
     }
 
     private var controlledBody: some View {
-        VStack(spacing: 0) {
+        AppPageLayout {
             HStack {
                 Text(workflow.allowsHeadMovement ? "Camera-assisted fit comparison" : "Controlled fit comparison").font(.largeTitle.weight(.semibold))
                 Spacer()
                 if !workflow.isBusy { Button("Back to signal checks", action: workflow.exitControlled) }
-            }.padding(24)
-            Divider()
+            }
+        } content: {
             if workflow.phase == .controlSetup || workflow.phase == .controlBreak {
                 ControlledSignalSetupView()
-            } else if workflow.isAcquiring {
-                capture.padding(16)
             } else if workflow.isBusy {
                 VStack(spacing: 16) {
                     ProgressView()
@@ -40,24 +39,18 @@ struct SignalCheckView: View {
             } else if let comparison = workflow.comparison {
                 ScrollView { ControlledSignalResultsView(comparison: comparison).frame(maxWidth: 1000).padding(24).frame(maxWidth: .infinity) }
             }
-            Divider()
-            LiveMotionPanel(plotHeight: 50).padding(10)
         }
     }
 
     private var normalBody: some View {
-        VStack(spacing: 0) {
+        AppPageLayout {
             HStack {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("Check the motion signal").font(.largeTitle.weight(.semibold))
-                    Text("Three short phrases. Three repetitions. Spoken and silently mouthed.").foregroundStyle(.secondary)
-                }
+                AppPageHeading(title:"Motion signal",subtitle:"Three phrases, repeated aloud and silently mouthed.")
                 Spacer()
                 Button("Back to recording") { model.showSignalCheck = false;model.showRepresentation=false }.disabled(workflow.isBusy)
-            }.padding(24)
-            Divider()
+            }
+        } content: {
             if workflow.phase == .reseat { reseat.padding(24) }
-            else if workflow.isAcquiring { capture.padding(24) }
             else if workflow.isBusy {
                 VStack(spacing: 16) {
                     ProgressView()
@@ -77,8 +70,6 @@ struct SignalCheckView: View {
                     }.frame(maxWidth: 1000, alignment: .leading).padding(24).frame(maxWidth: .infinity)
                 }
             }
-            Divider()
-            LiveMotionPanel().padding(16)
         }
     }
 
@@ -107,7 +98,7 @@ struct SignalCheckView: View {
     private var reseat: some View {
         VStack(spacing: 22) {
             Label("Reference frozen", systemImage: "lock.fill").font(.title.weight(.semibold)).foregroundStyle(green)
-            Text("Reseat both AirPods").font(.system(size: 48, weight: .medium, design: .serif))
+            Text("Reseat both AirPods").font(.system(size: 40, weight: .semibold))
                 .multilineTextAlignment(.center)
             Text("Remove both AirPods, then put them back in naturally. Wait for motion to reconnect, then start the second session.")
                 .font(.title2).multilineTextAlignment(.center)
@@ -138,7 +129,7 @@ struct SignalCheckView: View {
                 Label("Speak aloud", systemImage: "speaker.wave.2").foregroundStyle(green)
                 Label("Mouth silently", systemImage: "mouth").foregroundStyle(blue)
             }.font(.headline)
-            ForEach(SignalCheckRun.sentences, id: \.self) { Text($0).font(.title2).fontDesign(.serif) }
+            ForEach(SignalCheckRun.sentences, id: \.self) { Text($0).font(.title2) }
             Text("Signal checks save numeric camera landmarks and AirPods motion only. Audio and video are not recorded.")
                 .font(.callout).foregroundStyle(.secondary)
             Text("These recordings stay separate from model training. Your 25% final test remains reserved.")
@@ -152,52 +143,60 @@ struct SignalCheckView: View {
 
     private var capture: some View {
         let phase = workflow.phase
-        return VStack(spacing: workflow.isPaced ? 8 : 16) {
-            HStack {
-                Text("\(workflow.usesCameraTeacher ? (workflow.run?.control?.block == .reseated ? "B · final test (2 of 2)" : "A · training (1 of 2)") : workflow.run?.reference == nil ? "Reference collection" : "Frozen-reference test") · take \(workflow.index + 1) of \(workflow.plan.count) · repetition \((workflow.current?.repetition ?? 0) + 1) of 3").font(.headline)
-                Spacer()
-                if phase == .relax || phase == .recording {
-                    Text(String(format: "%.1f s", workflow.secondsRemaining)).font(.title.monospacedDigit()).foregroundStyle(cueColor)
+        return RecordingViewport {
+            VStack(spacing:8) {
+                HStack {
+                    Text(workflow.usesCameraTeacher ? (workflow.run?.control?.block == .reseated ? "B · frozen transfer" : "A · training") : workflow.run?.reference == nil ? "Reference collection" : "Frozen-reference test").font(.headline)
+                    Spacer()
+                    Text("Take \(workflow.index+1) of \(workflow.plan.count)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+                }
+                ProgressView(value: Double(workflow.index + (workflow.usesCameraTeacher && workflow.run?.control?.block == .reseated ? 18 : 0)), total: Double(max(1, workflow.usesCameraTeacher ? 36 : workflow.plan.count))).tint(cueColor)
+            }
+        } prompt: {
+            VStack(spacing:8) {
+                if workflow.isPaced { CameraPoseGuide(camera: workflow.camera, target: workflow.comparison?.target, compact: true, allowsMovement: workflow.allowsHeadMovement).frame(height:70).padding(.horizontal,12) }
+                RecordingPromptPanel(color:cueColor) {
+                    VStack(spacing:18) {
+                        RecordingCueStatus(timer:phase == .ready ? "When you’re ready" : String(format:"%.1f s",workflow.secondsRemaining),
+                            title:phase == .ready ? "Ready" : phase == .relax ? "Relax" : phase == .ended ? "END · Saved" : "START · Recording",color:cueColor)
+                        Label(workflow.current?.condition == .normal ? "Speak aloud" : "Mouth silently", systemImage: workflow.current?.condition == .normal ? "speaker.wave.2" : "mouth")
+                            .font(.title3.weight(.medium)).foregroundStyle(cueColor)
+                        WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.isPaced ? workflow.activeWordIndex : nil,color:cueColor)
+                        Text(captureHelp).font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                        if phase == .ended, let take=workflow.latestTake {markedPlot(take.recording,title:"Saved take")}
+                        if let error=workflow.error {Text(error).font(.caption).foregroundStyle(.orange)}
+                    }
                 }
             }
-            ProgressView(value: Double(workflow.index + (workflow.usesCameraTeacher && workflow.run?.control?.block == .reseated ? 18 : 0)), total: Double(max(1, workflow.usesCameraTeacher ? 36 : workflow.plan.count))).tint(cueColor)
-            if workflow.isPaced { CameraPoseGuide(camera: workflow.camera, target: workflow.comparison?.target, compact: true, allowsMovement: workflow.allowsHeadMovement) }
-            VStack(spacing: workflow.isPaced ? 10 : 22) {
-                Text(phase == .ready ? "Ready" : phase == .relax ? "Relax · \(max(1, Int(ceil(workflow.secondsRemaining))))" : phase == .ended ? "END" : "START")
-                    .font(.system(size: workflow.isPaced ? 26 : 38, weight: .bold))
-                Label(workflow.current?.condition == .normal ? "Speak aloud" : "Mouth silently",
-                      systemImage: workflow.current?.condition == .normal ? "speaker.wave.2" : "mouth")
-                    .font(workflow.isPaced ? .title3.weight(.semibold) : .title.weight(.semibold))
-                if workflow.isPaced {
-                    HStack(spacing: 14) {
-                        ForEach(Array(workflow.currentText.split(separator: " ").enumerated()), id: \.offset) { i, word in
-                            Text(String(word)).foregroundStyle(workflow.activeWordIndex == i ? cueColor : cueColor.opacity(0.4))
-                                .padding(.vertical, 6).background(workflow.activeWordIndex == i ? cueColor.opacity(0.12) : Color.clear, in: RoundedRectangle(cornerRadius: 6))
-                        }
-                    }.font(.system(size: 52, weight: .medium, design: .serif)).minimumScaleFactor(0.5)
-                } else {
-                    Text(workflow.currentText).font(.system(size: 62, weight: .medium, design: .serif))
-                        .multilineTextAlignment(.center).minimumScaleFactor(0.5)
-                }
-                Text(phase == .ready ? "Read first. Start take when ready, then wait for START."
-                     : phase == .relax ? (workflow.allowsHeadMovement ? "Relax your mouth. Move your head comfortably; keep your face visible. Wait for START." : "Keep your head and jaw still. Wait for START.")
-                     : phase == .ended ? (workflow.latestTake?.endReason == .timeout ? "Timed out: excluded from comparisons. Redo to add a manual END." : "Take saved. Redo if you made a mistake, or continue.")
-                     : workflow.isPaced ? (workflow.allowsHeadMovement ? "Follow the highlighted words. Move naturally with your face visible. Recording ends automatically." : "Follow each highlighted word. Keep your head still. Recording ends automatically.")
-                     : "Once naturally. Choose Done as soon as you finish.")
-                    .font(workflow.isPaced ? .callout : .title3).multilineTextAlignment(.center)
-            }.foregroundStyle(cueColor).padding(workflow.isPaced ? 12 : 24).frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(cueColor.opacity(0.10), in: RoundedRectangle(cornerRadius: 18))
-            if phase == .ended, let take = workflow.latestTake { markedPlot(take.recording, title: "Saved take") }
-            if let error = workflow.error { Text(error).foregroundStyle(.orange) }
-            HStack {
-                Button("Stop and save", action: workflow.stop).keyboardShortcut(.cancelAction)
-                Spacer()
-                Button("Redo take", action: workflow.redo).controlSize(.large).disabled(!workflow.canRedo)
-                Button(phase == .ready ? "Start take" : phase == .ended ? (workflow.index + 1 == workflow.plan.count ? (workflow.usesCameraTeacher ? (workflow.run?.control?.block == .unchanged ? "Train and continue to B" : "Finish test") : "Finish block") : "Next take") : workflow.isPaced ? "Fixed timer running" : "Done", action: workflow.next)
-                    .buttonStyle(.borderedProminent).controlSize(.large).disabled(phase == .relax || (workflow.isPaced && phase == .recording) || (workflow.isPaced && phase == .ready && (!workflow.poseReady || !workflow.mouthReady)))
+        } actions: {
+            VStack(spacing:10) {
+                HStack(spacing:12) {
+                    Button("Stop and save",action:workflow.stop).buttonStyle(.borderless).foregroundStyle(.secondary).keyboardShortcut(.cancelAction)
+                    Spacer()
+                    Button(action:workflow.redo) {Label("Redo",systemImage:"arrow.counterclockwise")}.disabled(!workflow.canRedo)
+                    Button(nextTitle,action:workflow.next)
+                        .buttonStyle(.borderedProminent)
+                        .disabled(phase == .relax || (workflow.isPaced && phase == .recording) || (workflow.isPaced && phase == .ready && (!workflow.poseReady || !workflow.mouthReady)))
+                }.controlSize(.large)
+                Text("← / ↑ Redo     → / ↓ Start, finish or continue").font(.caption).foregroundStyle(.tertiary)
             }
-            Text("← / ↑ redo    → / ↓ start, done or next").font(.caption).foregroundStyle(.secondary)
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        } motion: {LiveMotionPanel(plotHeight:44)}
+    }
+    private var nextTitle:String {
+        if workflow.phase == .ready {return "Start take"}
+        if workflow.phase == .ended {
+            if workflow.index+1 == workflow.plan.count {return workflow.usesCameraTeacher ? (workflow.run?.control?.block == .unchanged ? "Train and continue to B" : "Finish test") : "Finish block"}
+            return "Continue"
+        }
+        return workflow.isPaced ? "Fixed timer running" : "Done"
+    }
+    private var captureHelp:String {
+        switch workflow.phase {
+        case .ready:return "Read first. Start take when ready, then wait for the recording cue."
+        case .relax:return workflow.allowsHeadMovement ? "Relax your mouth. Move comfortably and keep your face visible." : "Keep your head and jaw still. Wait for the recording cue."
+        case .ended:return workflow.latestTake?.endReason == .timeout ? "Timed out: excluded from comparisons. Redo to add a manual end marker." : "Take saved. Continue, or redo any mistake."
+        default:return workflow.isPaced ? (workflow.allowsHeadMovement ? "Follow the highlighted words. Move naturally with your face visible. Recording ends automatically." : "Follow the highlighted words. Keep your head still. Recording ends automatically.") : "Read once naturally. Choose Done as soon as you finish."
+        }
     }
 
     private func results(_ run: SignalCheckRun) -> some View {

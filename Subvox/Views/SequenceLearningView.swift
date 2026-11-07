@@ -10,16 +10,14 @@ struct SequenceLearningView:View {
         if workflow.isAcquiring {recordingScreen} else {regularBody}
     }
     private var regularBody:some View {
-        VStack(spacing:0) {
+        AppPageLayout {
             HStack {
-                VStack(alignment:.leading,spacing:5) {
-                    Text(collectionOnly ? "Record non-speech motion":"Advanced · neural model training").font(.largeTitle.weight(.semibold))
-                    Text(collectionOnly ? "Teach rejection using actual non-speech movements":"Real motion → IPA phonemes and transitions → words").foregroundStyle(.secondary)
-                }
+                AppPageHeading(title:collectionOnly ? "Non-speech movements":"Sentence models",
+                    subtitle:collectionOnly ? "Help the model recognise motion without words.":"Train locally, compare errors, then test a fixed model.")
                 Spacer()
                 Button("Back to recording") {model.showRepresentation=false;model.showSignalCheck=false;model.showSequenceLearning=false;model.showNonSpeechCollection=false}.disabled(workflow.isAcquiring)
-            }.padding(20).fixedSize(horizontal:false,vertical:true).layoutPriority(1)
-            Divider()
+            }
+        } content: {
             if collectionOnly {
                 VStack(spacing:0) {
                     ScrollView {
@@ -37,7 +35,11 @@ struct SequenceLearningView:View {
                                 Text("Training").tag(DataRole.training);Text("Development").tag(DataRole.validation)
                             }.pickerStyle(.segmented)
                             if let error=workflow.error {Text(error).foregroundStyle(.orange)}
-                            if let visit=workflow.visit,workflow.recordingNonSpeech,visit.complete {Text("\(visit.takes.filter {$0.discardedReason==nil}.count) non-speech takes saved. Include them in a new dataset snapshot; existing models stay fixed.")}
+                            if let visit=workflow.visit,workflow.recordingNonSpeech,visit.complete {
+                                let saved=visit.takes.filter {$0.discardedReason==nil}.count+(visit.carriedCompletedCount ?? 0)
+                                Label("\(saved) movement takes saved across this collection",systemImage:"checkmark.circle").font(.headline)
+                                Text("Include them in a new dataset snapshot. Existing models stay fixed.").font(.caption).foregroundStyle(.secondary)
+                            }
                         }.frame(maxWidth:1000).padding(24).frame(maxWidth:.infinity)
                     }.frame(minHeight:0,maxHeight:.infinity)
                     if model.motion.status != .streaming {Text("Connect your AirPods to record. You can preview the movements now.").font(.callout).foregroundStyle(.orange)}
@@ -71,20 +73,23 @@ struct SequenceLearningView:View {
                     }.frame(maxWidth:1100,alignment:.leading).padding(24).frame(maxWidth:.infinity)
                 }
             }
-            Divider();LiveMotionPanel(plotHeight:60).padding(12).fixedSize(horizontal:false,vertical:true).layoutPriority(1)
         }
     }
     private var controls:some View {
         @Bindable var workflow=workflow
         return VStack(alignment:.leading,spacing:12) {
-            Text("1 · Prepare real recordings   2 · Train and compare   3 · Test frozen models").font(.headline)
+            Text("Train and compare").font(.title2.weight(.semibold))
             HStack {
                 Button("Prepare dataset snapshot",action:workflow.prepareDataset)
                 Stepper("\(workflow.epochs) epochs",value:$workflow.epochs,in:10...200,step:10).frame(width:170)
                 Button("Train neural comparisons",action:workflow.train).buttonStyle(.borderedProminent).disabled(!workflow.datasetCompatible)
             }.disabled(workflow.isBusy || model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy)
-            Text("Compares plain CTC, diphone context, train-only augmentation, and activity supervision. PyTorch runs locally on CPU; the first run prepares a pinned local runtime. Original recordings and frozen baselines stay intact.")
+            Text("Prepare a snapshot of your recordings, then train the comparisons. All processing runs on this Mac. Saved models remain available for fixed-model tests.")
                 .font(.callout).foregroundStyle(.secondary)
+            DisclosureGroup("Model methods and local runtime") {
+                Text("Compares plain CTC, diphone context, train-only augmentation, and activity supervision. PyTorch runs locally on CPU; the first run prepares a pinned runtime. Original recordings and frozen baselines stay intact.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
             if let dataset=workflow.datasetURL {Button("Review dataset manifest and labels") {NSWorkspace.shared.open(dataset)}}
             if workflow.datasetURL != nil && !workflow.datasetCompatible {
                 Text("This older snapshot is preserved. Prepare a new dataset snapshot to use cross-validation; saved model inference remains available.")
@@ -177,7 +182,8 @@ struct SequenceLearningView:View {
                 Text("These scores pool held-out predictions from separate fold models. The deployed model was refitted on all eligible recordings after epoch selection, so the table is not an unseen-data score of those refitted weights. Fresh recordings are still needed.")
                     .font(.callout).foregroundStyle(.secondary)
             }
-            Grid(alignment:.leading,horizontalSpacing:18,verticalSpacing:8) {
+            ScrollView(.horizontal) {
+              Grid(alignment:.leading,horizontalSpacing:18,verticalSpacing:8) {
                 GridRow {Text("Condition / model");Text("Utterances");Text("Phone error");Text("Word error");Text("Word error + LM");Text("Rejected")}.font(.caption.weight(.semibold))
                 ForEach(Array(report.comparisons.enumerated()),id:\.offset) {_,row in
                     GridRow {
@@ -185,6 +191,7 @@ struct SequenceLearningView:View {
                         Text(percent(row.phonemeErrorRate));Text(percent(row.wordErrorRateNoLm));Text(percent(row.wordErrorRateLm));Text(percent(row.rejectionRate))
                     }.font(.callout)
                 }
+              }.fixedSize(horizontal:true,vertical:false).padding(.bottom,6)
             }
             Text("WER includes rejected/missing output as errors. Small repeated phrase sets have weak uncertainty estimates; open the report for sentence-group counts, confusions, exclusions, negative false accepts and coverage. Fresh same-fit/reseated tests remain necessary.")
                 .font(.caption).foregroundStyle(.secondary)
@@ -240,11 +247,7 @@ struct SequenceLearningView:View {
         } prompt: {
             RecordingPromptPanel(color:cueColor) {
                 VStack(spacing:16) {
-                    VStack(spacing:8) {
-                        Text(timerText).font(.system(size:20,weight:.medium).monospacedDigit()).foregroundStyle(.secondary)
-                        HStack(spacing:7) {Circle().fill(cueColor).frame(width:6,height:6);Text(stageName).font(.system(size:13,weight:.semibold))}
-                            .padding(.horizontal,13).padding(.vertical,7).background(cueColor.opacity(0.12),in:Capsule())
-                    }
+                    RecordingCueStatus(timer:timerText,title:stageName,color:cueColor)
                     if let movement=workflow.currentMovement {
                         NonSpeechMovementGuide(movement:movement,color:cueColor,demonstrating:workflow.phase == .ready || workflow.phase == .recording)
                         Label("No speaking or mouthing words",systemImage:"speaker.slash").font(.callout).foregroundStyle(.secondary)
@@ -262,7 +265,7 @@ struct SequenceLearningView:View {
                     Spacer()
                     Button(action:workflow.redo) {Label("Redo",systemImage:"arrow.counterclockwise")}.disabled(!workflow.canRedo)
                     Button(action:workflow.next) {
-                        Label(workflow.phase == .ready ? "Start movement":workflow.phase == .recording ? "Done":"Continue",
+                        Label(workflow.phase == .ready ? (workflow.recordingNonSpeech ? "Start movement":"Start take"):workflow.phase == .recording ? "Done":"Continue",
                               systemImage:workflow.phase == .recording ? "checkmark":"chevron.right").frame(minWidth:130)
                     }.buttonStyle(.borderedProminent).tint(.accentColor)
                         .disabled(workflow.phase == .relax || (workflow.phase == .ready && model.motion.status != .streaming))

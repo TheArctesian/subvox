@@ -8,6 +8,8 @@ struct SentenceTrainingView: View {
     private var mouth: Color { colorScheme == .dark ? Color(red: 0.45, green: 0.67, blue: 1) : Color(red: 0.19, green: 0.37, blue: 0.78) }
     private var relax: Color { colorScheme == .dark ? Color(red: 1, green: 0.74, blue: 0.35) : Color(red: 0.62, green: 0.39, blue: 0.08) }
     @State private var channel = MotionPlotChannel.rotation
+    private enum Section: String, CaseIterable { case record = "Record", review = "Review", progress = "Progress" }
+    @State private var section = Section.record
 
     var body: some View {
         if model.showNonSpeechCollection {SequenceLearningView(collectionOnly:true)}
@@ -20,16 +22,13 @@ struct SentenceTrainingView: View {
 
     @ViewBuilder private var trainingBody: some View {
         let workflow = model.sentenceTraining
-        VStack(spacing: 0) {
+        AppPageLayout {
             HStack(alignment: .center) {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("Record training sentences").font(.largeTitle.weight(.semibold))
-                    Text("Speak, then mouth. Finish and redo at your own pace.").foregroundStyle(.secondary)
-                }
+                AppPageHeading(title: "Training", subtitle: "Speak, then mouth. Record at your own pace.")
                 Spacer()
                 if !workflow.isBusy {
                     Menu("Advanced") {
-                        Button("Neural model training and results") { model.showSequenceLearning = true }
+                        Button("Sentence models") { model.showSequenceLearning = true }
                         Button("Saved frozen-model studies") { model.showRepresentation = true }
                         Button("Check motion signal") { model.showSignalCheck = true }
                     }.controlSize(.large)
@@ -38,11 +37,9 @@ struct SentenceTrainingView: View {
                     Button("Record sentences") { model.startSentenceTraining() }
                         .buttonStyle(.borderedProminent).controlSize(.large).disabled(!canStart)
                 }
-            }.padding(24)
-            Divider()
-            if workflow.isAcquiring {
-                sentenceRecordingScreen
-            } else if workflow.isBusy {
+            }
+        } content: {
+            if workflow.isBusy {
                 VStack(spacing: 16) {
                     ProgressView()
                     Text(workflow.phase == .preparing ? "Starting recording…" : workflow.processingText).font(.title3)
@@ -50,22 +47,44 @@ struct SentenceTrainingView: View {
                     if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
+              VStack(spacing: 0) {
+                Picker("Training section", selection: $section) {
+                    Text("Record").tag(Section.record)
+                    Text("Review" + (pendingCount > 0 ? " (\(pendingCount))" : "")).tag(Section.review)
+                    Text("Progress").tag(Section.progress)
+                }.pickerStyle(.segmented).labelsHidden().frame(maxWidth: 460).padding(.top, 20)
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        setup
-                        PhoneAlignmentSettingsView(workflow: workflow)
+                    LazyVStack(alignment: .leading, spacing: 24) {
                         if let error = workflow.error { Text(error).foregroundStyle(.red) }
-                        if !workflow.data.pairs.isEmpty { review }
-                        if !workflow.fittingWords.isEmpty { coverage; validation }
-                        reservation
+                        switch section {
+                        case .record:
+                            setup
+                            if pendingCount > 0 {
+                                HStack {
+                                    Label("\(pendingCount) pairs ready to review", systemImage: "waveform.path")
+                                    Spacer()
+                                    Button("Review recordings") { section = .review }
+                                }.font(.callout)
+                            }
+                            reservation
+                        case .review:
+                            if workflow.data.pairs.isEmpty {
+                                ContentUnavailableView("No recordings yet", systemImage: "waveform", description: Text("Record a sentence pair to compare its motion and transcript here."))
+                            } else { review }
+                        case .progress:
+                            if !workflow.fittingWords.isEmpty { coverage; validation }
+                            else { ContentUnavailableView("Review your recordings first", systemImage: "chart.bar", description: Text("Usable, accepted pairs build sound coverage and the word baseline.")) }
+                            reservation
+                        }
                     }.frame(maxWidth: 1000, alignment: .leading)
                         .padding(24).frame(maxWidth: .infinity)
                 }
+              }
             }
-            Divider()
-            LiveMotionPanel().padding(16)
         }
     }
+
+    private var pendingCount: Int { model.sentenceTraining.data.pairs.filter { $0.review == .pending }.count }
 
     private var canStart: Bool {
         model.motion.status == .streaming && model.localWhisper.isConfigured && model.sentenceTraining.storageReady
@@ -82,7 +101,8 @@ struct SentenceTrainingView: View {
         return VStack(alignment: .leading, spacing: 16) {
             Text("\(development.filter { acquired.contains($0.id) }.count) of \(development.count) sentences recorded")
                 .font(.title2.weight(.medium))
-            Text("Preview each sentence and start when ready. After the Relax baseline, read aloud, choose Done, then mouth it silently in its own take. The END screen waits for you. No freeze or reseat step is required.")
+            ProgressView(value: Double(development.filter { acquired.contains($0.id) }.count), total: Double(max(1, development.count)))
+            Text("Preview, relax, speak, then mouth the same text. Choose Done when finished, and Redo for mistakes. Each saved take waits for you to continue.")
                 .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             Text("Sentence sessions save microphone audio and AirPods motion, with numeric camera points when enabled. Video is not saved. The separate non-speech session records motion only.")
                 .font(.caption).foregroundStyle(.secondary)
@@ -105,15 +125,20 @@ struct SentenceTrainingView: View {
                 }.pickerStyle(.segmented)
                 Text("Each visit keeps one role and fresh sentence groups. Re-record mistakes from review; completed or partial sentences are not automatically repeated in every session.")
                     .font(.caption).foregroundStyle(.secondary)
-                Button("Add the 235-sentence diphone bank") {workflow.addSentenceBank()}
-                    .disabled(SentencePrompt.diphoneBank.allSatisfy {p in data.prompts.contains {$0.id==p.id}})
-                Text("Adding the bank preserves existing roles and recordings, and reserves 25% of the expanded sentence corpus. Pronunciations remain editable proposals.")
-                    .font(.caption).foregroundStyle(.secondary)
+                if SentencePrompt.diphoneBank.allSatisfy({p in data.prompts.contains {$0.id==p.id}}) {
+                    Label("235-sentence bank added", systemImage: "checkmark.circle").font(.caption).foregroundStyle(.secondary)
+                } else {
+                    Button("Add the 235-sentence diphone bank") {workflow.addSentenceBank()}
+                    Text("Keeps existing recordings and reserves 25% of the expanded corpus for the final test.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
             }
             HStack {
-                Picker("Read as", selection: $workflow.presentation) {
-                    ForEach(SentenceTrainingWorkflow.Presentation.allCases) { Text($0.rawValue).tag($0) }
-                }.pickerStyle(.segmented).disabled(workflow.variedSentences)
+                if !workflow.variedSentences {
+                    Picker("Read as", selection: $workflow.presentation) {
+                        ForEach(SentenceTrainingWorkflow.Presentation.allCases) { Text($0.rawValue).tag($0) }
+                    }.pickerStyle(.segmented)
+                }
                 Picker("Pace", selection: $workflow.pace) {
                     ForEach(TrainingPace.allCases) { Text($0.rawValue).tag($0) }
                 }.pickerStyle(.segmented)
@@ -123,9 +148,10 @@ struct SentenceTrainingView: View {
                     workflow.transcribePending(whisper:model.localWhisper)
                 }.disabled(!model.localWhisper.isConfigured)
             }
-            Button("Record non-speech examples · nod, turn, chew, swallow") {
+            Button {
                 model.showNonSpeechCollection=true
-            }.disabled(workflow.isBusy || model.sequenceLearning.isBusy)
+            } label: { Label("Record non-speech movements", systemImage: "figure.stand") }
+                .disabled(workflow.isBusy || model.sequenceLearning.isBusy)
             if !workflow.plan.isEmpty {
                 Text("Next batch: \(workflow.plan.count) paired prompts, about \(max(1, Int(ceil(workflow.estimatedSeconds / 60)))) minutes.")
                     .font(.callout).foregroundStyle(.secondary)
@@ -133,7 +159,7 @@ struct SentenceTrainingView: View {
             DisclosureGroup("Recording settings") {
                 VStack(alignment: .leading, spacing: 12) {
                     Stepper("Up to \(workflow.sentenceCount) training sentences per batch", value: $workflow.sentenceCount, in: 2...8, step: 2)
-                    Text("Validation sentences are added separately; passages join up to three sentences.")
+                    Text(workflow.variedSentences ? "Each batch uses fresh sentences from the selected role." : "Validation sentences are added separately; passages join up to three sentences.")
                         .font(.caption).foregroundStyle(.secondary)
                     Picker("Microphone", selection: $audio.selectedDeviceID) {
                         Text("System default").tag(Optional<UInt32>.none)
@@ -141,6 +167,7 @@ struct SentenceTrainingView: View {
                     }
                     Text("Use the Mac microphone to keep AirPods in their normal audio mode.").font(.caption).foregroundStyle(.secondary)
                     TextField("Session notes: fit, posture or pronunciation", text: $workflow.notes).textFieldStyle(.roundedBorder)
+                    PhoneAlignmentSettingsView(workflow: workflow)
                     DisclosureGroup("Local transcription" + (whisper.isConfigured ? " · ready" : " · setup needed")) {
                         TextField("Whisper model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
                         TextField("Whisper server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
@@ -172,12 +199,7 @@ struct SentenceTrainingView: View {
                 if workflow.captureCameraPoints {CameraPoseGuide(camera:workflow.camera,compact:true,allowsMovement:true).frame(height:70).padding(.horizontal,12)}
                 RecordingPromptPanel(color:color) {
                     VStack(spacing:18) {
-                        VStack(spacing:8) {
-                            Text(workflow.phase == .ready ? "When you’re ready":String(format:"%.1f s",workflow.secondsRemaining))
-                                .font(.system(size:20,weight:.medium).monospacedDigit()).foregroundStyle(.secondary)
-                            HStack(spacing:7) {Circle().fill(color).frame(width:6,height:6);Text(status).font(.system(size:13,weight:.semibold))}
-                                .padding(.horizontal,13).padding(.vertical,7).background(color.opacity(0.12),in:Capsule())
-                        }
+                        RecordingCueStatus(timer: workflow.phase == .ready ? "When you’re ready" : String(format: "%.1f s", workflow.secondsRemaining), title: status, color: color)
                         Label(workflow.currentCondition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.currentCondition == .normal ? "speaker.wave.2":"mouth")
                             .font(.title3.weight(.medium)).foregroundStyle(color)
                         WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
@@ -205,8 +227,7 @@ struct SentenceTrainingView: View {
         let pairs = Array(model.sentenceTraining.data.pairs.reversed())
         let pending = pairs.filter { $0.review == .pending }
         let reviewed = pairs.filter { $0.review != .pending }
-        return VStack(alignment: .leading, spacing: 14) {
-            Divider()
+        return LazyVStack(alignment: .leading, spacing: 14) {
             HStack {
                 Text(pending.isEmpty ? "Recordings reviewed" : "Review \(pending.count) recording pairs").font(.title2.weight(.semibold))
                 Spacer()
@@ -245,8 +266,9 @@ struct SentenceTrainingView: View {
             if let transcript = pair.transcript {
                 Text("Heard: " + transcript.text).font(.callout)
                 if pair.review != .excluded,let match=pair.transcriptMatchRate,match>=0.85 {
-                    Text("CTC transcript candidate · \(Int(match*100))% word agreement. A new snapshot can include this pending sentence even if word alignment failed; motion quality and pronunciation coverage are checked separately. Whisper agreement is not evidence of motion accuracy.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    DisclosureGroup("Transcript agreement: \(Int(match*100))%") {
+                        Text("A new neural dataset can include this pending sentence even if word alignment failed. Motion quality and pronunciation coverage are checked separately. Transcript agreement does not measure motion accuracy.")
+                    }.font(.caption).foregroundStyle(.secondary)
                 }
                 if let directory = pair.directory, transcript.timingReview != nil {
                     DisclosureGroup("Check word times against audio") {
@@ -305,8 +327,9 @@ struct SentenceTrainingView: View {
             HStack {
                 Button(pair.review == .accepted ? "In use" : "Use pair") { model.sentenceTraining.review(pair.id, decision: .accepted) }
                     .disabled(!pair.canAccept || pair.review == .accepted)
-                Button("Skip pair") { model.sentenceTraining.review(pair.id, decision: .excluded) }
+                Button(pair.review == .excluded ? "Excluded" : "Exclude pair") { model.sentenceTraining.review(pair.id, decision: .excluded) }
                     .disabled(pair.review == .excluded)
+                    .help("Exclude this pair from future training snapshots. The recording is kept.")
                 Spacer()
                 if pair.complete {
                     Button("Retry alignment") { model.sentenceTraining.retryProcessing(pair.id, whisper: model.localWhisper) }
@@ -367,7 +390,7 @@ struct SentenceTrainingView: View {
                     Text("\(result.expected.count) of \(total) validation words had usable boundaries and pronunciations.").font(.caption).foregroundStyle(.secondary)
                 }
             }
-            Text("This checks words using estimated boundaries. Continuous sentence decoding is not available yet.")
+            Text("This word baseline uses estimated boundaries. Experimental sentence decoding and its separate evaluation are under Advanced → Sentence models.")
                 .font(.caption).foregroundStyle(.secondary)
             DisclosureGroup("Model settings") {
                 Picker("Learning method", selection: $workflow.learningMethod) {

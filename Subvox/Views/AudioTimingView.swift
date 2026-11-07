@@ -17,8 +17,8 @@ struct AudioTimingView: View {
                 HStack {
                     Text("Audio timing").font(.headline)
                     Spacer()
-                    Button("Play reference") { play(start: transcript.sourceAudioStartSeconds ?? 0, duration: duration) }
-                    Button("Stop") { stop() }.disabled(player?.isPlaying != true)
+                    Button("Play reference", systemImage: "play.fill") { play(start: transcript.sourceAudioStartSeconds ?? 0, duration: duration) }
+                    Button("Stop", systemImage: "stop.fill") { stop() }.disabled(player?.isPlaying != true)
                 }
                 Canvas { context, size in
                     let peak = max(0.0001, review.envelope.map(\.rms).max() ?? 0)

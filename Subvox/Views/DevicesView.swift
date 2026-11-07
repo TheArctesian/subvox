@@ -9,7 +9,8 @@ struct DevicesView: View {
         let span = motion.latest.map { ($0.t - 8)...$0.t }
 
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 24) {
+                AppPageHeading(title: "Devices", subtitle: "Check your AirPods signal and microphone before recording.")
                 HStack(alignment: .top, spacing: 16) {
                     motionCard
                     MicrophoneCard()
@@ -28,7 +29,7 @@ struct DevicesView: View {
                 }
 
             }
-            .padding(20)
+            .frame(maxWidth: 1100, alignment: .leading).padding(24).frame(maxWidth: .infinity)
         }
     }
 
@@ -36,9 +37,11 @@ struct DevicesView: View {
         let motion = model.motion
         return GroupBox("AirPods motion") {
             VStack(alignment: .leading, spacing: 8) {
-                LabeledContent("Status", value: motion.status.label)
+                Label(motion.status == .streaming ? "Receiving motion" : motion.status.label, systemImage: "headphones")
+                    .font(.headline).foregroundStyle(motion.status == .streaming ? Color.green : Color.secondary)
                 LabeledContent("Sample rate", value: String(format: "%.1f Hz", motion.sampleRate))
                 LabeledContent("Samples", value: "\(motion.sampleCount)")
+                LabeledContent("Reported sensor", value: motion.latest?.sensorLocation == 1 ? "Left AirPod" : motion.latest?.sensorLocation == 2 ? "Right AirPod" : "Unavailable")
                 if motion.status == .waiting {
                     Text("Put in AirPods Pro and make sure they're the active output on this Mac.")
                         .font(.caption)
@@ -66,11 +69,12 @@ private struct MicrophoneCard: View {
                     }
                 }
                 HStack {
-                    Button(audio.isRunning ? "Stop Mic" : "Start Mic") {
+                    Button(audio.isRunning ? "Stop test" : "Test microphone", systemImage: audio.isRunning ? "stop.fill" : "mic") {
                         Task { await model.toggleMic() }
-                    }
+                    }.fixedSize()
                     Button("Refresh", systemImage: "arrow.clockwise") { audio.refreshDevices() }
                         .labelStyle(.iconOnly)
+                        .help("Refresh microphone inputs")
                     LevelMeter(value: Double(audio.level))
                 }
                 if let name = audio.activeDeviceName {
@@ -83,7 +87,7 @@ private struct MicrophoneCard: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
-            .disabled(model.sentenceTraining.isBusy || model.signalCheck.isBusy)
+            .disabled(model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy || model.sequenceLearning.isBusy)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(6)
         }

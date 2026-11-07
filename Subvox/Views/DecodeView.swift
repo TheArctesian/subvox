@@ -4,27 +4,42 @@ struct DecodeView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("Template / jaw baseline").font(.caption).foregroundStyle(.secondary)
+        AppPageLayout {
+            HStack(alignment: .center) {
+                AppPageHeading(title: "Try a model", subtitle: "Mouth a word and inspect what the motion model detects.")
                 Spacer()
-                Button("Try neural sentence decoder") {model.screen = .train;model.showSequenceLearning=true}
-            }.padding(16)
+                Button("Sentence models", systemImage: "text.bubble") {
+                    model.showNonSpeechCollection = false
+                    model.showRepresentation = false
+                    model.showSignalCheck = false
+                    model.showSequenceLearning = true
+                    model.screen = .train
+                }
+            }
+        } content: {
             if model.decoder == nil {
-                VStack(spacing: 18) {
-                    Image(systemName: "text.bubble").font(.system(size: 40)).foregroundStyle(.secondary)
-                    Text(model.isBuildingDecoder ? "Building your model…" : "Start with a training session").font(.title2.weight(.semibold))
-                    Text("Record paired passages and review their motion traces. Your model becomes available here automatically.")
-                        .foregroundStyle(.secondary).multilineTextAlignment(.center).frame(maxWidth: 440)
+                ContentUnavailableView {
+                    Label(model.isBuildingDecoder ? "Building your word model…" : "Record your first words", systemImage: "waveform")
+                } description: {
+                    Text("Record paired sentences, then accept usable pairs in Review. The word baseline appears here automatically.")
+                } actions: {
                     if model.isBuildingDecoder { ProgressView() }
-                    Button("Go to Train") { model.screen = .train }.buttonStyle(.borderedProminent)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding(32)
+                    Button("Record sentences") {
+                        model.showNonSpeechCollection = false
+                        model.showRepresentation = false
+                        model.showSignalCheck = false
+                        model.showSequenceLearning = false
+                        model.screen = .train
+                    }.buttonStyle(.borderedProminent)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 22) {
-                        Text("Try a mouthed word").font(.largeTitle.weight(.semibold))
-                        Text("This model recognizes individual words. Hold Space while mouthing, then release.")
-                            .foregroundStyle(.secondary)
+                        Label("Individual-word baseline", systemImage: "waveform.path").font(.headline)
+                        Text("Hold Space while mouthing one word, then release. This experimental baseline uses estimated word boundaries from training.").foregroundStyle(.secondary)
+                        if model.motion.status != .streaming {
+                            Label("Connect your AirPods to capture motion.", systemImage: "headphones").foregroundStyle(.orange)
+                        }
                         controls
                         transcript
                         if !model.decoded.isEmpty { predictionDetails }
@@ -32,9 +47,11 @@ struct DecodeView: View {
                     }.frame(maxWidth: 1000, alignment: .leading).padding(24).frame(maxWidth: .infinity)
                 }
             }
-            Divider()
-            LiveMotionPanel().padding(16)
         }
+    }
+
+    private var captureUnavailable: Bool {
+        model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.representation.isBusy || model.sequenceLearning.isBusy
     }
 
     private var controls: some View {
@@ -46,7 +63,7 @@ struct DecodeView: View {
             }.pickerStyle(.segmented).frame(maxWidth: 340)
             if model.decodeMode == .hold {
                 HoldToCaptureButton(title: "Mouth a word", isCapturing: capture.isCapturing,
-                    isEnabled: model.motion.status == .streaming && !model.sentenceTraining.isBusy && !model.signalCheck.isBusy,
+                    isEnabled: model.motion.status == .streaming && !captureUnavailable,
                     onBegin: capture.begin, onEnd: capture.end)
             } else {
                 Button(capture.isCalibrating ? "Calibrating… stay still" : "Calibrate resting motion") { capture.calibrate() }
@@ -55,11 +72,12 @@ struct DecodeView: View {
                 Text(capture.noiseFloor == nil ? "Keep still for two seconds while calibrating." : capture.isCapturing ? "Capturing motion…" : "Waiting for motion…")
                     .font(.caption).foregroundStyle(.secondary)
             }
-        }.disabled(model.sentenceTraining.isBusy || model.signalCheck.isBusy)
+        }.disabled(captureUnavailable)
     }
 
     private var transcript: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        GroupBox {
+          VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Model output").font(.headline)
                 Spacer()
@@ -75,7 +93,8 @@ struct DecodeView: View {
                     .frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
             }
             Text("Faded words were rejected by the model’s thresholds.").font(.caption).foregroundStyle(.secondary)
-        }.padding(18).background(.quaternary.opacity(0.3), in: RoundedRectangle(cornerRadius: 10))
+          }.padding(12)
+        }
     }
 
     private var predictionDetails: some View {

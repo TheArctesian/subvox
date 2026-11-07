@@ -427,6 +427,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         guard let visit else {return}
         _=recorder?.stop(sessionID:visit.session.id);self.visit?.endedUnix=Date().timeIntervalSince1970;self.visit?.complete=true
         saveVisit();phase = .idle
+        loadResumableNonSpeech()
         guard evaluate else {return}
         if visit.role == Mode.inference.rawValue,let take=visit.takes.last(where:{$0.discardedReason==nil}),let path=visit.modelPaths[take.recording.condition.rawValue] {
             phase = .working;task=Task {
