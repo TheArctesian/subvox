@@ -13,6 +13,11 @@ struct SentenceValidationReport: Codable, Sendable {
     var expectedValidationWordCount: Int?
     var top1: Double { expected.isEmpty ? 0 : Double(expected.indices.filter { predicted[$0].first == expected[$0] }.count) / Double(expected.count) }
     var top5: Double { expected.isEmpty ? 0 : Double(expected.indices.filter { predicted[$0].prefix(5).contains(expected[$0]) }.count) / Double(expected.count) }
+    var acceptance: Double { expected.isEmpty ? 0 : Double(accepted.filter { $0 }.count) / Double(expected.count) }
+    /// Fraction of all evaluated slices that Decode would emit correctly, including rejects.
+    var acceptedCorrect: Double {
+        expected.isEmpty ? 0 : Double(expected.indices.filter { accepted[$0] && predicted[$0].first == expected[$0] }.count) / Double(expected.count)
+    }
 }
 
 enum SentenceValidation {

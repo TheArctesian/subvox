@@ -111,7 +111,8 @@ private struct RecordingCard: View {
                     .textFieldStyle(.roundedBorder)
                 HStack {
                     Button {
-                        recorder.isRecording ? recorder.stop() : recorder.start(audio: model.audio)
+                        if recorder.isRecording { recorder.stop() }
+                        else { recorder.start(audio: model.audio) }
                     } label: {
                         Label(recorder.isRecording ? "Stop" : "Record",
                               systemImage: recorder.isRecording ? "stop.fill" : "record.circle")

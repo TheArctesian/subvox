@@ -1,6 +1,14 @@
 import AVFoundation
 import Observation
 
+/// Immutable identity and clock for one recorder session. Never infer ownership from "last".
+struct RecordingSession: Codable, Equatable, Sendable {
+    var id: UUID
+    var directory: URL
+    var startUptime: TimeInterval
+    var audioOffset: Double?
+}
+
 /// Records synchronized motion CSV + microphone audio + labelled segment events for offline
 /// analysis (normal speech vs. whisper vs. silent mouthing).
 ///
@@ -33,17 +41,27 @@ final class SessionRecorder {
     private(set) var startedAt: Date?
     private(set) var motionCount = 0
     private(set) var eventCount = 0
-    private(set) var lastSessionURL: URL?
+    private(set) var lastSession: RecordingSession?
+    var lastSessionURL: URL? { lastSession?.directory }
     /// Clock of the last finished session: its start (seconds since boot) and where its audio
     /// begins relative to that start, for anyone post-processing the files.
-    private(set) var lastStartUptime: TimeInterval = 0
-    private(set) var lastAudioOffset: Double?
+    var lastStartUptime: TimeInterval { lastSession?.startUptime ?? 0 }
+    var lastAudioOffset: Double? { lastSession?.audioOffset }
+    private(set) var activeSessionID: UUID?
+    var currentSession: RecordingSession? {
+        guard isRecording, let id = activeSessionID, let directory else { return nil }
+        return RecordingSession(id: id, directory: directory, startUptime: startUptime,
+                                audioOffset: audioWriter?.currentInfo?.firstHostSeconds.map { $0 - startUptime })
+    }
     private(set) var error: String?
 
     static var root: URL {
         URL.documentsDirectory.appending(path: "Subvox/Sessions", directoryHint: .isDirectory)
     }
 
+    @ObservationIgnored private let recordingRoot: URL
+    @ObservationIgnored private var recordedCondition: Condition = .silent
+    @ObservationIgnored private var recordedPrompt = ""
     @ObservationIgnored private var directory: URL?
     @ObservationIgnored private var startUptime: TimeInterval = 0
     @ObservationIgnored private var motionHandle: FileHandle?
@@ -53,39 +71,69 @@ final class SessionRecorder {
     @ObservationIgnored private weak var sink: AudioSink?
     @ObservationIgnored private var audioDeviceName: String?
 
-    func start(audio: AudioService) {
-        guard !isRecording else { return }
+    init(root: URL? = nil) { recordingRoot = root ?? Self.root }
+
+    @discardableResult
+    func start(audio: AudioService) -> RecordingSession? {
+        start(audioSink: audio.isRunning ? audio.sink : nil, audioDevice: audio.activeDeviceName)
+    }
+
+    /// Accept a sink separately so capture and recorder lifetime are independent.
+    @discardableResult
+    func start(audioSink: AudioSink?, audioDevice: String? = nil) -> RecordingSession? {
+        guard !isRecording else { return nil }
         error = nil
         let stamp = Date().formatted(.iso8601.year().month().day().time(includingFractionalSeconds: false))
             .replacingOccurrences(of: ":", with: "")
-        let dir = Self.root.appending(path: "\(stamp)-\(condition.slug)-\(UUID().uuidString.prefix(8))", directoryHint: .isDirectory)
+        let dir = recordingRoot.appending(path: "\(stamp)-\(condition.slug)-\(UUID().uuidString.prefix(8))", directoryHint: .isDirectory)
         do {
             try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
             motionHandle = try Self.makeFile(dir.appending(path: "motion.csv"), header: MotionSample.csvHeader)
             eventsHandle = try Self.makeFile(dir.appending(path: "events.csv"), header: "start,end,kind,label,confidence")
         } catch {
             self.error = error.localizedDescription
-            return
+            try? motionHandle?.close(); try? eventsHandle?.close()
+            motionHandle = nil; eventsHandle = nil
+            return nil
         }
 
         directory = dir
         startUptime = ProcessInfo.processInfo.systemUptime
         startedAt = Date()
+        activeSessionID = UUID()
+        recordedCondition = condition
+        recordedPrompt = prompt
+        audioDeviceName = audioDevice
         motionCount = 0
         eventCount = 0
 
-        if audio.isRunning {
+        if let audioSink {
             let writer = AudioFileWriter(url: dir.appending(path: "audio.caf"))
             audioWriter = writer
-            sink = audio.sink
-            sinkID = audio.sink.add { buffer, time in writer.write(buffer, time) }
-            audioDeviceName = audio.activeDeviceName
+            sink = audioSink
+            sinkID = audioSink.add { buffer, time in writer.write(buffer, time) }
         }
         isRecording = true
+        do { return try checkpoint() }
+        catch {
+            self.error = error.localizedDescription
+            stop()
+            return nil
+        }
     }
 
-    func stop() {
-        guard isRecording, let directory else { return }
+    /// Save the clock while acquisition is still running; completed takes can recover it.
+    func checkpoint(sessionID: UUID? = nil) throws -> RecordingSession? {
+        guard let session = currentSession, sessionID == nil || sessionID == session.id else { return nil }
+        try motionHandle?.synchronize()
+        try eventsHandle?.synchronize()
+        try writeMetadata(session: session, audioInfo: audioWriter?.currentInfo, complete: false)
+        return session
+    }
+
+    @discardableResult
+    func stop(sessionID: UUID? = nil) -> RecordingSession? {
+        guard let session = currentSession, sessionID == nil || sessionID == session.id else { return nil }
         isRecording = false
         if let sinkID { sink?.remove(sinkID) }
         sinkID = nil
@@ -96,26 +144,34 @@ final class SessionRecorder {
         motionHandle = nil
         eventsHandle = nil
 
+        let finished = RecordingSession(id: session.id, directory: session.directory, startUptime: session.startUptime,
+                                       audioOffset: audioInfo?.firstHostSeconds.map { $0 - session.startUptime })
+        do { try writeMetadata(session: finished, audioInfo: audioInfo, complete: true) }
+        catch { self.error = error.localizedDescription }
+        lastSession = finished
+        activeSessionID = nil
+        self.directory = nil
+        return finished
+    }
+
+    private func writeMetadata(session: RecordingSession, audioInfo: AudioFileWriter.Info?, complete: Bool) throws {
         let meta: [String: Any] = [
-            "condition": condition.rawValue,
-            "prompt": prompt,
+            "sessionID": session.id.uuidString,
+            "complete": complete,
+            "condition": recordedCondition.rawValue,
+            "prompt": recordedPrompt,
             "startedAt": startedAt?.ISO8601Format() ?? "",
-            "startUptime": startUptime,
-            "durationSeconds": ProcessInfo.processInfo.systemUptime - startUptime,
+            "startUptime": session.startUptime,
+            "durationSeconds": ProcessInfo.processInfo.systemUptime - session.startUptime,
             "motionSamples": motionCount,
             "events": eventCount,
             "audioDevice": audioDeviceName ?? NSNull(),
             "audioSampleRate": audioInfo?.sampleRate ?? NSNull(),
-            "audioStartOffsetSeconds": audioInfo?.firstHostSeconds.map { $0 - startUptime } ?? NSNull(),
+            "audioStartOffsetSeconds": session.audioOffset ?? NSNull(),
             "note": "Motion t and audioStartOffsetSeconds are relative to startUptime (seconds since boot).",
         ]
-        if let data = try? JSONSerialization.data(withJSONObject: meta, options: [.prettyPrinted, .sortedKeys]) {
-            try? data.write(to: directory.appending(path: "meta.json"))
-        }
-        lastSessionURL = directory
-        lastStartUptime = startUptime
-        lastAudioOffset = audioInfo?.firstHostSeconds.map { $0 - startUptime }
-        self.directory = nil
+        let data = try JSONSerialization.data(withJSONObject: meta, options: [.prettyPrinted, .sortedKeys])
+        try data.write(to: session.directory.appending(path: "meta.json"), options: .atomic)
     }
 
     func record(_ sample: MotionSample) {
@@ -157,6 +213,7 @@ private final class AudioFileWriter: @unchecked Sendable {
     private var file: AVAudioFile?
     private var info: Info?
     private var failed = false
+    private var closed = false
 
     init(url: URL) {
         self.url = url
@@ -164,7 +221,7 @@ private final class AudioFileWriter: @unchecked Sendable {
 
     func write(_ buffer: AVAudioPCMBuffer, _ time: AVAudioTime) {
         lock.withLock {
-            guard !failed else { return }
+            guard !failed, !closed else { return }
             if file == nil {
                 do {
                     let format = buffer.format
@@ -183,8 +240,11 @@ private final class AudioFileWriter: @unchecked Sendable {
         }
     }
 
+    var currentInfo: Info? { lock.withLock { info } }
+
     func finish() -> Info? {
         lock.withLock {
+            closed = true
             file = nil
             return info
         }

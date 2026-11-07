@@ -42,6 +42,10 @@ final class LocalWhisper {
             ?? (FileManager.default.isExecutableFile(atPath: Self.bundledServer) ? Self.bundledServer : "")
     }
 
+    func stopOwnedProcess() {
+        if let process, process.isRunning { process.terminate() }
+    }
+
     enum Failure: LocalizedError {
         case unavailable, busy, invalidAudio, conversion(String), server(String), timeout, malformedResponse, nonLoopback
         var errorDescription: String? {

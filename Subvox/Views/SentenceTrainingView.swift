@@ -256,13 +256,14 @@ struct SentenceTrainingView: View {
             Text("Build and check the word model").font(.title2.weight(.semibold))
             Text("\(workflow.fittingWords.count) reviewed silent word slices are available from training sentences. Motion-transferred boundaries are estimates.")
                 .font(.callout).foregroundStyle(.secondary)
-            Picker("Learning method", selection: $model.learningMethod) {
+            Picker("Learning method", selection: $model.sentenceLearningMethod) {
                 ForEach(LearningMethod.allCases) { Text($0.title).tag($0) }
             }
+            .disabled(workflow.settingsLocked || model.isEvaluating)
             HStack {
                 Button("Build from reviewed sentences", action: model.useReviewedSentenceModel)
                     .disabled(workflow.fittingWords.isEmpty || model.isEvaluating)
-                Button("Check aligned validation words") { workflow.validate(settings: model.settings) }
+                Button("Check aligned validation words") { workflow.validate() }
                     .disabled(workflow.fittingWords.isEmpty || model.isEvaluating)
             }
             if model.usesSentenceModel {
@@ -280,7 +281,9 @@ struct SentenceTrainingView: View {
             if let result = workflow.data.validationReport {
                 Text(String(format: "Assisted word check: top 1 %.1f%% · top 5 %.1f%% · %d word slices", result.top1 * 100, result.top5 * 100, result.expected.count))
                     .font(.headline)
-                Text(result.settings.method.title + (result.settings == model.settings ? "" : " · settings changed; check again"))
+                Text(String(format: "Accepted %.1f%% · correctly emitted %.1f%% of evaluated slices", result.acceptance * 100, result.acceptedCorrect * 100))
+                    .font(.callout)
+                Text(result.settings.method.title + (result.settings == workflow.settings ? "" : " · settings changed; check again"))
                     .font(.caption).foregroundStyle(.secondary)
                 if let total = result.expectedValidationWordCount {
                     Text("\(result.expected.count) of \(total) words in accepted validation text had usable estimated boundaries and dictionary pronunciations. Scores above apply to those slices.")

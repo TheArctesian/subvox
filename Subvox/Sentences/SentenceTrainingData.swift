@@ -68,6 +68,7 @@ struct SentencePair: Codable, Identifiable, Sendable {
     var directory: String?
     var sessionStartUptime: Double?
     var audioOffset: Double?
+    var recordingSessionID: UUID?
     var transcript: LocalWhisperTranscript?
     var transcriptMatchRate: Double?
     var alignment: MotionTransferResult?
@@ -88,6 +89,7 @@ struct SentenceVisit: Codable, Identifiable, Sendable {
     var pace: String?
     var presentation: String?
     var motionRate: Double?
+    var recordingSessionID: UUID?
 }
 
 /// Separate sentence experiment. The original word experiment is never reassigned.
@@ -101,6 +103,7 @@ struct SentenceTrainingData: Codable, Sendable {
     var pairs: [SentencePair] = []
     var reservedUnlockedAt: Date?
     var validationReport: SentenceValidationReport?
+    var decoderSettings: DecoderSettings?
 
     mutating func add<G: RandomNumberGenerator>(_ incoming: [SentencePrompt], using generator: inout G) {
         guard reservedUnlockedAt == nil else { return }
@@ -193,12 +196,13 @@ struct SentenceTrainingData: Codable, Sendable {
 
 enum SentenceStore {
     static var url: URL { TemplateStore.url.deletingLastPathComponent().appending(path: "sentence-training.json") }
-    static func load() throws -> SentenceTrainingData {
-        guard FileManager.default.fileExists(atPath: url.path) else { return SentenceTrainingData() }
-        return try JSONDecoder().decode(SentenceTrainingData.self, from: Data(contentsOf: url))
+    static func load(from location: URL? = nil) throws -> SentenceTrainingData {
+        let location = location ?? url
+        guard FileManager.default.fileExists(atPath: location.path) else { return SentenceTrainingData() }
+        return try JSONDecoder().decode(SentenceTrainingData.self, from: Data(contentsOf: location))
     }
-    static func save(_ data: SentenceTrainingData) throws {
+    static func save(_ data: SentenceTrainingData, to location: URL? = nil) throws {
         let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
-        try encoder.encode(data).write(to: url, options: .atomic)
+        try encoder.encode(data).write(to: location ?? url, options: .atomic)
     }
 }

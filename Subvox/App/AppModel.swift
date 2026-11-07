@@ -9,6 +9,10 @@ struct DecodedWord: Identifiable, Hashable {
 
 @MainActor @Observable
 final class AppModel {
+    enum DecoderSource: String, CaseIterable, Identifiable {
+        case words = "Legacy word training", sentences = "Reviewed sentence words"
+        var id: String { rawValue }
+    }
     enum Screen: String, CaseIterable, Identifiable {
         case sensors = "Sensors"
         case sentences = "Train"
@@ -37,9 +41,21 @@ final class AppModel {
     let reading = ReadingController()
     let signalCheck = GuidedSignalCheck()
     let localWhisper = LocalWhisper()
-    let sentenceTraining = SentenceTrainingWorkflow()
-    private(set) var usesSentenceModel = UserDefaults.standard.bool(forKey: "useReviewedSentenceModel")
+    let sentenceTraining: SentenceTrainingWorkflow
+    private(set) var usesSentenceModel: Bool
     var decoderSourceLabel: String { usesSentenceModel ? "Reviewed sentence-derived words" : "Legacy word training" }
+    var decoderSource: DecoderSource {
+        get { usesSentenceModel ? .sentences : .words }
+        set {
+            guard !isEvaluating, !sentenceTraining.isBusy, !signalCheck.isBusy, session?.isFinished != false else { return }
+            if newValue == .sentences { useReviewedSentenceModel() }
+            else {
+                usesSentenceModel = false
+                defaults.set(false, forKey: "useReviewedSentenceModel")
+                rebuildDecoder()
+            }
+        }
+    }
 
     var screen: Screen = .sentences {
         didSet {
@@ -51,7 +67,7 @@ final class AppModel {
 
     // MARK: Training
 
-    private(set) var dataset = TemplateStore.load()
+    private(set) var dataset: Dataset
     let lexicon = Lexicon.bundled
     var featureSet: FeatureSet {
         get { settings.features }
@@ -59,6 +75,8 @@ final class AppModel {
     }
     var settings: DecoderSettings { dataset.experiment?.settings ?? DecoderSettings() }
     var experimentLocked: Bool { dataset.experiment?.frozenAt != nil }
+    var decodeSettings: DecoderSettings { usesSentenceModel ? sentenceTraining.settings : settings }
+    var decodeSettingsLocked: Bool { usesSentenceModel ? sentenceTraining.settingsLocked : experimentLocked }
     var sessionCondition: SpeechCondition = .silent
     var sessionNotes = ""
     private(set) var activeVisitID: UUID?
@@ -71,17 +89,21 @@ final class AppModel {
         get { settings.method }
         set { changeSettings { $0.method = newValue } }
     }
+    var sentenceLearningMethod: LearningMethod {
+        get { sentenceTraining.learningMethod }
+        set { sentenceTraining.learningMethod = newValue }
+    }
     var vocabularyScope: VocabularyScope {
         get { settings.vocabularyScope }
         set { changeSettings { $0.vocabularyScope = newValue } }
     }
     var hmmMaxScore: Double {
-        get { settings.hmmMaxScore }
-        set { changeSettings { $0.hmmMaxScore = newValue } }
+        get { decodeSettings.hmmMaxScore }
+        set { changeDecodeSettings { $0.hmmMaxScore = newValue } }
     }
     var hmmMinGap: Double {
-        get { settings.hmmMinGap }
-        set { changeSettings { $0.hmmMinGap = newValue } }
+        get { decodeSettings.hmmMinGap }
+        set { changeDecodeSettings { $0.hmmMinGap = newValue } }
     }
     var comparisonReports: [DecoderReport] { dataset.experiment?.comparisonReports ?? [] }
     var trainingCondition: SpeechCondition {
@@ -109,16 +131,16 @@ final class AppModel {
         didSet { syncCaptureMode() }
     }
     var maxDistance: Double {
-        get { settings.maxDistance }
-        set { changeSettings { $0.maxDistance = newValue } }
+        get { decodeSettings.maxDistance }
+        set { changeDecodeSettings { $0.maxDistance = newValue } }
     }
     var minConfidence: Double {
-        get { settings.minConfidence }
-        set { changeSettings { $0.minConfidence = newValue } }
+        get { decodeSettings.minConfidence }
+        set { changeDecodeSettings { $0.minConfidence = newValue } }
     }
     var commonBias: Double {
-        get { settings.commonBias }
-        set { changeSettings { $0.commonBias = newValue } }
+        get { decodeSettings.commonBias }
+        set { changeDecodeSettings { $0.commonBias = newValue } }
     }
     private(set) var isDecoding = false
     private(set) var decoded: [DecodedWord] = []
@@ -127,10 +149,16 @@ final class AppModel {
     @ObservationIgnored private var decoderBuild: Task<Void, Never>?
     @ObservationIgnored private var keyMonitor: Any?
     @ObservationIgnored private var started = false
+    @ObservationIgnored private let defaults: UserDefaults
+    @ObservationIgnored private var terminationObserver: NSObjectProtocol?
 
-    init() {
+    init(dataset: Dataset? = nil, sentenceTraining: SentenceTrainingWorkflow? = nil, defaults: UserDefaults = .standard) {
+        self.dataset = dataset ?? TemplateStore.load()
+        self.sentenceTraining = sentenceTraining ?? SentenceTrainingWorkflow()
+        self.defaults = defaults
+        usesSentenceModel = defaults.bool(forKey: "useReviewedSentenceModel")
         // Keep the exact pre-migration file before adding assignments or inferring review state.
-        if dataset.experiment == nil {
+        if self.dataset.experiment == nil {
             do {
                 if FileManager.default.fileExists(atPath: TemplateStore.url.path) {
                     let backup = TemplateStore.url.deletingLastPathComponent()
@@ -138,27 +166,28 @@ final class AppModel {
                     try FileManager.default.copyItem(at: TemplateStore.url, to: backup)
                 }
                 var experiment = TrainingExperiment()
-                experiment.historicalTakeCount = dataset.templates.count
-                experiment.assign(dataset.templates.map(\.label))
+                experiment.historicalTakeCount = self.dataset.templates.count
+                experiment.assign(self.dataset.templates.map(\.label))
                 if experiment.wordRoles.isEmpty { experiment.assign(SignalCheckPlan.seedWords) }
-                dataset.experiment = experiment
-                for i in dataset.templates.indices {
-                    if dataset.templates[i].review == nil {
-                        dataset.templates[i].review = dataset.templates[i].quality.issues.isEmpty ? .accepted : .pending
+                self.dataset.experiment = experiment
+                for i in self.dataset.templates.indices {
+                    if self.dataset.templates[i].review == nil {
+                        self.dataset.templates[i].review = self.dataset.templates[i].quality.issues.isEmpty ? .accepted : .pending
                     }
                 }
-                storageReady = TemplateStore.save(dataset)
+                storageReady = TemplateStore.save(self.dataset)
             } catch {
                 storageReady = false
                 trainingError = "Could not back up training data: \(error.localizedDescription)"
             }
         }
-        if dataset.experiment?.wordRoles.isEmpty == true, !experimentLocked {
-            dataset.experiment?.assign(SignalCheckPlan.seedWords)
-            storageReady = TemplateStore.save(dataset)
+        if self.dataset.experiment?.wordRoles.isEmpty == true, !experimentLocked {
+            self.dataset.experiment?.assign(SignalCheckPlan.seedWords)
+            storageReady = TemplateStore.save(self.dataset)
         }
         if !storageReady { trainingError = trainingError ?? "Could not save experiment assignments." }
-        sentenceTraining.onTrainingChanged = { [weak self] in
+        self.sentenceTraining.initializeSettings(from: settings)
+        self.sentenceTraining.onTrainingChanged = { [weak self] in
             guard let self, self.usesSentenceModel else { return }
             self.rebuildDecoder()
         }
@@ -168,6 +197,10 @@ final class AppModel {
     func start() {
         guard !started else { return }
         started = true
+        terminationObserver = NotificationCenter.default.addObserver(forName: NSApplication.willTerminateNotification,
+            object: nil, queue: .main) { [weak self] _ in
+                MainActor.assumeIsolated { self?.prepareForTermination() }
+            }
         motion.onSample = { [weak self] sample in self?.ingest(sample) }
         capture.onSegment = { [weak self] segment in self?.handleSegment(segment) }
         motion.start()
@@ -352,6 +385,21 @@ final class AppModel {
         persist()
     }
 
+    private func changeDecodeSettings(_ change: (inout DecoderSettings) -> Void) {
+        if usesSentenceModel {
+            guard !isEvaluating, !signalCheck.isBusy, session?.isFinished != false else { return }
+            sentenceTraining.changeSettings(change)
+        } else { changeSettings(change) }
+    }
+
+    func prepareForTermination() {
+        sentenceTraining.prepareForTermination(recorder: recorder)
+        signalCheck.stop()
+        recorder.stop()
+        audio.stop()
+        localWhisper.stopOwnedProcess()
+    }
+
     // MARK: Dataset editing
 
     func addTemplate(_ template: Template) {
@@ -383,7 +431,7 @@ final class AppModel {
     private func rebuildDecoder() {
         decoder = nil
         isBuildingDecoder = true
-        let (takes, lexicon, config) = (usesSentenceModel ? sentenceTraining.fittingWords : fittingTakes, lexicon, settings)
+        let (takes, lexicon, config) = (usesSentenceModel ? sentenceTraining.fittingWords : fittingTakes, lexicon, decodeSettings)
         decoderBuild?.cancel()
         decoderBuild = Task {
             let decoder = await Task.detached(priority: .utility) {
@@ -629,7 +677,7 @@ final class AppModel {
     func useReviewedSentenceModel() {
         guard !sentenceTraining.isBusy, !isEvaluating, !sentenceTraining.fittingWords.isEmpty else { return }
         usesSentenceModel = true
-        UserDefaults.standard.set(true, forKey: "useReviewedSentenceModel")
+        defaults.set(true, forKey: "useReviewedSentenceModel")
         rebuildDecoder()
     }
 

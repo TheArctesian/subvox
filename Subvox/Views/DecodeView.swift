@@ -7,9 +7,17 @@ struct DecodeView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
-        ScrollView {
+        @Bindable var model = model
+        return ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 LiveMotionPanel()
+                Picker("Training source", selection: $model.decoderSource) {
+                    ForEach(AppModel.DecoderSource.allCases) { source in
+                        Text(source.rawValue).tag(source)
+                            .disabled(source == .sentences && model.sentenceTraining.fittingWords.isEmpty)
+                    }
+                }
+                .disabled(model.isEvaluating || model.sentenceTraining.isBusy || model.signalCheck.isBusy || model.session?.isFinished == false)
                 Text(model.decoderSourceLabel).font(.caption).foregroundStyle(.secondary)
                 coverage
                 controls
@@ -33,9 +41,9 @@ struct DecodeView: View {
                   systemImage: "character.book.closed")
                 .font(.callout)
                 .foregroundStyle(missing.isEmpty ? Color.secondary : Color.orange)
-            Text("\(model.settings.method.title) · \(model.settings.vocabularyScope.title)")
+            Text("\(model.decodeSettings.method.title) · \(model.decodeSettings.vocabularyScope.title)")
                 .font(.caption).foregroundStyle(.secondary)
-            if model.settings.method != .legacyMedoids {
+            if model.decodeSettings.method != .legacyMedoids {
                 Text("Experimental jaw units pool several sounds; buildable words do not establish recognition accuracy.")
                     .font(.caption).foregroundStyle(.secondary)
             }
@@ -69,7 +77,7 @@ struct DecodeView: View {
                     autoControls
                 }
 
-                if model.settings.method.isSequence {
+                if model.decodeSettings.method.isSequence {
                     VStack(alignment: .leading, spacing: 8) {
                         LabeledContent("Max sequence score") {
                             Slider(value: $model.hmmMaxScore, in: -10...50).frame(width: 160)
@@ -86,7 +94,7 @@ struct DecodeView: View {
                         Text("Sequence score is a normalized negative log-likelihood. These rejection settings need validation; neither gap nor score is a probability.")
                             .font(.caption).foregroundStyle(.secondary)
                     }
-                    .disabled(model.experimentLocked || model.isEvaluating || model.session?.isFinished == false)
+                    .disabled(model.decodeSettingsLocked || model.isEvaluating || model.session?.isFinished == false)
                 } else {
                 HStack(spacing: 24) {
                     LabeledContent("Max distance") {
@@ -104,7 +112,7 @@ struct DecodeView: View {
                     .help("Many words move the jaw identically; this tips ties toward the more common word.")
                 }
                 .font(.callout)
-                .disabled(model.experimentLocked || model.isEvaluating || model.session?.isFinished == false)
+                .disabled(model.decodeSettingsLocked || model.isEvaluating || model.session?.isFinished == false)
                 }
             }
             .padding(6)

@@ -41,7 +41,8 @@ private struct RecordToolbarButton: View {
     var body: some View {
         let recorder = model.recorder
         Button {
-            recorder.isRecording ? recorder.stop() : recorder.start(audio: model.audio)
+            if recorder.isRecording { recorder.stop() }
+            else { recorder.start(audio: model.audio) }
         } label: {
             Label(recorder.isRecording ? "Stop Recording" : "Record Session",
                   systemImage: recorder.isRecording ? "stop.circle.fill" : "record.circle")

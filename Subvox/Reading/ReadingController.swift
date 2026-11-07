@@ -54,6 +54,7 @@ final class ReadingController {
     @ObservationIgnored private var shownAt: TimeInterval = 0
     @ObservationIgnored private var samples: [MotionSample] = []
     @ObservationIgnored private weak var recorder: SessionRecorder?
+    @ObservationIgnored private var recordingSessionID: UUID?
 
     func start(recorder: SessionRecorder, audio: AudioService) async {
         guard !isReading, !recorder.isRecording else { return }
@@ -64,12 +65,12 @@ final class ReadingController {
 
         let range = script == .bank ? "lines \(firstLine + 1)–\(firstLine + lines.count)" : "all"
         recorder.prompt = "Read: \(script.rawValue), \(range)"
-        recorder.start(audio: audio)
-        guard recorder.isRecording else {
+        guard let session = recorder.start(audio: audio) else {
             phase = .failed(recorder.error ?? "Couldn't start recording.")
             return
         }
         self.recorder = recorder
+        recordingSessionID = session.id
         spans = Array(repeating: nil, count: lines.count)
         samples = []
         position = 0
@@ -78,7 +79,12 @@ final class ReadingController {
     }
 
     func ingest(_ sample: MotionSample) {
-        if isReading { samples.append(sample) }
+        guard isReading else { return }
+        guard recorder?.activeSessionID == recordingSessionID else {
+            phase = .failed("The reading recording was stopped or replaced. Other recordings were left untouched.")
+            return
+        }
+        samples.append(sample)
     }
 
     func next() {
@@ -100,16 +106,18 @@ final class ReadingController {
     /// Ends the run early; lines not yet finished are left out of the labels.
     func finish() {
         guard isReading, let recorder else { return }
-        recorder.stop()
-        guard let directory = recorder.lastSessionURL else {
-            phase = .failed("The session wasn't saved.")
+        guard let id = recordingSessionID, let session = recorder.stop(sessionID: id) else {
+            phase = .failed("The reading recording was stopped or replaced. Other recordings were left untouched.")
             return
         }
-        Task { await process(directory: directory, startUptime: recorder.lastStartUptime,
-                             audioOffset: recorder.lastAudioOffset) }
+        // Leave .reading before scheduling work, and capture this session's clock by value.
+        phase = .processing(done: 0, of: spans.compactMap { $0 }.count)
+        Task { await process(directory: session.directory, startUptime: session.startUptime,
+                             audioOffset: session.audioOffset) }
     }
 
     func reset() {
+        guard !isReading else { return }
         phase = .setup
         position = 0
         lines = []

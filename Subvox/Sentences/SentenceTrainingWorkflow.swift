@@ -26,6 +26,16 @@ final class SentenceTrainingWorkflow {
     var onTrainingChanged: (() -> Void)?
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var buffer: [MotionSample] = []
+    @ObservationIgnored private let storeURL: URL
+    @ObservationIgnored private var activeVisitID: UUID?
+    @ObservationIgnored private var activeRecordingID: UUID?
+    @ObservationIgnored private var isTerminating = false
+    var settings: DecoderSettings { data.decoderSettings ?? DecoderSettings() }
+    var settingsLocked: Bool { isBusy || !storageReady || data.reservedUnlockedAt != nil }
+    var learningMethod: LearningMethod {
+        get { settings.method }
+        set { changeSettings { $0.method = newValue } }
+    }
     var isAcquiring: Bool { [.relax, .speak, .mouth, .recovery].contains(phase) }
     var isBusy: Bool { isAcquiring || phase == .preparing || phase == .processing }
     var coverage: [String: Int] { data.coverage(lexicon: .bundled) }
@@ -34,16 +44,99 @@ final class SentenceTrainingWorkflow {
     var plan: [[SentencePrompt]] { data.plannedSentences(limit: sentenceCount, passage: presentation == .passage, lexicon: .bundled) }
     var estimatedSeconds: Double { plan.reduce(0) { $0 + 2 * (pace.baseline + cueDuration($1.map(\.text).joined(separator: " ")) + pace.recovery) } }
 
-    init() {
+    init(storeURL: URL? = nil, corpus: [SentencePrompt]? = nil) {
+        self.storeURL = storeURL ?? SentenceStore.url
         do {
-            data = try SentenceStore.load()
+            data = try SentenceStore.load(from: self.storeURL)
             if data.prompts.isEmpty {
                 var generator = SystemRandomNumberGenerator()
-                data.add(SentencePrompt.bundled, using: &generator)
+                data.add(corpus ?? SentencePrompt.bundled, using: &generator)
                 guard !data.prompts.isEmpty else { throw Failure.noCorpus }
-                try SentenceStore.save(data)
+                try persist()
             }
         } catch { self.error = error.localizedDescription; storageReady = false }
+    }
+
+    /// One-time migration from the formerly shared word settings; later edits are independent.
+    func initializeSettings(from settings: DecoderSettings) {
+        guard storageReady, data.reservedUnlockedAt == nil, data.decoderSettings == nil else { return }
+        var next = settings
+        next.condition = .silent
+        data.decoderSettings = next
+        save()
+    }
+
+    func changeSettings(_ change: (inout DecoderSettings) -> Void) {
+        guard !settingsLocked else { return }
+        var next = settings
+        change(&next)
+        next.condition = .silent
+        guard next != settings else { return }
+        data.decoderSettings = next
+        data.validationReport = nil
+        save(notify: true)
+    }
+
+    @discardableResult
+    func beginVisit(session: RecordingSession, audioDevice: String?, timing: SignalCheckPace,
+                    presentation: Presentation) throws -> SentenceVisit {
+        let visit = SentenceVisit(notes: notes, directory: session.directory.path, audioDevice: audioDevice,
+                                  pace: timing.rawValue, presentation: presentation.rawValue, recordingSessionID: session.id)
+        activeVisitID = visit.id; activeRecordingID = session.id
+        data.visits.append(visit)
+        try persist()
+        return visit
+    }
+
+    func beginPair(prompts: [SentencePrompt], visit: SentenceVisit, session: RecordingSession) throws -> SentencePair {
+        guard session.id == activeRecordingID, visit.id == activeVisitID,
+              let first = prompts.first, let role = data.roles[first.id], role != .finalTest,
+              prompts.allSatisfy({ data.roles[$0.id] == role }) else { throw Failure.split }
+        let pair = SentencePair(visitID: visit.id, promptIDs: prompts.map(\.id),
+            text: prompts.map(\.text).joined(separator: " "), role: role, directory: session.directory.path,
+            sessionStartUptime: session.startUptime, audioOffset: session.audioOffset, recordingSessionID: session.id)
+        data.pairs.append(pair)
+        if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].pairIDs.append(pair.id) }
+        try persist()
+        return pair
+    }
+
+    func saveCompletedHalf(_ recording: SentenceRecording, pairID: UUID, session: RecordingSession) throws {
+        guard let i = data.pairs.firstIndex(where: { $0.id == pairID }),
+              data.pairs[i].recordingSessionID == session.id, session.id == activeRecordingID else { throw Failure.ownership }
+        if recording.condition == .normal { data.pairs[i].spoken = recording }
+        else if recording.condition == .silent { data.pairs[i].silent = recording }
+        else { throw Failure.split }
+        data.pairs[i].directory = session.directory.path
+        data.pairs[i].sessionStartUptime = session.startUptime
+        data.pairs[i].audioOffset = session.audioOffset
+        try persist()
+    }
+
+    private func finishVisit(session: RecordingSession?) {
+        guard let id = activeVisitID, let v = data.visits.firstIndex(where: { $0.id == id }) else { return }
+        data.visits[v].endedAt = Date()
+        let rates = data.pairs.filter { $0.visitID == id }.compactMap { $0.spoken?.quality.sampleRate }
+        if !rates.isEmpty { data.visits[v].motionRate = rates.reduce(0, +) / Double(rates.count) }
+        if let session, session.id == activeRecordingID {
+            for i in data.pairs.indices where data.pairs[i].visitID == id {
+                data.pairs[i].directory = session.directory.path
+                data.pairs[i].sessionStartUptime = session.startUptime
+                data.pairs[i].audioOffset = session.audioOffset
+            }
+        }
+        activeVisitID = nil; activeRecordingID = nil
+    }
+
+    /// Synchronous: willTerminate cannot wait for the acquisition task to unwind.
+    func prepareForTermination(recorder: SessionRecorder) {
+        isTerminating = true
+        task?.cancel()
+        if let id = activeRecordingID {
+            finishVisit(session: recorder.stop(sessionID: id))
+            save()
+        }
+        phase = .finished
     }
 
     func ingest(_ sample: MotionSample) {
@@ -107,25 +200,18 @@ final class SentenceTrainingWorkflow {
             }
             recorder.condition = .mixed
             recorder.prompt = "Paired sentence training; spoken then silently mouthed; independent sentence split"
-            recorder.start(audio: audio)
-            guard recorder.isRecording else {
+            guard let recordingSession = recorder.start(audio: audio) else {
                 if ownedAudio { audio.stop() }
                 error = recorder.error ?? "Could not start recording."; phase = .setup; return
             }
-            var visit = SentenceVisit(notes: notes, audioDevice: audio.activeDeviceName,
-                                      pace: timing.rawValue, presentation: presentation.rawValue)
-            data.visits.append(visit)
             var pairIDs: [UUID] = []
             do {
+                let visit = try beginVisit(session: recordingSession, audioDevice: audio.activeDeviceName,
+                                           timing: timing, presentation: presentation)
                 for (groupIndex, group) in batch.enumerated() {
                     guard canRecord() else { throw Failure.disconnected }
-                    guard let role = data.roles[group[0].id],
-                          group.allSatisfy({ data.roles[$0.id] == role }), role != .finalTest else { throw Failure.split }
-                    var pair = SentencePair(visitID: visit.id, promptIDs: group.map(\.id),
-                                            text: group.map(\.text).joined(separator: " "), role: role)
-                    data.pairs.append(pair)
+                    let pair = try beginPair(prompts: group, visit: visit, session: recordingSession)
                     pairIDs.append(pair.id)
-                    try persist()
                     for condition in [SpeechCondition.normal, .silent] {
                         try Task.checkCancellation()
                         currentText = pair.text; currentCondition = condition; buffer = []
@@ -138,11 +224,10 @@ final class SentenceTrainingWorkflow {
                         let end = ProcessInfo.processInfo.systemUptime
                         guard canRecord() else { throw Failure.disconnected }
                         let recording = SentenceRecording(condition: condition, samples: buffer, cueStart: start, cueEnd: end)
-                        if condition == .normal { pair.spoken = recording } else { pair.silent = recording }
-                        if let p = data.pairs.firstIndex(where: { $0.id == pair.id }) { data.pairs[p] = pair }
+                        guard let checkpoint = try recorder.checkpoint(sessionID: recordingSession.id) else { throw Failure.ownership }
+                        try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint)
                         recorder.logEvent(recording.samples, kind: condition == .normal ? "sentence-spoken" : "sentence-silent",
                                           label: pair.text, confidence: nil)
-                        try persist() // Save the spoken half even if the silent half is interrupted.
                         buffer = []; index += 1; phase = .recovery
                         try await countdown(timing.recovery)
                     }
@@ -151,20 +236,10 @@ final class SentenceTrainingWorkflow {
                 // Never turn an interrupted cue into a completed reference or silent take.
             } catch { self.error = error.localizedDescription }
             buffer = []
-            recorder.stop()
-            if ownedAudio { audio.stop() }
-            visit.endedAt = Date(); visit.directory = recorder.lastSessionURL?.path; visit.pairIDs = pairIDs
-            let rates = data.pairs.filter { $0.visitID == visit.id }.compactMap { $0.spoken?.quality.sampleRate }
-            if !rates.isEmpty { visit.motionRate = rates.reduce(0, +) / Double(rates.count) }
-            if let i = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[i] = visit }
-            for id in pairIDs {
-                if let i = data.pairs.firstIndex(where: { $0.id == id }) {
-                    data.pairs[i].directory = visit.directory
-                    data.pairs[i].sessionStartUptime = recorder.lastStartUptime
-                    data.pairs[i].audioOffset = recorder.lastAudioOffset
-                }
-            }
-            guard save() else { phase = .finished; return }
+            let finished = recorder.stop(sessionID: recordingSession.id)
+            if ownedAudio, !recorder.isRecording { audio.stop() }
+            finishVisit(session: finished)
+            guard save(), !isTerminating else { phase = .finished; return }
             phase = .processing
             // A fresh unstructured task processes saved complete pairs even after Stop.
             await Task { @MainActor in
@@ -215,9 +290,10 @@ final class SentenceTrainingWorkflow {
         save(notify: true)
     }
 
-    func validate(settings: DecoderSettings) {
+    func validate() {
         guard !isBusy, storageReady else { return }
         let snapshot = data
+        let settings = settings
         phase = .processing; error = nil; processingText = "Checking aligned words on held-out sentences…"
         task = Task {
             do {
@@ -235,7 +311,7 @@ final class SentenceTrainingWorkflow {
         do { try persist(); if notify { onTrainingChanged?() }; return true }
         catch { storageReady = false; self.error = error.localizedDescription; return false }
     }
-    private func persist() throws { try SentenceStore.save(data) }
+    private func persist() throws { try SentenceStore.save(data, to: storeURL) }
     private func countdown(_ seconds: Double) async throws {
         let end = ProcessInfo.processInfo.systemUptime + seconds
         while ProcessInfo.processInfo.systemUptime < end {
@@ -246,12 +322,13 @@ final class SentenceTrainingWorkflow {
         secondsRemaining = 0
     }
     enum Failure: LocalizedError {
-        case noCorpus, disconnected, split, clock, transcript
+        case noCorpus, disconnected, split, clock, transcript, ownership
         var errorDescription: String? {
             switch self {
             case .noCorpus: "The paired sentence corpus is missing from the app."
             case .disconnected: "Motion stopped. Completed halves were saved; reconnect and re-record this pair."
             case .split: "This passage crosses sentence data splits. Recording stopped."
+            case .ownership: "The sentence recording was stopped or replaced. Completed halves keep their original session metadata."
             case .clock: "Audio clock metadata is missing; no word timing was invented. Re-record this pair."
             case .transcript: "Whisper did not match enough of the spoken text. Review the transcript or re-record the pair; missing words were not assigned timings."
             }
