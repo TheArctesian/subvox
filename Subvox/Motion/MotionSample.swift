@@ -14,6 +14,8 @@ struct MotionSample: Codable, Hashable, Sendable {
     var gx: Double, gy: Double, gz: Double
     // Attitude quaternion.
     var qw: Double, qx: Double, qy: Double, qz: Double
+    // Core Motion source: 0 unspecified, 1 left headphone, 2 right. Missing in older data.
+    var sensorLocation: Int?
 
     init(_ m: CMDeviceMotion) {
         t = m.timestamp
@@ -23,6 +25,7 @@ struct MotionSample: Codable, Hashable, Sendable {
         gx = m.gravity.x; gy = m.gravity.y; gz = m.gravity.z
         let q = m.attitude.quaternion
         qw = q.w; qx = q.x; qy = q.y; qz = q.z
+        sensorLocation = m.sensorLocation.rawValue
     }
 
     init(t: TimeInterval,
@@ -37,11 +40,11 @@ struct MotionSample: Codable, Hashable, Sendable {
         (qw, qx, qy, qz) = (1, 0, 0, 0)
     }
 
-    static let csvHeader = "t,ax,ay,az,rx,ry,rz,pitch,roll,yaw,gx,gy,gz,qw,qx,qy,qz"
+    static let csvHeader = "t,ax,ay,az,rx,ry,rz,pitch,roll,yaw,gx,gy,gz,qw,qx,qy,qz,sensorLocation"
 
     func csvRow(relativeTo t0: TimeInterval) -> String {
-        [t - t0, ax, ay, az, rx, ry, rz, pitch, roll, yaw, gx, gy, gz, qw, qx, qy, qz]
+        let values = [t - t0, ax, ay, az, rx, ry, rz, pitch, roll, yaw, gx, gy, gz, qw, qx, qy, qz]
             .map { String(format: "%.6f", $0) }
-            .joined(separator: ",")
+        return values.joined(separator: ",") + "," + String(sensorLocation ?? -1)
     }
 }

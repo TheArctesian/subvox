@@ -4,7 +4,7 @@ import Observation
 /// Paired acquisition, annotation review, coverage repairs and word validation.
 @MainActor @Observable
 final class SentenceTrainingWorkflow {
-    enum Phase: Equatable { case setup, preparing, relax, speak, mouth, recovery, processing, finished }
+    enum Phase: Equatable { case setup, preparing, ready, relax, speak, mouth, ended, recovery, processing, finished }
     enum Presentation: String, CaseIterable, Identifiable {
         case sentences = "Sentences", passage = "Short passages"
         var id: String { rawValue }
@@ -23,6 +23,17 @@ final class SentenceTrainingWorkflow {
     var pace: TrainingPace = .comfortable
     var sentenceCount = 6
     var notes = ""
+    var guidedRecording = false
+    var variedSentences = false
+    var excludedCollectionGroups:Set<String> = []
+    private var advanceRequested = false
+    let phoneAligner = LocalPhonemeAligner()
+    let camera = CameraPoseService()
+    var captureCameraPoints = false
+    /// Optional explicit teacher collection keeps whole train/development visits apart.
+    var collectionRole:DataRole?
+    @ObservationIgnored private var cameraReadings: [CameraPoseReading] = []
+    @ObservationIgnored private weak var cameraRecorder: SessionRecorder?
     var onTrainingChanged: (() -> Void)?
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var buffer: [MotionSample] = []
@@ -38,19 +49,35 @@ final class SentenceTrainingWorkflow {
     var canFinishTake: Bool {
         (phase == .speak || phase == .mouth) && activeCueStart != nil && requestedCueEnd == nil && !redoRequested
     }
-    var canRedoTake: Bool { !redoRequested && (activeCueStart != nil || (phase == .recovery && retryableTake != nil)) }
+    var canRedoTake: Bool { !redoRequested && (activeCueStart != nil || ([.ended,.recovery].contains(phase) && retryableTake != nil)) }
+    var canAdvance:Bool {canFinishTake || (guidedRecording && [.ready,.ended].contains(phase) && !advanceRequested && !redoRequested)}
+    var activeWordIndex:Int? {
+        guard let activeCueStart,phase == .speak || phase == .mouth else {return nil}
+        return WordFocusGuide.comfortable.wordIndex(elapsed:ProcessInfo.processInfo.systemUptime-activeCueStart,count:WordFocusGuide.words(in:currentText).count)
+    }
     var settings: DecoderSettings { data.decoderSettings ?? DecoderSettings() }
     var settingsLocked: Bool { isBusy || !storageReady || data.reservedUnlockedAt != nil }
     var learningMethod: LearningMethod {
         get { settings.method }
         set { changeSettings { $0.method = newValue } }
     }
-    var isAcquiring: Bool { [.relax, .speak, .mouth, .recovery].contains(phase) }
+    var isAcquiring: Bool { [.ready,.relax, .speak, .mouth,.ended, .recovery].contains(phase) }
     var isBusy: Bool { isAcquiring || phase == .preparing || phase == .processing }
     var coverage: [String: Int] { data.coverage(lexicon: .bundled) }
     var fittingWords: [Template] { data.derivedWords(role: .training, lexicon: .bundled) }
     var repairWords: [String] { data.repairWords(lexicon: .bundled) }
-    var plan: [[SentencePrompt]] { data.plannedSentences(limit: sentenceCount, passage: presentation == .passage, lexicon: .bundled) }
+    var plan: [[SentencePrompt]] {
+        if variedSentences {
+            return data.variedSentences(role:collectionRole ?? .training,limit:sentenceCount,excluding:excludedCollectionGroups).map {[$0]}
+        }
+        return data.plannedSentences(limit: sentenceCount, passage: presentation == .passage, lexicon: .bundled).filter {group in
+            collectionRole.map {role in group.allSatisfy {data.roles[$0.id]==role}} ?? true
+        }
+    }
+    func addSentenceBank(_ prompts:[SentencePrompt] = SentencePrompt.diphoneBank) {
+        guard !isBusy,storageReady,data.reservedUnlockedAt==nil else {return}
+        var generator=SystemRandomNumberGenerator();data.add(prompts,using:&generator);save()
+    }
     var estimatedSeconds: Double { plan.reduce(0) { $0 + 2 * (pace.baseline + cueDuration($1.map(\.text).joined(separator: " ")) + pace.recovery) } }
 
     init(storeURL: URL? = nil, corpus: [SentencePrompt]? = nil) {
@@ -64,6 +91,11 @@ final class SentenceTrainingWorkflow {
                 try persist()
             }
         } catch { self.error = error.localizedDescription; storageReady = false }
+        camera.onReading = { [weak self] reading in
+            guard let self, let id = self.activeRecordingID, self.captureCameraPoints else { return }
+            self.cameraReadings.append(reading)
+            _ = self.cameraRecorder?.recordCamera(reading, sessionID: id)
+        }
     }
 
     func changeSettings(_ change: (inout DecoderSettings) -> Void) {
@@ -95,6 +127,7 @@ final class SentenceTrainingWorkflow {
             text: prompts.map(\.text).joined(separator: " "), role: role, directory: session.directory.path,
             sessionStartUptime: session.startUptime, audioOffset: session.audioOffset, recordingSessionID: session.id)
         data.pairs.append(pair)
+        data.pairs[data.pairs.count - 1].pronunciationProfile = try PronunciationProfile.load()
         if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].pairIDs.append(pair.id) }
         try persist()
         return pair
@@ -122,9 +155,15 @@ final class SentenceTrainingWorkflow {
                 data.pairs[i].directory = session.directory.path
                 data.pairs[i].sessionStartUptime = session.startUptime
                 data.pairs[i].audioOffset = session.audioOffset
+                if captureCameraPoints, let a = data.pairs[i].spoken, let b = data.pairs[i].silent {
+                    data.pairs[i].cameraReadings = cameraReadings.filter {
+                        $0.t >= a.cueStart - 3 && $0.t <= b.cueEnd + 0.3
+                    }
+                }
             }
         }
         activeVisitID = nil; activeRecordingID = nil
+        cameraReadings = []; cameraRecorder = nil; camera.stop()
     }
 
     /// Synchronous: willTerminate cannot wait for the acquisition task to unwind.
@@ -143,7 +182,14 @@ final class SentenceTrainingWorkflow {
     }
 
     func ingest(_ sample: MotionSample) {
-        if phase == .relax || phase == .speak || phase == .mouth { buffer.append(sample) }
+        if phase == .relax || phase == .speak || phase == .mouth {
+            if guidedRecording,(phase == .speak || phase == .mouth),let previous=buffer.last,
+               sample.t<=previous.t || sample.t-previous.t>0.12 || sample.sensorLocation != previous.sensorLocation {
+                error="Motion source changed or capture has a gap. The interrupted attempt is discarded; start again when motion is stable."
+                redoRequested=true
+            }
+            buffer.append(sample)
+        }
     }
     func reset() { guard !isBusy else { return }; phase = .setup }
     func stop() {
@@ -159,6 +205,22 @@ final class SentenceTrainingWorkflow {
         return true
     }
 
+    @discardableResult func advance() -> Bool {
+        if canFinishTake {return finishCurrentTake()}
+        guard canAdvance else {return false}
+        advanceRequested=true;return true
+    }
+    private func waitForAdvance(_ phase:Phase) async throws {
+        self.phase=phase;advanceRequested=false;secondsRemaining=0
+        defer {advanceRequested=false}
+        while !advanceRequested {
+            try Task.checkCancellation()
+            if redoRequested {throw CaptureControl.redo}
+            try await Task.sleep(for:.milliseconds(30))
+        }
+        if redoRequested {throw CaptureControl.redo}
+    }
+
     @discardableResult
     func redoCurrentTake() -> Bool {
         guard canRedoTake else { return false }
@@ -170,20 +232,24 @@ final class SentenceTrainingWorkflow {
 
     /// Retries only this half. A recovery-time redo first removes the saved, unwanted half.
     func collectTake(condition: SpeechCondition, maximumDuration: Double, baselineSeconds: Double,
-                     recoverySeconds: Double, canRecord: () -> Bool = { true }, onCompleted: (SentenceRecording) throws -> Void,
+                     recoverySeconds: Double,text:String?=nil, canRecord: () -> Bool = { true }, onCompleted: (SentenceRecording) throws -> Void,
                      onRedo: @escaping (SentenceRecording?) throws -> Void) async throws {
+        if let text {currentText=text}
+        currentCondition=condition
         defer { retryableTake = nil; redoRequested = false; pendingRedoCleanup = nil }
         while true {
             try Task.checkCancellation()
             buffer = []; retryableTake = nil; redoRequested = false
             pendingRedoCleanup = { try onRedo(self.retryableTake) }
             do {
+                if guidedRecording {try await waitForAdvance(.ready)}
                 try await rest(.relax, seconds: baselineSeconds)
                 guard canRecord() else { throw Failure.disconnected }
                 let recording = try await captureTake(condition: condition, maximumDuration: maximumDuration)
                 retryableTake = recording
                 try onCompleted(recording)
-                try await rest(.recovery, seconds: recoverySeconds)
+                if guidedRecording {try await waitForAdvance(.ended)}
+                else {try await rest(.recovery, seconds: recoverySeconds)}
                 if redoRequested { throw CaptureControl.redo }
                 return
             } catch CaptureControl.redo {
@@ -207,6 +273,7 @@ final class SentenceTrainingWorkflow {
         if condition == .normal { data.pairs[i].spoken = nil }
         else { data.pairs[i].silent = nil }
         data.pairs[i].alignment = nil; data.pairs[i].review = .pending
+        data.pairs[i].spokenPhones = nil; data.pairs[i].mouthedPhones = nil
         try persist()
     }
 
@@ -220,7 +287,8 @@ final class SentenceTrainingWorkflow {
         if redoRequested { throw CaptureControl.redo }
         let end = requestedCueEnd ?? ProcessInfo.processInfo.systemUptime
         // The timer resumes on its next tick. Samples after the user's press are not speech.
-        return SentenceRecording(condition: condition, samples: buffer.filter { $0.t <= end }, cueStart: start, cueEnd: end)
+        return SentenceRecording(condition: condition, samples: buffer.filter { $0.t <= end }, cueStart: start, cueEnd: end,
+                                 wordFocusGuide:guidedRecording ? .comfortable:nil)
     }
 
     func rest(_ phase: Phase, seconds: Double) async throws {
@@ -240,6 +308,20 @@ final class SentenceTrainingWorkflow {
         data.pairs[i].review = decision
         data.validationReport = nil
         save(notify: true)
+    }
+
+    func reviewPhoneAlignment(_ id:UUID) {
+        guard !isBusy,data.reservedUnlockedAt==nil,
+              let i=data.pairs.firstIndex(where:{$0.id==id}),data.pairs[i].role != .finalTest else {return}
+        for condition in [SpeechCondition.normal,.silent] {
+            let recording=condition == .normal ? data.pairs[i].spoken:data.pairs[i].silent
+            let alignment=condition == .normal ? data.pairs[i].spokenPhones:data.pairs[i].mouthedPhones
+            if let recording,let alignment,(try? alignment.validate(in:recording.cueStart...recording.cueEnd)) != nil {
+                if condition == .normal {data.pairs[i].spokenPhones?.reviewed=true}
+                else {data.pairs[i].mouthedPhones?.reviewed=true}
+            }
+        }
+        save()
     }
 
     func start(audio: AudioService, recorder: SessionRecorder, whisper: LocalWhisper,
@@ -273,6 +355,16 @@ final class SentenceTrainingWorkflow {
         let cueTimes = batch.map { cueDuration($0.map(\.text).joined(separator: " ")) }
         phase = .preparing; error = nil; index = 0; total = batch.count * 2
         task = Task {
+            defer {if activeRecordingID==nil {camera.stop();cameraRecorder=nil;cameraReadings=[]}}
+            if captureCameraPoints {
+                // Acquisition owns this camera; an early microphone/recorder
+                // failure must also release the preview and numeric callback.
+                await camera.start()
+                guard camera.isRunning, !Task.isCancelled else {
+                    error = camera.error ?? "Camera tracking could not start."; phase = .setup; return
+                }
+                cameraRecorder = recorder; cameraReadings = []
+            }
             let ownedAudio = !audio.isRunning
             await audio.start()
             guard audio.isRunning, !Task.isCancelled else {
@@ -281,7 +373,7 @@ final class SentenceTrainingWorkflow {
             }
             recorder.condition = .paired
             recorder.prompt = "Paired sentence training; spoken then silently mouthed; independent sentence split"
-            guard let recordingSession = recorder.start(audio: audio) else {
+            guard let recordingSession = recorder.start(audio: audio, cameraPoints: captureCameraPoints) else {
                 if ownedAudio { audio.stop() }
                 error = recorder.error ?? "Could not start recording."; phase = .setup; return
             }
@@ -336,31 +428,80 @@ final class SentenceTrainingWorkflow {
         task = Task { await process(id, whisper: whisper); phase = .finished; processingText = "" }
     }
 
+    var pendingTranscriptionIDs:[UUID] {
+        data.pairs.filter {$0.role != .finalTest && $0.promptIDs.allSatisfy {data.roles[$0] != .finalTest} && $0.review == .pending && $0.spoken != nil && ($0.transcript == nil || $0.transcriptMatchRate == nil)}.map(\.id)
+    }
+    func transcribePending(whisper:LocalWhisper) {
+        guard !isBusy,storageReady,whisper.isConfigured,data.reservedUnlockedAt==nil else {return}
+        let pending=pendingTranscriptionIDs
+        guard !pending.isEmpty else {return}
+        phase = .processing
+        task=Task {
+            for id in pending {if Task.isCancelled {break};await process(id,whisper:whisper)}
+            phase = .finished;processingText="";task=nil
+        }
+    }
+
     private func process(_ id: UUID, whisper: LocalWhisper) async {
-        guard let i = data.pairs.firstIndex(where: { $0.id == id }), data.pairs[i].complete,
+        guard let i = data.pairs.firstIndex(where: { $0.id == id }), data.pairs[i].spoken != nil,
               data.pairs[i].role != .finalTest else { return }
         var pair = data.pairs[i]
         pair.alignment = nil; pair.review = .pending
+        pair.spokenPhones = nil; pair.mouthedPhones = nil; pair.phoneAlignmentNote = nil
+        pair.transcriptMatchRate = nil; pair.timedWordCoverage = nil
         data.validationReport = nil
         do {
-            guard let spoken = pair.spoken, let silent = pair.silent, let directory = pair.directory,
+            guard let spoken = pair.spoken, let directory = pair.directory,
                   let start = pair.sessionStartUptime, let offset = pair.audioOffset else { throw Failure.clock }
             let range = (spoken.cueStart - start - offset)...(spoken.cueEnd - start - offset)
             processingText = "Checking the spoken sentence locally…"
             let transcript = try await whisper.transcribe(audioURL: URL(fileURLWithPath: directory).appending(path: "audio.caf"),
                 outputDirectory: URL(fileURLWithPath: directory), timeRange: range)
             pair.transcript = transcript
-            let heard = try SentenceReference.anchors(transcript, sessionStart: start, audioOffset: offset)
             let expected = Lexicon.words(in: pair.text)
+            // Text agreement and usable timing coverage are different checks. Untimed ASR
+            // words still count in text agreement, but never become motion labels.
+            let textMatches = Alignment.commonSubsequence(expected, Lexicon.words(in: transcript.text))
+            pair.transcriptMatchRate = Double(textMatches.count) / Double(max(1, expected.count))
+            guard let silent=pair.silent else {throw Failure.missingSilent}
+            guard textMatches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.transcript }
+            let heard = try SentenceReference.anchors(transcript, sessionStart: start, audioOffset: offset)
             let matches = Alignment.commonSubsequence(expected, heard.map(\.word))
-            pair.transcriptMatchRate = Double(matches.count) / Double(max(1, expected.count))
-            guard matches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.transcript }
+            pair.timedWordCoverage = Double(matches.count) / Double(max(1, expected.count))
+            guard matches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.timing }
             let anchors = matches.map { heard[$0.1] }
             processingText = "Aligning spoken and silent motion…"
             let a = spoken.cueSamples, b = silent.cueSamples
             pair.alignment = try await Task.detached(priority: .userInitiated) {
                 try SentenceMotionAlignment.align(voiced: a, silent: b, words: anchors)
             }.value
+            // Independent optional acoustic phone alignment. Its failure must not erase
+            // a usable legacy word alignment, nor substitute duration-spread labels.
+            if phoneAligner.isConfigured {
+                do {
+                    let profile = try pair.pronunciationProfile ?? PronunciationProfile.load()
+                    let config = phoneAligner.configuration
+                    processingText = "Estimating phoneme boundaries against local audio…"
+                    let phoneTask = Task.detached(priority: .userInitiated) {
+                        try await LocalPhonemeAligner.align(configuration: config,
+                            audio: URL(fileURLWithPath: directory).appending(path: "audio.caf"), range: range,
+                            sessionAudioOrigin: start + offset, text: transcript.text, profile: profile,
+                            lexicon: .bundled, output: URL(fileURLWithPath: directory))
+                    }
+                    let alignment = try await withTaskCancellationHandler(operation: {try await phoneTask.value},onCancel: {phoneTask.cancel()})
+                    pair.spokenPhones = alignment
+                    if let points = pair.cameraReadings {
+                        pair.mouthedPhones = try CameraPhoneAlignment.transfer(alignment,
+                            spoken: CameraPhoneAlignment.frames(points, range: spoken.cueStart...spoken.cueEnd),
+                            mouthed: CameraPhoneAlignment.frames(points, range: silent.cueStart...silent.cueEnd),
+                            profileHash: profile.fingerprint())
+                    } else {
+                        pair.phoneAlignmentNote = "Spoken acoustic estimates saved. No mouthed phone times: camera points were not collected."
+                    }
+                } catch { pair.phoneAlignmentNote = error.localizedDescription }
+            } else {
+                pair.phoneAlignmentNote = "No local phoneme aligner configured. Whisper word times remain word estimates; no phoneme boundaries were invented."
+            }
             pair.review = .pending; pair.error = nil
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try encoder.encode(pair).write(to: URL(fileURLWithPath: directory).appending(path: "sentence-pair-\(id).json"), options: .atomic)
@@ -403,14 +544,16 @@ final class SentenceTrainingWorkflow {
         secondsRemaining = 0
     }
     enum Failure: LocalizedError {
-        case noCorpus, disconnected, split, clock, transcript, ownership
+        case noCorpus, disconnected, split, clock, transcript, timing, ownership,missingSilent
         var errorDescription: String? {
             switch self {
+            case .missingSilent:"Spoken transcript saved. Re-record to complete the mouthed half."
             case .noCorpus: "The paired sentence corpus is missing from the app."
             case .disconnected: "Motion stopped. Completed halves were saved; reconnect and re-record this pair."
             case .split: "This passage crosses sentence data splits. Recording stopped."
             case .ownership: "The sentence recording was stopped or replaced. Completed halves keep their original session metadata."
             case .clock: "Audio clock metadata is missing; no word timing was invented. Re-record this pair."
+            case .timing: "Too few words have usable audio-aligned times. Review the audio and omitted words, or retry alignment. No word times were invented."
             case .transcript: "Whisper did not match enough of the spoken text. Review the transcript or re-record the pair; missing words were not assigned timings."
             }
         }

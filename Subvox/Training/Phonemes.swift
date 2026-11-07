@@ -1,8 +1,8 @@
 import Foundation
 
-/// The 39 General American phonemes (ARPAbet, as in the CMU dictionary), grouped by where they
-/// are made. The grouping is also the first guess at which ones the jaw sensor will confuse:
-/// sounds made at the same place move the jaw alike.
+/// The existing 39-unit ARPAbet dictionary inventory. These are linguistic labels,
+/// not established sensor classes or a prescription for the speaker's accent.
+/// Articulatory mappings and editable IPA variants live in ArticulatoryInventory.
 struct Phoneme: Identifiable, Hashable, Sendable {
     enum Group: String, CaseIterable, Sendable {
         case vowels = "Vowels"

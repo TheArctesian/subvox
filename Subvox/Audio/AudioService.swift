@@ -62,13 +62,20 @@ final class AudioService {
     @ObservationIgnored let sink = AudioSink()
     @ObservationIgnored private var engine: AVAudioEngine?
 
+    @ObservationIgnored private var choseInitialInput = false
+
     func refreshDevices() {
         devices = AudioDevices.inputDevices()
+        if !choseInitialInput {
+            choseInitialInput = true
+            if selectedDeviceID == nil { selectedDeviceID = AudioDevices.preferredInput(in: devices) }
+        }
     }
 
     func start() async {
         guard !isRunning else { return }
         error = nil
+        refreshDevices()
 
         guard await AVCaptureDevice.requestAccess(for: .audio) else {
             error = "Microphone access denied. Enable it in System Settings › Privacy & Security."
@@ -78,7 +85,11 @@ final class AudioService {
         let engine = AVAudioEngine()
         let input = engine.inputNode
         let deviceID = selectedDeviceID ?? AudioDevices.defaultInputID()
-        if let selectedDeviceID, let unit = input.audioUnit {
+        if let selectedDeviceID {
+            guard let unit = input.audioUnit else {
+                error = "The selected microphone could not be opened. Choose an available input."
+                return
+            }
             var id = selectedDeviceID
             let status = AudioUnitSetProperty(
                 unit, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0,

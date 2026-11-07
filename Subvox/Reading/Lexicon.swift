@@ -42,6 +42,10 @@ struct Lexicon: Sendable {
         entries[word]?.map { $0.trimmingCharacters(in: .decimalDigits) }
     }
 
+    /// Retain stress for IPA conversion (AH0 is schwa, not the STRUT vowel).
+    func pronunciationTokens(_ word: String) -> [String]? { entries[Self.wordKey(word)] }
+    var words: [String] { entries.keys.sorted() }
+
     static func wordKey(_ word: String) -> String { word.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
 
     /// Lower-cased words, keeping internal apostrophes ("they're"). Matches `words_of` in the tools.

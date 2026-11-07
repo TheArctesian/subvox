@@ -5,6 +5,11 @@ struct DecodeView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            HStack {
+                Text("Template / jaw baseline").font(.caption).foregroundStyle(.secondary)
+                Spacer()
+                Button("Try neural sentence decoder") {model.screen = .train;model.showSequenceLearning=true}
+            }.padding(16)
             if model.decoder == nil {
                 VStack(spacing: 18) {
                     Image(systemName: "text.bubble").font(.system(size: 40)).foregroundStyle(.secondary)
@@ -41,7 +46,7 @@ struct DecodeView: View {
             }.pickerStyle(.segmented).frame(maxWidth: 340)
             if model.decodeMode == .hold {
                 HoldToCaptureButton(title: "Mouth a word", isCapturing: capture.isCapturing,
-                    isEnabled: model.motion.status == .streaming && !model.sentenceTraining.isBusy,
+                    isEnabled: model.motion.status == .streaming && !model.sentenceTraining.isBusy && !model.signalCheck.isBusy,
                     onBegin: capture.begin, onEnd: capture.end)
             } else {
                 Button(capture.isCalibrating ? "Calibrating… stay still" : "Calibrate resting motion") { capture.calibrate() }
@@ -50,7 +55,7 @@ struct DecodeView: View {
                 Text(capture.noiseFloor == nil ? "Keep still for two seconds while calibrating." : capture.isCapturing ? "Capturing motion…" : "Waiting for motion…")
                     .font(.caption).foregroundStyle(.secondary)
             }
-        }.disabled(model.sentenceTraining.isBusy)
+        }.disabled(model.sentenceTraining.isBusy || model.signalCheck.isBusy)
     }
 
     private var transcript: some View {

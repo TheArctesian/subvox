@@ -3,11 +3,12 @@ import CryptoKit
 
 enum SentenceReference {
     enum Failure: LocalizedError {
-        case ambiguousTiming, invalidClock
+        case ambiguousTiming, invalidClock, invalidTiming
         var errorDescription: String? {
             switch self {
             case .ambiguousTiming: "Whisper assigned one interval to multiple words. Word boundaries are ambiguous; no duplicate timings were invented. Re-record with sentence prompts or review the raw audio."
-            case .invalidClock: "Whisper word timing or the recording clock is invalid. Re-record this pair."
+            case .invalidClock: "The recording clock is invalid. Check the raw recording metadata."
+            case .invalidTiming: "A word has no usable duration. Retry audio alignment; the recording clock was not changed."
             }
         }
     }
@@ -20,7 +21,7 @@ enum SentenceReference {
             guard words.count <= 1 else { throw Failure.ambiguousTiming }
             guard let word = words.first else { return nil }
             guard token.start.isFinite, token.end.isFinite, token.start >= 0, token.end > token.start else {
-                throw Failure.invalidClock
+                throw Failure.invalidTiming
             }
             return MotionWordAnchor(word: word, start: token.start + sessionStart + audioOffset,
                                     end: token.end + sessionStart + audioOffset)
@@ -44,6 +45,11 @@ struct SentencePrompt: Codable, Identifiable, Hashable, Sendable {
               let content = try? String(contentsOf: url, encoding: .utf8) else { return [] }
         return content.split(separator: "\n").map { SentencePrompt(text: String($0)) }
     }
+    static var diphoneBank:[SentencePrompt] {
+        guard let url=Bundle.main.url(forResource:"diphones",withExtension:"txt",subdirectory:"Corpus"),
+              let text=try? String(contentsOf:url,encoding:.utf8) else {return []}
+        return text.split(separator:"\n").map {Self(text:String($0))}
+    }
 }
 
 struct SentenceRecording: Codable, Identifiable, Sendable {
@@ -52,6 +58,7 @@ struct SentenceRecording: Codable, Identifiable, Sendable {
     var samples: [MotionSample]
     var cueStart: Double
     var cueEnd: Double
+    var wordFocusGuide:WordFocusGuide?
     var cueSamples: [MotionSample] { samples.filter { $0.t >= cueStart && $0.t <= cueEnd } }
     var quality: TakeQuality { TakeQuality.inspect(cueSamples, maximumDuration: 48) }
 }
@@ -71,11 +78,38 @@ struct SentencePair: Codable, Identifiable, Sendable {
     var recordingSessionID: UUID?
     var transcript: LocalWhisperTranscript?
     var transcriptMatchRate: Double?
+    var timedWordCoverage: Double?
     var alignment: MotionTransferResult?
     var review: ReviewDecision = .pending
     var error: String?
+    // Optional sidecars preserve old recordings/word alignment. A word interval is never
+    // split into measured phoneme boundaries. Missing aligner/confidence stays explicit.
+    var pronunciationProfile: PronunciationProfile?
+    var spokenPhones: PhoneAlignment?
+    var mouthedPhones: PhoneAlignment?
+    var phoneAlignmentNote: String?
+    var cameraReadings: [CameraPoseReading]?
     var complete: Bool { spoken != nil && silent != nil }
     var canAccept: Bool { complete && error == nil && alignment?.words.isEmpty == false }
+}
+
+extension SentencePair {
+    /// Only explicit, reviewed phone annotations can supply time-local supervision.
+    /// Paragraphs stay atomic and are excluded from this first single-sentence pilot.
+    func representationTakes(profile:PronunciationProfile) throws -> [RepresentationTake] {
+        guard role == .training,review == .accepted,promptIDs.count==1,
+              promptIDs[0]==SentencePrompt.identity(text),let recordingSessionID,
+              let pronunciationProfile,try pronunciationProfile.fingerprint()==profile.fingerprint(),
+              let cameraReadings,!cameraReadings.isEmpty else {return []}
+        return [(spoken,spokenPhones),(silent,mouthedPhones)].compactMap {recording,alignment in
+            guard let recording,let alignment,alignment.reviewed,
+                  MotionSourceSafety.source(recording) != nil,
+                  (try? profile.fingerprint())==alignment.provenance.pronunciationSHA256,
+                  (try? alignment.validate(in:recording.cueStart...recording.cueEnd)) != nil else {return nil}
+            return .init(id:recording.id,sentenceID:promptIDs[0],text:text,sessionID:recordingSessionID,repetition:0,
+                recording:recording,camera:cameraReadings,phoneAlignment:alignment)
+        }
+    }
 }
 
 struct SentenceVisit: Codable, Identifiable, Sendable {
@@ -172,6 +206,14 @@ struct SentenceTrainingData: Codable, Sendable {
             let group = chosen.filter { roles[$0.id] == role }
             return stride(from: 0, to: group.count, by: 3).map { Array(group[$0..<min($0 + 3, group.count)]) }
         }
+    }
+    /// One role and fresh sentence groups per visit; timing/alignment failures do
+    /// not silently schedule the same completed sentence again in every session.
+    func variedSentences(role:DataRole,limit:Int,excluding:Set<String> = [])->[SentencePrompt] {
+        guard role != .finalTest else {return []}
+        let recorded=Set(pairs.filter { $0.spoken != nil || $0.silent != nil }.flatMap(\.promptIDs))
+        return Array(prompts.filter {$0.kind == .sentence && roles[$0.id]==role && !recorded.contains($0.id) && !excluding.contains($0.id)}
+            .prefix(max(0,limit)))
     }
 
     func repairWords(lexicon: Lexicon, target: Int = 4) -> [String] {

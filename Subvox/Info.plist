@@ -22,6 +22,8 @@
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Subvox processes camera frames locally to track head pose and mouth landmarks during controlled motion tests. Only numeric points are saved; images and video are not recorded.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Subvox records spoken reference audio locally to align paired speech and mouth motion.</string>
 	<key>NSMotionUsageDescription</key>

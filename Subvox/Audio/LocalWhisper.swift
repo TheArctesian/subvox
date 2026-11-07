@@ -8,12 +8,15 @@ struct LocalWhisperWord: Codable, Hashable, Sendable {
     /// Audio-relative seconds, estimated by Whisper or spread within its segment.
     var start: Double
     var end: Double
+    var alignmentPeak: Double?
 }
 
 struct LocalWhisperTranscript: Codable, Hashable, Sendable {
     var text: String
     var words: [LocalWhisperWord]
     var sourceAudioStartSeconds: Double?
+    var timingMethod: String?
+    var timingReview: AudioTimingReview?
 }
 
 /// Offline Whisper adapter. Each transcription owns a temporary loopback-only server;
@@ -47,10 +50,11 @@ final class LocalWhisper {
     }
 
     enum Failure: LocalizedError {
-        case unavailable, busy, invalidAudio, conversion(String), server(String), timeout, malformedResponse, nonLoopback
+        case unavailable, alignmentUnavailable, busy, invalidAudio, conversion(String), server(String), timeout, malformedResponse, nonLoopback
         var errorDescription: String? {
             switch self {
             case .unavailable: "Choose an existing GGML Whisper model and local whisper-server executable. No models are downloaded automatically."
+            case .alignmentUnavailable: "This model has no supported audio-attention alignment preset. Choose a standard GGML tiny, base, small, medium or versioned large Whisper model."
             case .busy: "Local Whisper is already transcribing."
             case .invalidAudio: "Audio is empty, invalid, or longer than the 15-minute local transcription limit."
             case .conversion(let reason): "Could not convert audio locally: \(reason)"
@@ -94,6 +98,12 @@ final class LocalWhisper {
         isTranscribing = true
         error = nil
         let model = Self.expanded(modelPath)
+        guard let preset = Self.alignmentPreset(modelPath: model) else {
+            isTranscribing = false
+            error = Failure.alignmentUnavailable.localizedDescription
+            status = "Audio alignment unavailable"
+            throw Failure.alignmentUnavailable
+        }
         let executable = Self.expanded(executablePath)
         let id = UUID().uuidString
         let wav = outputDirectory.appending(path: "local-whisper-\(id).wav")
@@ -125,7 +135,8 @@ final class LocalWhisper {
             logHandle = try FileHandle(forWritingTo: logURL)
             child.executableURL = URL(fileURLWithPath: executable)
             child.arguments = ["--model", model, "--host", "127.0.0.1", "--port", String(port),
-                               "--inference-path", "/inference", "--language", "auto"]
+                               "--inference-path", "/inference", "--language", "en",
+                               "--dtw", preset, "--no-flash-attn"]
             child.currentDirectoryURL = outputDirectory
             child.standardOutput = logHandle
             child.standardError = logHandle
@@ -143,12 +154,17 @@ final class LocalWhisper {
                 guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
                     throw Failure.server("Inference HTTP status \((response as? HTTPURLResponse)?.statusCode ?? 0). See \(logURL.lastPathComponent).")
                 }
-                var transcript = try Self.parseResponse(data)
+                try data.write(to: outputDirectory.appending(path: "local-whisper-\(id)-raw.json"), options: .atomic)
+                let parsed = try AudioWordTiming.attentionTranscript(data)
+                let timing = Task.detached(priority: .userInitiated) { try AudioWordTiming.inspect(wav: wav, transcript: parsed) }
+                var transcript = try await withTaskCancellationHandler(operation: { try await timing.value }, onCancel: { timing.cancel() })
+                try Task.checkCancellation()
                 if let timeRange {
                     transcript.sourceAudioStartSeconds = timeRange.lowerBound
                     transcript.words = transcript.words.map {
                         LocalWhisperWord(text: $0.text, start: $0.start + timeRange.lowerBound,
-                                         end: $0.end + timeRange.lowerBound)
+                                         end: $0.end + timeRange.lowerBound,
+                                         alignmentPeak: $0.alignmentPeak.map { $0 + timeRange.lowerBound })
                     }
                 }
                 try JSONEncoder().encode(transcript).write(to: outputDirectory.appending(path: "local-whisper-\(id).json"), options: .atomic)
@@ -169,6 +185,16 @@ final class LocalWhisper {
             status = "Local transcription failed"
             throw reported
         }
+    }
+
+    nonisolated static func alignmentPreset(modelPath: String) -> String? {
+        let name = URL(fileURLWithPath: modelPath).deletingPathExtension().lastPathComponent
+        guard name.hasPrefix("ggml-") else { return nil }
+        let model = String(name.dropFirst(5))
+        let presets = ["large-v3-turbo", "large-v3", "large-v2", "large-v1", "medium.en", "medium",
+                       "small.en", "small", "base.en", "base", "tiny.en", "tiny"]
+        guard let preset = presets.first(where: { model == $0 || model.hasPrefix($0 + "-q") }) else { return nil }
+        return preset.replacingOccurrences(of: "large-v", with: "large.v").replacingOccurrences(of: "-turbo", with: ".turbo")
     }
 
     private func waitForServer(_ child: Process, port: Int, session: URLSession) async throws {

@@ -192,6 +192,7 @@ enum MotionPlotChannel: String, CaseIterable, Identifiable {
 }
 
 struct LiveMotionPanel: View {
+    var plotHeight: CGFloat = 75
     @Environment(AppModel.self) private var model
     @State private var channel = MotionPlotChannel.rotation
 
@@ -207,7 +208,7 @@ struct LiveMotionPanel: View {
                     Text(String(format: "%.1f Hz", motion.sampleRate)).font(.caption.monospacedDigit())
                 }
                 SignalPlot(title: channel.rawValue, samples: motion.history, channels: channel.channels,
-                           span: motion.latest.map { ($0.t - 8)...$0.t }, minScale: channel.minScale, height: 75)
+                           span: motion.latest.map { ($0.t - 8)...$0.t }, minScale: channel.minScale, height: plotHeight)
             }.padding(6)
         }
     }

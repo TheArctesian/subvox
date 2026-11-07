@@ -5,6 +5,7 @@ enum AudioDevices {
     struct Device: Identifiable, Hashable {
         let id: AudioDeviceID
         let name: String
+        var isBuiltIn: Bool = false
     }
 
     static func inputDevices() -> [Device] {
@@ -20,8 +21,21 @@ enum AudioDevices {
 
         return ids.compactMap { id in
             guard inputChannelCount(id) > 0 else { return nil }
-            return Device(id: id, name: name(of: id) ?? "Device \(id)")
+            return Device(id: id, name: name(of: id) ?? "Device \(id)", isBuiltIn: transport(of: id) == kAudioDeviceTransportTypeBuiltIn)
         }
+    }
+
+    /// Prefer the computer's microphone without changing the macOS system default.
+    static func preferredInput(in devices: [Device]) -> AudioDeviceID? {
+        devices.first(where: \.isBuiltIn)?.id
+    }
+
+    private static func transport(of id: AudioDeviceID) -> UInt32? {
+        var address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyTransportType,
+            mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
+        var value: UInt32 = 0
+        var size = UInt32(MemoryLayout<UInt32>.size)
+        return AudioObjectGetPropertyData(id, &address, 0, nil, &size, &value) == noErr ? value : nil
     }
 
     static func defaultInputID() -> AudioDeviceID? {

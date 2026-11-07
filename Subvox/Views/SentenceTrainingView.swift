@@ -10,22 +10,38 @@ struct SentenceTrainingView: View {
     @State private var channel = MotionPlotChannel.rotation
 
     var body: some View {
+        if model.showNonSpeechCollection {SequenceLearningView(collectionOnly:true)}
+        else if model.showSequenceLearning { SequenceLearningView() }
+        else if model.showRepresentation { RepresentationStudyView() }
+        else if model.showSignalCheck { SignalCheckView() }
+        else if model.sentenceTraining.isAcquiring {sentenceRecordingScreen}
+        else { trainingBody }
+    }
+
+    @ViewBuilder private var trainingBody: some View {
         let workflow = model.sentenceTraining
         VStack(spacing: 0) {
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("Train your model").font(.largeTitle.weight(.semibold))
-                    Text("Read aloud. Then mouth the same passage silently.").foregroundStyle(.secondary)
+                    Text("Record training sentences").font(.largeTitle.weight(.semibold))
+                    Text("Speak, then mouth. Finish and redo at your own pace.").foregroundStyle(.secondary)
                 }
                 Spacer()
+                if !workflow.isBusy {
+                    Menu("Advanced") {
+                        Button("Neural model training and results") { model.showSequenceLearning = true }
+                        Button("Saved frozen-model studies") { model.showRepresentation = true }
+                        Button("Check motion signal") { model.showSignalCheck = true }
+                    }.controlSize(.large)
+                }
                 if !workflow.isBusy && !workflow.plan.isEmpty {
-                    Button("Record next batch") { model.startSentenceTraining() }
+                    Button("Record sentences") { model.startSentenceTraining() }
                         .buttonStyle(.borderedProminent).controlSize(.large).disabled(!canStart)
                 }
             }.padding(24)
             Divider()
             if workflow.isAcquiring {
-                cue.padding(24)
+                sentenceRecordingScreen
             } else if workflow.isBusy {
                 VStack(spacing: 16) {
                     ProgressView()
@@ -37,6 +53,7 @@ struct SentenceTrainingView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         setup
+                        PhoneAlignmentSettingsView(workflow: workflow)
                         if let error = workflow.error { Text(error).foregroundStyle(.red) }
                         if !workflow.data.pairs.isEmpty { review }
                         if !workflow.fittingWords.isEmpty { coverage; validation }
@@ -52,7 +69,7 @@ struct SentenceTrainingView: View {
 
     private var canStart: Bool {
         model.motion.status == .streaming && model.localWhisper.isConfigured && model.sentenceTraining.storageReady
-            && !model.sentenceTraining.isBusy && !model.recorder.isRecording
+            && !model.sentenceTraining.isBusy && !model.recorder.isRecording && !model.sequenceLearning.isBusy
     }
 
     private var setup: some View {
@@ -65,8 +82,10 @@ struct SentenceTrainingView: View {
         return VStack(alignment: .leading, spacing: 16) {
             Text("\(development.filter { acquired.contains($0.id) }.count) of \(development.count) sentences recorded")
                 .font(.title2.weight(.medium))
-            Text("Read each prompt aloud, then mouth it silently. Done / next finishes a take early; Redo take repeats it after a mistake. The timer can also advance automatically.")
+            Text("Preview each sentence and start when ready. After the Relax baseline, read aloud, choose Done, then mouth it silently in its own take. The END screen waits for you. No freeze or reseat step is required.")
                 .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+            Text("Sentence sessions save microphone audio and AirPods motion, with numeric camera points when enabled. Video is not saved. The separate non-speech session records motion only.")
+                .font(.caption).foregroundStyle(.secondary)
             HStack(spacing: 24) {
                 Label("Relax", systemImage: "leaf").foregroundStyle(relax)
                 Label("Speak aloud", systemImage: "speaker.wave.2").foregroundStyle(speak)
@@ -79,14 +98,34 @@ struct SentenceTrainingView: View {
                 Label("Choose a local Whisper model in recording settings.", systemImage: "exclamationmark.triangle")
                     .foregroundStyle(.orange)
             }
+            if workflow.variedSentences {
+                Picker("This recording session",selection:Binding(get:{workflow.collectionRole ?? .training},set:{workflow.collectionRole=$0})) {
+                    Text("Training sentences").tag(DataRole.training)
+                    Text("Development sentences").tag(DataRole.validation)
+                }.pickerStyle(.segmented)
+                Text("Each visit keeps one role and fresh sentence groups. Re-record mistakes from review; completed or partial sentences are not automatically repeated in every session.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Button("Add the 235-sentence diphone bank") {workflow.addSentenceBank()}
+                    .disabled(SentencePrompt.diphoneBank.allSatisfy {p in data.prompts.contains {$0.id==p.id}})
+                Text("Adding the bank preserves existing roles and recordings, and reserves 25% of the expanded sentence corpus. Pronunciations remain editable proposals.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
             HStack {
                 Picker("Read as", selection: $workflow.presentation) {
                     ForEach(SentenceTrainingWorkflow.Presentation.allCases) { Text($0.rawValue).tag($0) }
-                }.pickerStyle(.segmented)
+                }.pickerStyle(.segmented).disabled(workflow.variedSentences)
                 Picker("Pace", selection: $workflow.pace) {
                     ForEach(TrainingPace.allCases) { Text($0.rawValue).tag($0) }
                 }.pickerStyle(.segmented)
             }
+            if !workflow.pendingTranscriptionIDs.isEmpty {
+                Button("Run local Whisper on \(workflow.pendingTranscriptionIDs.count) pending spoken takes") {
+                    workflow.transcribePending(whisper:model.localWhisper)
+                }.disabled(!model.localWhisper.isConfigured)
+            }
+            Button("Record non-speech examples · nod, turn, chew, swallow") {
+                model.showNonSpeechCollection=true
+            }.disabled(workflow.isBusy || model.sequenceLearning.isBusy)
             if !workflow.plan.isEmpty {
                 Text("Next batch: \(workflow.plan.count) paired prompts, about \(max(1, Int(ceil(workflow.estimatedSeconds / 60)))) minutes.")
                     .font(.callout).foregroundStyle(.secondary)
@@ -118,52 +157,48 @@ struct SentenceTrainingView: View {
             }
         }
     }
-    private var cue: some View {
-        let workflow = model.sentenceTraining
-        let active = workflow.phase == .speak || workflow.phase == .mouth
-        let color = !active ? relax : workflow.phase == .speak ? speak : mouth
-        return VStack(spacing: 18) {
-            HStack {
-                Text("Recording \(min(workflow.index + 1, workflow.total)) of \(workflow.total)").font(.headline)
-                Spacer()
-                Text(String(format: "%.1f s", workflow.secondsRemaining)).font(.title.monospacedDigit()).foregroundStyle(color)
+    private var sentenceRecordingScreen:some View {
+        let workflow=model.sentenceTraining
+        let resting=workflow.phase == .relax || workflow.phase == .recovery
+        let color=resting ? relax:workflow.currentCondition == .normal ? speak:mouth
+        let status=workflow.phase == .ready ? "Ready":resting ? "Relax":workflow.phase == .ended ? "Saved":"Recording"
+        return RecordingViewport {
+            VStack(spacing:8) {
+                HStack {Text("Sentence recording").font(.headline);Spacer();Text("\(min(workflow.index+1,workflow.total)) of \(workflow.total)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)}
+                ProgressView(value:Double(workflow.index),total:Double(max(1,workflow.total))).tint(color)
             }
-            ProgressView(value: Double(workflow.index), total: Double(max(1, workflow.total))).tint(color)
-            VStack(spacing: 24) {
-                Label(!active ? "Relax" : workflow.phase == .speak ? "Speak aloud" : "Mouth silently",
-                      systemImage: !active ? "leaf" : workflow.phase == .speak ? "speaker.wave.2" : "mouth")
-                    .font(.system(size: 34, weight: .semibold))
-                Text(active ? workflow.currentText : "Breathe.")
-                    .font(.system(size: Lexicon.words(in: workflow.currentText).count > 18 ? 44 : 62, weight: .medium, design: .serif))
-                    .multilineTextAlignment(.center)
-                    .minimumScaleFactor(0.5)
-                    .padding(.horizontal, 24)
-                Text(!active ? "Let your jaw rest. The text returns at the next cue."
-                     : workflow.phase == .speak ? "Read once naturally. Choose Done / next when finished."
-                     : "Same text, no voice. Choose Done / next when finished.")
-                    .font(.title3).multilineTextAlignment(.center)
-            }.foregroundStyle(color)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding(24)
-                .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 18))
-            HStack {
-                Button("Stop and save", action: workflow.stop).keyboardShortcut(.cancelAction)
-                Spacer()
-                Button("Redo take", action: { workflow.redoCurrentTake() })
-                    .controlSize(.large).disabled(!workflow.canRedoTake)
-                    .help("Repeat this take: Left Arrow or Up Arrow")
-                Button("Done / next", action: { workflow.finishCurrentTake() })
-                    .buttonStyle(.borderedProminent).controlSize(.large)
-                    .disabled(!workflow.canFinishTake)
-                    .help("Finish this take early: Right Arrow or Down Arrow")
+        } prompt: {
+            VStack(spacing:8) {
+                if workflow.captureCameraPoints {CameraPoseGuide(camera:workflow.camera,compact:true,allowsMovement:true).frame(height:70).padding(.horizontal,12)}
+                RecordingPromptPanel(color:color) {
+                    VStack(spacing:18) {
+                        VStack(spacing:8) {
+                            Text(workflow.phase == .ready ? "When you’re ready":String(format:"%.1f s",workflow.secondsRemaining))
+                                .font(.system(size:20,weight:.medium).monospacedDigit()).foregroundStyle(.secondary)
+                            HStack(spacing:7) {Circle().fill(color).frame(width:6,height:6);Text(status).font(.system(size:13,weight:.semibold))}
+                                .padding(.horizontal,13).padding(.vertical,7).background(color.opacity(0.12),in:Capsule())
+                        }
+                        Label(workflow.currentCondition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.currentCondition == .normal ? "speaker.wave.2":"mouth")
+                            .font(.title3.weight(.medium)).foregroundStyle(color)
+                        WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
+                        Text(resting ? "Relax your mouth. Wait for the recording cue.":workflow.phase == .ended ? "Take saved. Continue, or redo any mistake.":"Follow the highlighted words. Choose Done when finished.")
+                            .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                    }
+                }
             }
-            HStack {
-                Text("Completed takes are saved. Redo replaces only this take.")
-                Spacer()
-                Text("← / ↑ redo    → / ↓ next")
-                    .accessibilityLabel("Left or Up Arrow to redo. Right or Down Arrow for next.")
-            }.font(.caption).foregroundStyle(.secondary)
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        } actions: {
+            VStack(spacing:10) {
+                HStack(spacing:12) {
+                    Button("Stop and save",action:workflow.stop).buttonStyle(.borderless).foregroundStyle(.secondary)
+                    Spacer()
+                    Button {workflow.redoCurrentTake()} label: {Label("Redo",systemImage:"arrow.counterclockwise")}.disabled(!workflow.canRedoTake)
+                    Button {workflow.advance()} label: {
+                        Label(workflow.phase == .ready ? "Start take":workflow.phase == .ended ? "Continue":"Done",systemImage:workflow.phase == .speak || workflow.phase == .mouth ? "checkmark":"chevron.right").frame(minWidth:130)
+                    }.buttonStyle(.borderedProminent).disabled(!workflow.canAdvance)
+                }.controlSize(.large)
+                Text("← Redo     → Start, finish or continue").font(.caption).foregroundStyle(.tertiary)
+            }
+        } motion: {LiveMotionPanel(plotHeight:44)}
     }
 
     private var review: some View {
@@ -207,9 +242,44 @@ struct SentenceTrainingView: View {
                 SignalPlot(title: "Mouthed", samples: silent.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
                 qualityLabel(silent)
             }
-            if let transcript = pair.transcript { Text("Heard: " + transcript.text).font(.callout) }
+            if let transcript = pair.transcript {
+                Text("Heard: " + transcript.text).font(.callout)
+                if pair.review != .excluded,let match=pair.transcriptMatchRate,match>=0.85 {
+                    Text("CTC transcript candidate · \(Int(match*100))% word agreement. A new snapshot can include this pending sentence even if word alignment failed; motion quality and pronunciation coverage are checked separately. Whisper agreement is not evidence of motion accuracy.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                if let directory = pair.directory, transcript.timingReview != nil {
+                    DisclosureGroup("Check word times against audio") {
+                        AudioTimingView(transcript: transcript, audioURL: URL(fileURLWithPath: directory).appending(path: "audio.caf"))
+                    }
+                }
+                if let textRate = pair.transcriptMatchRate, let timingRate = pair.timedWordCoverage {
+                    Text(String(format: "Text match %.0f%% · usable timed words %.0f%%", textRate * 100, timingRate * 100))
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
             if !pair.complete { Text("Incomplete pair. Re-record to collect both takes.").font(.caption).foregroundStyle(.orange) }
             if let error = pair.error { Text(error).font(.caption).foregroundStyle(.orange) }
+            if let note = pair.phoneAlignmentNote { Text(note).font(.caption).foregroundStyle(.secondary) }
+            if pair.spokenPhones != nil {
+                DisclosureGroup("Phoneme alignment estimates · review before supervision") {
+                    ForEach([SpeechCondition.normal,.silent]) { condition in
+                        let alignment = condition == .normal ? pair.spokenPhones : pair.mouthedPhones
+                        if let alignment {
+                            Text(condition.rawValue + " · " + alignment.provenance.backend).font(.headline)
+                            Text(alignment.provenance.note).font(.caption)
+                            ForEach(alignment.phones.indices, id: \.self) { i in
+                                let phone = alignment.phones[i]
+                                let origin = condition == .normal ? pair.spoken?.cueStart ?? 0 : pair.silent?.cueStart ?? 0
+                                Text(String(format: "/%@/ %.3f–%.3f s from START · confidence %@", phone.ipa, phone.start - origin, phone.end - origin,
+                                    phone.confidence.map { String(format: "%.2f", $0) } ?? "unavailable"))
+                                    .font(.caption.monospacedDigit())
+                            }
+                        }
+                    }
+                    Button("Mark these phone estimates reviewed") { model.sentenceTraining.reviewPhoneAlignment(pair.id) }
+                }
+            }
             DisclosureGroup("Recording details") {
                 if let transfer = pair.alignment {
                     Text(String(format: "%d aligned words · cost %.3f · duration ratio %.2f", transfer.words.count, transfer.normalizedCost, transfer.durationRatio))

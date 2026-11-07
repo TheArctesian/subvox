@@ -4,4 +4,6 @@ DerivedData/
 .DS_Store
 xcuserdata/
 __pycache__/
+.venv/
+*.egg-info/
 *.py[cod]

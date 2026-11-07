@@ -26,12 +26,23 @@ targets:
         CFBundleDisplayName: Subvox
         LSApplicationCategoryType: public.app-category.developer-tools
         NSMotionUsageDescription: Subvox reads AirPods head-motion data to study whether mouthed words can be decoded into text.
+        NSCameraUsageDescription: Subvox processes camera frames locally to track head pose and mouth landmarks during controlled motion tests. Only numeric points are saved; images and video are not recorded.
         NSMicrophoneUsageDescription: Subvox records spoken reference audio locally to align paired speech and mouth motion.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.joeblau.subvox
         CODE_SIGN_IDENTITY: Apple Development
         ENABLE_HARDENED_RUNTIME: NO
+    postBuildScripts:
+      - name: Bundle pinned neural training runtime
+        basedOnDependencyAnalysis: false
+        outputFiles:
+          - "$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/SequenceRuntime"
+        script: |
+          destination="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/SequenceRuntime"
+          mkdir -p "$destination/subvox_ml"
+          cp "$SRCROOT/Tools/sequence/pyproject.toml" "$SRCROOT/Tools/sequence/uv.lock" "$destination/"
+          cp "$SRCROOT/Tools/sequence/subvox_ml/"*.py "$destination/subvox_ml/"
   SubvoxTests:
     type: bundle.unit-test
     platform: macOS

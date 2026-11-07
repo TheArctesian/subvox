@@ -21,7 +21,8 @@ struct RecordingSession: Codable, Equatable, Sendable {
 final class SessionRecorder {
     enum Condition: String, Codable {
         case paired = "Paired sentence training"
-        var slug: String { "paired" }
+        case signalCheck = "Repeated sentence signal check"
+        var slug: String { self == .paired ? "paired" : "signal-check" }
     }
 
     var condition: Condition = .paired
@@ -30,6 +31,8 @@ final class SessionRecorder {
     private(set) var startedAt: Date?
     private(set) var motionCount = 0
     private(set) var eventCount = 0
+    private(set) var cameraPointCount = 0
+    private(set) var cameraWriteFailures = 0
     private(set) var lastSession: RecordingSession?
     private(set) var activeSessionID: UUID?
     var currentSession: RecordingSession? {
@@ -51,6 +54,8 @@ final class SessionRecorder {
     @ObservationIgnored private var motionHandle: FileHandle?
     @ObservationIgnored private var eventsHandle: FileHandle?
     @ObservationIgnored private var audioWriter: AudioFileWriter?
+    @ObservationIgnored private var cameraHandle: FileHandle?
+    @ObservationIgnored private var recordsAudio = false
     @ObservationIgnored private var sinkID: UUID?
     @ObservationIgnored private weak var sink: AudioSink?
     @ObservationIgnored private var audioDeviceName: String?
@@ -58,13 +63,13 @@ final class SessionRecorder {
     init(root: URL? = nil) { recordingRoot = root ?? Self.root }
 
     @discardableResult
-    func start(audio: AudioService) -> RecordingSession? {
-        start(audioSink: audio.isRunning ? audio.sink : nil, audioDevice: audio.activeDeviceName)
+    func start(audio: AudioService, cameraPoints: Bool = false) -> RecordingSession? {
+        start(audioSink: audio.isRunning ? audio.sink : nil, audioDevice: audio.activeDeviceName, cameraPoints: cameraPoints)
     }
 
     /// Accept a sink separately so capture and recorder lifetime are independent.
     @discardableResult
-    func start(audioSink: AudioSink?, audioDevice: String? = nil) -> RecordingSession? {
+    func start(audioSink: AudioSink?, audioDevice: String? = nil, cameraPoints: Bool = false) -> RecordingSession? {
         guard !isRecording else { return nil }
         error = nil
         let stamp = Date().formatted(.iso8601.year().month().day().time(includingFractionalSeconds: false))
@@ -74,10 +79,15 @@ final class SessionRecorder {
             try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
             motionHandle = try Self.makeFile(dir.appending(path: "motion.csv"), header: MotionSample.csvHeader)
             eventsHandle = try Self.makeFile(dir.appending(path: "events.csv"), header: "start,end,kind,label,confidence")
+            if cameraPoints {
+                let path = dir.appending(path: "camera-points.ndjson")
+                try Data().write(to: path, options: .withoutOverwriting)
+                cameraHandle = try FileHandle(forWritingTo: path)
+            }
         } catch {
             self.error = error.localizedDescription
-            try? motionHandle?.close(); try? eventsHandle?.close()
-            motionHandle = nil; eventsHandle = nil
+            try? motionHandle?.close(); try? eventsHandle?.close(); try? cameraHandle?.close()
+            motionHandle = nil; eventsHandle = nil; cameraHandle = nil
             return nil
         }
 
@@ -89,7 +99,8 @@ final class SessionRecorder {
         recordedPrompt = prompt
         audioDeviceName = audioDevice
         motionCount = 0
-        eventCount = 0
+        eventCount = 0; cameraPointCount = 0; cameraWriteFailures = 0
+        recordsAudio = audioSink != nil
 
         if let audioSink {
             let writer = AudioFileWriter(url: dir.appending(path: "audio.caf"))
@@ -111,6 +122,7 @@ final class SessionRecorder {
         guard let session = currentSession, sessionID == nil || sessionID == session.id else { return nil }
         try motionHandle?.synchronize()
         try eventsHandle?.synchronize()
+        try cameraHandle?.synchronize()
         try writeMetadata(session: session, audioInfo: audioWriter?.currentInfo, complete: false)
         return session
     }
@@ -125,8 +137,10 @@ final class SessionRecorder {
         audioWriter = nil
         try? motionHandle?.close()
         try? eventsHandle?.close()
+        try? cameraHandle?.close()
         motionHandle = nil
         eventsHandle = nil
+        cameraHandle = nil
 
         let finished = RecordingSession(id: session.id, directory: session.directory, startUptime: session.startUptime,
                                        audioOffset: audioInfo?.firstHostSeconds.map { $0 - session.startUptime })
@@ -149,10 +163,16 @@ final class SessionRecorder {
             "durationSeconds": ProcessInfo.processInfo.systemUptime - session.startUptime,
             "motionSamples": motionCount,
             "events": eventCount,
+            "audioRecordingEnabled": recordsAudio,
+            "videoRecordingEnabled": false,
+            "cameraPointSamples": cameraPointCount,
+            "cameraPointWriteFailures": cameraWriteFailures,
+            "cameraPointSchemaVersion": 1,
+            "cameraPointCoordinates": "Full-image normalized coordinates, lower-left origin. Shape uses roll-aligned inter-eye-distance units; yaw/pitch are not corrected.",
             "audioDevice": audioDeviceName ?? NSNull(),
             "audioSampleRate": audioInfo?.sampleRate ?? NSNull(),
             "audioStartOffsetSeconds": session.audioOffset ?? NSNull(),
-            "note": "Motion t and audioStartOffsetSeconds are relative to startUptime (seconds since boot).",
+            "note": "Motion t, audioStartOffsetSeconds and camera sessionSeconds are relative to startUptime. Camera reading.t is monotonic uptime, with receipt-time fallback flagged per frame.",
         ]
         let data = try JSONSerialization.data(withJSONObject: meta, options: [.prettyPrinted, .sortedKeys])
         try data.write(to: session.directory.appending(path: "meta.json"), options: .atomic)
@@ -162,6 +182,30 @@ final class SessionRecorder {
         guard isRecording else { return }
         motionHandle?.write(Data((sample.csvRow(relativeTo: startUptime) + "\n").utf8))
         motionCount += 1
+    }
+
+    /// Numeric-only frame sidecar, streamed so an interrupted take still has its points.
+    @discardableResult
+    func recordCamera(_ reading: CameraPoseReading, sessionID: UUID) -> Bool {
+        guard isRecording, activeSessionID == sessionID, let cameraHandle else { return false }
+        struct Row: Encodable {
+            let schemaVersion = 1
+            let sessionID: UUID
+            let sessionSeconds: Double
+            let reading: CameraPoseReading
+        }
+        do {
+            let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
+            var bytes = try encoder.encode(Row(sessionID: sessionID, sessionSeconds: reading.t - startUptime, reading: reading))
+            bytes.append(0x0A)
+            try cameraHandle.write(contentsOf: bytes)
+            cameraPointCount += 1
+            return true
+        } catch {
+            cameraWriteFailures += 1
+            self.error = "Camera point recording failed: " + error.localizedDescription
+            return false
+        }
     }
 
     func logEvent(_ segment: [MotionSample], kind: String, label: String, confidence: Double?) {
@@ -174,6 +218,15 @@ final class SessionRecorder {
             confidence.map { String(format: "%.3f", $0) } ?? "",
         ].joined(separator: ",")
         eventsHandle?.write(Data((row + "\n").utf8))
+        eventCount += 1
+    }
+
+    /// Explicit cue boundaries, even if no sensor sample arrived at the key press.
+    func logMarker(uptime: Double, kind: String, label: String) {
+        guard isRecording, uptime.isFinite else { return }
+        let time = String(format: "%.6f", uptime - startUptime)
+        let safeLabel = label.replacingOccurrences(of: ",", with: " ").replacingOccurrences(of: "\n", with: " ")
+        eventsHandle?.write(Data("\(time),\(time),\(kind),\(safeLabel),\n".utf8))
         eventCount += 1
     }
 

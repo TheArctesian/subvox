@@ -34,12 +34,17 @@ struct MotionTransferResult: Codable, Hashable, Sendable {
 /// Annotation transfer within ONE paired recording. No model fitting, transcript matching,
 /// phone inference, trimming or global normalization. Anchors never influence the DTW path.
 enum SentenceMotionAlignment {
+    // Bump when changing frame preprocessing, path constraints or cost semantics.
+    static let algorithmVersion = 1
+    static let timeBand = 0.35
+    static let nonDiagonalPenalty = 0.02
     enum Failure: Error, LocalizedError, Equatable {
-        case invalidFeatures, invalidSamples, excessiveLength, timestampGap
+        case invalidFeatures, invalidScales, invalidSamples, excessiveLength, timestampGap
         case noMotion, badAnchors, excessiveWarp, noPath, collapsedWord
 
         var errorDescription: String? {
             switch self {
+            case .invalidScales: "Frozen channel scales must be finite, positive and match the selected features."
             case .invalidFeatures: "Choose supported motion features for alignment."
             case .invalidSamples: "Motion must contain finite values and strictly increasing timestamps."
             case .excessiveLength: "Align clips with 6–2,400 samples and durations from 0.1 to 48 seconds."
@@ -54,7 +59,7 @@ enum SentenceMotionAlignment {
     }
 
     static func align(voiced: [MotionSample], silent: [MotionSample], words: [MotionWordAnchor],
-                      features: FeatureSet = [.acceleration, .rotation]) throws -> MotionTransferResult {
+                      features: FeatureSet = [.acceleration, .rotation], referenceScales: [Double]? = nil) throws -> MotionTransferResult {
         guard !features.isEmpty, features.subtracting(.all).isEmpty else { throw Failure.invalidFeatures }
         try validate(voiced)
         try validate(silent)
@@ -87,7 +92,12 @@ enum SentenceMotionAlignment {
         guard zip(va, floors).contains(where: { $0.0 > $0.1 * $0.1 }),
               zip(vb, floors).contains(where: { $0.0 > $0.1 * $0.1 }) else { throw Failure.noMotion }
         // Pair-only scales give each recording equal weight even at different sampling rates.
-        let scales = floors.indices.map { max(sqrt((va[$0] + vb[$0]) / 2), floors[$0]) }
+        if let referenceScales {
+            guard referenceScales.count == floors.count,
+                  zip(referenceScales, floors).allSatisfy({ $0.isFinite && $0 >= $1 }) else { throw Failure.invalidScales }
+        }
+        // Fixed-model callers supply scales fitted only on their reference recordings.
+        let scales = referenceScales ?? floors.indices.map { max(sqrt((va[$0] + vb[$0]) / 2), floors[$0]) }
         let x = MotionFeatures.scaled(a, by: scales), y = MotionFeatures.scaled(b, by: scales)
         let n = x.count, m = y.count, dims = scales.count
         let width = m + 1
@@ -102,14 +112,14 @@ enum SentenceMotionAlignment {
                 let sPhase = (silent[j - 1].t - s0) / (s1 - s0)
                 // A relative-TIME band handles different native sample rates without losing
                 // original indices. Its width is an annotation heuristic, not a learned prior.
-                guard abs(vPhase - sPhase) <= 0.35 else { continue }
+                guard abs(vPhase - sPhase) <= timeBand else { continue }
                 var squared = 0.0
                 for d in 0..<dims { let delta = x[i - 1][d] - y[j - 1][d]; squared += delta * delta }
                 let cost = sqrt(squared / Double(dims))
                 // Stable tie preference: diagonal, then advance voiced, then advance silent.
                 var best = previous[j - 1], direction: UInt8 = 1
-                if previous[j] + 0.02 < best { best = previous[j] + 0.02; direction = 2 }
-                if current[j - 1] + 0.02 < best { best = current[j - 1] + 0.02; direction = 3 }
+                if previous[j] + nonDiagonalPenalty < best { best = previous[j] + nonDiagonalPenalty; direction = 2 }
+                if current[j - 1] + nonDiagonalPenalty < best { best = current[j - 1] + nonDiagonalPenalty; direction = 3 }
                 guard best.isFinite, cost.isFinite else { continue }
                 current[j] = best + cost
                 predecessors[i * width + j] = direction

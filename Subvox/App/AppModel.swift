@@ -26,10 +26,17 @@ final class AppModel {
     let capture = CaptureController()
     let recorder = SessionRecorder()
     let localWhisper = LocalWhisper()
+    let signalCheck: SignalCheckWorkflow
+    var showSignalCheck = false
+    let representation = RepresentationWorkflow()
+    var showRepresentation = false
+    let sequenceLearning = SequenceLearningWorkflow()
+    var showSequenceLearning = false
+    var showNonSpeechCollection = false
     let sentenceTraining: SentenceTrainingWorkflow
     var screen: Screen = .train {
         didSet {
-            if oldValue == .train && screen != .train { sentenceTraining.stop() }
+            if oldValue == .train && screen != .train { sentenceTraining.stop(); signalCheck.stop(); representation.stop(); sequenceLearning.stop() }
             syncCaptureMode()
         }
     }
@@ -68,8 +75,17 @@ final class AppModel {
     @ObservationIgnored private var terminationObserver: NSObjectProtocol?
     @ObservationIgnored private var started = false
 
-    init(sentenceTraining: SentenceTrainingWorkflow? = nil) {
+    init(sentenceTraining: SentenceTrainingWorkflow? = nil, signalCheck: SignalCheckWorkflow? = nil) {
+        self.signalCheck = signalCheck ?? SignalCheckWorkflow()
         self.sentenceTraining = sentenceTraining ?? SentenceTrainingWorkflow()
+        if sentenceTraining == nil {
+            self.sentenceTraining.guidedRecording=true
+            self.sentenceTraining.variedSentences=true
+            self.sentenceTraining.collectionRole = .training
+            self.sentenceTraining.presentation = .sentences
+            self.sentenceTraining.captureCameraPoints=true
+            self.sentenceTraining.excludedCollectionGroups=Set((representation.study?.training ?? []).map(\.id)+(representation.study?.evaluation ?? []).map(\.id))
+        }
         self.sentenceTraining.onTrainingChanged = { [weak self] in self?.rebuildDecoder() }
         rebuildDecoder()
     }
@@ -87,6 +103,9 @@ final class AppModel {
             self.capture.ingest(sample)
             self.recorder.record(sample)
             self.sentenceTraining.ingest(sample)
+            self.signalCheck.ingest(sample)
+            self.representation.ingest(sample)
+            self.sequenceLearning.ingest(sample)
         }
         capture.onSegment = { [weak self] in self?.handleSegment($0) }
         motion.start()
@@ -95,6 +114,9 @@ final class AppModel {
     }
 
     func prepareForTermination() {
+        sequenceLearning.stop()
+        representation.stop()
+        signalCheck.prepareForTermination()
         sentenceTraining.prepareForTermination(recorder: recorder)
         recorder.stop()
         audio.stop()
@@ -122,18 +144,24 @@ final class AppModel {
     }
 
     private func syncCaptureMode() {
-        let enabled = screen == .decode && decodeMode == .auto && decoder != nil && !sentenceTraining.isBusy
+        let enabled = screen == .decode && decodeMode == .auto && decoder != nil && !sentenceTraining.isBusy && !signalCheck.isBusy && !representation.isBusy && !sequenceLearning.isBusy
         if capture.autoEnabled != enabled { capture.autoEnabled = enabled }
     }
 
     func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil) {
-        guard motion.status == .streaming, localWhisper.isConfigured else { return }
+        guard motion.status == .streaming, localWhisper.isConfigured, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy else { return }
         sentenceTraining.start(audio: audio, recorder: recorder, whisper: localWhisper,
             canRecord: { [weak self] in self?.motion.status == .streaming }, repairs: repairs, retry: retry)
     }
 
+    func startSignalCheck(againstReference: Bool = false, controlled: Bool = false) {
+        guard !sentenceTraining.isBusy, !representation.isBusy, !sequenceLearning.isBusy, motion.status == .streaming else { return }
+        signalCheck.start(audio: audio, recorder: recorder, againstReference: againstReference, controlled: controlled,
+            canRecord: { [weak self] in self?.motion.status == .streaming })
+    }
+
     private func handleSegment(_ segment: [MotionSample]) {
-        guard screen == .decode, !sentenceTraining.isBusy, let decoder else { return }
+        guard screen == .decode, !sentenceTraining.isBusy, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, let decoder else { return }
         lastSegment = segment
         isDecoding = true
         Task {
@@ -151,7 +179,7 @@ final class AppModel {
                     isRepeat: event.isARepeat, modifiers: event.modifierFlags,
                     isEditingText: NSApp.keyWindow?.firstResponder is NSText) { return true }
                 guard event.keyCode == 49, self.screen == .decode, self.decodeMode == .hold,
-                      self.decoder != nil, !self.sentenceTraining.isBusy,
+                      self.decoder != nil, !self.sentenceTraining.isBusy, !self.signalCheck.isBusy, !self.representation.isBusy, !self.sequenceLearning.isBusy,
                       !(NSApp.keyWindow?.firstResponder is NSText) else { return false }
                 if event.type == .keyUp { self.capture.end() }
                 else if !event.isARepeat { self.capture.begin() }
@@ -164,11 +192,25 @@ final class AppModel {
     /// Forward arrows finish; backward arrows redo. Held keys never carry into later takes.
     func handleTrainingArrowKey(keyCode: UInt16, isRepeat: Bool, modifiers: NSEvent.ModifierFlags = [],
                                   isEditingText: Bool = false) -> Bool {
-        guard screen == .train, sentenceTraining.isAcquiring, !isEditingText,
+        guard screen == .train, (sentenceTraining.isAcquiring || (showSignalCheck && signalCheck.isAcquiring) || (showRepresentation && representation.isAcquiring) || ((showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring)), !isEditingText,
               [123, 124, 125, 126].contains(keyCode),
               modifiers.intersection([.command, .control, .option, .shift]).isEmpty else { return false }
         if !isRepeat {
-            if keyCode == 124 || keyCode == 125 { sentenceTraining.finishCurrentTake() }
+            if (showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring {
+                if keyCode == 124 || keyCode == 125 {sequenceLearning.next()} else {sequenceLearning.redo()}
+                return true
+            }
+            if showRepresentation && representation.isAcquiring {
+                if keyCode == 124 || keyCode == 125 { representation.next() }
+                else { representation.redo() }
+                return true
+            }
+            if showSignalCheck && signalCheck.isAcquiring {
+                if keyCode == 124 || keyCode == 125 { signalCheck.next() }
+                else { signalCheck.redo() }
+                return true
+            }
+            if keyCode == 124 || keyCode == 125 { sentenceTraining.advance() }
             else { sentenceTraining.redoCurrentTake() }
         }
         return true
@@ -176,7 +218,7 @@ final class AppModel {
 
     func clearDecoded() { decoded.removeAll(); lastSegment = [] }
     func toggleMic() async {
-        guard !sentenceTraining.isBusy else { return }
+        guard !sentenceTraining.isBusy, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy else { return }
         if audio.isRunning { audio.stop() }
         else { await audio.start() }
     }
