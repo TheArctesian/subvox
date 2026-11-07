@@ -65,7 +65,7 @@ struct SentenceTrainingView: View {
         return VStack(alignment: .leading, spacing: 16) {
             Text("\(development.filter { acquired.contains($0.id) }.count) of \(development.count) sentences recorded")
                 .font(.title2.weight(.medium))
-            Text("Each prompt has a spoken take and a silent take. Relax between them, read once naturally, then wait for the next cue. No keypresses needed.")
+            Text("Read each prompt aloud, then mouth it silently. Done / next finishes a take early; Redo take repeats it after a mistake. The timer can also advance automatically.")
                 .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 24) {
                 Label("Relax", systemImage: "leaf").foregroundStyle(relax)
@@ -139,18 +139,30 @@ struct SentenceTrainingView: View {
                     .minimumScaleFactor(0.5)
                     .padding(.horizontal, 24)
                 Text(!active ? "Let your jaw rest. The text returns at the next cue."
-                     : workflow.phase == .speak ? "Read once, naturally. Then wait for Relax."
-                     : "Same text, no voice. Your timing can differ from the spoken version.")
+                     : workflow.phase == .speak ? "Read once naturally. Choose Done / next when finished."
+                     : "Same text, no voice. Choose Done / next when finished.")
                     .font(.title3).multilineTextAlignment(.center)
             }.foregroundStyle(color)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(24)
                 .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 18))
             HStack {
-                Text("Completed halves are saved even if you stop.").foregroundStyle(.secondary)
-                Spacer()
                 Button("Stop and save", action: workflow.stop).keyboardShortcut(.cancelAction)
+                Spacer()
+                Button("Redo take", action: { workflow.redoCurrentTake() })
+                    .controlSize(.large).disabled(!workflow.canRedoTake)
+                    .help("Repeat this take: Left Arrow or Up Arrow")
+                Button("Done / next", action: { workflow.finishCurrentTake() })
+                    .buttonStyle(.borderedProminent).controlSize(.large)
+                    .disabled(!workflow.canFinishTake)
+                    .help("Finish this take early: Right Arrow or Down Arrow")
             }
+            HStack {
+                Text("Completed takes are saved. Redo replaces only this take.")
+                Spacer()
+                Text("← / ↑ redo    → / ↓ next")
+                    .accessibilityLabel("Left or Up Arrow to redo. Right or Down Arrow for next.")
+            }.font(.caption).foregroundStyle(.secondary)
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 

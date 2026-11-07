@@ -145,9 +145,12 @@ final class AppModel {
 
     private func installKeyMonitor() {
         keyMonitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .keyUp]) { [weak self] event in
-            guard event.keyCode == 49 else { return event }
             let consumed = MainActor.assumeIsolated { () -> Bool in
-                guard let self, self.screen == .decode, self.decodeMode == .hold,
+                guard let self else { return false }
+                if event.type == .keyDown, self.handleTrainingArrowKey(keyCode: event.keyCode,
+                    isRepeat: event.isARepeat, modifiers: event.modifierFlags,
+                    isEditingText: NSApp.keyWindow?.firstResponder is NSText) { return true }
+                guard event.keyCode == 49, self.screen == .decode, self.decodeMode == .hold,
                       self.decoder != nil, !self.sentenceTraining.isBusy,
                       !(NSApp.keyWindow?.firstResponder is NSText) else { return false }
                 if event.type == .keyUp { self.capture.end() }
@@ -156,6 +159,19 @@ final class AppModel {
             }
             return consumed ? nil : event
         }
+    }
+
+    /// Forward arrows finish; backward arrows redo. Held keys never carry into later takes.
+    func handleTrainingArrowKey(keyCode: UInt16, isRepeat: Bool, modifiers: NSEvent.ModifierFlags = [],
+                                  isEditingText: Bool = false) -> Bool {
+        guard screen == .train, sentenceTraining.isAcquiring, !isEditingText,
+              [123, 124, 125, 126].contains(keyCode),
+              modifiers.intersection([.command, .control, .option, .shift]).isEmpty else { return false }
+        if !isRepeat {
+            if keyCode == 124 || keyCode == 125 { sentenceTraining.finishCurrentTake() }
+            else { sentenceTraining.redoCurrentTake() }
+        }
+        return true
     }
 
     func clearDecoded() { decoded.removeAll(); lastSegment = [] }

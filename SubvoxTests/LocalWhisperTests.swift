@@ -125,4 +125,29 @@ final class LocalWhisperTests: XCTestCase {
         XCTAssertThrowsError(try LocalWhisper.convertToWAV(source, destination: destination, timeRange: 3...4))
     }
 
+    func testShortCueCanBeConvertedAfterRetakesExtendTheVisitPastFifteenMinutes() throws {
+        let directory = FileManager.default.temporaryDirectory.appending(path: "local-whisper-long-\(UUID())")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let source = directory.appending(path: "long.wav"), destination = directory.appending(path: "cue.wav")
+        // Sparse PCM WAV: a long source without allocating or processing fifteen minutes of audio.
+        let byteCount: UInt32 = 960 * 16000 * 2
+        var header = Data()
+        func append<T: FixedWidthInteger>(_ value: T) {
+            var little = value.littleEndian
+            withUnsafeBytes(of: &little) { header.append(contentsOf: $0) }
+        }
+        header.append(Data("RIFF".utf8)); append(byteCount + 36); header.append(Data("WAVEfmt ".utf8))
+        append(UInt32(16)); append(UInt16(1)); append(UInt16(1)); append(UInt32(16000))
+        append(UInt32(32000)); append(UInt16(2)); append(UInt16(16))
+        header.append(Data("data".utf8)); append(byteCount)
+        try header.write(to: source)
+        let file = try FileHandle(forWritingTo: source)
+        try file.truncate(atOffset: UInt64(header.count) + UInt64(byteCount)); try file.close()
+        try LocalWhisper.convertToWAV(source, destination: destination, timeRange: 930...930.25)
+        let clip = try AVAudioFile(forReading: destination)
+        XCTAssertEqual(Double(clip.length) / clip.processingFormat.sampleRate, 0.25, accuracy: 0.01)
+        XCTAssertThrowsError(try LocalWhisper.convertToWAV(source, destination: destination))
+    }
+
 }

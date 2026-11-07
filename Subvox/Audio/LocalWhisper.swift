@@ -306,7 +306,7 @@ final class LocalWhisper {
     nonisolated static func convertToWAV(_ source: URL, destination: URL, timeRange: ClosedRange<Double>? = nil) throws {
         let input = try AVAudioFile(forReading: source)
         let format = input.processingFormat
-        guard format.sampleRate > 0, input.length > 0, Double(input.length) / format.sampleRate <= 900,
+        guard format.sampleRate > 0, input.length > 0,
               let target = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 16000, channels: 1, interleaved: false),
               let converter = AVAudioConverter(from: format, to: target) else { throw Failure.invalidAudio }
         var endFrame = input.length
@@ -318,6 +318,8 @@ final class LocalWhisper {
             input.framePosition = AVAudioFramePosition(start)
             endFrame = AVAudioFramePosition(min(Double(input.length), timeRange.upperBound * format.sampleRate))
         }
+        // Repeated takes may make a visit long; only the selected cue is sent to Whisper.
+        guard Double(endFrame - input.framePosition) / format.sampleRate <= 900 else { throw Failure.invalidAudio }
         let settings: [String: Any] = [AVFormatIDKey: kAudioFormatLinearPCM, AVSampleRateKey: 16000,
             AVNumberOfChannelsKey: 1, AVLinearPCMBitDepthKey: 16, AVLinearPCMIsFloatKey: false, AVLinearPCMIsBigEndianKey: false]
         let output = try AVAudioFile(forWriting: destination, settings: settings,

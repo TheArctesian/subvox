@@ -30,6 +30,15 @@ final class SentenceTrainingWorkflow {
     @ObservationIgnored private var activeVisitID: UUID?
     @ObservationIgnored private var activeRecordingID: UUID?
     @ObservationIgnored private var isTerminating = false
+    private var activeCueStart: Double?
+    private var requestedCueEnd: Double?
+    private var redoRequested = false
+    @ObservationIgnored private var retryableTake: SentenceRecording?
+    @ObservationIgnored private var pendingRedoCleanup: (() throws -> Void)?
+    var canFinishTake: Bool {
+        (phase == .speak || phase == .mouth) && activeCueStart != nil && requestedCueEnd == nil && !redoRequested
+    }
+    var canRedoTake: Bool { !redoRequested && (activeCueStart != nil || (phase == .recovery && retryableTake != nil)) }
     var settings: DecoderSettings { data.decoderSettings ?? DecoderSettings() }
     var settingsLocked: Bool { isBusy || !storageReady || data.reservedUnlockedAt != nil }
     var learningMethod: LearningMethod {
@@ -122,6 +131,10 @@ final class SentenceTrainingWorkflow {
     func prepareForTermination(recorder: SessionRecorder) {
         isTerminating = true
         task?.cancel()
+        if redoRequested {
+            do { try discardRedoAttempt() }
+            catch { self.error = error.localizedDescription }
+        }
         if let id = activeRecordingID {
             finishVisit(session: recorder.stop(sessionID: id))
             save()
@@ -136,6 +149,84 @@ final class SentenceTrainingWorkflow {
     func stop() {
         guard isAcquiring || phase == .preparing else { return }
         task?.cancel()
+    }
+
+    /// Finish this take at the button/key press, without cancelling the recording visit.
+    @discardableResult
+    func finishCurrentTake() -> Bool {
+        guard canFinishTake else { return false }
+        requestedCueEnd = ProcessInfo.processInfo.systemUptime
+        return true
+    }
+
+    @discardableResult
+    func redoCurrentTake() -> Bool {
+        guard canRedoTake else { return false }
+        redoRequested = true
+        return true
+    }
+
+    private enum CaptureControl: Error { case redo }
+
+    /// Retries only this half. A recovery-time redo first removes the saved, unwanted half.
+    func collectTake(condition: SpeechCondition, maximumDuration: Double, baselineSeconds: Double,
+                     recoverySeconds: Double, canRecord: () -> Bool = { true }, onCompleted: (SentenceRecording) throws -> Void,
+                     onRedo: @escaping (SentenceRecording?) throws -> Void) async throws {
+        defer { retryableTake = nil; redoRequested = false; pendingRedoCleanup = nil }
+        while true {
+            try Task.checkCancellation()
+            buffer = []; retryableTake = nil; redoRequested = false
+            pendingRedoCleanup = { try onRedo(self.retryableTake) }
+            do {
+                try await rest(.relax, seconds: baselineSeconds)
+                guard canRecord() else { throw Failure.disconnected }
+                let recording = try await captureTake(condition: condition, maximumDuration: maximumDuration)
+                retryableTake = recording
+                try onCompleted(recording)
+                try await rest(.recovery, seconds: recoverySeconds)
+                if redoRequested { throw CaptureControl.redo }
+                return
+            } catch CaptureControl.redo {
+                try discardRedoAttempt()
+            } catch {
+                if redoRequested { try discardRedoAttempt() }
+                throw error
+            }
+        }
+    }
+
+    private func discardRedoAttempt() throws {
+        let cleanup = pendingRedoCleanup
+        pendingRedoCleanup = nil
+        try cleanup?()
+    }
+
+    func discardHalf(condition: SpeechCondition, pairID: UUID) throws {
+        guard let id = activeRecordingID, let i = data.pairs.firstIndex(where: { $0.id == pairID }),
+              data.pairs[i].recordingSessionID == id else { throw Failure.ownership }
+        if condition == .normal { data.pairs[i].spoken = nil }
+        else { data.pairs[i].silent = nil }
+        data.pairs[i].alignment = nil; data.pairs[i].review = .pending
+        try persist()
+    }
+
+    func captureTake(condition: SpeechCondition, maximumDuration: Double) async throws -> SentenceRecording {
+        let start = ProcessInfo.processInfo.systemUptime
+        activeCueStart = start; requestedCueEnd = nil; redoRequested = false
+        phase = condition == .normal ? .speak : .mouth
+        defer { activeCueStart = nil; requestedCueEnd = nil }
+        try await countdown(maximumDuration, allowsAdvance: true, allowsRedo: true)
+        try Task.checkCancellation()
+        if redoRequested { throw CaptureControl.redo }
+        let end = requestedCueEnd ?? ProcessInfo.processInfo.systemUptime
+        // The timer resumes on its next tick. Samples after the user's press are not speech.
+        return SentenceRecording(condition: condition, samples: buffer.filter { $0.t <= end }, cueStart: start, cueEnd: end)
+    }
+
+    func rest(_ phase: Phase, seconds: Double) async throws {
+        precondition(phase == .relax || phase == .recovery)
+        self.phase = phase
+        try await countdown(seconds, allowsRedo: phase == .recovery)
     }
     func cueDuration(_ text: String) -> Double {
         let words = Double(Lexicon.words(in: text).count)
@@ -204,22 +295,20 @@ final class SentenceTrainingWorkflow {
                     pairIDs.append(pair.id)
                     for condition in [SpeechCondition.normal, .silent] {
                         try Task.checkCancellation()
-                        currentText = pair.text; currentCondition = condition; buffer = []
-                        phase = .relax
-                        try await countdown(timing.baseline)
-                        guard canRecord() else { throw Failure.disconnected }
-                        let start = ProcessInfo.processInfo.systemUptime
-                        phase = condition == .normal ? .speak : .mouth
-                        try await countdown(cueTimes[groupIndex])
-                        let end = ProcessInfo.processInfo.systemUptime
-                        guard canRecord() else { throw Failure.disconnected }
-                        let recording = SentenceRecording(condition: condition, samples: buffer, cueStart: start, cueEnd: end)
-                        guard let checkpoint = try recorder.checkpoint(sessionID: recordingSession.id) else { throw Failure.ownership }
-                        try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint)
-                        recorder.logEvent(recording.samples, kind: condition == .normal ? "sentence-spoken" : "sentence-silent",
-                                          label: pair.text, confidence: nil)
-                        buffer = []; index += 1; phase = .recovery
-                        try await countdown(timing.recovery)
+                        currentText = pair.text; currentCondition = condition
+                        try await collectTake(condition: condition, maximumDuration: cueTimes[groupIndex],
+                            baselineSeconds: timing.baseline, recoverySeconds: timing.recovery, canRecord: canRecord,
+                            onCompleted: { recording in
+                                guard canRecord() else { throw Failure.disconnected }
+                                guard let checkpoint = try recorder.checkpoint(sessionID: recordingSession.id) else { throw Failure.ownership }
+                                try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint)
+                                recorder.logEvent(recording.samples, kind: condition == .normal ? "sentence-spoken" : "sentence-silent",
+                                                  label: pair.text, confidence: nil)
+                            }, onRedo: { discarded in
+                                try self.discardHalf(condition: condition, pairID: pair.id)
+                                recorder.logEvent(discarded?.samples ?? self.buffer, kind: "sentence-redo-discarded", label: pair.text, confidence: nil)
+                            })
+                        buffer = []; index += 1
                     }
                 }
             } catch is CancellationError {
@@ -302,10 +391,12 @@ final class SentenceTrainingWorkflow {
         catch { storageReady = false; self.error = error.localizedDescription; return false }
     }
     private func persist() throws { try SentenceStore.save(data, to: storeURL) }
-    private func countdown(_ seconds: Double) async throws {
+    private func countdown(_ seconds: Double, allowsAdvance: Bool = false, allowsRedo: Bool = false) async throws {
         let end = ProcessInfo.processInfo.systemUptime + seconds
         while ProcessInfo.processInfo.systemUptime < end {
             try Task.checkCancellation()
+            if allowsRedo, redoRequested { throw CaptureControl.redo }
+            if allowsAdvance, requestedCueEnd != nil { break }
             secondsRemaining = max(0, end - ProcessInfo.processInfo.systemUptime)
             try await Task.sleep(for: .milliseconds(50))
         }
