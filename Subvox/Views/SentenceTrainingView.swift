@@ -125,13 +125,17 @@ struct SentenceTrainingView: View {
                 }.pickerStyle(.segmented)
                 Text("Each visit keeps one role and fresh sentence groups. Re-record mistakes from review; completed or partial sentences are not automatically repeated in every session.")
                     .font(.caption).foregroundStyle(.secondary)
-                if SentencePrompt.diphoneBank.allSatisfy({p in data.prompts.contains {$0.id==p.id}}) {
-                    Label("235-sentence bank added", systemImage: "checkmark.circle").font(.caption).foregroundStyle(.secondary)
-                } else {
-                    Button("Add the 235-sentence diphone bank") {workflow.addSentenceBank()}
-                    Text("Keeps existing recordings and reserves 25% of the expanded corpus for the final test.")
-                        .font(.caption).foregroundStyle(.secondary)
+                ForEach([("235-sentence diphone bank",SentencePrompt.diphoneBank),
+                         ("120 one-off slot sentences",SentencePrompt.gridBank),
+                         ("30 \u{201C}Say ___ again\u{201D} minimal pairs",SentencePrompt.frameBank)],id:\.0) {name,bank in
+                    if bank.allSatisfy({p in data.prompts.contains {$0.id==p.id}}) {
+                        Label("\(name.prefix(1).uppercased()+name.dropFirst()) added", systemImage: "checkmark.circle").font(.caption).foregroundStyle(.secondary)
+                    } else {
+                        Button("Add the \(name)") {workflow.addSentenceBank(bank)}
+                    }
                 }
+                Text("Adding a bank keeps existing recordings and reserves 25% of the expanded corpus for the final test.")
+                    .font(.caption).foregroundStyle(.secondary)
             }
             HStack {
                 if !workflow.variedSentences {

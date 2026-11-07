@@ -234,6 +234,17 @@ def decode(log_probs, tokens, lexicon, lm=None, lm_weight=.15, next_log_probs=No
                 language_model=lm is not None,transitions=next_log_probs is not None)
 
 
+# Fixed before any result was seen; 0.5 is reported as a sensitivity check, never selected.
+PRIOR_ALPHA = .3
+
+
+def prior_correct(log_probs, log_prior, alpha=PRIOR_ALPHA):
+    """Divide emissions by the model's own training label prior (hybrid-ASR style), then
+    renormalise per frame. A model that emits blank a priori then has to earn each blank."""
+    adjusted = np.asarray(log_probs) - alpha*np.asarray(log_prior)
+    return adjusted - np.logaddexp.reduce(adjusted, axis=1, keepdims=True)
+
+
 def homophone_equal(language):
     """Word equality that also accepts words sharing a pronunciation variant."""
     sounds = defaultdict(set)

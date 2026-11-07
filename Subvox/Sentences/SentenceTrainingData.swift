@@ -45,8 +45,13 @@ struct SentencePrompt: Codable, Identifiable, Hashable, Sendable {
               let content = try? String(contentsOf: url, encoding: .utf8) else { return [] }
         return content.split(separator: "\n").map { SentencePrompt(text: String($0)) }
     }
-    static var diphoneBank:[SentencePrompt] {
-        guard let url=Bundle.main.url(forResource:"diphones",withExtension:"txt",subdirectory:"Corpus"),
+    static var diphoneBank:[SentencePrompt] {bank("diphones")}
+    /// Unique slot-grammar sentences, each recorded once, spanning jaw height and labial onsets.
+    static var gridBank:[SentencePrompt] {bank("grid-sentences")}
+    /// "Say ___ again." minimal pairs differing in one observable feature (Corpus/frames.tsv).
+    static var frameBank:[SentencePrompt] {bank("frames")}
+    static func bank(_ name:String)->[SentencePrompt] {
+        guard let url=Bundle.main.url(forResource:name,withExtension:"txt",subdirectory:"Corpus"),
               let text=try? String(contentsOf:url,encoding:.utf8) else {return []}
         return text.split(separator:"\n").map {Self(text:String($0))}
     }

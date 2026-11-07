@@ -8,7 +8,8 @@ from pathlib import Path
 import numpy as np
 from . import VERSION
 from .data import MIN_TRANSCRIPT_MATCH, prepare, load_dataset, atomic_json, digest, resample, features, words, pronunciations, group_id
-from .decoding import Lexicon, BigramLM, decode, edit_alignment, homophone_equal, summary
+from .decoding import Lexicon, BigramLM, decode, edit_alignment, homophone_equal, prior_correct, summary, without_separator
+from . import evaluation
 
 
 def prediction(model, checkpoint, language, row):
@@ -20,8 +21,13 @@ def prediction(model, checkpoint, language, row):
     assisted=decode(lp,tokens,lexicon,lm=lm)
     # Only models trained with the next-phone head get transition rescoring; reported separately.
     transition=decode(lp,tokens,lexicon,next_log_probs=following) if checkpoint["config"].get("transitions")=="next_phone" else None
+    # Prior-corrected stream: emissions divided by the training label prior. Rejection keeps raw evidence.
+    prior=checkpoint.get("label_log_prior")
+    if prior is not None:prior=without_separator(np.asarray([prior]),checkpoint["tokens"])[0][0]
+    corrected=decode(prior_correct(lp,prior),tokens,lexicon) if prior is not None else None
     score=evidence(lp)
-    threshold=(checkpoint.get("rejection") or {}).get("evidence_threshold")
+    rejection=checkpoint.get("rejection") or {}
+    threshold=(rejection.get("per_condition") or {}).get(row.get("condition"),rejection.get("evidence_threshold"))
     active=(not checkpoint["config"]["activity_aux"] or activity>=.5) and (threshold is None or score>threshold)
     def accept(result):
         return bool(result["words"]) and any(result["phones"]) and active and not result["ambiguous"]
@@ -31,6 +37,8 @@ def prediction(model, checkpoint, language, row):
                                   else "No supported unambiguous word path, insufficient phoneme evidence, or activity rejection")
     return dict(text=plain["words"] if accepted else "",text_with_lm=assisted["words"] if accept(assisted) else "",
                 text_with_transitions=(transition["words"] if accept(transition) else "") if transition else None,
+                text_prior_corrected=(corrected["words"] if accept(corrected) else "") if corrected else None,
+                phonemes_prior_corrected=corrected["phones"] if corrected else None,
                 phonemes=plain["phones"],accepted=accepted,lm_accepted=accept(assisted),
                 lexical_hypothesis=plain["words"],homophones=plain["homophones"],alternatives=plain["ranked"],lm_alternatives=assisted["ranked"],
                 transition_alternatives=transition["ranked"] if transition else None,
@@ -55,21 +63,72 @@ def score_rows(rows, language, transitions):
     for row in rows:
         expected = words(row["reference_text"])
         row["homophone_word_errors"] = edit_alignment(expected, words(row["text"]), same)[0]
+        if row.get("text_prior_corrected") is not None:
+            row["prior_word_errors"] = edit_alignment(expected, words(row["text_prior_corrected"]))[0]
         if transitions:
             row["transition_word_errors"] = edit_alignment(expected, words(row.get("text_with_transitions") or ""))[0]
     return rows
 
 
-def evaluate_model(model_path, dataset_path, fold, output=None):
+def ranking_fields(model, checkpoint, row, excluded_groups, frames_per_phone, language):
+    """Forced choice (raw and prior-corrected), duration floor, frame alignment pairs and
+    top-k frame recall for one held-out utterance."""
+    from .network import emission
+    lp,tokens,_,_,_=emission(model,checkpoint,row)
+    index={t:i for i,t in enumerate(tokens)}
+    candidates=evaluation.distractor_candidates(row["text"],language,index,excluded_groups)
+    paths=candidates.get(row["text"],[])
+    from .articulatory import VOWEL_JAW
+    fields=evaluation.forced_choice(lp,candidates,row["text"])
+    fields["duration_rank"]=evaluation.duration_rank(len(lp),candidates,row["text"],frames_per_phone)
+    if checkpoint.get("label_log_prior") is not None:
+        prior=without_separator(np.asarray([checkpoint["label_log_prior"]]),checkpoint["tokens"])[0][0]
+        corrected=evaluation.forced_choice(prior_correct(lp,prior),candidates,row["text"])
+        fields.update({"fcp_"+k[3:]:v for k,v in corrected.items()})
+        ratio=evaluation.forced_choice(lp,candidates,row["text"],log_prior=prior)
+        fields.update({"fcr_"+k[3:]:v for k,v in ratio.items()})
+    # Order-broken copies of this clip: whatever survives a ratio against them is carried by the
+    # order of the motion, not its length, energy or the model's phone prior.
+    rng=np.random.default_rng(int(hashlib.sha256(row["id"].encode()).hexdigest()[:8],16))
+    broken={name:[] for name in ("shuffle","shift","reverse")}
+    for draw in range(3):
+        for name,raw in evaluation.motion_nulls(row["raw"],rng).items():
+            if draw==0 or name=="shuffle":
+                broken[name].append(emission(model,checkpoint,dict(row,raw=raw.tolist()))[0])
+    shuffles=broken["reverse"]  # the clean null; see evaluation.motion_nulls
+    fields.update({"fcn_"+k[3:]:v for k,v in evaluation.forced_choice(lp,candidates,row["text"],null_log_probs=shuffles).items()})
+    if paths:
+        orders={row["text"]:[paths[0]],**evaluation.order_candidates(paths[0],rng)}
+        fields.update({"fco_"+k[3:]:v for k,v in evaluation.forced_choice(lp,orders,row["text"]).items()})
+        fields.update({"fcon_"+k[3:]:v for k,v in evaluation.forced_choice(lp,orders,row["text"],null_log_probs=shuffles).items()})
+        nulls={name:np.mean(np.exp(v),axis=0) for name,v in broken.items()}
+        fields.update(evaluation.input_dependence(lp,{n:np.log(np.clip(v,1e-12,None)) for n,v in nulls.items()},paths))
+    aligned=evaluation.frame_alignment(lp,paths,{index[v] for v in VOWEL_JAW if v in index})
+    fields["frame_pairs"]=[(ref,guess) for _,ref,guess in aligned]
+    if aligned:
+        ranks=np.argsort(-lp[:,1:],axis=1)+1
+        fields["frame_topk"]={"frames":len(aligned),**{str(k):sum(int(ref in ranks[t,:k]) for t,ref,_ in aligned) for k in (1,3,5)}}
+    return fields
+
+
+def evaluate_model(model_path, dataset_path, fold, output=None, which="selected"):
     from .network import load_model
-    output=Path(output) if output else Path(model_path)/"development-report.json"
+    name="development-report.json" if which=="selected" else "development-report-final-epoch.json"
+    output=Path(output) if output else Path(model_path)/name
     if output.exists():raise ValueError("Evaluation output already saved; choose a new output to preserve the frozen report")
-    model,checkpoint,manifest,language=load_model(model_path)
+    model,checkpoint,manifest,language=load_model(model_path,which)
     examples,_,dataset_manifest=load_dataset(dataset_path)
-    _,validation=fold_split(examples,fold)
+    from .network import attach_baselines
+    training,validation=fold_split(examples,fold)
+    validation=attach_baselines(validation,examples)
+    tokens=[t for t in checkpoint["tokens"] if t!="|"]
+    # Distractors never include sentences this fold trained on, nor reserved final-test sentences.
+    excluded=set(manifest["training_groups"])|set(manifest.get("reserved_final_groups",[]))
+    per_phone=evaluation.frames_per_phone([r for r in training if r["condition"]==checkpoint["config"]["condition"]])
     rows=[]
+    shared=checkpoint["config"]["condition"]=="shared"
     for row in validation:
-        if row["condition"]!=checkpoint["config"]["condition"]:
+        if not shared and row["condition"]!=checkpoint["config"]["condition"]:
             continue
         if row["session"] in manifest["training_sessions"] or set(row["groups"])&set(manifest["training_groups"]):
             raise ValueError("Evaluation leaks a training session/sentence group")
@@ -78,12 +137,15 @@ def evaluate_model(model_path, dataset_path, fold, output=None):
         refs=[[p for p in target if p!="|"] for target in row["targets"]]
         errors,alignment,reference=min(((*edit_alignment(ref,phones),ref) for ref in refs),key=lambda x:x[0])
         expected=words(row["text"])
-        rows.append(dict(id=row["id"],fold=fold,session=row["session"],groups=row["groups"],reference_text=row["text"],activity=row["activity"],
+        extra=ranking_fields(model,checkpoint,row,excluded,per_phone,language) if row["activity"] else {}
+        if guessed.get("phonemes_prior_corrected") is not None:
+            extra["prior_phone_errors"]=min(edit_alignment(ref,[p for p in guessed["phonemes_prior_corrected"] if p!="|"])[0] for ref in refs)
+        rows.append(dict(id=row["id"],fold=fold,condition=row["condition"],session=row["session"],groups=row["groups"],reference_text=row["text"],activity=row["activity"],
                          phone_errors=errors,phone_count=len(reference),phone_alignment=alignment,
                          word_errors=edit_alignment(expected,words(guessed["text"]))[0],word_count=len(expected),
                          lm_word_errors=edit_alignment(expected,words(guessed["text_with_lm"]))[0],
-                         **guessed))
-    excluded=[e for e in dataset_manifest["excluded"] if e["fold_roles"][fold]=="validation" and e["condition"]==checkpoint["config"]["condition"]]
+                         **guessed,**extra))
+    excluded=[e for e in dataset_manifest["excluded"] if e["fold_roles"][fold]=="validation" and (shared or e["condition"]==checkpoint["config"]["condition"])]
     for missing in excluded:
         # Invalid non-speech clips cannot establish successful rejection. They
         # remain in quality_exclusions, outside the scored false-accept rate.
@@ -93,14 +155,15 @@ def evaluate_model(model_path, dataset_path, fold, output=None):
             reference=min(([p for p in path if p!="|"] for path in paths),key=len)
         except ValueError:reference=[]
         expected=words(missing["text"])
-        rows.append(dict(id=missing["id"],fold=fold,session=missing["session"],groups=missing["groups"],reference_text=missing["text"],activity=1,
+        rows.append(dict(id=missing["id"],fold=fold,condition=missing["condition"],session=missing["session"],groups=missing["groups"],reference_text=missing["text"],activity=1,
             phone_errors=len(reference),phone_count=len(reference),phone_alignment=[(p,"<del>") for p in reference],
             word_errors=len(expected),word_count=len(expected),lm_word_errors=len(expected),accepted=False,text="",text_with_lm="",
             rejection_reason="Excluded by predeclared recording/label quality rules; retained in planned denominator"))
     score_rows(rows,language,checkpoint["config"].get("transitions")=="next_phone")
-    report=dict(model=str(model_path),fold=fold,condition=checkpoint["config"]["condition"],experiment=checkpoint["config"]["name"],
-                interpretation="Retrospective development data used for checkpoint selection; not an unbiased final test or fresh prospective reseat score",
-                summary=summary(rows),rows=rows,dataset_sizes=dict(training=len(manifest["training_ids"]),development=len(rows)),
+    report=dict(model=str(model_path),fold=fold,checkpoint=which,condition=checkpoint["config"]["condition"],experiment=checkpoint["config"]["name"],
+                interpretation=("Retrospective development data used for checkpoint selection; not an unbiased final test or fresh prospective reseat score" if which=="selected"
+                                else "Fixed epoch budget chosen before training; no selection on these rows"),
+                summary=full_summary(rows,tokens),rows=rows,dataset_sizes=dict(training=len(manifest["training_ids"]),development=len(rows)),
                 quality_exclusions=excluded,
                 reference_provenance="Recorded prompts/user corrections; pronunciation proposals can be wrong for this mixed-accent speaker",
                 missing_training_phones=sorted({p for r in validation for path in r["targets"] for p in path if p!="|" and p not in checkpoint["coverage"]}))
@@ -150,6 +213,39 @@ def raw_dtw_baseline(examples, folds):
     return reports
 
 
+def full_summary(rows, tokens):
+    """Decoding summary plus ranking measurements and the prior-corrected phoneme error."""
+    result=summary(rows)
+    result.update(evaluation.ranking_summary(rows,tokens,"fc"))
+    result.update(evaluation.ranking_summary(rows,None,"fcp"))
+    result.update(evaluation.ranking_summary(rows,None,"fcr"))
+    for prefix in ("fcn","fco","fcon"):
+        result.update(evaluation.ranking_summary(rows,None,prefix))
+    result.update(evaluation.dependence_summary(rows))
+    positives=[r for r in rows if r["activity"] and "prior_phone_errors" in r]
+    if positives:
+        result["prior_corrected_phoneme_error_rate"]=sum(r["prior_phone_errors"] for r in positives)/max(1,sum(r["phone_count"] for r in positives))
+        result["word_error_rate_prior_corrected"]=sum(r.get("prior_word_errors",r["word_count"]) for r in positives)/max(1,sum(r["word_count"] for r in positives))
+    return result
+
+
+# Each experiment is the shared base plus these overrides; every comparison changes one thing.
+BASE_EXPERIMENT=dict(transitions="next_phone",augmentation=False,activity_aux=False,teacher_aux=False)
+EXPERIMENTS={
+    "plain":dict(transitions="none"),
+    "diphone":dict(),
+    "augmented":dict(augmentation=True),
+    "activity":dict(augmentation=True,activity_aux=True),
+    "teacher":dict(teacher_aux=True),
+    "baseline":dict(augmentation=True,normalisation="rest_baseline"),
+    "coarse":dict(augmentation=True,coarse_aux=True),
+    "shared":dict(augmentation=True,shared=True),
+    "contrast":dict(augmentation=True,motion_contrast=True),
+    "local":dict(augmentation=True,encoder="local"),
+    "no_attitude":dict(augmentation=True,drop_attitude=True),
+}
+
+
 def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented","activity")):
     """Per experiment and condition: one model per cross-validation fold (selected on that fold's
     development rows), their validation rows pooled into one report, then a final refit on every
@@ -170,36 +266,50 @@ def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented"
     folds=[f["fold"] for f in manifest["split"]["folds"] if f["training"] and f["validation"]]
     comparisons=[];model_paths=[]
     for experiment in experiments:
-        if experiment not in ("plain","diphone","augmented","activity","teacher"):
+        if experiment not in EXPERIMENTS:
             raise ValueError("Unknown ablation")
-        for condition,slug in (("Normal speech","spoken"),("Silent mouthing","mouthed")):
-            config=dict(name=experiment,condition=condition,epochs=epochs,seed=42,code_hash=code_hash,
-                        transitions="none" if experiment=="plain" else "next_phone",
-                        augmentation=experiment in ("augmented","activity"),activity_aux=experiment=="activity",teacher_aux=experiment=="teacher",
+        # A shared model fits both conditions at once; its scores are still reported per condition.
+        conditions=(("shared","shared"),) if EXPERIMENTS[experiment].get("shared") else (("Normal speech","spoken"),("Silent mouthing","mouthed"))
+        for condition,slug in conditions:
+            config=dict(BASE_EXPERIMENT,**EXPERIMENTS[experiment],name=experiment,condition=condition,epochs=epochs,seed=42,code_hash=code_hash,
                         dataset_hash=manifest["examples_hash"],language_hash=digest(language),reserved_final_groups=manifest["reserved_final_groups"])
-            reports=[];selected=[]
+            reports=[];finals=[];selected=[]
             for fold in folds:
                 training,validation=fold_split(examples,fold)
-                if not any(r["condition"]==condition and r["activity"] for r in validation):continue
+                if not any((condition=="shared" or r["condition"]==condition) and r["activity"] for r in validation):continue
                 destination=output/"folds"/f"fold-{fold}"/(experiment+"-"+slug)
                 fitted=fit(training,validation,language,destination,dict(config,fold=fold))
                 selected.append(fitted["refit_epochs"])
                 reports.append(evaluate_model(destination,dataset,fold))
+                finals.append(evaluate_model(destination,dataset,fold,which="final-epoch"))
             if not reports:raise ValueError(f"No fold has {condition} development recordings")
             refit_epochs=max(5,int(np.median(selected)))
             destination=output/(experiment+"-"+slug)
             fit(examples,[],language,destination,dict(config,epochs=refit_epochs,fold=None,cross_validated_epochs=selected))
-            rows=[row for report in reports for row in report["rows"]]
-            pooled=dict(model=str(destination),condition=condition,experiment=experiment,
-                        interpretation="Pooled validation rows of the cross-validation fold models; the refit beside this report trained on all of them, so these scores describe the method, not this file's weights on unseen data",
-                        summary=summary(rows),rows=rows,folds=[dict(fold=r["fold"],model=r["model"],summary=r["summary"]) for r in reports],
-                        missing_training_phones=sorted({p for r in reports for p in r["missing_training_phones"]}))
-            atomic_json(destination/"development-report.json",pooled)
-            comparisons.append(dict(condition=condition,experiment=experiment,folds=len(reports),refit_epochs=refit_epochs,**pooled["summary"]))
+            from .network import load_model
+            tokens=[t for t in load_model(destination)[1]["tokens"] if t!="|"]
+            def pool(group,name,interpretation):
+                rows=[row for report in group for row in report["rows"]]
+                pooled=dict(model=str(destination),condition=condition,experiment=experiment,interpretation=interpretation,
+                            summary=full_summary(rows,tokens),rows=rows,folds=[dict(fold=r["fold"],model=r["model"],summary=r["summary"]) for r in group],
+                            missing_training_phones=sorted({p for r in group for p in r["missing_training_phones"]}))
+                if condition=="shared":
+                    pooled["by_condition"]={c:full_summary([r for r in rows if r["condition"]==c],tokens) for c in ("Normal speech","Silent mouthing")}
+                atomic_json(destination/name,pooled)
+                return pooled.get("by_condition") or {condition:pooled["summary"]}
+            selected_summary=pool(reports,"development-report.json","Pooled validation rows of the cross-validation fold models at their selected checkpoints (selection used these rows, so optimistic); the refit beside this report trained on all of them, so these scores describe the method, not this file's weights on unseen data")
+            final_summary=pool(finals,"development-report-final-epoch.json","Pooled validation rows of the fold models at the fixed final epoch; no selection on these rows, so this is the unbiased development estimate")
+            for reported,scores in selected_summary.items():
+                comparisons.append(dict(condition=reported,experiment=experiment,folds=len(reports),refit_epochs=refit_epochs,**scores,
+                                        final_epoch={k:v for k,v in final_summary[reported].items() if k not in ("phone_confusions","word_confusions")}))
             model_paths.append(str(destination))
     baseline=raw_dtw_baseline(examples,folds)
+    from .rhythm import rhythm_report
+    from .articulatory import cohort_entropy,ALPHABETS
+    lexical_ceiling={a:cohort_entropy(language,a) for a in ALPHABETS}
     report=dict(schema=2,version=VERSION,dataset=str(dataset),models=model_paths,
-                comparisons=comparisons,raw_sequence_baseline=baseline,split=manifest["split"],promoted_former_tests=manifest["promoted_former_tests"],
+                comparisons=comparisons,raw_sequence_baseline=baseline,jaw_cycle_gate=rhythm_report(examples,language),
+                lexical_ceiling=lexical_ceiling,split=manifest["split"],promoted_former_tests=manifest["promoted_former_tests"],
                 admission=manifest.get("admission"),
                 final_test_consumed=False,teacher_stage=manifest.get("teacher_stage","not used in stage-one training"),code_hash=code_hash,
                 historical_baselines=manifest.get("historical_baselines",[]),
@@ -216,12 +326,38 @@ def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented"
     return report
 
 
+def rank(run, output):
+    """Re-score a frozen run's fold models with the current measurements, without refitting.
+    Writes one new report; the run's own files are never touched."""
+    from .network import load_model
+    run=Path(run);output=Path(output)
+    if output.exists():raise ValueError("Rank output exists; choose a new path")
+    dataset=json.loads((run/"comparison.json").read_text())["dataset"]
+    groups={}
+    for model in sorted((run/"folds").glob("fold-*/*")):
+        manifest=json.loads((model/"model.json").read_text())
+        for which in ("selected","final-epoch"):
+            if which=="final-epoch" and "final_epoch_weights_sha256" not in manifest:continue
+            report=evaluate_model(model,dataset,manifest["config"]["fold"],output=output.parent/f".rank-{model.parent.name}-{model.name}-{which}.json",which=which)
+            groups.setdefault((model.name,which),[]).append(report)
+    result={}
+    for (name,which),reports in sorted(groups.items()):
+        tokens=[t for t in load_model(Path(reports[0]["model"]),which)[1]["tokens"] if t!="|"]
+        rows=[row for r in reports for row in r["rows"]]
+        result[f"{name}/{which}"]={k:v for k,v in full_summary(rows,tokens).items() if k not in ("phone_confusions","word_confusions")}
+    atomic_json(output,dict(run=str(run),dataset=dataset,scores=result))
+    for path in output.parent.glob(".rank-*.json"):path.unlink()
+    return result
+
+
 def infer(model_path, sample_path):
     from .network import load_model
     value=json.loads(Path(sample_path).read_text())
     recording=value.get("recording",value)
     raw,quality=resample(recording)
-    row=dict(raw=raw.tolist(),quality=quality)
+    row=dict(raw=raw.tolist(),quality=quality,condition=recording.get("condition"))
+    try:row["baseline_raw"]=resample(recording,baseline=True)[0].tolist()
+    except ValueError:pass  # no usable pre-cue window: rest-baseline models fall back to clip statistics
     model,checkpoint,manifest,language=load_model(model_path)
     if value.get("expectedText") and group_id(value["expectedText"]) in manifest.get("reserved_final_groups",checkpoint["config"].get("reserved_final_groups",[])):
         raise ValueError("This sentence remains reserved for the untouched final test")
@@ -291,6 +427,7 @@ def main():
     p=sub.add_parser("infer");p.add_argument("--model",required=True);p.add_argument("--input",required=True);p.add_argument("--output",required=True)
     p=sub.add_parser("evaluate");p.add_argument("--model",required=True);p.add_argument("--dataset",required=True);p.add_argument("--fold",type=int,required=True);p.add_argument("--output")
     p=sub.add_parser("evaluate-fresh");p.add_argument("--session",required=True)
+    p=sub.add_parser("rank");p.add_argument("--run",required=True);p.add_argument("--output",required=True)
     p=sub.add_parser("prepare-teachers");p.add_argument("--dataset",required=True);p.add_argument("--base-run",required=True);p.add_argument("--output",required=True)
     args=parser.parse_args()
     if args.command=="prepare":
@@ -308,6 +445,7 @@ def main():
     elif args.command=="infer":
         result=infer(args.model,args.input);atomic_json(args.output,result)
     elif args.command=="evaluate-fresh":result=evaluate_fresh(args.session)
+    elif args.command=="rank":result=rank(args.run,args.output)
     else:result=evaluate_model(args.model,args.dataset,args.fold,args.output)
     print(json.dumps(result,ensure_ascii=False,allow_nan=False),flush=True)
 

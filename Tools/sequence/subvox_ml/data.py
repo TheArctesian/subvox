@@ -9,11 +9,18 @@ from collections import Counter
 from pathlib import Path
 import numpy as np
 
-SCHEMA = 2
+SCHEMA = 3
 RATE = 50
 VECTOR_KEYS = ("ax", "ay", "az", "rx", "ry", "rz", "gx", "gy", "gz")
-FEATURE_NAMES = list(VECTOR_KEYS) + ["acc_vertical", "rot_vertical", "acc_horizontal", "rot_horizontal", "acc_norm", "rot_norm", "acc_dot_rot"]
-FEATURE_NAMES += ["d_" + k for k in FEATURE_NAMES.copy()]
+QUAT_KEYS = ("qw", "qx", "qy", "qz")
+BASE_NAMES = list(VECTOR_KEYS) + ["acc_vertical", "rot_vertical", "acc_horizontal", "rot_horizontal", "acc_norm", "rot_norm", "acc_dot_rot",
+                                  "att_x", "att_y", "att_z", "att_norm"]
+FEATURE_NAMES = BASE_NAMES + ["d_" + k for k in BASE_NAMES]
+FEATURE_WIDTH = len(FEATURE_NAMES)
+# Channels whose sign or axis depends on which ear the sensor sits in; masked when the side is unknown.
+DIRECTIONAL = [i for i, n in enumerate(BASE_NAMES) if n in VECTOR_KEYS or n in ("att_x", "att_y", "att_z")]
+DIRECTIONAL += [i + len(BASE_NAMES) for i in DIRECTIONAL]
+ATTITUDE_HIGHPASS = .5  # Hz: below this, attitude change is posture or sensor-fusion drift, not jaw
 
 
 def canonical(value):
@@ -261,6 +268,15 @@ def resample(recording, baseline=False):
         raise ValueError("motion rate below 40 Hz; no invented high-rate information")
     grid = lo + np.arange(int(math.floor((hi - lo) * RATE)) + 1) / RATE
     raw = np.stack([np.interp(grid, t, vectors[:, k]) for k in range(9)], axis=1).astype(np.float32)
+    if all(k in samples[0] for k in QUAT_KEYS):
+        quaternions = hemisphere(np.asarray([[s[k] for k in QUAT_KEYS] for s in samples], dtype=np.float64))
+        attitude = np.stack([np.interp(grid, t, quaternions[:, k]) for k in range(4)], axis=1)
+        attitude /= np.linalg.norm(attitude, axis=1, keepdims=True).clip(1e-9)
+        attitude_state = "identity" if np.abs(attitude - [1, 0, 0, 0]).max() < 1e-6 else "ok"
+    else:
+        attitude = np.tile([1., 0, 0, 0], (len(grid), 1))
+        attitude_state = "missing"
+    raw = np.concatenate([raw, attitude.astype(np.float32)], axis=1)
     if len(raw) < 25 or (np.linalg.norm(raw[:, 6:9], axis=1) < .1).any():
         raise ValueError("short sequence or invalid gravity vector")
     flags = []
@@ -269,24 +285,67 @@ def resample(recording, baseline=False):
     side = next(iter(locations))
     if side == -1:
         flags.append("sensor side unknown; directional channels masked")
-    return raw, dict(rate=rate, source=side, frames=len(raw), start=lo, end_gap=end-hi, flags=flags)
+    if attitude_state != "ok":
+        flags.append(f"attitude {attitude_state}; jaw-angle channels are zero")
+    return raw, dict(rate=rate, source=side, frames=len(raw), start=lo, end_gap=end-hi, flags=flags, attitude=attitude_state)
+
+
+def hemisphere(q):
+    """q and -q are the same rotation; flip signs so consecutive quaternions agree."""
+    q = np.array(q, dtype=np.float64)
+    for i in range(1, len(q)):
+        if np.dot(q[i], q[i-1]) < 0:
+            q[i] = -q[i]
+    return q
+
+
+def quaternion_multiply(a, b):
+    w1, x1, y1, z1 = np.moveaxis(np.asarray(a), -1, 0)
+    w2, x2, y2, z2 = np.moveaxis(np.asarray(b), -1, 0)
+    return np.stack([w1*w2 - x1*x2 - y1*y2 - z1*z2, w1*x2 + x1*w2 + y1*z2 - z1*y2,
+                     w1*y2 - x1*z2 + y1*w2 + z1*x2, w1*z2 + x1*y2 - y1*x2 + z1*w2], axis=-1)
+
+
+def attitude_channels(quaternions):
+    """Jaw-angle proxy: rotation vector of each attitude relative to the clip's mean attitude,
+    high-passed at 0.5 Hz so posture and drift drop out, plus its norm, which doesn't depend on
+    the ear. Rotation rate alone gives velocity; this keeps the opening angle itself."""
+    from .rhythm import biquad, lfilter
+    q = hemisphere(np.asarray(quaternions, dtype=np.float64))
+    if np.abs(q - [1, 0, 0, 0]).max() < 1e-6:
+        return np.zeros((len(q), 4), dtype=np.float32)
+    mean = q.mean(0)
+    mean /= np.linalg.norm(mean)
+    relative = quaternion_multiply(mean * [1, -1, -1, -1], q)
+    relative *= np.sign(relative[:, :1] + 1e-12)
+    angle = 2 * np.arccos(np.clip(relative[:, 0], -1, 1))
+    axis = relative[:, 1:] / np.maximum(np.sin(angle / 2), 1e-9)[:, None]
+    vector = axis * angle[:, None]
+    b, a = biquad("high", ATTITUDE_HIGHPASS)
+    for k in range(3):
+        y = vector[:, k] - vector[:, k].mean()
+        vector[:, k] = lfilter(b, a, lfilter(b, a, y)[::-1])[::-1]
+    return np.concatenate([vector, np.linalg.norm(vector, axis=1, keepdims=True)], axis=1).astype(np.float32)
 
 
 def features(raw, mask_direction=False):
+    """Per-frame features from resampled raw motion (9 vector columns, then optionally the
+    attitude quaternion): raw axes, gravity-frame invariants, jaw-angle channels, derivatives."""
     raw = np.asarray(raw, dtype=np.float32)
+    attitude = attitude_channels(raw[:, 9:13]) if raw.shape[1] >= 13 else np.zeros((len(raw), 4), np.float32)
+    raw = raw[:, :9]
     a, r, g = raw[:, :3], raw[:, 3:6], raw[:, 6:9]
     unit = g / np.linalg.norm(g, axis=1, keepdims=True).clip(.1)
     av, rv = (a * unit).sum(1), (r * unit).sum(1)
     aa, rr = (a*a).sum(1), (r*r).sum(1)
     inv = np.stack([av, rv, np.sqrt(np.maximum(0, aa-av*av)), np.sqrt(np.maximum(0, rr-rv*rv)),
                     np.sqrt(aa), np.sqrt(rr), (a*r).sum(1)], axis=1)
-    base = np.concatenate([raw, inv], axis=1)
+    base = np.concatenate([raw, inv, attitude], axis=1)
     derivative = np.zeros_like(base)
     derivative[1:] = (base[1:] - base[:-1]) * RATE
     result = np.concatenate([base, derivative], axis=1)
     if mask_direction:
-        result[:, :9] = 0
-        result[:, 16:25] = 0
+        result[:, DIRECTIONAL] = 0
     return result.astype(np.float32)
 
 
@@ -338,6 +397,22 @@ def prepare(root, language_path, output, corrections=None, folds=4, min_transcri
         except (ValueError, KeyError) as error:
             excluded.append(dict(id=row["id"], reason=str(error), text=row["text"], session=row["session"], groups=row["groups"],
                                  condition=row["condition"], fold_roles=row["fold_roles"]))
+    from .rhythm import signal_quality
+    rest = {e["id"]: e["raw"] for e in examples if not e["activity"]}
+    for e in examples:
+        if e["activity"]:
+            e["quality"]["signal"] = signal_quality(e["raw"], rest.get(e["id"] + "/rest"))
+    # Fill in the sensor side of older takes only when a leave-one-session-out check passes.
+    from .side import infer_sides
+    rest = {e["id"]: e["raw"] for e in examples if not e["activity"]}
+    inferred, side_report = infer_sides([dict(e, baseline_raw=rest.get(e["id"] + "/rest")) for e in examples if e["activity"]])
+    for e in examples:
+        side = inferred.get(e["id"].removesuffix("/rest"))
+        if side is not None and e["quality"]["source"] not in (1, 2):
+            e["quality"]["source"] = side
+            e["quality"]["source_inferred"] = dict(side=side, method="rest gravity direction; leave-one-session-out gated")
+            e["quality"]["flags"] = [f.replace("sensor side unknown; directional channels masked", "sensor side inferred; directional channels used")
+                                     for f in e["quality"]["flags"]]
     for condition in ("Normal speech", "Silent mouthing"):
         if sum(e["condition"] == condition and e["activity"] for e in examples) < 4:
             raise ValueError(f"Need at least four valid training utterances for {condition}")
@@ -349,7 +424,7 @@ def prepare(root, language_path, output, corrections=None, folds=4, min_transcri
                                                             if e["provenance"].get("review") not in (None, "Accepted")})),
                     warning="Former diagnostic tests used in training are NOT independent tests of this model. Historical models/reports are unchanged.",
                     features=dict(version="timestamp-50hz-raw-invariant-derivative-v1", rate=RATE, names=FEATURE_NAMES, low_energy="retain"),
-                    examples_hash=digest(examples))
+                    side_inference=side_report, examples_hash=digest(examples))
     snapshots={};historical=[];material={}
     for name,sha in sources.items():
         raw=Path(name).read_bytes()
@@ -372,6 +447,7 @@ def prepare(root, language_path, output, corrections=None, folds=4, min_transcri
 def load_dataset(path):
     path = Path(path)
     manifest = json.loads((path/"manifest.json").read_text())
+    # Schema 2 snapshots lack the attitude quaternion; their jaw-angle channels are simply zero.
     if manifest.get("schema", 1) < 2:
         raise ValueError("This dataset predates cross-validation folds; prepare a new dataset snapshot")
     examples = json.loads((path/"examples.json").read_text())
