@@ -129,6 +129,17 @@ final class NeuralSequenceTests:XCTestCase {
         XCTAssertEqual(workflow.phase,.idle);XCTAssertNotNil(workflow.error)
         XCTAssertEqual(try Data(contentsOf:dataset.appending(path:"manifest.json")),Data("{\"schema\":1}".utf8))
     }
+    @MainActor func testCurrentPythonDatasetSchemaCanStartTraining() throws {
+        let root=FileManager.default.temporaryDirectory.appending(path:"neural-schema-\(UUID())")
+        defer {try? FileManager.default.removeItem(at:root)}
+        for schema in [2,3] {
+            let dataset=root.appending(path:"dataset-\(schema)")
+            try FileManager.default.createDirectory(at:dataset,withIntermediateDirectories:true)
+            try Data("{\"schema\":\(schema)}".utf8).write(to:dataset.appending(path:"manifest.json"))
+            try JSONEncoder().encode(["dataset":dataset.path,"run":""]).write(to:root.appending(path:"latest-ui.json"))
+            XCTAssertTrue(SequenceLearningWorkflow(root:root).datasetCompatible,"schema \(schema)")
+        }
+    }
     @MainActor func testMotionOnlyNeuralVisitKeepsAllSentenceGroupsOutOfFinalTestAndSavesBothConditions() throws {
         let root=FileManager.default.temporaryDirectory.appending(path:"neural-visit-\(UUID())")
         defer {try? FileManager.default.removeItem(at:root)}

@@ -359,6 +359,16 @@ class SequenceTests(unittest.TestCase):
             # Punctuation and case don't change a sentence's group, so its distractors stay the same.
             self.assertEqual(set(chosen)-{"pa ba"},set(distractor_candidates("Pa ba!",lang,index,excluded,count=2,bank=bank))-{"Pa ba!"})
 
+    def test_distractor_bank_resolves_in_app_runtime_and_checkout_layouts(self):
+        from subvox_ml.evaluation import find_distractor_bank
+        with tempfile.TemporaryDirectory() as tmp:
+            runtime=Path(tmp)/"Runtime"/"hash";(runtime/"subvox_ml").mkdir(parents=True);(runtime/"Corpus").mkdir()
+            (runtime/"Corpus"/"diphones.txt").write_text("pa\n")
+            self.assertEqual(find_distractor_bank(runtime/"subvox_ml"),runtime/"Corpus"/"diphones.txt")
+            checkout=Path(tmp)/"repo";(checkout/"ml"/"subvox_ml").mkdir(parents=True);(checkout/"Corpus").mkdir()
+            (checkout/"Corpus"/"diphones.txt").write_text("pa\n")
+            self.assertEqual(find_distractor_bank(checkout/"ml"/"subvox_ml"),checkout/"Corpus"/"diphones.txt")
+
     def test_label_randomisation_null_separates_signal_from_chance(self):
         from subvox_ml.evaluation import permutation_null
         def rows(correct):

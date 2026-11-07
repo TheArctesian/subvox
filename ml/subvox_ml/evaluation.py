@@ -30,7 +30,13 @@ def candidate_paths(texts, language, index):
     return result
 
 
-DISTRACTOR_BANK = Path(__file__).resolve().parents[3]/"Corpus"/"diphones.txt"
+def find_distractor_bank(package=Path(__file__).resolve().parent):
+    """The app copies the bank to <runtime>/Corpus next to subvox_ml; a checkout keeps it in <repo>/Corpus."""
+    candidates = [package.parent/"Corpus"/"diphones.txt", package.parents[1]/"Corpus"/"diphones.txt"]
+    return next((path for path in candidates if path.exists()), candidates[0])
+
+
+DISTRACTOR_BANK = find_distractor_bank()
 DISTRACTORS = 9
 
 

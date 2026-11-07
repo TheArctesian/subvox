@@ -41,8 +41,8 @@ targets:
         script: |
           destination="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/SequenceRuntime"
           mkdir -p "$destination/subvox_ml"
-          cp "$SRCROOT/Tools/sequence/pyproject.toml" "$SRCROOT/Tools/sequence/uv.lock" "$destination/"
-          cp "$SRCROOT/Tools/sequence/subvox_ml/"*.py "$destination/subvox_ml/"
+          cp "$SRCROOT/ml/pyproject.toml" "$SRCROOT/ml/uv.lock" "$destination/"
+          cp "$SRCROOT/ml/subvox_ml/"*.py "$destination/subvox_ml/"
   SubvoxTests:
     type: bundle.unit-test
     platform: macOS

@@ -12,7 +12,7 @@ struct LinguisticDiphone: Codable, Hashable, Sendable {
 }
 
 /// Alternative pronunciations form a lattice. Unknown words break diphone chains, matching
-/// Tools/coverage.py. Coverage is fractional annotation expectation, never recognition accuracy.
+/// Tools/corpus/coverage.py. Coverage is fractional annotation expectation, never recognition accuracy.
 struct LinguisticGraph: Codable, Sendable {
     var words: [LinguisticWord]
     init(text: String, profile: PronunciationProfile, lexicon: Lexicon) {
