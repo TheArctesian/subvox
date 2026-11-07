@@ -12,7 +12,10 @@ struct ContentView: View {
         } detail: {
             switch model.screen {
             case .sensors: SensorsView()
+            case .sentences: SentenceTrainingView()
+            case .collect: SignalCheckView()
             case .train: TrainView()
+            case .read: ReadView()
             case .decode: DecodeView()
             }
         }
@@ -44,6 +47,7 @@ private struct RecordToolbarButton: View {
                   systemImage: recorder.isRecording ? "stop.circle.fill" : "record.circle")
         }
         .tint(recorder.isRecording ? .red : nil)
+        .disabled(model.reading.isReading || model.signalCheck.isBusy || model.sentenceTraining.isBusy)
         .help("Record synchronized motion CSV + audio to ~/Documents/Subvox/Sessions")
     }
 }

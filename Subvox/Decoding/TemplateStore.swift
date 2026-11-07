@@ -1,10 +1,14 @@
 import Foundation
 
-struct Dataset: Codable {
-    var vocabulary: [String]
+struct Dataset: Codable, Sendable {
+    /// Each take is one mouthed word, labelled with that word.
     var templates: [Template]
+    /// Raised per phoneme when its test fails and more examples are requested.
+    var phoneTargets: [String: Int]?
+    var visits: [RecordingVisit]?
+    var experiment: TrainingExperiment?
 
-    static let starter = Dataset(vocabulary: ["yes", "no", "next", "back", "stop"], templates: [])
+    static let starter = Dataset(templates: [])
 }
 
 /// Persists the training set as JSON in Application Support.
@@ -21,12 +25,15 @@ enum TemplateStore {
         return dataset
     }
 
-    static func save(_ dataset: Dataset) {
+    @discardableResult
+    static func save(_ dataset: Dataset) -> Bool {
         do {
             let data = try JSONEncoder().encode(dataset)
             try data.write(to: url, options: .atomic)
+            return true
         } catch {
             print("Subvox: failed to save dataset: \(error)")
+            return false
         }
     }
 }

@@ -1,17 +1,17 @@
 import SwiftUI
 
-/// The "motion → text" screen: segments are classified against the trained vocabulary
-/// and appended to a running transcript, with the mic transcript alongside for comparison.
+/// The "motion → text" screen: each segment is matched against every vocabulary word, built
+/// from the trained sounds, and appended to a running transcript, with the mic transcript
+/// alongside for comparison.
 struct DecodeView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if model.classifier == nil {
-                    Label("Train at least two words in the Train tab first.", systemImage: "exclamationmark.triangle")
-                        .foregroundStyle(.orange)
-                }
+                LiveMotionPanel()
+                Text(model.decoderSourceLabel).font(.caption).foregroundStyle(.secondary)
+                coverage
                 controls
                 transcriptPanel
                 HStack(alignment: .top, spacing: 16) {
@@ -20,6 +20,28 @@ struct DecodeView: View {
                 }
             }
             .padding(20)
+        }
+    }
+
+    @ViewBuilder
+    private var coverage: some View {
+        if let decoder = model.decoder {
+            let missing = decoder.missingPhones.compactMap { Phoneme.bySymbol[$0].map { "/\($0.ipa)/" } }
+            Label(missing.isEmpty
+                  ? "Can spell all \(decoder.wordCount) vocabulary words from your trained sounds."
+                  : "Can spell \(decoder.wordCount) words. Words with \(missing.joined(separator: " ")) need those sounds trained first.",
+                  systemImage: "character.book.closed")
+                .font(.callout)
+                .foregroundStyle(missing.isEmpty ? Color.secondary : Color.orange)
+            Text("\(model.settings.method.title) · \(model.settings.vocabularyScope.title)")
+                .font(.caption).foregroundStyle(.secondary)
+            if model.settings.method != .legacyMedoids {
+                Text("Experimental jaw units pool several sounds; buildable words do not establish recognition accuracy.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        } else {
+            Label("Train sounds in the Train tab first.", systemImage: "exclamationmark.triangle")
+                .foregroundStyle(.orange)
         }
     }
 
@@ -40,24 +62,50 @@ struct DecodeView: View {
                     HoldToCaptureButton(
                         title: "Mouth a word",
                         isCapturing: capture.isCapturing,
-                        isEnabled: model.classifier != nil && model.motion.status == .streaming,
+                        isEnabled: model.decoder != nil && model.motion.status == .streaming,
                         onBegin: capture.begin,
                         onEnd: capture.end)
                 } else {
                     autoControls
                 }
 
+                if model.settings.method.isSequence {
+                    VStack(alignment: .leading, spacing: 8) {
+                        LabeledContent("Max sequence score") {
+                            Slider(value: $model.hmmMaxScore, in: -10...50).frame(width: 160)
+                            Text(String(format: "%.2f", model.hmmMaxScore)).monospacedDigit()
+                        }
+                        LabeledContent("Min sequence gap") {
+                            Slider(value: $model.hmmMinGap, in: 0...5).frame(width: 160)
+                            Text(String(format: "%.2f", model.hmmMinGap)).monospacedDigit()
+                        }
+                        LabeledContent("Common-word bias") {
+                            Slider(value: $model.commonBias, in: 0...0.2).frame(width: 160)
+                            Text(String(format: "%.2f", model.commonBias)).monospacedDigit()
+                        }
+                        Text("Sequence score is a normalized negative log-likelihood. These rejection settings need validation; neither gap nor score is a probability.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    .disabled(model.experimentLocked || model.isEvaluating || model.session?.isFinished == false)
+                } else {
                 HStack(spacing: 24) {
                     LabeledContent("Max distance") {
-                        Slider(value: $model.maxDistance, in: 0.2...4).frame(width: 140)
+                        Slider(value: $model.maxDistance, in: 0.5...8).frame(width: 140)
                         Text(String(format: "%.2f", model.maxDistance)).monospacedDigit().frame(width: 36)
                     }
                     LabeledContent("Min confidence") {
                         Slider(value: $model.minConfidence, in: 0...0.5).frame(width: 140)
                         Text(String(format: "%.2f", model.minConfidence)).monospacedDigit().frame(width: 36)
                     }
+                    LabeledContent("Common-word bias") {
+                        Slider(value: $model.commonBias, in: 0...0.2).frame(width: 140)
+                        Text(String(format: "%.2f", model.commonBias)).monospacedDigit().frame(width: 36)
+                    }
+                    .help("Many words move the jaw identically; this tips ties toward the more common word.")
                 }
                 .font(.callout)
+                .disabled(model.experimentLocked || model.isEvaluating || model.session?.isFinished == false)
+                }
             }
             .padding(6)
         }
@@ -110,7 +158,7 @@ struct DecodeView: View {
                         .disabled(model.decoded.isEmpty)
                 }
                 if model.decoded.isEmpty {
-                    Text("Mouth a trained word…")
+                    Text(model.isDecoding ? "Decoding…" : "Mouth any word…")
                         .font(.system(size: 28, weight: .regular, design: .rounded))
                         .foregroundStyle(.tertiary)
                         .frame(maxWidth: .infinity, minHeight: 80, alignment: .topLeading)
@@ -159,7 +207,7 @@ struct DecodeView: View {
                     SignalPlot(title: "Rotation rate", samples: model.lastSegment,
                                channels: SignalPlot.rotation, minScale: 0.05, height: 60)
                 } else {
-                    Text("DTW distance to each word's closest take appears here.")
+                    Text("The closest vocabulary words, by DTW distance to their sound-built templates, appear here.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

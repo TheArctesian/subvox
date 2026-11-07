@@ -12,12 +12,14 @@ import Observation
 @MainActor @Observable
 final class SessionRecorder {
     enum Condition: String, CaseIterable, Identifiable, Codable {
+        case mixed = "Mixed diagnostic trials"
         case normal = "Normal speech"
         case whisper = "Whisper"
         case silent = "Silent mouthing"
         var id: String { rawValue }
         var slug: String {
             switch self {
+            case .mixed: "mixed"
             case .normal: "normal"
             case .whisper: "whisper"
             case .silent: "silent"
@@ -32,6 +34,10 @@ final class SessionRecorder {
     private(set) var motionCount = 0
     private(set) var eventCount = 0
     private(set) var lastSessionURL: URL?
+    /// Clock of the last finished session: its start (seconds since boot) and where its audio
+    /// begins relative to that start, for anyone post-processing the files.
+    private(set) var lastStartUptime: TimeInterval = 0
+    private(set) var lastAudioOffset: Double?
     private(set) var error: String?
 
     static var root: URL {
@@ -52,7 +58,7 @@ final class SessionRecorder {
         error = nil
         let stamp = Date().formatted(.iso8601.year().month().day().time(includingFractionalSeconds: false))
             .replacingOccurrences(of: ":", with: "")
-        let dir = Self.root.appending(path: "\(stamp)-\(condition.slug)", directoryHint: .isDirectory)
+        let dir = Self.root.appending(path: "\(stamp)-\(condition.slug)-\(UUID().uuidString.prefix(8))", directoryHint: .isDirectory)
         do {
             try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
             motionHandle = try Self.makeFile(dir.appending(path: "motion.csv"), header: MotionSample.csvHeader)
@@ -107,6 +113,8 @@ final class SessionRecorder {
             try? data.write(to: directory.appending(path: "meta.json"))
         }
         lastSessionURL = directory
+        lastStartUptime = startUptime
+        lastAudioOffset = audioInfo?.firstHostSeconds.map { $0 - startUptime }
         self.directory = nil
     }
 

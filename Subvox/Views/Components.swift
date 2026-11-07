@@ -168,3 +168,47 @@ struct MotionStatusBadge: View {
         }
     }
 }
+
+/// Shared channel choices for inspecting the original raw motion traces.
+enum MotionPlotChannel: String, CaseIterable, Identifiable {
+    case rotation = "Rotation (rad/s)"
+    case acceleration = "Acceleration (g)"
+    case attitude = "Attitude (rad)"
+    var id: String { rawValue }
+    var channels: [SignalPlot.Channel] {
+        switch self {
+        case .rotation: SignalPlot.rotation
+        case .acceleration: SignalPlot.acceleration
+        case .attitude: SignalPlot.attitude
+        }
+    }
+    var minScale: Double {
+        switch self {
+        case .rotation: 0.05
+        case .acceleration: 0.01
+        case .attitude: 0.1
+        }
+    }
+}
+
+struct LiveMotionPanel: View {
+    @Environment(AppModel.self) private var model
+    @State private var channel = MotionPlotChannel.rotation
+
+    var body: some View {
+        let motion = model.motion
+        GroupBox("Live motion") {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Picker("Channels", selection: $channel) {
+                        ForEach(MotionPlotChannel.allCases) { Text($0.rawValue).tag($0) }
+                    }
+                    .labelsHidden()
+                    Text(String(format: "%.1f Hz", motion.sampleRate)).font(.caption.monospacedDigit())
+                }
+                SignalPlot(title: channel.rawValue, samples: motion.history, channels: channel.channels,
+                           span: motion.latest.map { ($0.t - 8)...$0.t }, minScale: channel.minScale, height: 75)
+            }.padding(6)
+        }
+    }
+}

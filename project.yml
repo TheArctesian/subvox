@@ -15,7 +15,11 @@ targets:
   Subvox:
     type: application
     platform: macOS
-    sources: [Subvox]
+    sources:
+      - Subvox
+      - path: Corpus
+        type: folder
+        buildPhase: resources
     info:
       path: Subvox/Info.plist
       properties:

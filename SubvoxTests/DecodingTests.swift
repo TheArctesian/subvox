@@ -27,33 +27,43 @@ final class DecodingTests: XCTestCase {
         XCTAssertLessThan(DTW.distance(a, stretched), DTW.distance(a, other))
     }
 
-    func testClassifierSeparatesDistinctWords() throws {
-        var templates: [Template] = []
-        for _ in 0..<6 {
-            templates.append(Template(label: "yes", samples: take(2, axis: 0)))
-            templates.append(Template(label: "no", samples: take(3, axis: 1)))
+    /// Quiet, then one rotation burst per axis in order, then quiet: a mouthed "word" whose
+    /// sounds each have their own motion signature.
+    private func word(_ axes: [Int], noise: Double = 0.005) -> [MotionSample] {
+        let pad = 6, burst = 12
+        let count = pad * 2 + burst * axes.count
+        return (0..<count).map { i in
+            let jitter = { Double.random(in: -noise...noise) }
+            var rotation = (jitter(), jitter(), jitter())
+            let k = i - pad
+            if k >= 0, k < burst * axes.count {
+                let v = 0.2 * sin(Double.pi * Double(k % burst) / Double(burst - 1))
+                switch axes[k / burst] {
+                case 0: rotation.0 += v
+                case 1: rotation.1 += v
+                default: rotation.2 += v
+                }
+            }
+            return MotionSample(t: Double(i) / 25, rotation: rotation)
         }
-        let classifier = try XCTUnwrap(TemplateClassifier(templates: templates, featureSet: .all))
-        let prediction = classifier.predict(take(3, axis: 1), maxDistance: 10, minConfidence: 0)
-        XCTAssertEqual(prediction.best?.label, "no")
-        XCTAssertTrue(prediction.accepted)
     }
 
-    func testEvaluationBeatsChanceOnlyWhenSignalExists() throws {
-        var real: [Template] = []
-        var noise: [Template] = []
-        for _ in 0..<8 {
-            real.append(Template(label: "yes", samples: take(2, axis: 0)))
-            real.append(Template(label: "no", samples: take(3, axis: 2)))
-            noise.append(Template(label: "yes", samples: take(0, axis: 0, noise: 0.05)))
-            noise.append(Template(label: "no", samples: take(0, axis: 0, noise: 0.05)))
+    func testDecoderSpellsWordsItWasNeverTrainedOn() throws {
+        let lexicon = Lexicon(tsv: "ah\tAA1\nee\tIY1\noo\tUW1\nahee\tAA1 IY1\neeah\tIY1 AA1\nahoo\tAA1 UW1\n")
+        var takes: [Template] = []
+        for _ in 0..<4 {
+            takes.append(Template(label: "ah", samples: word([0])))
+            takes.append(Template(label: "ee", samples: word([2])))
+            takes.append(Template(label: "oo", samples: word([1])))
         }
-        let signal = try XCTUnwrap(Evaluation.run(templates: real, featureSet: .all, permutations: 200))
-        XCTAssertGreaterThan(signal.accuracy, 0.9)
-        XCTAssertLessThan(signal.pValue, 0.01)
+        let vocabulary = ["ah", "ee", "oo", "ahee", "eeah", "ahoo"].map { (word: $0, count: 1) }
+        let decoder = try XCTUnwrap(PhoneticDecoder(takes: takes, lexicon: lexicon, vocabulary: vocabulary, featureSet: .rotation))
+        XCTAssertEqual(decoder.wordCount, 6)
+        XCTAssertTrue(decoder.missingPhones.contains("B"))
 
-        let null = try XCTUnwrap(Evaluation.run(templates: noise, featureSet: .all, permutations: 200))
-        XCTAssertGreaterThan(null.pValue, 0.01)
+        // "ahee" was never recorded: it has to be assembled from the "ah" and "ee" sounds, in order.
+        let prediction = decoder.predict(word([0, 2]), maxDistance: 10, minConfidence: 0, commonBias: 0)
+        XCTAssertEqual(prediction.best?.label, "ahee")
     }
 
     func testTrimDropsQuietPadding() {
