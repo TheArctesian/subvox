@@ -64,6 +64,22 @@ final class PracticeTests: XCTestCase {
         }
     }
 
+    func testStreakCountsConsecutiveDaysWithAMouthedTake() {
+        let calendar = Calendar(identifier: .gregorian)
+        let now = calendar.date(from: DateComponents(year: 2026, month: 11, day: 8, hour: 9))!
+        func pair(daysAgo: Int, mouthed: Bool = true) -> SentencePair {
+            var p = SentencePair(visitID: UUID(), promptIDs: [], text: "x", role: .training)
+            p.createdAt = calendar.date(byAdding: .day, value: -daysAgo, to: now)!
+            if mouthed { p.silent = SentenceRecording(condition: .silent, samples: [], cueStart: 0, cueEnd: 1) }
+            return p
+        }
+        let progress = PracticeProgress(pairs: [pair(daysAgo: 0), pair(daysAgo: 0), pair(daysAgo: 1), pair(daysAgo: 2), pair(daysAgo: 4),
+                                                pair(daysAgo: 3, mouthed: false)], calendar: calendar, now: now)
+        XCTAssertEqual(progress.today, 2)
+        XCTAssertEqual(progress.streak, 3, "A day with only a spoken half doesn't keep the streak")
+        XCTAssertEqual(PracticeProgress(pairs: [pair(daysAgo: 1)], calendar: calendar, now: now).streak, 1, "Yesterday still counts until today ends")
+    }
+
     func testPhoneCheckDecodesThePythonOutput() throws {
         let json = #"{"language": "fr", "expected_phones": ["t", "y"], "produced_phones": ["t", "u"], "source": "whisper-words", "alignment": [{"op": "match", "expected": "t", "produced": "t"}, {"op": "sub", "expected": "y", "produced": "u"}], "word_agreement": 0.0, "phone_error_rate": 0.5, "trainable": false, "timing": null}"#
         let result = try JSONDecoder().decode(PhoneCheckResult.self, from: Data(json.utf8))

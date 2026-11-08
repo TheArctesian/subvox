@@ -163,3 +163,25 @@ extension PracticeCorpus {
         } catch { return nil }
     }
 }
+
+/// Progress that's visible on every practice page: takes today, a day streak, and which sounds
+/// have been practised. Counted from saved pairs with a mouthed take, so abandoned attempts don't count.
+struct PracticeProgress: Equatable {
+    var today = 0
+    var streak = 0
+    var practisedTexts: Set<String> = []
+
+    init(pairs: [SentencePair], calendar: Calendar = .current, now: Date = Date()) {
+        let done = pairs.filter { $0.silent != nil }
+        today = done.filter { calendar.isDate($0.createdAt, inSameDayAs: now) }.count
+        let days = Set(done.map { calendar.startOfDay(for: $0.createdAt) })
+        var day = calendar.startOfDay(for: now)
+        if !days.contains(day) { day = calendar.date(byAdding: .day, value: -1, to: day)! }
+        while days.contains(day) { streak += 1; day = calendar.date(byAdding: .day, value: -1, to: day)! }
+        practisedTexts = Set(done.filter { $0.practiceMode != nil }.map(\.text))
+    }
+
+    func practised(_ sound: PracticeCorpus.Sound, language: AppLanguage) -> Bool {
+        sound.examples.contains { practisedTexts.contains($0.text(language)) }
+    }
+}

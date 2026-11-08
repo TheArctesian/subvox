@@ -104,6 +104,7 @@ struct PracticePage<Controls: View, Content: View>: View {
                             }
                         }
                         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
+                        ProgressStrip()
                         PracticeFeedback(mode: mode, again: { model.startPractice(groups) })
                         HStack(spacing: 16) { controls() }
                         content()
@@ -115,6 +116,21 @@ struct PracticePage<Controls: View, Content: View>: View {
         }
         .sheet(isPresented: $showWhisperSetup) { WhisperSetupSheet() }
         .onChange(of: model.startRequest) { if canStart { model.startPractice(groups) } }
+    }
+}
+
+/// Takes today and the day streak, the same line on every practice page.
+struct ProgressStrip: View {
+    @Environment(AppModel.self) private var model
+    var body: some View {
+        let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
+        HStack(spacing: 18) {
+            Label(progress.today == 1 ? "1 take today" : "\(progress.today) takes today", systemImage: "checkmark.circle")
+            Label(progress.streak == 1 ? "1-day streak" : "\(progress.streak)-day streak", systemImage: "flame")
+                .foregroundStyle(progress.streak > 0 ? AnyShapeStyle(.orange) : AnyShapeStyle(.secondary))
+        }
+        .font(.callout)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -541,6 +557,7 @@ struct SoundsView: View {
 
     var body: some View {
         let language = model.language
+        let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
         PracticePage(title: "Sounds", subtitle: "Learn each sound: hear it, see how it's made, then say the example words.",
                      startTitle: "Say the Examples",
                      groups: sound.map { s in s.examples.map { [SentencePrompt($0, kind: .sound, language: language)] } } ?? [],
@@ -552,6 +569,8 @@ struct SoundsView: View {
             } else {
                 HStack(alignment: .top, spacing: 24) {
                     VStack(alignment: .leading, spacing: 14) {
+                        Text("\(sounds.filter { progress.practised($0, language: language) }.count) of \(sounds.count) sounds practised")
+                            .font(.headline)
                         ForEach(groups, id: \.self) { group in
                             Text(group).font(.headline).foregroundStyle(.secondary)
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 76), spacing: 6)], alignment: .leading, spacing: 6) {
@@ -559,6 +578,12 @@ struct SoundsView: View {
                                     Button { selection = s.id; Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
                                         VStack(spacing: 1) {
                                             Text(s.ipa).font(.ipa(24, relativeTo: .title2))
+                                                .overlay(alignment: .topTrailing) {
+                                                    if progress.practised(s, language: language) {
+                                                        Image(systemName: "checkmark.circle.fill").font(.caption2).foregroundStyle(.green)
+                                                            .offset(x: 14, y: -6).accessibilityHidden(true)
+                                                    }
+                                                }
                                             if s.name != s.ipa {
                                                 Text(s.name).font(.caption).foregroundStyle(.secondary).lineLimit(2).multilineTextAlignment(.center)
                                             }
@@ -568,7 +593,7 @@ struct SoundsView: View {
                                                     in: RoundedRectangle(cornerRadius: 8))
                                     }
                                     .buttonStyle(.plain)
-                                    .accessibilityLabel("\(s.name), \(s.guide)")
+                                    .accessibilityLabel("\(s.name), \(s.guide)" + (progress.practised(s, language: language) ? ", practised" : ""))
                                     .accessibilityAddTraits(s.id == sound?.id ? .isSelected : [])
                                 }
                             }
