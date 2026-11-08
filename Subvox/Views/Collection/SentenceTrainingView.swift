@@ -19,6 +19,7 @@ struct SentenceTrainingView: View {
         else if model.showRepresentation { RepresentationStudyView() }
         else if model.showSignalCheck { SignalCheckView() }
         else if model.sentenceTraining.isAcquiring {sentenceRecordingScreen}
+        else if !model.researchTools { SimpleTrainingView() }
         else { trainingBody }
     }
 
@@ -29,6 +30,7 @@ struct SentenceTrainingView: View {
                 AppPageHeading(title: "Training", subtitle: "Speak, then mouth. Record at your own pace.")
                 Spacer()
                 if !workflow.isBusy {
+                    Button("Simple view") { model.researchTools = false }
                     Menu("Advanced") {
                         Button("Sentence models") { model.showSequenceLearning = true }
                         Button("Saved frozen-model studies") { model.showRepresentation = true }

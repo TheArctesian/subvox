@@ -37,7 +37,7 @@ struct DevicesView: View {
         let motion = model.motion
         return GroupBox("AirPods motion") {
             VStack(alignment: .leading, spacing: 8) {
-                Label(motion.status == .streaming ? "Receiving motion" : motion.status.label, systemImage: "headphones")
+                Label(motion.status == .streaming ? "Receiving motion" : motion.statusText, systemImage: "headphones")
                     .font(.headline).foregroundStyle(motion.status == .streaming ? Color.green : Color.secondary)
                 LabeledContent("Sample rate", value: String(format: "%.1f Hz", motion.sampleRate))
                 LabeledContent("Samples", value: "\(motion.sampleCount)")

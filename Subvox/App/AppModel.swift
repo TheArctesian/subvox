@@ -39,6 +39,15 @@ final class AppModel {
     let contribution = ContributionSettings()
     let uploader = CommunityUploader()
     var showContribute = false
+    /// Off for new installs: the Train page shows one recording path. Research tools (sentence
+    /// banks, neural training, signal checks, Try model) appear when this is on.
+    var researchTools = UserDefaults.standard.bool(forKey: "ui.researchTools") {
+        didSet {
+            UserDefaults.standard.set(researchTools, forKey: "ui.researchTools")
+            if !researchTools { sentenceTraining.readingSource = .community; if screen == .decode { screen = .train } }
+        }
+    }
+    var visibleScreens: [Screen] { researchTools ? Screen.allCases : [.train, .devices] }
     let sentenceTraining: SentenceTrainingWorkflow
     var screen: Screen = .train {
         didSet {
@@ -92,6 +101,7 @@ final class AppModel {
             self.sentenceTraining.captureCameraPoints=true
             self.sentenceTraining.excludedCollectionGroups=Set((representation.study?.training ?? []).map(\.id)+(representation.study?.evaluation ?? []).map(\.id))
         }
+        if !researchTools { self.sentenceTraining.readingSource = .community }
         self.sentenceTraining.onTrainingChanged = { [weak self] in self?.rebuildDecoder() }
         rebuildDecoder()
     }

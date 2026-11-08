@@ -198,11 +198,12 @@ struct HoldToCaptureButton: View {
 struct MotionStatusBadge: View {
     var status: HeadphoneMotionService.Status
     var rate: Double
+    var text: String? = nil
 
     var body: some View {
         HStack(spacing: 6) {
             Circle().fill(color).frame(width: 8, height: 8)
-            Text(status == .streaming ? "AirPods · \(Int(rate.rounded())) Hz" : status.label)
+            Text(status == .streaming ? "AirPods · \(Int(rate.rounded())) Hz" : text ?? status.label)
                 .font(.callout.monospacedDigit())
         }
         .padding(.horizontal, 8)

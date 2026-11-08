@@ -1,5 +1,6 @@
 import CoreMotion
 import Observation
+import os
 
 /// Streams `CMHeadphoneMotionManager` updates from connected AirPods.
 @MainActor @Observable
@@ -23,6 +24,23 @@ final class HeadphoneMotionService {
     }
 
     static let historySeconds: TimeInterval = 10
+    /// Connected but silent for this long: restart the stream (AirPods can stop sending after a route change).
+    static let stallSeconds: TimeInterval = 2
+
+    /// What the user should see, including the "connected but no motion" case the plain status hides.
+    var statusText: String {
+        switch status {
+        case .waiting where isConnected:
+            CMHeadphoneMotionManager.authorizationStatus() == .notDetermined
+                ? "AirPods connected · allow Motion access" : "AirPods connected · no motion yet"
+        case .waiting: "Waiting for AirPods"
+        default: status.label
+        }
+    }
+    private(set) var restarts = 0
+    @ObservationIgnored private let log = Logger(subsystem: "org.subvox", category: "headphone-motion")
+    @ObservationIgnored private var watchdog: Task<Void, Never>?
+    @ObservationIgnored private var lastSampleUptime: TimeInterval = 0
 
     private(set) var status: Status = .waiting
     private(set) var isConnected = false
@@ -55,6 +73,18 @@ final class HeadphoneMotionService {
         }
         manager.delegate = proxy
         manager.startConnectionStatusUpdates()
+        log.info("start: authorization \(CMHeadphoneMotionManager.authorizationStatus().rawValue, privacy: .public)")
+        startUpdates()
+        watchdog?.cancel()
+        watchdog = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(1))
+                self?.checkStall()
+            }
+        }
+    }
+
+    private func startUpdates() {
         manager.startDeviceMotionUpdates(to: .main) { [weak self] motion, error in
             MainActor.assumeIsolated {
                 self?.handle(motion, error)
@@ -62,14 +92,38 @@ final class HeadphoneMotionService {
         }
     }
 
+    private func restartUpdates(reason: String) {
+        restarts += 1
+        log.notice("restart motion updates (\(reason, privacy: .public)), restart #\(self.restarts)")
+        manager.stopDeviceMotionUpdates()
+        startUpdates()
+        lastSampleUptime = ProcessInfo.processInfo.systemUptime
+    }
+
+    /// Connected but no samples for a while: CoreMotion sometimes keeps the connection yet stops
+    /// delivering after the AirPods switch route or wake. Restarting the stream recovers it.
+    private func checkStall() {
+        let now = ProcessInfo.processInfo.systemUptime
+        guard isConnected, now - lastSampleUptime > Self.stallSeconds else { return }
+        if status == .streaming { log.notice("motion stalled for \(now - self.lastSampleUptime, privacy: .public)s while connected") }
+        status = .waiting
+        sampleRate = 0
+        rateWindow.removeAll()
+        restartUpdates(reason: "stall")
+    }
+
     func stop() {
+        watchdog?.cancel()
         manager.stopDeviceMotionUpdates()
         manager.stopConnectionStatusUpdates()
     }
 
     private func connectionChanged(_ connected: Bool) {
+        log.notice("AirPods \(connected ? "connected" : "disconnected", privacy: .public)")
         isConnected = connected
-        if !connected {
+        if connected {
+            restartUpdates(reason: "reconnected")
+        } else {
             status = .waiting
             sampleRate = 0
             rateWindow.removeAll()
@@ -79,6 +133,7 @@ final class HeadphoneMotionService {
     private func handle(_ motion: CMDeviceMotion?, _ error: Error?) {
         if let error {
             let ns = error as NSError
+            log.error("motion error \(ns.domain, privacy: .public) \(ns.code): \(ns.localizedDescription, privacy: .public)")
             if ns.domain == CMErrorDomain, ns.code == Int(CMErrorMotionActivityNotAuthorized.rawValue) {
                 status = .denied
             } else {
@@ -89,6 +144,8 @@ final class HeadphoneMotionService {
         guard let motion else { return }
 
         let sample = MotionSample(motion)
+        lastSampleUptime = ProcessInfo.processInfo.systemUptime
+        if status != .streaming { log.notice("motion streaming (sensor \(motion.sensorLocation.rawValue, privacy: .public))") }
         latest = sample
         status = .streaming
         isConnected = true

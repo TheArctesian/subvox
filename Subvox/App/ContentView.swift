@@ -5,7 +5,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            List(AppModel.Screen.allCases, selection: screenSelection) { screen in
+            List(model.visibleScreens, selection: screenSelection) { screen in
                 Label(screen.rawValue, systemImage: screen.symbol).tag(screen)
             }
             .navigationSplitViewColumnWidth(min: 160, ideal: 180)
@@ -18,7 +18,7 @@ struct ContentView: View {
         }
         .toolbar {
             ToolbarItem(placement: .status) {
-                MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate)
+                MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate, text: model.motion.statusText)
             }
         }
         .navigationTitle(model.screen.rawValue)
