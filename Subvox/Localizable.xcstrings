@@ -869,6 +869,62 @@
         }
       }
     },
+    "AirPods connected · allow Motion access": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods conectados · permite el acceso al movimiento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods connectés · autorisez l’accès aux mouvements"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods 已连接 · 请允许运动权限"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods 已連線 · 請允許動作權限"
+          }
+        }
+      }
+    },
+    "AirPods connected · no motion yet": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods conectados · aún sin movimiento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods connectés · aucun mouvement pour l’instant"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods 已连接 · 还没有运动数据"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods 已連線 · 還沒有動作資料"
+          }
+        }
+      }
+    },
     "AirPods motion": {
       "localizations": {
         "es": {
@@ -921,6 +977,90 @@
           "stringUnit": {
             "state": "translated",
             "value": "只記錄 AirPods 的動作和嘴唇的數字座標點，絕不錄製影片或照片。"
+          }
+        }
+      }
+    },
+    "AirPods motion is coming through": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Llega el movimiento de los AirPods"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les mouvements des AirPods arrivent bien"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已收到 AirPods 运动数据"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已收到 AirPods 動作資料"
+          }
+        }
+      }
+    },
+    "Allow Subvox in System Settings › Privacy & Security › Camera.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite Subvox en Ajustes del Sistema › Privacidad y seguridad › Cámara."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisez Subvox dans Réglages Système › Confidentialité et sécurité › Caméra."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在“系统设置 › 隐私与安全性 › 摄像头”中允许 Subvox。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請在「系統設定 › 隱私權與安全性 › 相機」中允許 Subvox。"
+          }
+        }
+      }
+    },
+    "Allow Subvox in System Settings › Privacy & Security › Motion & Fitness, then reopen the app.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite Subvox en Ajustes del Sistema › Privacidad y seguridad › Movimiento y forma física y vuelve a abrir la app."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisez Subvox dans Réglages Système › Confidentialité et sécurité › Mouvements et forme, puis rouvrez l’app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在“系统设置 › 隐私与安全性 › 运动与健身”中允许 Subvox，然后重新打开 App。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請在「系統設定 › 隱私權與安全性 › 動作與健身」中允許 Subvox，然後重新打開 App。"
           }
         }
       }
@@ -1145,6 +1285,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "寬式國際音標。英語發音採用通用美式。"
+          }
+        }
+      }
+    },
+    "Camera access is needed to record": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se necesita acceso a la cámara para grabar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’accès à la caméra est nécessaire pour enregistrer"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录音需要使用摄像头"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "錄音需要使用相機"
           }
         }
       }
@@ -1597,6 +1765,34 @@
         }
       }
     },
+    "Consonants": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consonantes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consonnes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "辅音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "子音"
+          }
+        }
+      }
+    },
     "Continue": {
       "localizations": {
         "es": {
@@ -1789,6 +1985,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "沒有打開，或打開了別的頁面？請再打開一次連結，或把連結拷貝到已登入 Hugging Face 的任一瀏覽器中。"
+          }
+        }
+      }
+    },
+    "Diphthongs": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diptongos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diphtongues"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "双元音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "雙母音"
           }
         }
       }
@@ -2573,6 +2797,62 @@
           "stringUnit": {
             "state": "translated",
             "value": "法語"
+          }
+        }
+      }
+    },
+    "Glides": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semivocales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semi-voyelles"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "半元音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "半母音"
+          }
+        }
+      }
+    },
+    "Headphone motion unsupported": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movimiento de auriculares no compatible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mouvements des écouteurs non pris en charge"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支持耳机运动数据"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支援耳機動作資料"
           }
         }
       }
@@ -3585,6 +3865,34 @@
         }
       }
     },
+    "Motion access denied": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso al movimiento denegado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accès aux mouvements refusé"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "运动权限被拒绝"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動作權限被拒絕"
+          }
+        }
+      }
+    },
     "Motion channels": {
       "localizations": {
         "es": {
@@ -3665,6 +3973,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "只動嘴唇（跳過出聲的部分）"
+          }
+        }
+      }
+    },
+    "Nasal vowels": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vocales nasales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voyelles nasales"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鼻化元音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鼻化母音"
           }
         }
       }
@@ -4757,6 +5093,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "拉取請求 #%lld"
+          }
+        }
+      }
+    },
+    "Put both AirPods in your ears. If it stays here, play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte los dos AirPods. Si sigue así, reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mettez les deux AirPods. Si rien ne change, lancez un son dans Musique ou Safari et choisissez Audio spatial › Suivi de la tête dans le menu des AirPods."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请戴上两只 AirPods。如果仍然没有反应，请在“音乐”或 Safari 中播放声音，并在 AirPods 菜单里把空间音频设为“头部追踪”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請戴上兩隻 AirPods。如果仍然沒有反應，請在「音樂」或 Safari 中播放聲音，並在 AirPods 選單裡把空間音訊設為「頭部追蹤」。"
           }
         }
       }
@@ -7337,6 +7701,34 @@
         }
       }
     },
+    "Streaming": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recibiendo datos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réception en cours"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在接收"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在接收"
+          }
+        }
+      }
+    },
     "Subvox is an open research project teaching computers to understand silently mouthed words, from AirPods head motion and the shape of your lips.": {
       "localizations": {
         "es": {
@@ -7505,6 +7897,34 @@
         }
       }
     },
+    "This Mac can't read headphone motion.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este Mac no puede leer el movimiento de los auriculares."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce Mac ne peut pas lire les mouvements des écouteurs."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这台 Mac 无法读取耳机运动数据。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這台 Mac 無法讀取耳機動作資料。"
+          }
+        }
+      }
+    },
     "This recording session": {
       "localizations": {
         "es": {
@@ -7557,6 +7977,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "這個詞語基準使用的是估計的邊界。實驗性的句子解碼及其單獨評估，在「進階 → 句子模型」中。"
+          }
+        }
+      }
+    },
+    "Tones": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tonos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tons"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "声调"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聲調"
           }
         }
       }
@@ -7897,6 +8345,34 @@
         }
       }
     },
+    "Use AirPods Pro, AirPods (3rd generation or later) or AirPods Max as this Mac's sound output. Then play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa unos AirPods Pro, AirPods (3.ª generación o posterior) o AirPods Max como salida de sonido de este Mac. Después reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods de la barra de menús."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez des AirPods Pro, des AirPods (3e génération ou ultérieure) ou des AirPods Max comme sortie audio de ce Mac. Lancez ensuite un son dans Musique ou Safari et choisissez Audio spatial › Suivi de la tête dans le menu des AirPods de la barre des menus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请把 AirPods Pro、AirPods（第三代或更新）或 AirPods Max 设为这台 Mac 的声音输出。然后在“音乐”或 Safari 中播放声音，并在菜单栏的 AirPods 菜单里把空间音频设为“头部追踪”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請把 AirPods Pro、AirPods（第三代或更新）或 AirPods Max 設為這台 Mac 的聲音輸出。然後在「音樂」或 Safari 中播放聲音，並在選單列的 AirPods 選單裡把空間音訊設為「頭部追蹤」。"
+          }
+        }
+      }
+    },
     "Use automatic decision": {
       "localizations": {
         "es": {
@@ -7977,6 +8453,62 @@
           "stringUnit": {
             "state": "translated",
             "value": "驗證用句子會另外加入；每段文章最多由三個句子組成。"
+          }
+        }
+      }
+    },
+    "Vowels": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vocales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voyelles"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "元音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "母音"
+          }
+        }
+      }
+    },
+    "Waiting for AirPods": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando los AirPods"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En attente des AirPods"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在等待 AirPods"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在等待 AirPods"
           }
         }
       }

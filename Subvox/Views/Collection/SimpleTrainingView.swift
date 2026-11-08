@@ -48,11 +48,11 @@ struct SimpleTrainingView: View {
 
     private var checklist: some View {
         VStack(alignment: .leading, spacing: 10) {
-            row(ok: motionReady, title: motionReady ? "AirPods motion is coming through" : model.motion.statusText,
+            row(ok: motionReady, title: motionReady ? String(localized: "AirPods motion is coming through") : model.motion.statusText,
                 hint: motionReady ? nil : airpodsHint)
             if !cameraAllowed {
-                row(ok: false, title: "Camera access is needed to record",
-                    hint: "Allow Subvox in System Settings › Privacy & Security › Camera.")
+                row(ok: false, title: String(localized: "Camera access is needed to record"),
+                    hint: String(localized: "Allow Subvox in System Settings › Privacy & Security › Camera."))
             }
             PrivacySummary()
         }
@@ -62,13 +62,13 @@ struct SimpleTrainingView: View {
 
     private var airpodsHint: String {
         switch model.motion.status {
-        case .denied: "Allow Subvox in System Settings › Privacy & Security › Motion & Fitness, then reopen the app."
-        case .unsupported: "This Mac can't read headphone motion."
+        case .denied: String(localized: "Allow Subvox in System Settings › Privacy & Security › Motion & Fitness, then reopen the app.")
+        case .unsupported: String(localized: "This Mac can't read headphone motion.")
         default:
             // macOS only streams head motion while Spatial Audio head tracking is active for the AirPods.
             model.motion.isConnected
-                ? "Put both AirPods in your ears. If it stays here, play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu."
-                : "Use AirPods Pro, AirPods (3rd generation or later) or AirPods Max as this Mac's sound output. Then play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar."
+                ? String(localized: "Put both AirPods in your ears. If it stays here, play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu.")
+                : String(localized: "Use AirPods Pro, AirPods (3rd generation or later) or AirPods Max as this Mac's sound output. Then play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar.")
         }
     }
 

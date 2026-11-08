@@ -14,10 +14,10 @@ final class HeadphoneMotionService {
 
         var label: String {
             switch self {
-            case .unsupported: "Headphone motion unsupported"
-            case .denied: "Motion access denied"
-            case .waiting: "Waiting for AirPods"
-            case .streaming: "Streaming"
+            case .unsupported: String(localized: "Headphone motion unsupported")
+            case .denied: String(localized: "Motion access denied")
+            case .waiting: String(localized: "Waiting for AirPods")
+            case .streaming: String(localized: "Streaming")
             case .error(let message): message
             }
         }
@@ -32,8 +32,8 @@ final class HeadphoneMotionService {
         switch status {
         case .waiting where isConnected:
             CMHeadphoneMotionManager.authorizationStatus() == .notDetermined
-                ? "AirPods connected · allow Motion access" : "AirPods connected · no motion yet"
-        case .waiting: "Waiting for AirPods"
+                ? String(localized: "AirPods connected · allow Motion access") : String(localized: "AirPods connected · no motion yet")
+        case .waiting: String(localized: "Waiting for AirPods")
         default: status.label
         }
     }

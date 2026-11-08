@@ -612,7 +612,7 @@ struct SoundsView: View {
                             chips(tricky, progress: progress, language: language, prefix: String(localized: "Tricky: "))
                         }
                         ForEach(groups, id: \.self) { group in
-                            Text(group).font(.headline).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
+                            Text(LocalizedStringKey(group)).font(.headline).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
                             chips(sounds.filter { $0.group == group }, progress: progress, language: language)
                         }
                         Text("Broad IPA. English sounds follow General American.").font(.callout).foregroundStyle(.secondary)
