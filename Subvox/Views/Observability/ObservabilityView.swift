@@ -188,7 +188,7 @@ struct ObservabilityView: View {
                     }.buttonStyle(.borderedProminent).disabled(!workflow.canAdvance || model.motion.status != .streaming)
                 }.controlSize(.large)
                 if let error = workflow.error { Text(error).font(.caption).foregroundStyle(.orange) }
-                else { Text("← Redo     → Start or next").font(.caption).foregroundStyle(.tertiary) }
+                else { Text("Space or → start or next  ·  ← redo").font(.caption).foregroundStyle(.tertiary) }
             }
         } motion: {
             LiveMotionPanel(plotHeight: 44)

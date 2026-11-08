@@ -322,7 +322,7 @@ struct SequenceLearningView:View {
                 }.controlSize(.large)
                 if let error=workflow.error {Text(error).font(.caption).foregroundStyle(.orange)}
                 else if workflow.phase == .ready,model.motion.status != .streaming {Label("Connect your AirPods to begin",systemImage:"headphones").font(.caption).foregroundStyle(.orange)}
-                else {Text("← Redo     → Start, finish or continue").font(.caption).foregroundStyle(.tertiary)}
+                else {Text("Space or → start, finish or continue  ·  ← redo").font(.caption).foregroundStyle(.tertiary)}
             }
         } motion: {
             LiveMotionPanel(plotHeight:44)

@@ -21,3 +21,12 @@ final class WordFocusGuideTests: XCTestCase {
         XCTAssertNil(WordFocusGuide(leadIn: 0, wordSeconds: 0).wordIndex(elapsed: 1, count: 3))
     }
 }
+
+final class WordFocusGuideDurationTests: XCTestCase {
+    func testHighlightingEndsWhenTheLastWordHasHadItsTime() {
+        let guide = WordFocusGuide.comfortable
+        XCTAssertEqual(guide.duration(count: 7), 0.4 + 7 * 0.65, accuracy: 1e-9)
+        XCTAssertEqual(guide.wordIndex(elapsed: guide.duration(count: 7) - 0.01, count: 7), 6)
+        XCTAssertEqual(guide.duration(count: 0), 0.4)
+    }
+}

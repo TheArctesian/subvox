@@ -11,6 +11,9 @@ struct WordFocusGuide: Codable, Equatable, Sendable {
         text.split(whereSeparator: \.isWhitespace).map(String.init)
     }
 
+    /// When the last word has had its full share of time.
+    func duration(count: Int) -> Double { leadIn + Double(max(0, count)) * wordSeconds }
+
     func wordIndex(elapsed: Double, count: Int) -> Int? {
         guard elapsed.isFinite, leadIn.isFinite, leadIn >= 0,
               wordSeconds.isFinite, wordSeconds > 0, count > 0, elapsed >= leadIn else { return nil }

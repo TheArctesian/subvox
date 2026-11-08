@@ -52,6 +52,13 @@ final class SentenceTrainingWorkflow {
     }
     var canRedoTake: Bool { !redoRequested && (activeCueStart != nil || ([.ended,.recovery].contains(phase) && retryableTake != nil)) }
     var canAdvance:Bool {canFinishTake || (guidedRecording && [.ready,.ended].contains(phase) && !advanceRequested && !redoRequested)}
+    /// Seconds left in the word highlighting, or nil once every word has been shown (the take
+    /// then waits for Done/Space; `secondsRemaining` is only the safety timeout).
+    var guideSecondsRemaining: Double? {
+        guard let activeCueStart, phase == .speak || phase == .mouth else { return nil }
+        let left = WordFocusGuide.comfortable.duration(count: WordFocusGuide.words(in: currentText).count) - (ProcessInfo.processInfo.systemUptime - activeCueStart)
+        return left > 0 ? left : nil
+    }
     var activeWordIndex:Int? {
         guard let activeCueStart,phase == .speak || phase == .mouth else {return nil}
         return WordFocusGuide.comfortable.wordIndex(elapsed:ProcessInfo.processInfo.systemUptime-activeCueStart,count:WordFocusGuide.words(in:currentText).count)

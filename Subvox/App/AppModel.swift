@@ -208,32 +208,33 @@ final class AppModel {
         }
     }
 
-    /// Forward arrows finish; backward arrows redo. Held keys never carry into later takes.
+    /// Space and the forward arrows start, finish or continue; backward arrows redo. Held keys never carry into later takes.
     func handleTrainingArrowKey(keyCode: UInt16, isRepeat: Bool, modifiers: NSEvent.ModifierFlags = [],
                                   isEditingText: Bool = false) -> Bool {
         guard screen == .train, ((showObservability && observability.isAcquiring) || sentenceTraining.isAcquiring || (showSignalCheck && signalCheck.isAcquiring) || (showRepresentation && representation.isAcquiring) || ((showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring)), !isEditingText,
-              [123, 124, 125, 126].contains(keyCode),
+              [123, 124, 125, 126, 49].contains(keyCode),
               modifiers.intersection([.command, .control, .option, .shift]).isEmpty else { return false }
+        let forward = keyCode == 124 || keyCode == 125 || keyCode == 49
         if !isRepeat {
             if showObservability && observability.isAcquiring {
-                if keyCode == 124 || keyCode == 125 { observability.next() } else { observability.redo() }
+                if forward { observability.next() } else { observability.redo() }
                 return true
             }
             if (showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring {
-                if keyCode == 124 || keyCode == 125 {sequenceLearning.next()} else {sequenceLearning.redo()}
+                if forward {sequenceLearning.next()} else {sequenceLearning.redo()}
                 return true
             }
             if showRepresentation && representation.isAcquiring {
-                if keyCode == 124 || keyCode == 125 { representation.next() }
+                if forward { representation.next() }
                 else { representation.redo() }
                 return true
             }
             if showSignalCheck && signalCheck.isAcquiring {
-                if keyCode == 124 || keyCode == 125 { signalCheck.next() }
+                if forward { signalCheck.next() }
                 else { signalCheck.redo() }
                 return true
             }
-            if keyCode == 124 || keyCode == 125 { sentenceTraining.advance() }
+            if forward { sentenceTraining.advance() }
             else { sentenceTraining.redoCurrentTake() }
         }
         return true

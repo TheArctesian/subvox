@@ -49,7 +49,7 @@ final class TrainingAdvanceTests: XCTestCase {
 
     @MainActor
     func testRightAndDownAdvanceButRepeatsModifiersAndOtherKeysDoNot() async throws {
-        for forward: UInt16 in [124, 125] {
+        for forward: UInt16 in [124, 125, 49] {
             let (workflow, root) = try fixture()
             defer { try? FileManager.default.removeItem(at: root) }
             let model = AppModel(sentenceTraining: workflow)

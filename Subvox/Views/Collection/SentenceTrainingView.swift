@@ -246,31 +246,44 @@ struct SentenceTrainingView: View {
                 if workflow.captureCameraPoints {CameraPoseGuide(camera:workflow.camera,compact:true,allowsMovement:true).frame(height:70).padding(.horizontal,12)}
                 RecordingPromptPanel(color:color) {
                     VStack(spacing:18) {
-                        RecordingCueStatus(timer: workflow.phase == .ready ? "When you’re ready" : String(format: "%.1f s", workflow.secondsRemaining), title: status, color: color)
+                        RecordingCueStatus(timer: cueTimer, title: status, color: color)
                         if let passage = workflow.currentPassageLabel {
                             Text(passage).font(.callout.italic()).foregroundStyle(.secondary)
                         }
                         Label(workflow.currentCondition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.currentCondition == .normal ? "speaker.wave.2":"mouth")
                             .font(.title3.weight(.medium)).foregroundStyle(color)
                         WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
-                        Text(resting ? "Relax your mouth. Wait for the recording cue.":workflow.phase == .ended ? "Take saved. Continue, or redo any mistake.":"Follow the highlighted words. Choose Done when finished.")
+                        Text(resting ? "Relax your mouth. Wait for the recording cue.":workflow.phase == .ended ? "Take saved. Press Space for the next one, or redo any mistake.":workflow.guideSecondsRemaining == nil ? "Finished? Press Space." : "Follow the highlighted words.")
                             .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
                 }
             }
         } actions: {
             VStack(spacing:10) {
-                HStack(spacing:12) {
-                    Button("Stop and save",action:workflow.stop).buttonStyle(.borderless).foregroundStyle(.secondary)
-                    Spacer()
-                    Button {workflow.redoCurrentTake()} label: {Label("Redo",systemImage:"arrow.counterclockwise")}.disabled(!workflow.canRedoTake)
+                HStack(spacing:14) {
+                    Button {workflow.redoCurrentTake()} label: {Label("Redo",systemImage:"arrow.counterclockwise").frame(minWidth:90)}.disabled(!workflow.canRedoTake)
                     Button {workflow.advance()} label: {
-                        Label(workflow.phase == .ready ? "Start take":workflow.phase == .ended ? "Continue":"Done",systemImage:workflow.phase == .speak || workflow.phase == .mouth ? "checkmark":"chevron.right").frame(minWidth:130)
+                        Label(workflow.phase == .ready ? "Start take":workflow.phase == .ended ? "Next":"Done",systemImage:workflow.phase == .speak || workflow.phase == .mouth ? "checkmark":"chevron.right").frame(minWidth:200)
                     }.buttonStyle(.borderedProminent).disabled(!workflow.canAdvance)
-                }.controlSize(.large)
-                Text("← Redo     → Start, finish or continue").font(.caption).foregroundStyle(.tertiary)
-            }
+                }.controlSize(.large).frame(maxWidth:.infinity)
+                HStack(spacing:16) {
+                    Text("Space or → start, finish or next  ·  ← redo").font(.caption).foregroundStyle(.tertiary)
+                    Button("Stop and save",action:workflow.stop).buttonStyle(.borderless).font(.caption).foregroundStyle(.secondary)
+                }
+            }.frame(maxWidth:.infinity)
         } motion: {LiveMotionPanel(plotHeight:44)}
+    }
+
+    /// The countdown follows the word highlighting; after the last word the take waits for Space,
+    /// and the safety timeout only shows in its final seconds.
+    private var cueTimer: String {
+        let workflow = model.sentenceTraining
+        if workflow.phase == .ready { return "When you’re ready" }
+        if let left = workflow.guideSecondsRemaining { return String(format: "%.1f s", left) }
+        if workflow.phase == .speak || workflow.phase == .mouth {
+            return workflow.secondsRemaining < 5 ? String(format: "Stops in %.0f s", ceil(workflow.secondsRemaining)) : "Press Space when done"
+        }
+        return String(format: "%.1f s", workflow.secondsRemaining)
     }
 
     private var review: some View {
