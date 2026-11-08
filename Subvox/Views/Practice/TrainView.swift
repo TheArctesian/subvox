@@ -20,6 +20,7 @@ struct TrainView: View {
                 MinimalPairsView().tabItem { Label(TrainMode.minimalPairs.rawValue, systemImage: TrainMode.minimalPairs.symbol) }.tag(TrainMode.minimalPairs)
                 FreePracticeView().tabItem { Label(TrainMode.free.rawValue, systemImage: TrainMode.free.symbol) }.tag(TrainMode.free)
             }
+            .modifier(InPageTabs())
             .padding(.top, 8)
         }
     }
@@ -298,5 +299,13 @@ struct FreePracticeView: View {
             Text("\(Self.sentences(text).count) sentences. A take is used for training only when Whisper agrees with at least 85% of the text; otherwise it stays practice.")
                 .font(.caption).foregroundStyle(.secondary)
         }
+    }
+}
+
+/// On macOS 15+ the automatic TabView style moves tabs into the window toolbar, where a narrow
+/// window hides them behind the overflow (») button. Keep them as a visible bar above the page.
+private struct InPageTabs: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 15.0, *) { content.tabViewStyle(.grouped) } else { content }
     }
 }
