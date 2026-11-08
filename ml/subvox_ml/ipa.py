@@ -157,10 +157,23 @@ def _syllable_ipa(initial, final):
     return ([PINYIN_INITIALS[initial]] if initial else []) + rhyme
 
 
+@lru_cache(maxsize=1)
+def _converter():
+    from opencc import OpenCC
+    return OpenCC("t2s")
+
+
+def _to_simplified(text):
+    return _converter().convert(text) if text else text
+
+
 def mandarin_syllables(text):
     """Characters -> [{'pinyin': 'hang2', 'toneless': 'hang', 'tone': 2, 'phones': [...]}]; non-Han text is skipped."""
     from pypinyin import Style, pinyin
     hanzi = "".join(ch for ch in text if "一" <= ch <= "鿿" or "㐀" <= ch <= "䶿")
+    # pypinyin's phrase dictionary is keyed on Simplified characters, so Traditional text is
+    # converted first; otherwise 銀行 loses its context and reads yín xíng.
+    hanzi = _to_simplified(hanzi)
     if not hanzi:
         return []
     tone3 = [p[0] for p in pinyin(hanzi, style=Style.TONE3, neutral_tone_with_five=True)]
@@ -216,8 +229,9 @@ def restore_tones(toneless, max_phrase=4):
 
 
 def validate_language_tag(tag):
-    """'en', 'fr', 'es', 'zh' (optionally with a region, e.g. 'fr-CA'); returns the base language."""
-    match = re.fullmatch(r"([a-z]{2})(?:-[A-Z]{2})?", str(tag))
+    """'en', 'fr', 'es', 'zh', optionally with a region ('fr-CA') or, for Chinese, a script
+    ('zh-Hans', 'zh-Hant'); returns the base language."""
+    match = re.fullmatch(r"([a-z]{2})(?:-[A-Z]{2}|-Han[st])?", str(tag))
     if not match or match.group(1) not in LANGUAGES:
         raise ValueError(f"Unsupported language tag {tag!r}")
     return match.group(1)

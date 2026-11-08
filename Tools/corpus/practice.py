@@ -45,19 +45,28 @@ PIECES = [
         "¡Qué es poesía! ¿Y tú me lo preguntas?", "Poesía... eres tú."]),
     ("caminante", "es", "poem", "Proverbios y cantares XXIX", "Antonio Machado", 1912, 1939, [
         "Caminante, son tus huellas el camino y nada más;", "caminante, no hay camino, se hace camino al andar."]),
-    ("jing-ye-si", "zh", "poem", "静夜思", "李白", 750, 762, ["床前明月光，", "疑是地上霜。", "举头望明月，", "低头思故乡。"]),
-    ("chun-xiao", "zh", "poem", "春晓", "孟浩然", 730, 740, ["春眠不觉晓，", "处处闻啼鸟。", "夜来风雨声，", "花落知多少。"]),
+    ("jing-ye-si", "zh", "poem", ("静夜思", "靜夜思"), ("李白", "李白"), 750, 762, [
+        ("床前明月光，", "床前明月光，"), ("疑是地上霜。", "疑是地上霜。"), ("举头望明月，", "舉頭望明月，"), ("低头思故乡。", "低頭思故鄉。")]),
+    ("chun-xiao", "zh", "poem", ("春晓", "春曉"), ("孟浩然", "孟浩然"), 730, 740, [
+        ("春眠不觉晓，", "春眠不覺曉，"), ("处处闻啼鸟。", "處處聞啼鳥。"), ("夜来风雨声，", "夜來風雨聲，"), ("花落知多少。", "花落知多少。")]),
 ]
 
-DRILLS = [
-    ("etre", "fr", "être (to be), present", ["je suis", "tu es", "il est", "elle est", "nous sommes", "vous êtes", "ils sont", "elles sont"]),
-    ("avoir", "fr", "avoir (to have), present", ["j'ai", "tu as", "il a", "nous avons", "vous avez", "ils ont"]),
-    ("ser", "es", "ser (to be), present", ["yo soy", "tú eres", "él es", "nosotros somos", "vosotros sois", "ellos son"]),
-    ("estar", "es", "estar (to be), present", ["yo estoy", "tú estás", "él está", "nosotros estamos", "vosotros estáis", "ellos están"]),
-    ("to-be", "en", "to be, present", ["I am", "you are", "she is", "we are", "they are"]),
-    ("shi", "zh", "是 (to be)", ["我是学生", "你是老师", "他是医生", "我们是朋友"]),
-    ("greetings-zh", "zh", "Greetings", ["你好", "谢谢", "再见", "对不起", "没关系"]),
-]
+# Grammar drills per language (Tools/corpus/grammar/*.json): A1–B1 (CEFR) and HSK 1–4 topics,
+# 5–8 short phrases each, with a level, topic and one-line note. Chinese phrases carry both
+# simplified ("hans") and traditional ("hant") forms.
+GRAMMAR = [ROOT / "Tools" / "corpus" / "grammar" / name for name in ("grammar-fr-es.json", "grammar-zh-en.json")]
+
+
+def load_drills():
+    drills = []
+    for path in GRAMMAR:
+        for language, items in json.loads(path.read_text()).items():
+            for d in items:
+                phrases = [(p["hans"], p["hant"]) if isinstance(p, dict) else p for p in d["phrases"]]
+                drills.append((f"{language}-{d['id']}", language, d["title"], phrases,
+                               dict(level=d.get("level"), topic=d.get("topic"), note=d.get("note"), source=d.get("source"))))
+    return drills
+
 
 # Pairs aimed at sounds that look alike on the lips (or look alike but differ inside the mouth).
 MINIMAL_PAIRS = [
@@ -71,16 +80,31 @@ MINIMAL_PAIRS = [
     ("fr", "ɔ̃ ɑ̃", [["bon", "banc"], ["long", "lent"]]),
     ("es", "ɾ r", [["pero", "perro"], ["caro", "carro"], ["coro", "corro"]]),
     ("es", "p b m", [["peso", "beso"], ["pala", "bala", "mala"]]),
-    ("zh", "p pʰ m", [["八", "趴", "妈"], ["包", "抛", "猫"]]),
-    ("zh", "y i u", [["女", "你", "怒"], ["鱼", "移", "无"]]),
+    ("zh", "p pʰ m", [[("八", "八"), ("趴", "趴"), ("妈", "媽")], [("包", "包"), ("抛", "拋"), ("猫", "貓")]]),
+    ("zh", "y i u", [[("女", "女"), ("你", "你"), ("怒", "怒")], [("鱼", "魚"), ("移", "移"), ("无", "無")]]),
 ]
 
 
+# When each speech was given; poems show their publication year instead.
+SPOKEN = {"gettysburg": "19 November 1863", "tilbury": "9 August 1588", "aint-i-a-woman": "29 May 1851"}
+
+
 def entry(text, language):
-    item = dict(text=text, ipa=[" ".join(word) for word in ipa.phonemize(text, language)])
+    """A line or phrase. Mandarin text is a (simplified, traditional) pair; IPA and pinyin come
+    from the simplified form, which pypinyin reads with the most reliable phrase context."""
+    hant = None
+    if isinstance(text, tuple):
+        text, hant = text
+    item = dict(text=text, ipa=["".join(word) for word in ipa.phonemize(text, language)])
     if language == "zh":
-        item["pinyin"] = " ".join(s["pinyin"] for s in ipa.mandarin_syllables(text))
+        from pypinyin import Style, pinyin
+        item["hant"] = hant or text
+        item["pinyin"] = " ".join(p[0] for p in pinyin("".join(c for c in text if "\u4e00" <= c <= "\u9fff"), style=Style.TONE))
     return item
+
+
+def both(value):
+    return value if isinstance(value, tuple) else (value, value)
 
 
 def build(year=2026):
@@ -88,10 +112,12 @@ def build(year=2026):
     for pid, language, kind, title, author, published, died, lines in PIECES:
         if not (died + 70 < year and published < 1930):
             raise ValueError(f"{title} is not public domain in both the UK and US")
-        pieces.append(dict(id=pid, language=language, kind=kind, title=title, author=author, year=published,
+        (title, title_hant), (author, author_hant) = both(title), both(author)
+        pieces.append(dict(id=pid, language=language, kind=kind, title=title, title_hant=title_hant, author=author,
+                           author_hant=author_hant, year=published, date=SPOKEN.get(pid),
                            lines=[entry(line, language) for line in lines]))
-    drills = [dict(id=did, language=language, title=title, phrases=[entry(p, language) for p in phrases])
-              for did, language, title, phrases in DRILLS]
+    drills = [dict(id=did, language=language, title=title, phrases=[entry(p, language) for p in phrases], **meta)
+              for did, language, title, phrases, meta in load_drills()]
     pairs = [dict(language=language, contrast=contrast, sets=[[entry(w, language) for w in group] for group in groups])
              for language, contrast, groups in MINIMAL_PAIRS]
     return dict(version=1, pieces=pieces, drills=drills, minimal_pairs=pairs)

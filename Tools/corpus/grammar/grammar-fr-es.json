@@ -1,0 +1,801 @@
+{
+ "fr": [
+  {
+   "id": "etre-present",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "être — present",
+   "note": "Full paradigm of the most important irregular verb.",
+   "phrases": [
+    "je suis français",
+    "tu es prêt",
+    "il est là",
+    "elle est contente",
+    "nous sommes ici",
+    "vous êtes libre",
+    "ils sont fatigués"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "avoir-present",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "avoir — present",
+   "note": "Full paradigm; many French idioms use avoir where English uses 'to be'.",
+   "phrases": [
+    "j'ai faim",
+    "tu as raison",
+    "il a un chien",
+    "elle a vingt ans",
+    "nous avons le temps",
+    "vous avez de la chance",
+    "ils ont rendez-vous"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "aller-faire-present",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "aller and faire — present",
+   "note": "Two irregular verbs used constantly: aller (to go) and faire (to do/make).",
+   "phrases": [
+    "je vais bien",
+    "tu vas au travail",
+    "on va au marché",
+    "nous allons chez elle",
+    "je fais les courses",
+    "il fait beau",
+    "vous faites du sport"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "pouvoir-vouloir-present",
+   "level": "A2",
+   "topic": "Verbs",
+   "title": "pouvoir and vouloir — present",
+   "note": "Modal verbs followed by an infinitive; note the stem change nous/vous vs. singular.",
+   "phrases": [
+    "je peux venir",
+    "tu peux m'aider",
+    "nous pouvons attendre",
+    "ils peuvent partir",
+    "je veux un café",
+    "tu veux de l'eau",
+    "nous voulons rentrer",
+    "vous voulez dîner"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "regular-verbs-present",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "Regular -er, -ir, -re verbs",
+   "note": "Three regular conjugation groups in the present tense.",
+   "phrases": [
+    "je parle français",
+    "tu manges ici",
+    "nous habitons à Lyon",
+    "je finis tôt",
+    "tu choisis quoi",
+    "elle réussit",
+    "j'attends le bus",
+    "ils vendent du pain"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "reflexive-verbs",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "Reflexive verbs",
+   "note": "The reflexive pronoun (me/te/se/nous/vous/se) comes before the verb.",
+   "phrases": [
+    "je me lève à sept heures",
+    "tu te laves",
+    "il se couche tard",
+    "nous nous promenons",
+    "vous vous appelez comment",
+    "elles se dépêchent",
+    "je m'appelle Marie"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "passe-compose",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "Passé composé — avoir vs être",
+   "note": "Most verbs take avoir; movement and reflexive verbs take être and agree with the subject.",
+   "phrases": [
+    "j'ai mangé",
+    "tu as fini",
+    "nous avons vu un film",
+    "elles ont dit oui",
+    "je suis allé au marché",
+    "elle est partie",
+    "nous sommes arrivés",
+    "je me suis levé tôt"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "imparfait",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "Imparfait",
+   "note": "Past habits, descriptions and states; the stem comes from nous + ending -ais/-ais/-ait/-ions/-iez/-aient.",
+   "phrases": [
+    "j'étais fatigué",
+    "tu avais faim",
+    "il faisait froid",
+    "nous habitions à Nice",
+    "vous parliez fort",
+    "ils jouaient dehors"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "futur",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "Futur proche and futur simple",
+   "note": "aller + infinitive for the near future; endings -rai/-ras/-ra/-rons/-rez/-ront for the simple future.",
+   "phrases": [
+    "je vais partir",
+    "tu vas manger",
+    "il va pleuvoir",
+    "je partirai demain",
+    "tu viendras",
+    "nous serons là",
+    "elles auront le temps"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "conditionnel",
+   "level": "B1",
+   "topic": "Tenses",
+   "title": "Conditional",
+   "note": "Politeness, wishes and hypotheses; future stem plus imperfect endings.",
+   "phrases": [
+    "je voudrais un café",
+    "pourriez-vous répéter",
+    "j'aimerais voyager",
+    "il faudrait partir",
+    "nous irions volontiers",
+    "ce serait possible",
+    "à ta place, j'attendrais"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "subjonctif",
+   "level": "B1",
+   "topic": "Tenses",
+   "title": "Subjunctive triggers",
+   "note": "The subjunctive follows il faut que, vouloir que, bien que and expressions of emotion.",
+   "phrases": [
+    "il faut que je parte",
+    "il faut que tu viennes",
+    "il faut qu'elle sache",
+    "je veux que tu viennes",
+    "je suis content que vous soyez là",
+    "bien que ce soit cher",
+    "il faut que nous fassions attention"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "negation",
+   "level": "A1",
+   "topic": "Questions & negation",
+   "title": "Negation: ne…pas / jamais / rien / plus",
+   "note": "ne goes before the verb, the second word after it; ne becomes n' before a vowel.",
+   "phrases": [
+    "je ne sais pas",
+    "ce n'est pas grave",
+    "je ne mange jamais de viande",
+    "il n'y a rien",
+    "je n'ai plus faim",
+    "personne n'est venu",
+    "je n'ai pas compris"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "questions",
+   "level": "A1",
+   "topic": "Questions & negation",
+   "title": "Questions: est-ce que, inversion, interrogatives",
+   "note": "Three ways to ask: intonation, est-ce que, or inversion; plus the common question words.",
+   "phrases": [
+    "tu viens",
+    "est-ce que tu viens",
+    "où habites-tu",
+    "comment allez-vous",
+    "quand part le train",
+    "combien ça coûte",
+    "qu'est-ce que tu veux",
+    "pourquoi pas"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "pronoms-simples",
+   "level": "A2",
+   "topic": "Pronouns",
+   "title": "Object pronouns: le/la/les, y, en",
+   "note": "Pronouns go before the conjugated verb; y replaces à + place, en replaces de + noun or quantity.",
+   "phrases": [
+    "je le vois",
+    "je la connais",
+    "je les prends",
+    "j'y vais",
+    "j'en veux",
+    "j'en ai deux",
+    "il y en a beaucoup",
+    "vas-y"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "pronoms-ordre",
+   "level": "B1",
+   "topic": "Pronouns",
+   "title": "Pronoun order: me/te + le, le + lui, y + en",
+   "note": "Order before the verb: me/te/nous/vous, then le/la/les, then lui/leur, then y, then en.",
+   "phrases": [
+    "je le lui donne",
+    "je la leur montre",
+    "il me le dit",
+    "ne me le dis pas",
+    "je vous en parle",
+    "donne-le-moi",
+    "je lui en ai parlé"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "accord",
+   "level": "A1",
+   "topic": "Agreement",
+   "title": "Gender, number and possessives",
+   "note": "Articles, adjectives and possessives agree with the noun; mon/ton/son is used before a vowel sound.",
+   "phrases": [
+    "un petit garçon",
+    "une petite fille",
+    "le grand arbre",
+    "la grande maison",
+    "un bon ami",
+    "mon amie",
+    "ma sœur",
+    "nos parents"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "partitif",
+   "level": "A1",
+   "topic": "Agreement",
+   "title": "Partitive articles: du, de la, de l', des",
+   "note": "Use du/de la/de l' for an unspecified amount; after a negation or quantity use de/d'.",
+   "phrases": [
+    "du pain",
+    "de la soupe",
+    "de l'eau",
+    "des légumes",
+    "je ne veux pas de lait",
+    "un peu de sucre",
+    "beaucoup de monde"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "prepositions",
+   "level": "A1",
+   "topic": "Prepositions",
+   "title": "à and de, contractions au/du/aux/des",
+   "note": "à + le = au, à + les = aux, de + le = du, de + les = des; countries use en.",
+   "phrases": [
+    "au marché",
+    "à la gare",
+    "aux États-Unis",
+    "du bureau",
+    "de la ville",
+    "des voisins",
+    "en France",
+    "à Paris"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "nombres-heure",
+   "level": "A1",
+   "topic": "Numbers & time",
+   "title": "Numbers, time and dates",
+   "note": "Tricky number systems (70, 80, 90) and telling the time with 'et quart / moins le quart'.",
+   "phrases": [
+    "vingt et un",
+    "soixante-dix",
+    "quatre-vingts",
+    "quatre-vingt-dix-neuf",
+    "il est huit heures",
+    "trois heures et quart",
+    "quatre heures moins le quart",
+    "le quinze mai"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "liaison-elision",
+   "level": "A1",
+   "topic": "Pronunciation",
+   "title": "Liaison and elision",
+   "note": "A silent final consonant is linked to a following vowel; je/le/que drop their vowel before a vowel sound.",
+   "phrases": [
+    "les amis",
+    "vous avez",
+    "deux heures",
+    "l'homme",
+    "j'habite ici",
+    "s'il vous plaît",
+    "qu'est-ce qu'il y a"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "imperatif",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "Imperative",
+   "note": "Commands and requests; tu/nous/vous forms, -er verbs lose the s in tu form, negative wraps ne…pas around the verb.",
+   "phrases": [
+    "parle plus lentement",
+    "viens ici",
+    "attends un moment",
+    "prenez place",
+    "ne partez pas",
+    "allons-y",
+    "sois gentil",
+    "n'aie pas peur"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "comparatifs",
+   "level": "A2",
+   "topic": "Agreement",
+   "title": "Comparatives and superlatives",
+   "note": "plus/moins/aussi + adjective + que; bon becomes meilleur, bien becomes mieux.",
+   "phrases": [
+    "plus grand que moi",
+    "moins cher que ça",
+    "aussi gentil que toi",
+    "meilleur que hier",
+    "mieux que moi",
+    "autant que toi",
+    "le plus rapide"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  },
+  {
+   "id": "relatifs",
+   "level": "A2",
+   "topic": "Pronouns",
+   "title": "Relative pronouns: qui, que, où",
+   "note": "qui replaces the subject, que the direct object, où a place or time.",
+   "phrases": [
+    "l'homme qui parle",
+    "un ami qui habite ici",
+    "le livre que je lis",
+    "le film que tu aimes",
+    "la femme que je connais",
+    "la ville où j'habite",
+    "le jour où je suis né"
+   ],
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+  }
+ ],
+ "es": [
+  {
+   "id": "ser-estar",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "ser vs estar",
+   "note": "ser for identity and traits, estar for location and states; the pairs es/está change meaning.",
+   "phrases": [
+    "soy alto",
+    "estoy cansado",
+    "es de Chile",
+    "está en Chile",
+    "es aburrido",
+    "está aburrido",
+    "somos amigos",
+    "estamos listos"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "ser-present",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "ser — present",
+   "note": "Full paradigm of ser: identity, origin, profession.",
+   "phrases": [
+    "yo soy médico",
+    "tú eres amable",
+    "él es mi hermano",
+    "ella es de Lima",
+    "nosotros somos de aquí",
+    "vosotros sois jóvenes",
+    "ellos son profesores"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "tener-present",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "tener — present",
+   "note": "Stem change e to ie, irregular yo form; many idioms use tener (hambre, razón, prisa).",
+   "phrases": [
+    "tengo hambre",
+    "tienes razón",
+    "él tiene un perro",
+    "tenemos tiempo",
+    "tenéis suerte",
+    "ellos tienen prisa"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "ir-hacer-present",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "ir and hacer — present",
+   "note": "Two core irregular verbs; hacer has an irregular yo form (hago).",
+   "phrases": [
+    "voy al trabajo",
+    "vas a casa",
+    "ella va al mercado",
+    "vamos a pie",
+    "hago la cena",
+    "haces ejercicio",
+    "hace frío"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "poder-querer-present",
+   "level": "A2",
+   "topic": "Verbs",
+   "title": "poder and querer — present",
+   "note": "Stem-changing verbs (o to ue, e to ie) followed by an infinitive.",
+   "phrases": [
+    "puedo ayudarte",
+    "puedes venir",
+    "ellos pueden esperar",
+    "quiero un café",
+    "quieres agua",
+    "queremos ir",
+    "quieren comer"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "regular-verbs",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "Regular -ar, -er, -ir verbs",
+   "note": "Three conjugation groups; the subject pronoun is usually dropped.",
+   "phrases": [
+    "hablo español",
+    "tú comes aquí",
+    "vive en Madrid",
+    "trabajamos hoy",
+    "bebemos agua",
+    "escriben cartas",
+    "abro la puerta"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "reflexive",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "Reflexive verbs",
+   "note": "The pronoun me/te/se/nos/os/se comes before the verb and matches the subject.",
+   "phrases": [
+    "me levanto temprano",
+    "te lavas las manos",
+    "se acuesta tarde",
+    "nos vamos ya",
+    "os divertís mucho",
+    "se llaman Juan y Ana",
+    "me llamo Ana"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "perfecto-indefinido",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "Pretérito perfecto vs indefinido",
+   "note": "haber + participle for recent or connected past; indefinido for finished moments in the past.",
+   "phrases": [
+    "he comido",
+    "has visto",
+    "ella ha llegado",
+    "hemos terminado",
+    "ayer comí tarde",
+    "anoche salí",
+    "ella llegó temprano"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "imperfecto",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "Imperfecto",
+   "note": "Past habits and descriptions; only ser, ir and ver are irregular.",
+   "phrases": [
+    "era pequeño",
+    "tenía hambre",
+    "vivíamos en Cali",
+    "hacía frío",
+    "hablabas mucho",
+    "íbamos a la playa"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "futuro",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "ir a + infinitive and futuro simple",
+   "note": "ir a + infinitive for plans; the simple future adds endings to the infinitive (some irregular stems).",
+   "phrases": [
+    "voy a salir",
+    "vas a comer",
+    "va a llover",
+    "saldré mañana",
+    "tendrás tiempo",
+    "será fácil",
+    "vendremos pronto"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "condicional",
+   "level": "B1",
+   "topic": "Tenses",
+   "title": "Conditional",
+   "note": "Politeness, wishes and hypotheses; infinitive plus -ía endings.",
+   "phrases": [
+    "me gustaría un café",
+    "podrías repetir",
+    "querría reservar",
+    "sería posible",
+    "yo iría contigo",
+    "tendríamos que irnos"
+   ],
+   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm"
+  },
+  {
+   "id": "subjuntivo",
+   "level": "B1",
+   "topic": "Tenses",
+   "title": "Subjunctive triggers",
+   "note": "Subjunctive after querer que, esperar que, ojalá, es posible que, and in cuando clauses about the future.",
+   "phrases": [
+    "quiero que vengas",
+    "espero que estés bien",
+    "es posible que llueva",
+    "ojalá que puedas",
+    "necesito que me ayudes",
+    "cuando llegues, llámame",
+    "dudo que sea verdad"
+   ],
+   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm"
+  },
+  {
+   "id": "negacion",
+   "level": "A1",
+   "topic": "Questions & negation",
+   "title": "Negation: no, nunca, nada, nadie",
+   "note": "No goes before the verb; negative words after the verb require no as well.",
+   "phrases": [
+    "no sé",
+    "no tengo nada",
+    "nunca como carne",
+    "no viene nadie",
+    "no entiendo nada",
+    "tampoco quiero",
+    "no he visto a nadie"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "preguntas",
+   "level": "A1",
+   "topic": "Questions & negation",
+   "title": "Question words",
+   "note": "Written accents on interrogatives; inverted question mark at the start.",
+   "phrases": [
+    "¿cómo te llamas?",
+    "¿dónde vives?",
+    "¿qué quieres?",
+    "¿cuánto cuesta?",
+    "¿cuándo sales?",
+    "¿quién es?",
+    "¿por qué no?",
+    "¿cuál prefieres?"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "pronombres-objeto",
+   "level": "A2",
+   "topic": "Pronouns",
+   "title": "Direct and indirect object pronouns",
+   "note": "lo/la/los/las for direct, le/les for indirect; placed before the conjugated verb.",
+   "phrases": [
+    "lo veo",
+    "la conozco",
+    "los tomo",
+    "te quiero",
+    "me ayudas",
+    "le hablo",
+    "les escribo",
+    "nos esperan"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "pronombres-orden",
+   "level": "B1",
+   "topic": "Pronouns",
+   "title": "Pronoun order: se lo, me lo",
+   "note": "Indirect before direct; le/les becomes se before lo/la/los/las.",
+   "phrases": [
+    "se lo doy",
+    "se lo dije",
+    "te lo explico",
+    "me lo dices",
+    "se la mostré",
+    "no me lo digas",
+    "se lo voy a decir",
+    "dámelo"
+   ],
+   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm"
+  },
+  {
+   "id": "concordancia",
+   "level": "A1",
+   "topic": "Agreement",
+   "title": "Gender, number and possessives",
+   "note": "Articles and adjectives agree in gender and number; buen shortens before a masculine singular noun.",
+   "phrases": [
+    "el niño pequeño",
+    "la niña pequeña",
+    "los coches rojos",
+    "las casas grandes",
+    "un buen amigo",
+    "una buena amiga",
+    "mi hermano",
+    "nuestra casa"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "por-para",
+   "level": "A2",
+   "topic": "Prepositions",
+   "title": "por vs para",
+   "note": "por for cause, route and time of day; para for purpose, destination and recipient.",
+   "phrases": [
+    "por la mañana",
+    "por favor",
+    "gracias por todo",
+    "lo hice por ti",
+    "para ti",
+    "para mañana",
+    "voy para casa",
+    "trabajo para una empresa"
+   ],
+   "source": "https://www.spanishdict.com/guide/quick-tips-for-understanding-por-and-para"
+  },
+  {
+   "id": "numeros-hora",
+   "level": "A1",
+   "topic": "Numbers & time",
+   "title": "Numbers, time and dates",
+   "note": "Telling time uses es la una / son las; dates use el + number + de + month.",
+   "phrases": [
+    "son las ocho",
+    "es la una",
+    "las tres y media",
+    "las cinco menos cuarto",
+    "el quince de mayo",
+    "treinta y uno",
+    "cien",
+    "mil quinientos"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "acento-tilde",
+   "level": "A1",
+   "topic": "Pronunciation",
+   "title": "Stress shifts and tilde pairs",
+   "note": "Stress or a written accent changes meaning: papá/papa, hablo/habló, tú/tu, él/el, té/te, sé/se.",
+   "phrases": [
+    "mi papá come papas",
+    "hablo con ella",
+    "habló con ella",
+    "tú tienes tu libro",
+    "él compra el pan",
+    "quiero un té",
+    "te quiero mucho",
+    "yo sé que se fue"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "gustar",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "gustar and similar verbs",
+   "note": "The verb agrees with the thing liked, not the person: me gusta el café, me gustan los libros.",
+   "phrases": [
+    "me gusta el café",
+    "te gusta bailar",
+    "le gusta la playa",
+    "nos gustan los libros",
+    "les gustan los perros",
+    "me encanta cocinar",
+    "a mí también me gusta"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "imperativo",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "Imperative (tú)",
+   "note": "Affirmative tú commands; irregular: ven, di, haz, sal, pon; pronouns attach to the end.",
+   "phrases": [
+    "habla más despacio",
+    "come algo",
+    "abre la ventana",
+    "ven aquí",
+    "dime la verdad",
+    "espera un momento",
+    "pasa, por favor"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  },
+  {
+   "id": "comparativos",
+   "level": "A2",
+   "topic": "Agreement",
+   "title": "Comparatives and superlatives",
+   "note": "más/menos…que, tan…como, tanto…como; irregular mejor and peor.",
+   "phrases": [
+    "más alto que yo",
+    "menos caro que ese",
+    "tan simpático como tú",
+    "tanto tiempo como tú",
+    "mejor que ayer",
+    "peor que antes",
+    "el más barato"
+   ],
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+  }
+ ]
+}

@@ -12,7 +12,7 @@ struct SimpleTrainingView: View {
     var body: some View {
         AppPageLayout {
             HStack {
-                AppPageHeading(title: "Record", subtitle: "Read a short sentence aloud, then mouth it silently. About ten minutes a session.")
+                AppPageHeading(title: "Reading", subtitle: "Read a short sentence aloud, then mouth it silently. About ten minutes a session.")
                 Spacer()
                 Button("Share recordings…") { model.showContribute = true }.disabled(workflow.isBusy)
             }

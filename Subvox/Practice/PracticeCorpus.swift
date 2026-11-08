@@ -17,24 +17,53 @@ enum TrainMode: String, CaseIterable, Identifiable {
     var shortcut: Character { Character(String((TrainMode.allCases.firstIndex(of: self) ?? 0) + 1)) }
 }
 
-enum PracticeLanguage: String, CaseIterable, Identifiable, Codable {
-    case en, fr, es, zh
+/// The practice language, chosen once for the whole app from the toolbar. Simplified and
+/// Traditional Chinese share one corpus language ("zh") but show different characters.
+enum AppLanguage: String, CaseIterable, Identifiable, Codable {
+    case en, fr, es, zhHans = "zh-Hans", zhHant = "zh-Hant"
     var id: String { rawValue }
     var name: String {
-        switch self { case .en: "English"; case .fr: "Français"; case .es: "Español"; case .zh: "中文" }
+        switch self { case .en: "English"; case .fr: "Français"; case .es: "Español"; case .zhHans: "简体中文"; case .zhHant: "繁體中文" }
     }
+    var short: String {
+        switch self { case .en: "EN"; case .fr: "FR"; case .es: "ES"; case .zhHans: "简"; case .zhHant: "繁" }
+    }
+    /// The language of the corpus entries and of Whisper.
+    var corpus: String { rawValue.hasPrefix("zh") ? "zh" : rawValue }
+    var isChinese: Bool { corpus == "zh" }
+    /// The tag stored on prompts and takes (BCP-47; the script subtag keeps Traditional takes apart).
+    var tag: String { rawValue }
 }
 
 /// Corpus/practice/practice-v1.json, built by Tools/corpus/practice.py with IPA from ml/subvox_ml/ipa.py.
 struct PracticeCorpus: Decodable {
-    struct Line: Decodable, Hashable { var text: String; var ipa: [String]; var pinyin: String? }
-    struct Piece: Decodable, Identifiable, Hashable {
-        var id: String; var language: PracticeLanguage; var kind: String; var title: String; var author: String; var year: Int; var lines: [Line]
+    struct Line: Decodable, Hashable {
+        var text: String
+        var ipa: [String]
+        var pinyin: String? = nil
+        var hant: String? = nil
+        func text(_ language: AppLanguage) -> String { language == .zhHant ? (hant ?? text) : text }
     }
-    struct Drill: Decodable, Identifiable, Hashable { var id: String; var language: PracticeLanguage; var title: String; var phrases: [Line] }
+    struct Piece: Decodable, Identifiable, Hashable {
+        var id: String; var language: String; var kind: String
+        var title: String; var titleHant: String?; var author: String; var authorHant: String?
+        var year: Int; var date: String?; var lines: [Line]
+        enum CodingKeys: String, CodingKey {
+            case id, language, kind, title, author, year, date, lines
+            case titleHant = "title_hant", authorHant = "author_hant"
+        }
+        func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
+        func author(_ language: AppLanguage) -> String { language == .zhHant ? (authorHant ?? author) : author }
+        /// "Speech · 19 November 1863" or "Poem · 1609".
+        var when: String { "\(kind.capitalized) · \(date ?? String(year))" }
+    }
+    struct Drill: Decodable, Identifiable, Hashable {
+        var id: String; var language: String; var title: String; var phrases: [Line]
+        var level: String? = nil; var topic: String? = nil; var note: String? = nil
+    }
     struct MinimalPairs: Decodable, Identifiable, Hashable {
-        var language: PracticeLanguage; var contrast: String; var sets: [[Line]]
-        var id: String { language.rawValue + ":" + contrast }
+        var language: String; var contrast: String; var sets: [[Line]]
+        var id: String { language + ":" + contrast }
     }
     var version: Int
     var pieces: [Piece]
@@ -67,6 +96,18 @@ extension PracticeCorpus {
     init(root: URL = SentenceStore.directory.appending(path: "Practice")) {
         self.root = root
         runtime = SequenceRuntime(root: SentenceStore.directory.appending(path: "SequenceLearning"))
+    }
+
+    /// IPA per word for any text (Free Practice), from the same converter the trainer uses.
+    func phones(text: String, language: String) async -> [String]? {
+        try? FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        let output = root.appending(path: "phones-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: output) }
+        struct Result: Decodable { var words: [[String]] }
+        do {
+            try await runtime.run(["phones", "--text", text, "--language", language, "--output", output.path])
+            return try JSONDecoder().decode(Result.self, from: Data(contentsOf: output)).words.map { $0.joined() }
+        } catch { return nil }
     }
 
     func check(text: String, language: String, heard: String) async -> PhoneCheckResult? {

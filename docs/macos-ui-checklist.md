@@ -5,15 +5,17 @@ Researched 7 Nov 2026, mainly from the Apple Human Interface Guidelines: [sideba
 ## Navigation
 - [x] List the five practice modes in the sidebar under a **Train** section, above Try model and Devices. The HIG allows either a sidebar or a tab view for closely related modes; the sidebar keeps all five visible, and on macOS 15 and later a tab view's tabs move into the toolbar, where a narrow window hides them.
 - [x] Don't use a segmented control as the main mode switcher. Keep it for switching within a page, such as Record / Review / Progress or a language picker.
+- [x] Choose the practice language once for the whole app from a globe menu at the top right of the toolbar, with Simplified and Traditional Chinese as separate options.
+- [x] Show each page's name once, as its large heading; the toolbar title is hidden on macOS 15 and later.
 - [x] Give the modes short title-case noun labels and SF Symbols: Reading, Speech & Poetry, Language, Minimal Pairs, Free Practice.
 - [x] Add a menu command for every toolbar or sidebar action. Switch modes with ⌘1 to ⌘5 from a **Practice** menu.
 - [ ] Don't tint toolbars or add custom backgrounds, because they fight the system materials. (The existing toolbar already follows this.)
 
 ## The practice loop
 - [x] Use the same loop in every mode: show the text, speak it, mouth it, get feedback, move on. Only the content and the scoring change. *(judgement)*
-- [x] Keep rounds short and fixed, about 5 to 10 items, with visible progress ("3 of 8") and a summary at the end.
+- [x] Keep rounds short and fixed, about 5 to 10 items, with visible progress ("3 of 8"). The round summary appears at the top of the page afterwards, with Practise Again and Done.
 - [x] Give feedback right after processing. Show the target beside what was heard, per word and per sound (expected and produced IPA), not just pass or fail.
-- [x] Make retrying cheap: Redo during a take, plus Retry and Next afterwards.
+- [x] Make retrying cheap: Redo during a take, plus Practise Again afterwards.
 - [ ] Add side-by-side playback of the user's take and the reference audio. Not built yet: there is no native reference audio, so this needs TTS or recordings first.
 - [x] Use no streaks. Show progress as items and sounds practised.
 
@@ -28,6 +30,6 @@ Researched 7 Nov 2026, mainly from the Apple Human Interface Guidelines: [sideba
 - [x] Never show right or wrong with colour alone. Pair a symbol (checkmark, xmark, triangle) and text with any colour, and respect Differentiate Without Colour.
 - [x] Use system colours and semantic fonts so Increase Contrast and larger text work. Show the practice text at `.title2` or larger.
 - [x] Respect Reduce Motion. The word highlight changes instantly instead of animating when it is on.
-- [x] Make everything work with Full Keyboard Access using standard controls. The core loop has shortcuts: Return for Done, ⌘R for Redo, and ⌘1 to ⌘5 for the modes.
+- [x] Make everything work with Full Keyboard Access using standard controls. The recording loop has shortcuts: Space or → to start, finish or go to the next take, ← to redo, and ⌘1 to ⌘5 for the modes.
 - [x] Use inline feedback, not alerts, for a bad take or a low score.
 - [x] Keep hit targets at 28 × 28 pt (the default control size) or larger.

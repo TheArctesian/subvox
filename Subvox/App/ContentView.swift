@@ -36,18 +36,49 @@ struct ContentView: View {
             ToolbarItem(placement: .status) {
                 MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate, text: model.motion.statusText)
             }
+            ToolbarItem(placement: .primaryAction) { LanguageMenu() }
         }
+        // Each page carries its own large heading, so the window title would only repeat it.
         .navigationTitle(model.screen == .train ? model.trainMode.rawValue : model.screen.rawValue)
+        .modifier(HiddenWindowTitle())
     }
 
     private var selection: Binding<SidebarItem?> {
         Binding(get: { model.screen == .train ? .train(model.trainMode) : .screen(model.screen) },
                 set: { item in
                     switch item {
-                    case .train(let mode)?: model.trainMode = mode; model.screen = .train
+                    case .train(let mode)?:
+                        if mode != model.trainMode { model.closeOverlays() }
+                        model.trainMode = mode; model.screen = .train
                     case .screen(let screen)?: model.screen = screen
                     case nil: break
                     }
                 })
+    }
+}
+
+/// The app-wide practice language, top right of the window.
+struct LanguageMenu: View {
+    @Environment(AppModel.self) private var model
+    var body: some View {
+        @Bindable var model = model
+        Menu {
+            Picker("Practice language", selection: $model.language) {
+                ForEach(AppLanguage.allCases) { Text($0.name).tag($0) }
+            }.pickerStyle(.inline)
+        } label: {
+            Label(model.language.short, systemImage: "globe")
+                .labelStyle(.titleAndIcon)
+        }
+        .help("Practice language: \(model.language.name)")
+        .accessibilityLabel("Practice language, \(model.language.name)")
+    }
+}
+
+/// Each page has a large heading, so the toolbar title would only repeat it (macOS 15+; the
+/// window keeps its title for the Window menu and Mission Control).
+private struct HiddenWindowTitle: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 15.0, *) { content.toolbar(removing: .title) } else { content }
     }
 }

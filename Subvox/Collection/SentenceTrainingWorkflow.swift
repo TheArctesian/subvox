@@ -111,6 +111,8 @@ final class SentenceTrainingWorkflow {
     /// Free practice trains only when Whisper agrees with this share of the typed words.
     static let freeTextAgreement = 0.85
 
+    func clearPracticeResults() { lastPracticePairIDs = [] }
+
     func setPhoneCheck(_ result: PhoneCheckResult?, for id: UUID) {
         guard let i = data.pairs.firstIndex(where: { $0.id == id }) else { return }
         data.pairs[i].phoneCheck = result
@@ -537,7 +539,7 @@ final class SentenceTrainingWorkflow {
             let range = (spoken.cueStart - start - offset)...(spoken.cueEnd - start - offset)
             processingText = "Checking the spoken sentence locally…"
             let transcript = try await whisper.transcribe(audioURL: URL(fileURLWithPath: directory).appending(path: "audio.caf"),
-                outputDirectory: URL(fileURLWithPath: directory), timeRange: range, language: pair.language ?? "en")
+                outputDirectory: URL(fileURLWithPath: directory), timeRange: range, language: String((pair.language ?? "en").prefix(2)))
             pair.transcript = transcript
             let expected = Lexicon.words(in: pair.text)
             // Text agreement and usable timing coverage are different checks. Untimed ASR

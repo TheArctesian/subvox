@@ -32,6 +32,9 @@ struct RecordingCueStatus: View {
 /// A bounded content region keeps page titles and the live signal visible at
 /// the minimum window size, even for intrinsically tall empty states or forms.
 struct AppPageLayout<Header: View, Content: View>: View {
+    /// Practice pages leave the live plot out: the toolbar badge already shows the AirPods state,
+    /// and the room goes to the text being practised.
+    var showsMotion = true
     @ViewBuilder var header: () -> Header
     @ViewBuilder var content: () -> Content
     var body: some View {
@@ -39,9 +42,11 @@ struct AppPageLayout<Header: View, Content: View>: View {
             VStack(spacing: 0) {
                 header().padding(.horizontal, 24).frame(height: 108)
                 Divider()
-                content().frame(width: geometry.size.width, height: max(1, geometry.size.height - 286)).clipped()
-                Divider()
-                LiveMotionPanel(plotHeight: 56).padding(.horizontal, 16).frame(height: 176).clipped()
+                content().frame(width: geometry.size.width, height: max(1, geometry.size.height - (showsMotion ? 286 : 109))).clipped()
+                if showsMotion {
+                    Divider()
+                    LiveMotionPanel(plotHeight: 56).padding(.horizontal, 16).frame(height: 176).clipped()
+                }
             }
             .frame(width: geometry.size.width, height: geometry.size.height, alignment: .top).clipped()
         }

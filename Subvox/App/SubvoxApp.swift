@@ -18,7 +18,7 @@ struct SubvoxApp: App {
         .commands {
             CommandMenu("Practice") {
                 ForEach(TrainMode.allCases) { mode in
-                    Button(mode.rawValue) { model.screen = .train; model.trainMode = mode }
+                    Button(mode.rawValue) { if mode != model.trainMode { model.closeOverlays() }; model.screen = .train; model.trainMode = mode }
                         .keyboardShortcut(KeyEquivalent(mode.shortcut), modifiers: .command)
                 }
             }

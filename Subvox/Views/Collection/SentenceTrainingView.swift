@@ -27,7 +27,7 @@ struct SentenceTrainingView: View {
         let workflow = model.sentenceTraining
         AppPageLayout {
             HStack(alignment: .center) {
-                AppPageHeading(title: "Training", subtitle: "Speak, then mouth. Record at your own pace.")
+                AppPageHeading(title: "Reading", subtitle: "Speak, then mouth. Record at your own pace.")
                 Spacer()
                 if !workflow.isBusy {
                     Button("Simple view") { model.researchTools = false }
@@ -82,7 +82,7 @@ struct SentenceTrainingView: View {
                         }
                     }.frame(maxWidth: 1000, alignment: .leading)
                         .padding(24).frame(maxWidth: .infinity)
-                }
+                }.clipped()
               }
             }
         }

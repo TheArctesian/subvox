@@ -46,6 +46,10 @@ class Mandarin(unittest.TestCase):
         self.assertEqual([s["tone"] for s in syllables], [3, 3])
         self.assertEqual(ipa.strip_tones(["ni3", "hao3"]), ["ni", "hao"])
 
+    def test_traditional_characters_read_the_same(self):
+        self.assertEqual([s["pinyin"] for s in ipa.mandarin_syllables("舉頭望明月")], ["ju3", "tou2", "wang4", "ming2", "yue4"])
+        self.assertEqual([s["pinyin"] for s in ipa.mandarin_syllables("銀行")], ["yin2", "hang2"])
+
     def test_tone_restoration_uses_phrase_context(self):
         # Citation tones (no third-tone sandhi), as in the labels. Homophones such as yinhang
         # (银行 / 引航) are ambiguous without characters; the dictionary placeholder can't settle those.
@@ -68,6 +72,7 @@ class SharedSet(unittest.TestCase):
 
     def test_language_tags(self):
         self.assertEqual(ipa.validate_language_tag("fr-CA"), "fr")
+        self.assertEqual(ipa.validate_language_tag("zh-Hant"), "zh")
         with self.assertRaises(ValueError):
             ipa.validate_language_tag("de")
 

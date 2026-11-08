@@ -11,14 +11,19 @@ final class PracticeTests: XCTestCase {
 
     func testBundledPracticeCorpusCoversEveryLanguageAndTab() {
         let corpus = PracticeCorpus.bundled
-        for language in PracticeLanguage.allCases {
-            XCTAssertFalse(corpus.pieces.filter { $0.language == language }.isEmpty, "speech/poetry in \(language)")
-            XCTAssertFalse(corpus.drills.filter { $0.language == language }.isEmpty, "drills in \(language)")
-            XCTAssertFalse(corpus.minimalPairs.filter { $0.language == language }.isEmpty, "minimal pairs in \(language)")
+        for language in AppLanguage.allCases {
+            XCTAssertFalse(corpus.pieces.filter { $0.language == language.corpus }.isEmpty, "speech/poetry in \(language)")
+            XCTAssertFalse(corpus.drills.filter { $0.language == language.corpus }.isEmpty, "drills in \(language)")
+            XCTAssertFalse(corpus.minimalPairs.filter { $0.language == language.corpus }.isEmpty, "minimal pairs in \(language)")
         }
+        let poem = corpus.pieces.first { $0.id == "jing-ye-si" }
+        XCTAssertEqual(poem?.lines[2].text(.zhHant), "舉頭望明月，")
+        XCTAssertEqual(poem?.lines[2].text(.zhHans), "举头望明月，")
         XCTAssertFalse(corpus.pieces.contains { $0.author.contains("Churchill") || $0.author.contains("King") })
-        let etre = corpus.drills.first { $0.id == "etre" }
-        XCTAssertEqual(etre?.phrases.first?.ipa, ["ʒ ə", "s ɥ i"])
+        let etre = corpus.drills.first { $0.id == "fr-etre-present" }
+        XCTAssertEqual(etre?.phrases.first?.ipa, ["ʒə", "sɥi", "fʁɑ̃sɛ"])
+        XCTAssertTrue(corpus.drills.filter { $0.language == "zh" }.allSatisfy { d in d.phrases.allSatisfy { $0.hant != nil && $0.pinyin != nil } })
+        XCTAssertGreaterThan(corpus.drills.count, 100)
     }
 
     func testPracticePromptsAreTrainingDataAndKeepTheirLanguage() {
@@ -32,8 +37,8 @@ final class PracticeTests: XCTestCase {
 
     func testFreeTextSplitsIntoSentencesAndRoundsUseWholeSets() {
         XCTAssertEqual(FreePracticeView.sentences("Hello there. How are you?\nFine!"), ["Hello there.", "How are you?", "Fine!"])
-        let pairs = PracticeCorpus.MinimalPairs(language: .fr, contrast: "y u", sets: [
-            [.init(text: "rue", ipa: ["ʁ y"]), .init(text: "roue", ipa: ["ʁ u"])],
+        let pairs = PracticeCorpus.MinimalPairs(language: "fr", contrast: "y u", sets: [
+            [.init(text: "rue", ipa: ["ʁy"]), .init(text: "roue", ipa: ["ʁu"])],
             [.init(text: "tu", ipa: ["t y"]), .init(text: "tout", ipa: ["t u"])],
             [.init(text: "vu", ipa: ["v y"]), .init(text: "vous", ipa: ["v u"])]])
         var generator = SystemRandomNumberGenerator()

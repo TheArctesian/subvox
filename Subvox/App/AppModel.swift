@@ -40,8 +40,17 @@ final class AppModel {
     let uploader = CommunityUploader()
     var showContribute = false
     var trainMode: TrainMode = .reading
+    /// The practice language for every mode, chosen from the toolbar.
+    var language = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "ui.language") ?? "") ?? .en {
+        didSet { UserDefaults.standard.set(language.rawValue, forKey: "ui.language") }
+    }
+    /// Leaves any Reading-only full-page view (sharing, research tools) when switching mode.
+    func closeOverlays() {
+        showContribute = false; showObservability = false; showNonSpeechCollection = false
+        showSequenceLearning = false; showRepresentation = false; showSignalCheck = false
+    }
     let practice = PracticeCorpus.bundled
-    @ObservationIgnored private lazy var practiceChecker = PracticeChecker()
+    @ObservationIgnored lazy var practiceChecker = PracticeChecker()
     @ObservationIgnored let referenceSpeaker = ReferenceSpeaker()
     /// Off for new installs: the Train page shows one recording path. Research tools (sentence
     /// banks, neural training, signal checks, Try model) appear when this is on.

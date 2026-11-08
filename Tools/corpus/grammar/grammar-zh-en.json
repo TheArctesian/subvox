@@ -1,0 +1,2614 @@
+{
+ "zh": [
+  {
+   "id": "shi-basic",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "是 — A is B",
+   "note": "是 links two nouns (A = B); negate with 不是, no 'to be' with adjectives.",
+   "phrases": [
+    {
+     "hans": "我是学生",
+     "hant": "我是學生"
+    },
+    {
+     "hans": "他是老师",
+     "hant": "他是老師"
+    },
+    {
+     "hans": "我是中国人",
+     "hant": "我是中國人"
+    },
+    {
+     "hans": "她不是医生",
+     "hant": "她不是醫生"
+    },
+    {
+     "hans": "这是茶",
+     "hant": "這是茶"
+    },
+    {
+     "hans": "你是美国人吗",
+     "hant": "你是美國人嗎"
+    },
+    {
+     "hans": "他们是朋友",
+     "hant": "他們是朋友"
+    },
+    {
+     "hans": "那是我的书",
+     "hant": "那是我的書"
+    }
+   ]
+  },
+  {
+   "id": "you-meiyou",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "有 / 没有 — have, there is",
+   "note": "有 = have / there is; negate only with 没有 (never 不有).",
+   "phrases": [
+    {
+     "hans": "我有一个哥哥",
+     "hant": "我有一個哥哥"
+    },
+    {
+     "hans": "我没有姐姐",
+     "hant": "我沒有姐姐"
+    },
+    {
+     "hans": "你有手机吗",
+     "hant": "你有手機嗎"
+    },
+    {
+     "hans": "他有时间",
+     "hant": "他有時間"
+    },
+    {
+     "hans": "我没有钱",
+     "hant": "我沒有錢"
+    },
+    {
+     "hans": "桌子上有一本书",
+     "hant": "桌子上有一本書"
+    },
+    {
+     "hans": "这里没有人",
+     "hant": "這裡沒有人"
+    },
+    {
+     "hans": "我家有三个人",
+     "hant": "我家有三個人"
+    }
+   ]
+  },
+  {
+   "id": "pronouns-men",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "Pronouns and plural 们",
+   "note": "Add 们 to 我/你/他/她 to make plurals.",
+   "phrases": [
+    {
+     "hans": "我们",
+     "hant": "我們"
+    },
+    {
+     "hans": "你们",
+     "hant": "你們"
+    },
+    {
+     "hans": "他们",
+     "hant": "他們"
+    },
+    {
+     "hans": "她们",
+     "hant": "她們"
+    },
+    {
+     "hans": "我们是同学",
+     "hant": "我們是同學"
+    },
+    {
+     "hans": "你们是老师吗",
+     "hant": "你們是老師嗎"
+    }
+   ]
+  },
+  {
+   "id": "zai-location",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "在 — be located",
+   "note": "在 + place says where something or someone is.",
+   "phrases": [
+    {
+     "hans": "我在家",
+     "hant": "我在家"
+    },
+    {
+     "hans": "他在学校",
+     "hant": "他在學校"
+    },
+    {
+     "hans": "书在桌子上",
+     "hant": "書在桌子上"
+    },
+    {
+     "hans": "你在哪儿",
+     "hant": "你在哪兒"
+    },
+    {
+     "hans": "她不在这儿",
+     "hant": "她不在這兒"
+    },
+    {
+     "hans": "手机在包里",
+     "hant": "手機在包裡"
+    },
+    {
+     "hans": "洗手间在那边",
+     "hant": "洗手間在那邊"
+    },
+    {
+     "hans": "我在公司",
+     "hant": "我在公司"
+    }
+   ]
+  },
+  {
+   "id": "hen-adjective",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "Adjectives with 很",
+   "note": "Adjectives act as verbs; 很 is a light link, not 'very', in plain statements.",
+   "phrases": [
+    {
+     "hans": "我很忙",
+     "hant": "我很忙"
+    },
+    {
+     "hans": "她很高",
+     "hant": "她很高"
+    },
+    {
+     "hans": "天气很好",
+     "hant": "天氣很好"
+    },
+    {
+     "hans": "这个很贵",
+     "hant": "這個很貴"
+    },
+    {
+     "hans": "我不忙",
+     "hant": "我不忙"
+    },
+    {
+     "hans": "他不太高",
+     "hant": "他不太高"
+    },
+    {
+     "hans": "菜很好吃",
+     "hant": "菜很好吃"
+    },
+    {
+     "hans": "我很高兴",
+     "hant": "我很高興"
+    }
+   ]
+  },
+  {
+   "id": "want-like",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "想 / 要 / 喜欢 + verb",
+   "note": "想 want to, 要 want / will, 喜欢 like to; verb follows directly.",
+   "phrases": [
+    {
+     "hans": "我想喝茶",
+     "hant": "我想喝茶"
+    },
+    {
+     "hans": "我想去北京",
+     "hant": "我想去北京"
+    },
+    {
+     "hans": "我想买衣服",
+     "hant": "我想買衣服"
+    },
+    {
+     "hans": "我要一杯咖啡",
+     "hant": "我要一杯咖啡"
+    },
+    {
+     "hans": "你想吃什么",
+     "hant": "你想吃什麼"
+    },
+    {
+     "hans": "我喜欢看书",
+     "hant": "我喜歡看書"
+    },
+    {
+     "hans": "他喜欢听音乐",
+     "hant": "他喜歡聽音樂"
+    },
+    {
+     "hans": "我不想去",
+     "hant": "我不想去"
+    }
+   ]
+  },
+  {
+   "id": "demonstratives",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "这 / 那 / 哪 — this, that, which",
+   "note": "Demonstrative + measure word + noun.",
+   "phrases": [
+    {
+     "hans": "这个",
+     "hant": "這個"
+    },
+    {
+     "hans": "那个",
+     "hant": "那個"
+    },
+    {
+     "hans": "哪个",
+     "hant": "哪個"
+    },
+    {
+     "hans": "这本书",
+     "hant": "這本書"
+    },
+    {
+     "hans": "那张桌子",
+     "hant": "那張桌子"
+    },
+    {
+     "hans": "这些",
+     "hant": "這些"
+    },
+    {
+     "hans": "那些",
+     "hant": "那些"
+    },
+    {
+     "hans": "这里",
+     "hant": "這裡"
+    }
+   ]
+  },
+  {
+   "id": "age-family",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "Age and family",
+   "note": "Age uses 岁; family size uses 口; 几 for small counts.",
+   "phrases": [
+    {
+     "hans": "我今年三十岁",
+     "hant": "我今年三十歲"
+    },
+    {
+     "hans": "你今年多大",
+     "hant": "你今年多大"
+    },
+    {
+     "hans": "他几岁了",
+     "hant": "他幾歲了"
+    },
+    {
+     "hans": "我家有五口人",
+     "hant": "我家有五口人"
+    },
+    {
+     "hans": "你有兄弟姐妹吗",
+     "hant": "你有兄弟姐妹嗎"
+    },
+    {
+     "hans": "我有一个妹妹",
+     "hant": "我有一個妹妹"
+    },
+    {
+     "hans": "她是我妈妈",
+     "hant": "她是我媽媽"
+    }
+   ]
+  },
+  {
+   "id": "de-possession",
+   "level": "HSK1",
+   "topic": "Basics",
+   "title": "的 — possession",
+   "note": "A 的 B = A's B; 的 can drop with close relations (我妈妈).",
+   "phrases": [
+    {
+     "hans": "我的书",
+     "hant": "我的書"
+    },
+    {
+     "hans": "你的手机",
+     "hant": "你的手機"
+    },
+    {
+     "hans": "他的名字",
+     "hant": "他的名字"
+    },
+    {
+     "hans": "老师的车",
+     "hant": "老師的車"
+    },
+    {
+     "hans": "我朋友的家",
+     "hant": "我朋友的家"
+    },
+    {
+     "hans": "这是我的",
+     "hant": "這是我的"
+    },
+    {
+     "hans": "那是谁的书",
+     "hant": "那是誰的書"
+    },
+    {
+     "hans": "我妈妈的朋友",
+     "hant": "我媽媽的朋友"
+    }
+   ]
+  },
+  {
+   "id": "de-modifying",
+   "level": "HSK2",
+   "topic": "Basics",
+   "title": "的 — modifying a noun",
+   "note": "Describing words and verb phrases go before 的 and the noun.",
+   "phrases": [
+    {
+     "hans": "红的苹果",
+     "hant": "紅的蘋果"
+    },
+    {
+     "hans": "我喜欢的歌",
+     "hant": "我喜歡的歌"
+    },
+    {
+     "hans": "昨天买的书",
+     "hant": "昨天買的書"
+    },
+    {
+     "hans": "很大的房子",
+     "hant": "很大的房子"
+    },
+    {
+     "hans": "漂亮的女孩",
+     "hant": "漂亮的女孩"
+    },
+    {
+     "hans": "开车的人",
+     "hant": "開車的人"
+    },
+    {
+     "hans": "便宜的东西",
+     "hant": "便宜的東西"
+    },
+    {
+     "hans": "我想吃的菜",
+     "hant": "我想吃的菜"
+    }
+   ]
+  },
+  {
+   "id": "mw-basic",
+   "level": "HSK1",
+   "topic": "Measure words",
+   "title": "个 本 张 杯",
+   "note": "Number + measure word + noun: 个 general, 本 books, 张 flat things, 杯 cups.",
+   "phrases": [
+    {
+     "hans": "一个人",
+     "hant": "一個人"
+    },
+    {
+     "hans": "三个学生",
+     "hant": "三個學生"
+    },
+    {
+     "hans": "两本书",
+     "hant": "兩本書"
+    },
+    {
+     "hans": "一本杂志",
+     "hant": "一本雜誌"
+    },
+    {
+     "hans": "三张票",
+     "hant": "三張票"
+    },
+    {
+     "hans": "四张纸",
+     "hant": "四張紙"
+    },
+    {
+     "hans": "一杯水",
+     "hant": "一杯水"
+    },
+    {
+     "hans": "两杯咖啡",
+     "hant": "兩杯咖啡"
+    }
+   ]
+  },
+  {
+   "id": "mw-more",
+   "level": "HSK2",
+   "topic": "Measure words",
+   "title": "只 件 条 双 辆 把",
+   "note": "只 small animals, 件 clothes and matters, 条 long things, 双 pairs, 辆 vehicles, 把 handled things.",
+   "phrases": [
+    {
+     "hans": "一只猫",
+     "hant": "一隻貓"
+    },
+    {
+     "hans": "两只狗",
+     "hant": "兩隻狗"
+    },
+    {
+     "hans": "一件衣服",
+     "hant": "一件衣服"
+    },
+    {
+     "hans": "三条鱼",
+     "hant": "三條魚"
+    },
+    {
+     "hans": "一条裤子",
+     "hant": "一條褲子"
+    },
+    {
+     "hans": "一双鞋",
+     "hant": "一雙鞋"
+    },
+    {
+     "hans": "一辆车",
+     "hant": "一輛車"
+    },
+    {
+     "hans": "一把伞",
+     "hant": "一把傘"
+    }
+   ]
+  },
+  {
+   "id": "mw-demonstrative",
+   "level": "HSK2",
+   "topic": "Measure words",
+   "title": "这 / 那 + number + measure word",
+   "note": "Between 这/那 and the noun you need a measure word.",
+   "phrases": [
+    {
+     "hans": "这个人",
+     "hant": "這個人"
+    },
+    {
+     "hans": "这三本书",
+     "hant": "這三本書"
+    },
+    {
+     "hans": "那张桌子",
+     "hant": "那張桌子"
+    },
+    {
+     "hans": "这杯茶",
+     "hant": "這杯茶"
+    },
+    {
+     "hans": "那只鸟",
+     "hant": "那隻鳥"
+    },
+    {
+     "hans": "那件事",
+     "hant": "那件事"
+    },
+    {
+     "hans": "那条路",
+     "hant": "那條路"
+    },
+    {
+     "hans": "哪件衣服",
+     "hant": "哪件衣服"
+    }
+   ]
+  },
+  {
+   "id": "mw-quantity",
+   "level": "HSK2",
+   "topic": "Measure words",
+   "title": "一点儿 一些 一碗 一块",
+   "note": "Quantity words: 一点儿/一些 a bit, 碗 bowl, 块 piece/yuan, 位 polite person.",
+   "phrases": [
+    {
+     "hans": "一点儿",
+     "hant": "一點兒"
+    },
+    {
+     "hans": "一些书",
+     "hant": "一些書"
+    },
+    {
+     "hans": "一家商店",
+     "hant": "一家商店"
+    },
+    {
+     "hans": "一瓶水",
+     "hant": "一瓶水"
+    },
+    {
+     "hans": "一碗饭",
+     "hant": "一碗飯"
+    },
+    {
+     "hans": "一块钱",
+     "hant": "一塊錢"
+    },
+    {
+     "hans": "一位老师",
+     "hant": "一位老師"
+    },
+    {
+     "hans": "去过一次",
+     "hant": "去過一次"
+    }
+   ]
+  },
+  {
+   "id": "le-completion",
+   "level": "HSK2",
+   "topic": "Aspect",
+   "title": "了 — completed action",
+   "note": "Verb + 了 marks a completed action; with an object give a quantity or add a second 了.",
+   "phrases": [
+    {
+     "hans": "我吃了",
+     "hant": "我吃了"
+    },
+    {
+     "hans": "他买了一本书",
+     "hant": "他買了一本書"
+    },
+    {
+     "hans": "我喝了两杯茶",
+     "hant": "我喝了兩杯茶"
+    },
+    {
+     "hans": "你吃了吗",
+     "hant": "你吃了嗎"
+    },
+    {
+     "hans": "我吃了饭就去",
+     "hant": "我吃了飯就去"
+    },
+    {
+     "hans": "她昨天来了",
+     "hant": "她昨天來了"
+    },
+    {
+     "hans": "我看了电影",
+     "hant": "我看了電影"
+    }
+   ]
+  },
+  {
+   "id": "le-change",
+   "level": "HSK2",
+   "topic": "Aspect",
+   "title": "了 — change of state",
+   "note": "Sentence-final 了 signals a new situation.",
+   "phrases": [
+    {
+     "hans": "下雨了",
+     "hant": "下雨了"
+    },
+    {
+     "hans": "天黑了",
+     "hant": "天黑了"
+    },
+    {
+     "hans": "我饿了",
+     "hant": "我餓了"
+    },
+    {
+     "hans": "他是大学生了",
+     "hant": "他是大學生了"
+    },
+    {
+     "hans": "现在八点了",
+     "hant": "現在八點了"
+    },
+    {
+     "hans": "我不去了",
+     "hant": "我不去了"
+    },
+    {
+     "hans": "她会说中文了",
+     "hant": "她會說中文了"
+    },
+    {
+     "hans": "春天来了",
+     "hant": "春天來了"
+    }
+   ]
+  },
+  {
+   "id": "guo-experience",
+   "level": "HSK2",
+   "topic": "Aspect",
+   "title": "过 — have ever done",
+   "note": "Verb + 过 = have done it before; negate with 没…过.",
+   "phrases": [
+    {
+     "hans": "我去过中国",
+     "hant": "我去過中國"
+    },
+    {
+     "hans": "你吃过饺子吗",
+     "hant": "你吃過餃子嗎"
+    },
+    {
+     "hans": "我没吃过",
+     "hant": "我沒吃過"
+    },
+    {
+     "hans": "他来过这儿",
+     "hant": "他來過這兒"
+    },
+    {
+     "hans": "我看过这个电影",
+     "hant": "我看過這個電影"
+    },
+    {
+     "hans": "她学过中文",
+     "hant": "她學過中文"
+    },
+    {
+     "hans": "你去过哪儿",
+     "hant": "你去過哪兒"
+    },
+    {
+     "hans": "我没见过他",
+     "hant": "我沒見過他"
+    }
+   ]
+  },
+  {
+   "id": "zai-progressive",
+   "level": "HSK2",
+   "topic": "Aspect",
+   "title": "在 / 正在 — in progress",
+   "note": "在 or 正在 before the verb = doing it right now; negate with 没在.",
+   "phrases": [
+    {
+     "hans": "我在吃饭",
+     "hant": "我在吃飯"
+    },
+    {
+     "hans": "他在看书",
+     "hant": "他在看書"
+    },
+    {
+     "hans": "她正在打电话",
+     "hant": "她正在打電話"
+    },
+    {
+     "hans": "我们在学习",
+     "hant": "我們在學習"
+    },
+    {
+     "hans": "孩子在睡觉",
+     "hant": "孩子在睡覺"
+    },
+    {
+     "hans": "你在做什么",
+     "hant": "你在做什麼"
+    },
+    {
+     "hans": "我没在看电视",
+     "hant": "我沒在看電視"
+    },
+    {
+     "hans": "外面正在下雨",
+     "hant": "外面正在下雨"
+    }
+   ]
+  },
+  {
+   "id": "zhe-continuous",
+   "level": "HSK3",
+   "topic": "Aspect",
+   "title": "着 — continuing state",
+   "note": "Verb + 着 describes a state that continues (door open, wearing, holding).",
+   "phrases": [
+    {
+     "hans": "门开着",
+     "hant": "門開著"
+    },
+    {
+     "hans": "他坐着看书",
+     "hant": "他坐著看書"
+    },
+    {
+     "hans": "她穿着红衣服",
+     "hant": "她穿著紅衣服"
+    },
+    {
+     "hans": "灯亮着",
+     "hant": "燈亮著"
+    },
+    {
+     "hans": "墙上挂着一张画",
+     "hant": "牆上掛著一張畫"
+    },
+    {
+     "hans": "桌子上放着一本书",
+     "hant": "桌子上放著一本書"
+    },
+    {
+     "hans": "他笑着说",
+     "hant": "他笑著說"
+    },
+    {
+     "hans": "手里拿着手机",
+     "hant": "手裡拿著手機"
+    }
+   ]
+  },
+  {
+   "id": "aspect-contrast",
+   "level": "HSK2",
+   "topic": "Aspect",
+   "title": "了 / 过 / 在 compared",
+   "note": "Same verb, different aspect: finished, experienced, in progress.",
+   "phrases": [
+    {
+     "hans": "我写了信",
+     "hant": "我寫了信"
+    },
+    {
+     "hans": "我写过信",
+     "hant": "我寫過信"
+    },
+    {
+     "hans": "我在写信",
+     "hant": "我在寫信"
+    },
+    {
+     "hans": "我没写信",
+     "hant": "我沒寫信"
+    },
+    {
+     "hans": "我没写过信",
+     "hant": "我沒寫過信"
+    },
+    {
+     "hans": "我写完信了",
+     "hant": "我寫完信了"
+    }
+   ]
+  },
+  {
+   "id": "bu-vs-mei",
+   "level": "HSK1",
+   "topic": "Questions & negation",
+   "title": "不 vs 没",
+   "note": "不 for habits, wishes, future, 'to be'; 没 for past events and 有.",
+   "phrases": [
+    {
+     "hans": "我不去",
+     "hant": "我不去"
+    },
+    {
+     "hans": "我没去",
+     "hant": "我沒去"
+    },
+    {
+     "hans": "他不喝酒",
+     "hant": "他不喝酒"
+    },
+    {
+     "hans": "他没喝酒",
+     "hant": "他沒喝酒"
+    },
+    {
+     "hans": "我不是学生",
+     "hant": "我不是學生"
+    },
+    {
+     "hans": "我没有钱",
+     "hant": "我沒有錢"
+    },
+    {
+     "hans": "我不会",
+     "hant": "我不會"
+    },
+    {
+     "hans": "我没看见",
+     "hant": "我沒看見"
+    }
+   ]
+  },
+  {
+   "id": "ma-questions",
+   "level": "HSK1",
+   "topic": "Questions & negation",
+   "title": "吗 questions",
+   "note": "Add 吗 to a statement to make a yes/no question.",
+   "phrases": [
+    {
+     "hans": "你好吗",
+     "hant": "你好嗎"
+    },
+    {
+     "hans": "你是学生吗",
+     "hant": "你是學生嗎"
+    },
+    {
+     "hans": "你有手机吗",
+     "hant": "你有手機嗎"
+    },
+    {
+     "hans": "他会说中文吗",
+     "hant": "他會說中文嗎"
+    },
+    {
+     "hans": "你喜欢茶吗",
+     "hant": "你喜歡茶嗎"
+    },
+    {
+     "hans": "你忙吗",
+     "hant": "你忙嗎"
+    },
+    {
+     "hans": "你饿吗",
+     "hant": "你餓嗎"
+    },
+    {
+     "hans": "这是你的吗",
+     "hant": "這是你的嗎"
+    }
+   ]
+  },
+  {
+   "id": "a-not-a",
+   "level": "HSK2",
+   "topic": "Questions & negation",
+   "title": "A-not-A questions",
+   "note": "Verb + 不 + same verb asks a yes/no question without 吗.",
+   "phrases": [
+    {
+     "hans": "你是不是学生",
+     "hant": "你是不是學生"
+    },
+    {
+     "hans": "你去不去",
+     "hant": "你去不去"
+    },
+    {
+     "hans": "你有没有时间",
+     "hant": "你有沒有時間"
+    },
+    {
+     "hans": "好不好",
+     "hant": "好不好"
+    },
+    {
+     "hans": "对不对",
+     "hant": "對不對"
+    },
+    {
+     "hans": "你喜欢不喜欢中文",
+     "hant": "你喜歡不喜歡中文"
+    },
+    {
+     "hans": "他来不来",
+     "hant": "他來不來"
+    },
+    {
+     "hans": "贵不贵",
+     "hant": "貴不貴"
+    }
+   ]
+  },
+  {
+   "id": "question-words-1",
+   "level": "HSK1",
+   "topic": "Questions & negation",
+   "title": "Question words 什么 谁 哪儿 几 多少",
+   "note": "The question word replaces the answer in place; word order stays the same.",
+   "phrases": [
+    {
+     "hans": "这是什么",
+     "hant": "這是什麼"
+    },
+    {
+     "hans": "他是谁",
+     "hant": "他是誰"
+    },
+    {
+     "hans": "你去哪儿",
+     "hant": "你去哪兒"
+    },
+    {
+     "hans": "你几岁",
+     "hant": "你幾歲"
+    },
+    {
+     "hans": "这个多少钱",
+     "hant": "這個多少錢"
+    },
+    {
+     "hans": "你有几个孩子",
+     "hant": "你有幾個孩子"
+    },
+    {
+     "hans": "你叫什么名字",
+     "hant": "你叫什麼名字"
+    },
+    {
+     "hans": "你为什么不去",
+     "hant": "你為什麼不去"
+    }
+   ]
+  },
+  {
+   "id": "question-words-2",
+   "level": "HSK2",
+   "topic": "Questions & negation",
+   "title": "More question words",
+   "note": "怎么样 how is it, 几点 what time, 哪 which, 谁 as subject.",
+   "phrases": [
+    {
+     "hans": "今天怎么样",
+     "hant": "今天怎麼樣"
+    },
+    {
+     "hans": "你住在哪儿",
+     "hant": "你住在哪兒"
+    },
+    {
+     "hans": "你几点起床",
+     "hant": "你幾點起床"
+    },
+    {
+     "hans": "谁来了",
+     "hant": "誰來了"
+    },
+    {
+     "hans": "你想喝什么",
+     "hant": "你想喝什麼"
+    },
+    {
+     "hans": "你什么时候来",
+     "hant": "你什麼時候來"
+    },
+    {
+     "hans": "哪本书是你的",
+     "hant": "哪本書是你的"
+    },
+    {
+     "hans": "你怎么去",
+     "hant": "你怎麼去"
+    }
+   ]
+  },
+  {
+   "id": "particles-ne-ba",
+   "level": "HSK2",
+   "topic": "Questions & negation",
+   "title": "呢 and 吧",
+   "note": "呢 follows up ('and you?', 'where is…?'); 吧 suggests or guesses.",
+   "phrases": [
+    {
+     "hans": "你呢",
+     "hant": "你呢"
+    },
+    {
+     "hans": "我很好，你呢",
+     "hant": "我很好，你呢"
+    },
+    {
+     "hans": "你的书呢",
+     "hant": "你的書呢"
+    },
+    {
+     "hans": "我们走吧",
+     "hant": "我們走吧"
+    },
+    {
+     "hans": "好吧",
+     "hant": "好吧"
+    },
+    {
+     "hans": "你是学生吧",
+     "hant": "你是學生吧"
+    },
+    {
+     "hans": "他在家呢",
+     "hant": "他在家呢"
+    }
+   ]
+  },
+  {
+   "id": "bie-buyong",
+   "level": "HSK2",
+   "topic": "Questions & negation",
+   "title": "别 / 不要 / 不用 — don't",
+   "note": "别 and 不要 forbid; 不用 means no need.",
+   "phrases": [
+    {
+     "hans": "别走",
+     "hant": "別走"
+    },
+    {
+     "hans": "别说话",
+     "hant": "別說話"
+    },
+    {
+     "hans": "不要忘记",
+     "hant": "不要忘記"
+    },
+    {
+     "hans": "请不要抽烟",
+     "hant": "請不要抽煙"
+    },
+    {
+     "hans": "别客气",
+     "hant": "別客氣"
+    },
+    {
+     "hans": "别担心",
+     "hant": "別擔心"
+    },
+    {
+     "hans": "不用谢",
+     "hant": "不用謝"
+    },
+    {
+     "hans": "不用了",
+     "hant": "不用了"
+    }
+   ]
+  },
+  {
+   "id": "result-complement",
+   "level": "HSK3",
+   "topic": "Complements",
+   "title": "Resultative — 看完, 听懂",
+   "note": "Verb + result (完 finished, 懂 understand, 到 achieved, 好 done well).",
+   "phrases": [
+    {
+     "hans": "我看完了",
+     "hant": "我看完了"
+    },
+    {
+     "hans": "作业写完了",
+     "hant": "作業寫完了"
+    },
+    {
+     "hans": "我听懂了",
+     "hant": "我聽懂了"
+    },
+    {
+     "hans": "我看见他了",
+     "hant": "我看見他了"
+    },
+    {
+     "hans": "你说错了",
+     "hant": "你說錯了"
+    },
+    {
+     "hans": "我找到钥匙了",
+     "hant": "我找到鑰匙了"
+    },
+    {
+     "hans": "饭做好了",
+     "hant": "飯做好了"
+    },
+    {
+     "hans": "我吃饱了",
+     "hant": "我吃飽了"
+    }
+   ]
+  },
+  {
+   "id": "result-negative",
+   "level": "HSK3",
+   "topic": "Complements",
+   "title": "Resultative — negative with 没",
+   "note": "Negate a resultative with 没: the result did not happen.",
+   "phrases": [
+    {
+     "hans": "我没听懂",
+     "hant": "我沒聽懂"
+    },
+    {
+     "hans": "我没看完",
+     "hant": "我沒看完"
+    },
+    {
+     "hans": "他没找到",
+     "hant": "他沒找到"
+    },
+    {
+     "hans": "我没听见",
+     "hant": "我沒聽見"
+    },
+    {
+     "hans": "我没做完作业",
+     "hant": "我沒做完作業"
+    },
+    {
+     "hans": "我没吃饱",
+     "hant": "我沒吃飽"
+    },
+    {
+     "hans": "你听懂了吗",
+     "hant": "你聽懂了嗎"
+    }
+   ]
+  },
+  {
+   "id": "directional-complement",
+   "level": "HSK3",
+   "topic": "Complements",
+   "title": "Directional — 进来, 出去",
+   "note": "来 toward the speaker, 去 away; 上 下 进 出 回 过 起 give the direction.",
+   "phrases": [
+    {
+     "hans": "请进来",
+     "hant": "請進來"
+    },
+    {
+     "hans": "他出去了",
+     "hant": "他出去了"
+    },
+    {
+     "hans": "你上来吧",
+     "hant": "你上來吧"
+    },
+    {
+     "hans": "我下去看看",
+     "hant": "我下去看看"
+    },
+    {
+     "hans": "他回来了",
+     "hant": "他回來了"
+    },
+    {
+     "hans": "她回家去了",
+     "hant": "她回家去了"
+    },
+    {
+     "hans": "孩子跑过来了",
+     "hant": "孩子跑過來了"
+    },
+    {
+     "hans": "把书拿出来",
+     "hant": "把書拿出來"
+    }
+   ]
+  },
+  {
+   "id": "potential-complement",
+   "level": "HSK4",
+   "topic": "Complements",
+   "title": "Potential — 听得懂 / 听不懂",
+   "note": "得 or 不 inserted before the result: can / cannot achieve it.",
+   "phrases": [
+    {
+     "hans": "听得懂",
+     "hant": "聽得懂"
+    },
+    {
+     "hans": "听不懂",
+     "hant": "聽不懂"
+    },
+    {
+     "hans": "看得见",
+     "hant": "看得見"
+    },
+    {
+     "hans": "看不见",
+     "hant": "看不見"
+    },
+    {
+     "hans": "我买不起",
+     "hant": "我買不起"
+    },
+    {
+     "hans": "门打不开",
+     "hant": "門打不開"
+    },
+    {
+     "hans": "我吃不完",
+     "hant": "我吃不完"
+    },
+    {
+     "hans": "你做得完吗",
+     "hant": "你做得完嗎"
+    }
+   ]
+  },
+  {
+   "id": "degree-complement",
+   "level": "HSK3",
+   "topic": "Complements",
+   "title": "Degree — 得",
+   "note": "Verb + 得 + description says how well or how fast something is done.",
+   "phrases": [
+    {
+     "hans": "他跑得很快",
+     "hant": "他跑得很快"
+    },
+    {
+     "hans": "她说得很好",
+     "hant": "她說得很好"
+    },
+    {
+     "hans": "你写得真好",
+     "hant": "你寫得真好"
+    },
+    {
+     "hans": "我做得不好",
+     "hant": "我做得不好"
+    },
+    {
+     "hans": "他说中文说得很流利",
+     "hant": "他說中文說得很流利"
+    },
+    {
+     "hans": "她唱歌唱得好听",
+     "hant": "她唱歌唱得好聽"
+    },
+    {
+     "hans": "你来得太早了",
+     "hant": "你來得太早了"
+    },
+    {
+     "hans": "我睡得很晚",
+     "hant": "我睡得很晚"
+    }
+   ]
+  },
+  {
+   "id": "duration-frequency",
+   "level": "HSK3",
+   "topic": "Complements",
+   "title": "Duration and frequency",
+   "note": "Time length and number of times come after the verb.",
+   "phrases": [
+    {
+     "hans": "我学了两年中文",
+     "hant": "我學了兩年中文"
+    },
+    {
+     "hans": "我等了你一个小时",
+     "hant": "我等了你一個小時"
+    },
+    {
+     "hans": "他睡了八个小时",
+     "hant": "他睡了八個小時"
+    },
+    {
+     "hans": "我在北京住了三天",
+     "hant": "我在北京住了三天"
+    },
+    {
+     "hans": "她看了半个小时电视",
+     "hant": "她看了半個小時電視"
+    },
+    {
+     "hans": "请等一下",
+     "hant": "請等一下"
+    },
+    {
+     "hans": "我去过两次",
+     "hant": "我去過兩次"
+    }
+   ]
+  },
+  {
+   "id": "ba-construction",
+   "level": "HSK3",
+   "topic": "Sentence patterns",
+   "title": "把 sentences",
+   "note": "把 + object + verb + result: what you do to a specific thing.",
+   "phrases": [
+    {
+     "hans": "我把书放在桌子上",
+     "hant": "我把書放在桌子上"
+    },
+    {
+     "hans": "请把门关上",
+     "hant": "請把門關上"
+    },
+    {
+     "hans": "他把饭吃完了",
+     "hant": "他把飯吃完了"
+    },
+    {
+     "hans": "你把手机给我",
+     "hant": "你把手機給我"
+    },
+    {
+     "hans": "我把钥匙忘在家里了",
+     "hant": "我把鑰匙忘在家裡了"
+    },
+    {
+     "hans": "请把窗户打开",
+     "hant": "請把窗戶打開"
+    },
+    {
+     "hans": "她把作业做完了",
+     "hant": "她把作業做完了"
+    },
+    {
+     "hans": "别把东西弄丢了",
+     "hant": "別把東西弄丟了"
+    }
+   ]
+  },
+  {
+   "id": "bei-passive",
+   "level": "HSK4",
+   "topic": "Sentence patterns",
+   "title": "被 passive",
+   "note": "Receiver + 被 (+ doer) + verb + result; often something unwelcome.",
+   "phrases": [
+    {
+     "hans": "我的自行车被偷了",
+     "hant": "我的自行車被偷了"
+    },
+    {
+     "hans": "杯子被打破了",
+     "hant": "杯子被打破了"
+    },
+    {
+     "hans": "他被老师批评了",
+     "hant": "他被老師批評了"
+    },
+    {
+     "hans": "钱包被人拿走了",
+     "hant": "錢包被人拿走了"
+    },
+    {
+     "hans": "手机被我弄丢了",
+     "hant": "手機被我弄丟了"
+    },
+    {
+     "hans": "窗户被风吹开了",
+     "hant": "窗戶被風吹開了"
+    },
+    {
+     "hans": "蛋糕被弟弟吃了",
+     "hant": "蛋糕被弟弟吃了"
+    },
+    {
+     "hans": "我被雨淋湿了",
+     "hant": "我被雨淋濕了"
+    }
+   ]
+  },
+  {
+   "id": "bi-comparison",
+   "level": "HSK2",
+   "topic": "Sentence patterns",
+   "title": "比 — comparison",
+   "note": "A 比 B + adjective; add 更/还 for 'even more', a number after the adjective for the difference.",
+   "phrases": [
+    {
+     "hans": "我比他高",
+     "hant": "我比他高"
+    },
+    {
+     "hans": "今天比昨天冷",
+     "hant": "今天比昨天冷"
+    },
+    {
+     "hans": "这个比那个贵",
+     "hant": "這個比那個貴"
+    },
+    {
+     "hans": "他比我大两岁",
+     "hant": "他比我大兩歲"
+    },
+    {
+     "hans": "坐地铁比坐公交车快",
+     "hant": "坐地鐵比坐公交車快"
+    },
+    {
+     "hans": "我跑得比他快",
+     "hant": "我跑得比他快"
+    },
+    {
+     "hans": "她比我忙",
+     "hant": "她比我忙"
+    },
+    {
+     "hans": "这本书比那本书便宜",
+     "hant": "這本書比那本書便宜"
+    }
+   ]
+  },
+  {
+   "id": "meiyou-comparison",
+   "level": "HSK3",
+   "topic": "Sentence patterns",
+   "title": "没有…那么 — not as … as",
+   "note": "A 没有 B (那么) + adjective: A falls short of B.",
+   "phrases": [
+    {
+     "hans": "我没有他高",
+     "hant": "我沒有他高"
+    },
+    {
+     "hans": "今天没有昨天那么冷",
+     "hant": "今天沒有昨天那麼冷"
+    },
+    {
+     "hans": "这个没有那个贵",
+     "hant": "這個沒有那個貴"
+    },
+    {
+     "hans": "我没有你那么忙",
+     "hant": "我沒有你那麼忙"
+    },
+    {
+     "hans": "他没有我跑得快",
+     "hant": "他沒有我跑得快"
+    },
+    {
+     "hans": "北京没有上海大",
+     "hant": "北京沒有上海大"
+    },
+    {
+     "hans": "这家店没有那家好",
+     "hant": "這家店沒有那家好"
+    },
+    {
+     "hans": "我的房间没有他的干净",
+     "hant": "我的房間沒有他的乾淨"
+    }
+   ]
+  },
+  {
+   "id": "yiyang",
+   "level": "HSK3",
+   "topic": "Sentence patterns",
+   "title": "跟 / 和…一样 — same as",
+   "note": "A 跟 B 一样 (+ adjective); negate with 不一样.",
+   "phrases": [
+    {
+     "hans": "我跟你一样高",
+     "hant": "我跟你一樣高"
+    },
+    {
+     "hans": "这个和那个一样",
+     "hant": "這個和那個一樣"
+    },
+    {
+     "hans": "他跟我一样大",
+     "hant": "他跟我一樣大"
+    },
+    {
+     "hans": "我的手机跟你的不一样",
+     "hant": "我的手機跟你的不一樣"
+    },
+    {
+     "hans": "她和妈妈一样漂亮",
+     "hant": "她和媽媽一樣漂亮"
+    }
+   ]
+  },
+  {
+   "id": "shi-de",
+   "level": "HSK3",
+   "topic": "Sentence patterns",
+   "title": "是…的 — when, how, where",
+   "note": "Stresses the time, manner or place of a past event already known to have happened.",
+   "phrases": [
+    {
+     "hans": "我是昨天来的",
+     "hant": "我是昨天來的"
+    },
+    {
+     "hans": "你是怎么来的",
+     "hant": "你是怎麼來的"
+    },
+    {
+     "hans": "他是坐飞机来的",
+     "hant": "他是坐飛機來的"
+    },
+    {
+     "hans": "我是在北京学的中文",
+     "hant": "我是在北京學的中文"
+    },
+    {
+     "hans": "你是什么时候到的",
+     "hant": "你是什麼時候到的"
+    },
+    {
+     "hans": "这是谁做的",
+     "hant": "這是誰做的"
+    },
+    {
+     "hans": "我不是一个人来的",
+     "hant": "我不是一個人來的"
+    },
+    {
+     "hans": "她是跟朋友一起去的",
+     "hant": "她是跟朋友一起去的"
+    }
+   ]
+  },
+  {
+   "id": "modals-hui-neng-keyi",
+   "level": "HSK2",
+   "topic": "Sentence patterns",
+   "title": "会 / 能 / 可以",
+   "note": "会 learned skill or will, 能 ability or circumstance, 可以 permission.",
+   "phrases": [
+    {
+     "hans": "我会说中文",
+     "hant": "我會說中文"
+    },
+    {
+     "hans": "我不会游泳",
+     "hant": "我不會游泳"
+    },
+    {
+     "hans": "你能来吗",
+     "hant": "你能來嗎"
+    },
+    {
+     "hans": "我今天不能去",
+     "hant": "我今天不能去"
+    },
+    {
+     "hans": "这里可以坐吗",
+     "hant": "這裡可以坐嗎"
+    },
+    {
+     "hans": "可以进来吗",
+     "hant": "可以進來嗎"
+    },
+    {
+     "hans": "这里不能抽烟",
+     "hant": "這裡不能抽煙"
+    },
+    {
+     "hans": "明天会下雨",
+     "hant": "明天會下雨"
+    }
+   ]
+  },
+  {
+   "id": "should-must",
+   "level": "HSK3",
+   "topic": "Sentence patterns",
+   "title": "应该 / 得 / 必须",
+   "note": "应该 should, 得 have to, 必须 must.",
+   "phrases": [
+    {
+     "hans": "你应该多喝水",
+     "hant": "你應該多喝水"
+    },
+    {
+     "hans": "我得走了",
+     "hant": "我得走了"
+    },
+    {
+     "hans": "我们必须早点儿走",
+     "hant": "我們必須早點兒走"
+    },
+    {
+     "hans": "你应该休息",
+     "hant": "你應該休息"
+    },
+    {
+     "hans": "我得去医院",
+     "hant": "我得去醫院"
+    },
+    {
+     "hans": "你不应该这样说",
+     "hant": "你不應該這樣說"
+    }
+   ]
+  },
+  {
+   "id": "time-word-order",
+   "level": "HSK1",
+   "topic": "Sentence patterns",
+   "title": "Time words before the verb",
+   "note": "Time words go after the subject and before the verb, never at the end.",
+   "phrases": [
+    {
+     "hans": "我明天去北京",
+     "hant": "我明天去北京"
+    },
+    {
+     "hans": "我们八点吃饭",
+     "hant": "我們八點吃飯"
+    },
+    {
+     "hans": "他每天早上跑步",
+     "hant": "他每天早上跑步"
+    },
+    {
+     "hans": "我昨天在家看书",
+     "hant": "我昨天在家看書"
+    },
+    {
+     "hans": "你什么时候回家",
+     "hant": "你什麼時候回家"
+    },
+    {
+     "hans": "我下个星期去上海",
+     "hant": "我下個星期去上海"
+    },
+    {
+     "hans": "他去年来中国",
+     "hant": "他去年來中國"
+    },
+    {
+     "hans": "我们周末一起去",
+     "hant": "我們週末一起去"
+    }
+   ]
+  },
+  {
+   "id": "coverbs",
+   "level": "HSK2",
+   "topic": "Sentence patterns",
+   "title": "在 / 从 / 到 / 给 / 跟 + verb",
+   "note": "Prepositional phrases come before the main verb.",
+   "phrases": [
+    {
+     "hans": "我在家吃饭",
+     "hant": "我在家吃飯"
+    },
+    {
+     "hans": "她在图书馆看书",
+     "hant": "她在圖書館看書"
+    },
+    {
+     "hans": "我从北京来",
+     "hant": "我從北京來"
+    },
+    {
+     "hans": "他到上海去",
+     "hant": "他到上海去"
+    },
+    {
+     "hans": "我给妈妈打电话",
+     "hant": "我給媽媽打電話"
+    },
+    {
+     "hans": "我跟朋友去看电影",
+     "hant": "我跟朋友去看電影"
+    },
+    {
+     "hans": "我坐飞机去",
+     "hant": "我坐飛機去"
+    },
+    {
+     "hans": "他对我很好",
+     "hant": "他對我很好"
+    }
+   ]
+  },
+  {
+   "id": "connectors",
+   "level": "HSK3",
+   "topic": "Sentence patterns",
+   "title": "Linking clauses",
+   "note": "Paired connectors: 因为…所以, 虽然…但是, 如果…就, 不但…而且.",
+   "phrases": [
+    {
+     "hans": "因为下雨，所以我没去",
+     "hant": "因為下雨，所以我沒去"
+    },
+    {
+     "hans": "虽然很贵，但是很好吃",
+     "hant": "雖然很貴，但是很好吃"
+    },
+    {
+     "hans": "如果你有时间，就来吧",
+     "hant": "如果你有時間，就來吧"
+    },
+    {
+     "hans": "我一边吃饭一边看电视",
+     "hant": "我一邊吃飯一邊看電視"
+    },
+    {
+     "hans": "先洗手，再吃饭",
+     "hant": "先洗手，再吃飯"
+    },
+    {
+     "hans": "我又累又饿",
+     "hant": "我又累又餓"
+    },
+    {
+     "hans": "不但便宜，而且好吃",
+     "hant": "不但便宜，而且好吃"
+    },
+    {
+     "hans": "只要努力，就会成功",
+     "hant": "只要努力，就會成功"
+    }
+   ]
+  },
+  {
+   "id": "youdian-yidianer",
+   "level": "HSK2",
+   "topic": "Sentence patterns",
+   "title": "有点儿 vs 一点儿",
+   "note": "有点儿 + adjective (a bit too, negative); adjective + 一点儿 (a little more).",
+   "phrases": [
+    {
+     "hans": "有点儿贵",
+     "hant": "有點兒貴"
+    },
+    {
+     "hans": "有点儿冷",
+     "hant": "有點兒冷"
+    },
+    {
+     "hans": "便宜一点儿",
+     "hant": "便宜一點兒"
+    },
+    {
+     "hans": "请说慢一点儿",
+     "hant": "請說慢一點兒"
+    },
+    {
+     "hans": "我有点儿累",
+     "hant": "我有點兒累"
+    },
+    {
+     "hans": "我想吃点儿东西",
+     "hant": "我想吃點兒東西"
+    },
+    {
+     "hans": "再来一点儿",
+     "hant": "再來一點兒"
+    }
+   ]
+  },
+  {
+   "id": "adverbs-ye-dou",
+   "level": "HSK1",
+   "topic": "Sentence patterns",
+   "title": "也 / 都 / 还 adverbs",
+   "note": "Adverbs sit before the verb, after the subject.",
+   "phrases": [
+    {
+     "hans": "我也是学生",
+     "hant": "我也是學生"
+    },
+    {
+     "hans": "我们都是学生",
+     "hant": "我們都是學生"
+    },
+    {
+     "hans": "他也很忙",
+     "hant": "他也很忙"
+    },
+    {
+     "hans": "我们都不去",
+     "hant": "我們都不去"
+    },
+    {
+     "hans": "我还有一个",
+     "hant": "我還有一個"
+    },
+    {
+     "hans": "她也有两个姐姐",
+     "hant": "她也有兩個姐姐"
+    },
+    {
+     "hans": "他们都没来",
+     "hant": "他們都沒來"
+    },
+    {
+     "hans": "我还想吃",
+     "hant": "我還想吃"
+    }
+   ]
+  },
+  {
+   "id": "distance-direction",
+   "level": "HSK2",
+   "topic": "Sentence patterns",
+   "title": "离 / 从…到 / 往",
+   "note": "离 distance from, 从…到 from…to, 往 toward.",
+   "phrases": [
+    {
+     "hans": "我家离学校很近",
+     "hant": "我家離學校很近"
+    },
+    {
+     "hans": "从这儿到那儿",
+     "hant": "從這兒到那兒"
+    },
+    {
+     "hans": "离这儿远吗",
+     "hant": "離這兒遠嗎"
+    },
+    {
+     "hans": "从我家到公司要半个小时",
+     "hant": "從我家到公司要半個小時"
+    },
+    {
+     "hans": "医院离这儿不远",
+     "hant": "醫院離這兒不遠"
+    },
+    {
+     "hans": "往前走",
+     "hant": "往前走"
+    },
+    {
+     "hans": "一直走",
+     "hant": "一直走"
+    },
+    {
+     "hans": "往右拐",
+     "hant": "往右拐"
+    }
+   ]
+  },
+  {
+   "id": "numbers-1-100",
+   "level": "HSK1",
+   "topic": "Numbers & time",
+   "title": "Numbers 1–100",
+   "note": "Tens are built as 二十, 三十五, 九十九.",
+   "phrases": [
+    {
+     "hans": "一二三四五",
+     "hant": "一二三四五"
+    },
+    {
+     "hans": "六七八九十",
+     "hant": "六七八九十"
+    },
+    {
+     "hans": "十一，十二",
+     "hant": "十一，十二"
+    },
+    {
+     "hans": "二十三",
+     "hant": "二十三"
+    },
+    {
+     "hans": "三十五",
+     "hant": "三十五"
+    },
+    {
+     "hans": "四十八",
+     "hant": "四十八"
+    },
+    {
+     "hans": "九十九",
+     "hant": "九十九"
+    },
+    {
+     "hans": "一百",
+     "hant": "一百"
+    }
+   ]
+  },
+  {
+   "id": "numbers-large",
+   "level": "HSK2",
+   "topic": "Numbers & time",
+   "title": "Hundreds, thousands, 万",
+   "note": "零 fills an empty place; 两 is used before 百 千 万.",
+   "phrases": [
+    {
+     "hans": "一百零五",
+     "hant": "一百零五"
+    },
+    {
+     "hans": "一百二十",
+     "hant": "一百二十"
+    },
+    {
+     "hans": "一千五百",
+     "hant": "一千五百"
+    },
+    {
+     "hans": "两千",
+     "hant": "兩千"
+    },
+    {
+     "hans": "一万",
+     "hant": "一萬"
+    },
+    {
+     "hans": "三万五千",
+     "hant": "三萬五千"
+    },
+    {
+     "hans": "十万",
+     "hant": "十萬"
+    },
+    {
+     "hans": "两百五十",
+     "hant": "兩百五十"
+    }
+   ]
+  },
+  {
+   "id": "money",
+   "level": "HSK1",
+   "topic": "Numbers & time",
+   "title": "Money and prices",
+   "note": "块 (kuai) is spoken yuan; 毛 is a tenth.",
+   "phrases": [
+    {
+     "hans": "一块钱",
+     "hant": "一塊錢"
+    },
+    {
+     "hans": "五块五",
+     "hant": "五塊五"
+    },
+    {
+     "hans": "二十块",
+     "hant": "二十塊"
+    },
+    {
+     "hans": "这个多少钱",
+     "hant": "這個多少錢"
+    },
+    {
+     "hans": "太贵了，便宜点儿",
+     "hant": "太貴了，便宜點兒"
+    },
+    {
+     "hans": "一共三十五块",
+     "hant": "一共三十五塊"
+    },
+    {
+     "hans": "可以刷卡吗",
+     "hant": "可以刷卡嗎"
+    },
+    {
+     "hans": "我要两瓶水",
+     "hant": "我要兩瓶水"
+    }
+   ]
+  },
+  {
+   "id": "dates",
+   "level": "HSK1",
+   "topic": "Numbers & time",
+   "title": "Dates and weekdays",
+   "note": "Large to small: year, month, day; weekdays 星期一…星期日.",
+   "phrases": [
+    {
+     "hans": "今天几月几号",
+     "hant": "今天幾月幾號"
+    },
+    {
+     "hans": "今天是星期三",
+     "hant": "今天是星期三"
+    },
+    {
+     "hans": "一月一号",
+     "hant": "一月一號"
+    },
+    {
+     "hans": "十二月二十五号",
+     "hant": "十二月二十五號"
+    },
+    {
+     "hans": "我的生日是五月八号",
+     "hant": "我的生日是五月八號"
+    },
+    {
+     "hans": "明天星期几",
+     "hant": "明天星期幾"
+    },
+    {
+     "hans": "二零零八年",
+     "hant": "二零零八年"
+    }
+   ]
+  },
+  {
+   "id": "clock-time",
+   "level": "HSK1",
+   "topic": "Numbers & time",
+   "title": "Telling the time",
+   "note": "点 o'clock, 刻 quarter, 半 half, 差 to.",
+   "phrases": [
+    {
+     "hans": "现在几点",
+     "hant": "現在幾點"
+    },
+    {
+     "hans": "现在八点",
+     "hant": "現在八點"
+    },
+    {
+     "hans": "三点一刻",
+     "hant": "三點一刻"
+    },
+    {
+     "hans": "两点半",
+     "hant": "兩點半"
+    },
+    {
+     "hans": "五点十分",
+     "hant": "五點十分"
+    },
+    {
+     "hans": "差五分七点",
+     "hant": "差五分七點"
+    },
+    {
+     "hans": "我七点起床",
+     "hant": "我七點起床"
+    },
+    {
+     "hans": "他晚上十一点睡觉",
+     "hant": "他晚上十一點睡覺"
+    }
+   ]
+  },
+  {
+   "id": "time-words",
+   "level": "HSK2",
+   "topic": "Numbers & time",
+   "title": "Day, week and year words",
+   "note": "Relative time words you will place before the verb.",
+   "phrases": [
+    {
+     "hans": "前天",
+     "hant": "前天"
+    },
+    {
+     "hans": "昨天",
+     "hant": "昨天"
+    },
+    {
+     "hans": "今天",
+     "hant": "今天"
+    },
+    {
+     "hans": "明天",
+     "hant": "明天"
+    },
+    {
+     "hans": "后天",
+     "hant": "後天"
+    },
+    {
+     "hans": "上个星期",
+     "hant": "上個星期"
+    },
+    {
+     "hans": "这个月",
+     "hant": "這個月"
+    },
+    {
+     "hans": "明年",
+     "hant": "明年"
+    }
+   ]
+  },
+  {
+   "id": "tone-pairs-1",
+   "level": "HSK1",
+   "topic": "Tones",
+   "title": "Tone pairs: first tone + any",
+   "note": "Flat first tone followed by tones 1, 2, 3, 4 and neutral: 今天 中文 开始 生日 休息.",
+   "phrases": [
+    {
+     "hans": "今天",
+     "hant": "今天"
+    },
+    {
+     "hans": "中文",
+     "hant": "中文"
+    },
+    {
+     "hans": "开始",
+     "hant": "開始"
+    },
+    {
+     "hans": "生日",
+     "hant": "生日"
+    },
+    {
+     "hans": "休息",
+     "hant": "休息"
+    }
+   ]
+  },
+  {
+   "id": "tone-pairs-2",
+   "level": "HSK1",
+   "topic": "Tones",
+   "title": "Tone pairs: second tone + any",
+   "note": "Rising first tone followed by tones 1, 2, 3, 4 and neutral: 明天 学习 啤酒 学校 朋友.",
+   "phrases": [
+    {
+     "hans": "明天",
+     "hant": "明天"
+    },
+    {
+     "hans": "学习",
+     "hant": "學習"
+    },
+    {
+     "hans": "啤酒",
+     "hant": "啤酒"
+    },
+    {
+     "hans": "学校",
+     "hant": "學校"
+    },
+    {
+     "hans": "朋友",
+     "hant": "朋友"
+    }
+   ]
+  },
+  {
+   "id": "tone-pairs-3",
+   "level": "HSK1",
+   "topic": "Tones",
+   "title": "Tone pairs: third tone + any",
+   "note": "Low first tone (half-third before another tone) followed by 1, 2, 3, 4 and neutral: 北京 起床 水果 感谢 椅子.",
+   "phrases": [
+    {
+     "hans": "北京",
+     "hant": "北京"
+    },
+    {
+     "hans": "起床",
+     "hant": "起床"
+    },
+    {
+     "hans": "水果",
+     "hant": "水果"
+    },
+    {
+     "hans": "感谢",
+     "hant": "感謝"
+    },
+    {
+     "hans": "椅子",
+     "hant": "椅子"
+    }
+   ]
+  },
+  {
+   "id": "tone-pairs-4",
+   "level": "HSK1",
+   "topic": "Tones",
+   "title": "Tone pairs: fourth tone + any",
+   "note": "Falling first tone followed by tones 1, 2, 3, 4 and neutral: 汽车 问题 电脑 再见 谢谢.",
+   "phrases": [
+    {
+     "hans": "汽车",
+     "hant": "汽車"
+    },
+    {
+     "hans": "问题",
+     "hant": "問題"
+    },
+    {
+     "hans": "电脑",
+     "hant": "電腦"
+    },
+    {
+     "hans": "再见",
+     "hant": "再見"
+    },
+    {
+     "hans": "谢谢",
+     "hant": "謝謝"
+    }
+   ]
+  },
+  {
+   "id": "tone3-sandhi",
+   "level": "HSK1",
+   "topic": "Tones",
+   "title": "Third-tone sandhi",
+   "note": "Two third tones in a row: the first becomes rising (你好 sounds like ní hǎo).",
+   "phrases": [
+    {
+     "hans": "你好",
+     "hant": "你好"
+    },
+    {
+     "hans": "很好",
+     "hant": "很好"
+    },
+    {
+     "hans": "水果",
+     "hant": "水果"
+    },
+    {
+     "hans": "老虎",
+     "hant": "老虎"
+    },
+    {
+     "hans": "洗澡",
+     "hant": "洗澡"
+    },
+    {
+     "hans": "手表",
+     "hant": "手錶"
+    },
+    {
+     "hans": "我很好",
+     "hant": "我很好"
+    }
+   ]
+  },
+  {
+   "id": "yi-tone-change",
+   "level": "HSK1",
+   "topic": "Tones",
+   "title": "一 tone changes",
+   "note": "一 is yī alone or as a number; yì before tones 1, 2, 3; yí before tone 4 (and before the measure word 个).",
+   "phrases": [
+    {
+     "hans": "一天",
+     "hant": "一天"
+    },
+    {
+     "hans": "一年",
+     "hant": "一年"
+    },
+    {
+     "hans": "一起",
+     "hant": "一起"
+    },
+    {
+     "hans": "一个",
+     "hant": "一個"
+    },
+    {
+     "hans": "一样",
+     "hant": "一樣"
+    },
+    {
+     "hans": "一半",
+     "hant": "一半"
+    },
+    {
+     "hans": "第一",
+     "hant": "第一"
+    }
+   ]
+  },
+  {
+   "id": "bu-tone-change",
+   "level": "HSK1",
+   "topic": "Tones",
+   "title": "不 tone changes",
+   "note": "不 is bù, but bú before another fourth tone.",
+   "phrases": [
+    {
+     "hans": "不吃",
+     "hant": "不吃"
+    },
+    {
+     "hans": "不来",
+     "hant": "不來"
+    },
+    {
+     "hans": "不好",
+     "hant": "不好"
+    },
+    {
+     "hans": "不是",
+     "hant": "不是"
+    },
+    {
+     "hans": "不对",
+     "hant": "不對"
+    },
+    {
+     "hans": "不去",
+     "hant": "不去"
+    },
+    {
+     "hans": "不要",
+     "hant": "不要"
+    }
+   ]
+  }
+ ],
+ "en": [
+  {
+   "id": "be-have-do",
+   "level": "A1",
+   "topic": "Verbs",
+   "title": "be, have and do",
+   "note": "The three most common verbs, as main verbs and as helpers.",
+   "phrases": [
+    "I am a teacher.",
+    "She is tired today.",
+    "We are not from here.",
+    "I have a small car.",
+    "She has two sisters.",
+    "We don't have time.",
+    "Do you have a pen?",
+    "He doesn't do his homework."
+   ]
+  },
+  {
+   "id": "present-simple-vs-continuous",
+   "level": "A1",
+   "topic": "Tenses",
+   "title": "Present simple vs present continuous",
+   "note": "Simple for habits and facts, continuous for what is happening now.",
+   "phrases": [
+    "I work in a bank.",
+    "I'm working from home today.",
+    "She drinks tea every day.",
+    "She's drinking coffee right now.",
+    "He usually walks to work.",
+    "He's driving today.",
+    "They play tennis on Sundays.",
+    "They're playing tennis now."
+   ]
+  },
+  {
+   "id": "past-irregular",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "Past simple: common irregular verbs",
+   "note": "Irregular past forms: go-went, buy-bought, see-saw, eat-ate, come-came, take-took, write-wrote, know-knew.",
+   "phrases": [
+    "I went to the market.",
+    "She bought a new coat.",
+    "We saw a movie last night.",
+    "He ate breakfast at eight.",
+    "They came home late.",
+    "I took the bus.",
+    "She wrote me a letter.",
+    "He didn't know the answer."
+   ]
+  },
+  {
+   "id": "present-perfect-vs-past",
+   "level": "B1",
+   "topic": "Tenses",
+   "title": "Present perfect vs past simple",
+   "note": "Present perfect links the past to now; past simple has a finished time.",
+   "phrases": [
+    "I've lived here for ten years.",
+    "I lived there in 2015.",
+    "Have you ever been to Japan?",
+    "Did you go to Japan last year?",
+    "She has just left.",
+    "She left an hour ago.",
+    "We haven't eaten yet.",
+    "We didn't eat yesterday."
+   ]
+  },
+  {
+   "id": "future-will-going-to",
+   "level": "A2",
+   "topic": "Tenses",
+   "title": "Future: will and going to",
+   "note": "Will for instant decisions and predictions, going to for plans and evidence.",
+   "phrases": [
+    "I'll help you with that.",
+    "I'm going to visit my parents tomorrow.",
+    "It will probably rain later.",
+    "Look at those clouds, it's going to rain.",
+    "I think she'll say yes.",
+    "We're going to buy a house.",
+    "I'll have the soup, please.",
+    "Don't worry, I'll call you."
+   ]
+  },
+  {
+   "id": "modals",
+   "level": "A2",
+   "topic": "Modals & conditionals",
+   "title": "Modal verbs",
+   "note": "can, could, should, must, might, may, have to, would like.",
+   "phrases": [
+    "I can swim.",
+    "Could you open the window?",
+    "You should see a doctor.",
+    "You must wear a seat belt.",
+    "It might snow tonight.",
+    "May I come in?",
+    "You don't have to come.",
+    "Would you like some tea?"
+   ]
+  },
+  {
+   "id": "conditionals-0-1-2",
+   "level": "B1",
+   "topic": "Modals & conditionals",
+   "title": "Conditionals 0, 1 and 2",
+   "note": "Zero: facts. First: real future. Second: unreal or unlikely present.",
+   "phrases": [
+    "If you heat ice, it melts.",
+    "If it rains, we'll stay home.",
+    "If I see her, I'll tell her.",
+    "Unless you hurry, you'll miss the bus.",
+    "If I had more time, I'd learn Spanish.",
+    "If I were you, I'd wait.",
+    "What would you do if you won the lottery?",
+    "If she knew, she'd tell us."
+   ]
+  },
+  {
+   "id": "do-support-questions",
+   "level": "A1",
+   "topic": "Questions",
+   "title": "Questions with do, does and did",
+   "note": "Do-support for present and past simple questions.",
+   "phrases": [
+    "Do you like coffee?",
+    "Does she work here?",
+    "What do you do?",
+    "Where does he live?",
+    "Did you eat lunch?",
+    "Why did they leave early?",
+    "How do you spell that?",
+    "When does the train leave?"
+   ]
+  },
+  {
+   "id": "tag-questions",
+   "level": "B1",
+   "topic": "Questions",
+   "title": "Tag questions",
+   "note": "Positive statement, negative tag; negative statement, positive tag.",
+   "phrases": [
+    "It's cold, isn't it?",
+    "You like fish, don't you?",
+    "She can swim, can't she?",
+    "They aren't late, are they?",
+    "You didn't call him, did you?",
+    "He works here, doesn't he?",
+    "Let's go, shall we?",
+    "She's coming, isn't she?"
+   ]
+  },
+  {
+   "id": "comparatives-superlatives",
+   "level": "A2",
+   "topic": "Articles & comparison",
+   "title": "Comparatives and superlatives",
+   "note": "-er and more for comparing two, -est and most for the top, as...as for equal.",
+   "phrases": [
+    "This bag is cheaper than that one.",
+    "He is taller than his brother.",
+    "She runs faster than me.",
+    "This is the best pizza in town.",
+    "It's more expensive than I thought.",
+    "Today is the hottest day of the year.",
+    "Her English is getting better.",
+    "He's as tall as I am."
+   ]
+  },
+  {
+   "id": "articles",
+   "level": "A1",
+   "topic": "Articles & comparison",
+   "title": "Articles: a, an, the and none",
+   "note": "a before consonant sounds, an before vowel sounds, the for known things, no article for general plurals.",
+   "phrases": [
+    "I have a dog.",
+    "The dog is brown.",
+    "She is an engineer.",
+    "I'll be back in an hour.",
+    "He goes to a university.",
+    "He plays the piano.",
+    "I like music.",
+    "Please close the door."
+   ]
+  },
+  {
+   "id": "phrasal-verbs",
+   "level": "B1",
+   "topic": "Verbs",
+   "title": "Common phrasal verbs",
+   "note": "Separable verbs take a pronoun in the middle.",
+   "phrases": [
+    "Please turn on the light.",
+    "Turn the light off.",
+    "Turn it off.",
+    "Pick up your bag.",
+    "She gave up smoking.",
+    "Look it up in a dictionary.",
+    "We ran out of milk.",
+    "I'll figure it out."
+   ]
+  },
+  {
+   "id": "weak-forms",
+   "level": "A2",
+   "topic": "Pronunciation",
+   "title": "Weak forms",
+   "note": "Small grammar words are reduced in connected speech: can, of, and, to, was, for.",
+   "phrases": [
+    "I can come at six.",
+    "Yes, I can.",
+    "A cup of tea.",
+    "Fish and chips.",
+    "Do you want to go?",
+    "What are you doing?",
+    "I'm going to go.",
+    "She was at home."
+   ]
+  },
+  {
+   "id": "ed-endings",
+   "level": "A2",
+   "topic": "Pronunciation",
+   "title": "-ed endings: /t/ /d/ /ɪd/",
+   "note": "After voiceless sounds -ed is /t/, after voiced sounds /d/, after t or d it is /ɪd/.",
+   "phrases": [
+    "She walked home.",
+    "He helped me.",
+    "I watched TV.",
+    "We played games.",
+    "He cleaned the room.",
+    "They opened the door.",
+    "I wanted some water.",
+    "She needed help."
+   ]
+  },
+  {
+   "id": "s-endings",
+   "level": "A2",
+   "topic": "Pronunciation",
+   "title": "-s endings: /s/ /z/ /ɪz/",
+   "note": "After voiceless sounds -s is /s/, after voiced sounds /z/, after s z sh ch j it is /ɪz/.",
+   "phrases": [
+    "He walks and talks.",
+    "She sleeps late.",
+    "He runs fast.",
+    "She loves it.",
+    "He plays guitar.",
+    "She watches TV.",
+    "He washes the dishes.",
+    "The bus passes here."
+   ]
+  },
+  {
+   "id": "word-stress-pairs",
+   "level": "B1",
+   "topic": "Pronunciation",
+   "title": "Word stress: noun vs verb",
+   "note": "Two-syllable pairs: the noun is stressed on the first syllable, the verb on the second (RECord, reCORD).",
+   "phrases": [
+    "Keep a record of it.",
+    "Please record the call.",
+    "I bought a present.",
+    "I'll present the plan.",
+    "There's an increase in price.",
+    "Prices increase every year.",
+    "What's the object?",
+    "I object to that."
+   ]
+  }
+ ]
+}
