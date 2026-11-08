@@ -43,6 +43,8 @@ struct PracticeCorpus: Decodable {
         var ipa: [String]
         var pinyin: String? = nil
         var hant: String? = nil
+        /// English meaning (minimal pairs, everyday phrases).
+        var gloss: String? = nil
         func text(_ language: AppLanguage) -> String { language == .zhHant ? (hant ?? text) : text }
     }
     struct Piece: Decodable, Identifiable, Hashable {
@@ -61,9 +63,10 @@ struct PracticeCorpus: Decodable {
     struct Drill: Decodable, Identifiable, Hashable {
         var id: String; var language: String; var title: String; var phrases: [Line]
         var titleHant: String? = nil
-        var level: String? = nil; var topic: String? = nil; var note: String? = nil
-        enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, titleHant = "title_hant" }
+        var level: String? = nil; var topic: String? = nil; var note: String? = nil; var noteHant: String? = nil
+        enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, titleHant = "title_hant", noteHant = "note_hant" }
         func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
+        func note(_ language: AppLanguage) -> String? { language == .zhHant ? (noteHant ?? note) : note }
     }
     /// One sound of a language: hear it, read how to make it, then say example words.
     struct Sound: Decodable, Identifiable, Hashable {

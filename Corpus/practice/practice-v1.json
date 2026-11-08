@@ -4212,7 +4212,7 @@
       "fei",
       "jaŋ"
      ],
-     "hant": "潜龍騰淵，鱗爪飛揚。",
+     "hant": "潛龍騰淵，鱗爪飛揚。",
      "pinyin": "qián lóng téng yuān lín zhǎo fēi yáng"
     },
     {
@@ -4535,6 +4535,7 @@
    "language": "fr",
    "title": "être — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je suis français",
@@ -4603,6 +4604,7 @@
    "language": "fr",
    "title": "avoir — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "j'ai faim",
@@ -4675,6 +4677,7 @@
    "language": "fr",
    "title": "aller and faire — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je vais bien",
@@ -4748,6 +4751,7 @@
    "language": "fr",
    "title": "pouvoir and vouloir — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je peux venir",
@@ -4826,6 +4830,7 @@
    "language": "fr",
    "title": "Regular -er, -ir, -re verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je parle français",
@@ -4903,6 +4908,7 @@
    "language": "fr",
    "title": "Reflexive verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je me lève à sept heures",
@@ -4976,6 +4982,7 @@
    "language": "fr",
    "title": "Passé composé — avoir vs être",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "j'ai mangé",
@@ -5058,6 +5065,7 @@
    "language": "fr",
    "title": "Imparfait",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "j'étais fatigué",
@@ -5118,6 +5126,7 @@
    "language": "fr",
    "title": "Futur proche and futur simple",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je vais partir",
@@ -5186,6 +5195,7 @@
    "language": "fr",
    "title": "Conditional",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je voudrais un café",
@@ -5254,6 +5264,7 @@
    "language": "fr",
    "title": "Subjunctive triggers",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "il faut que je parte",
@@ -5338,6 +5349,7 @@
    "language": "fr",
    "title": "Negation: ne…pas / jamais / rien / plus",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je ne sais pas",
@@ -5414,6 +5426,7 @@
    "language": "fr",
    "title": "Questions: est-ce que, inversion, interrogatives",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "tu viens",
@@ -5488,6 +5501,7 @@
    "language": "fr",
    "title": "Object pronouns: le/la/les, y, en",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je le vois",
@@ -5562,6 +5576,7 @@
    "language": "fr",
    "title": "Pronoun order: me/te + le, le + lui, y + en",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "je le lui donne",
@@ -5636,6 +5651,7 @@
    "language": "fr",
    "title": "Gender, number and possessives",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "un petit garçon",
@@ -5709,6 +5725,7 @@
    "language": "fr",
    "title": "Partitive articles: du, de la, de l', des",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "du pain",
@@ -5778,6 +5795,7 @@
    "language": "fr",
    "title": "à and de, contractions au/du/aux/des",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "au marché",
@@ -5848,6 +5866,7 @@
    "language": "fr",
    "title": "Numbers, time and dates",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "vingt et un",
@@ -5922,6 +5941,7 @@
    "language": "fr",
    "title": "Liaison and elision",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "les amis",
@@ -5985,6 +6005,7 @@
    "language": "fr",
    "title": "Imperative",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "parle plus lentement",
@@ -6056,6 +6077,7 @@
    "language": "fr",
    "title": "Comparatives and superlatives",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "plus grand que moi",
@@ -6127,6 +6149,7 @@
    "language": "fr",
    "title": "Relative pronouns: qui, que, où",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "l'homme qui parle",
@@ -6207,6 +6230,7 @@
    "language": "es",
    "title": "ser vs estar",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "soy alto",
@@ -6277,6 +6301,7 @@
    "language": "es",
    "title": "ser — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "yo soy médico",
@@ -6348,6 +6373,7 @@
    "language": "es",
    "title": "tener — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "tengo hambre",
@@ -6405,6 +6431,7 @@
    "language": "es",
    "title": "ir and hacer — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "voy al trabajo",
@@ -6472,6 +6499,7 @@
    "language": "es",
    "title": "poder and querer — present",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "puedo ayudarte",
@@ -6535,6 +6563,7 @@
    "language": "es",
    "title": "Regular -ar, -er, -ir verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "hablo español",
@@ -6599,6 +6628,7 @@
    "language": "es",
    "title": "Reflexive verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "me levanto temprano",
@@ -6670,6 +6700,7 @@
    "language": "es",
    "title": "Pretérito perfecto vs indefinido",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "he comido",
@@ -6734,6 +6765,7 @@
    "language": "es",
    "title": "Imperfecto",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "era pequeño",
@@ -6791,6 +6823,7 @@
    "language": "es",
    "title": "ir a + infinitive and futuro simple",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "voy a salir",
@@ -6855,6 +6888,7 @@
    "language": "es",
    "title": "Conditional",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "me gustaría un café",
@@ -6913,6 +6947,7 @@
    "language": "es",
    "title": "Subjunctive triggers",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "quiero que vengas",
@@ -6985,6 +7020,7 @@
    "language": "es",
    "title": "Negation: no, nunca, nada, nadie",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "no sé",
@@ -7053,6 +7089,7 @@
    "language": "es",
    "title": "Question words",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "¿cómo te llamas?",
@@ -7123,6 +7160,7 @@
    "language": "es",
    "title": "Direct and indirect object pronouns",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "lo veo",
@@ -7191,6 +7229,7 @@
    "language": "es",
    "title": "Pronoun order: se lo, me lo",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "se lo doy",
@@ -7268,6 +7307,7 @@
    "language": "es",
    "title": "Gender, number and possessives",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "el niño pequeño",
@@ -7342,6 +7382,7 @@
    "language": "es",
    "title": "por vs para",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "por la mañana",
@@ -7417,6 +7458,7 @@
    "language": "es",
    "title": "Numbers, time and dates",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "son las ocho",
@@ -7493,6 +7535,7 @@
    "language": "es",
    "title": "Stress shifts and tilde pairs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "mi papá come papas",
@@ -7574,6 +7617,7 @@
    "language": "es",
    "title": "gustar and similar verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "me gusta el café",
@@ -7648,6 +7692,7 @@
    "language": "es",
    "title": "Imperative (tú)",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "habla más despacio",
@@ -7714,6 +7759,7 @@
    "language": "es",
    "title": "Comparatives and superlatives",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "más alto que yo",
@@ -7786,6 +7832,7 @@
    "language": "zh",
    "title": "是 — A is B",
    "title_hant": "是 — A is B",
+   "note_hant": "是 links two nouns (A = B); negate with 不是, no 'to be' with adjectives.",
    "phrases": [
     {
      "text": "我是学生",
@@ -7891,6 +7938,7 @@
    "language": "zh",
    "title": "有 / 没有 — have, there is",
    "title_hant": "有 / 沒有 — have, there is",
+   "note_hant": "有 = have / there is; negate only with 沒有 (never 不有).",
    "phrases": [
     {
      "text": "我有一个哥哥",
@@ -8001,6 +8049,7 @@
    "language": "zh",
    "title": "Pronouns and plural 们",
    "title_hant": "Pronouns and plural 們",
+   "note_hant": "Add 們 to 我/你/他/她 to make plurals.",
    "phrases": [
     {
      "text": "我们",
@@ -8074,6 +8123,7 @@
    "language": "zh",
    "title": "在 — be located",
    "title_hant": "在 — be located",
+   "note_hant": "在 + place says where something or someone is.",
    "phrases": [
     {
      "text": "我在家",
@@ -8178,6 +8228,7 @@
    "language": "zh",
    "title": "Adjectives with 很",
    "title_hant": "Adjectives with 很",
+   "note_hant": "Adjectives act as verbs; 很 is a light link, not 'very', in plain statements.",
    "phrases": [
     {
      "text": "我很忙",
@@ -8275,6 +8326,7 @@
    "language": "zh",
    "title": "想 / 要 / 喜欢 + verb",
    "title_hant": "想 / 要 / 喜歡 + verb",
+   "note_hant": "想 want to, 要 want / will, 喜歡 like to; verb follows directly.",
    "phrases": [
     {
      "text": "我想喝茶",
@@ -8383,6 +8435,7 @@
    "language": "zh",
    "title": "这 / 那 / 哪 — this, that, which",
    "title_hant": "這 / 那 / 哪 — this, that, which",
+   "note_hant": "Demonstrative + measure word + noun.",
    "phrases": [
     {
      "text": "这个",
@@ -8470,6 +8523,7 @@
    "language": "zh",
    "title": "Age and family",
    "title_hant": "Age and family",
+   "note_hant": "Age uses 歲; family size uses 口; 幾 for small counts.",
    "phrases": [
     {
      "text": "我今年三十岁",
@@ -8570,6 +8624,7 @@
    "language": "zh",
    "title": "的 — possession",
    "title_hant": "的 — possession",
+   "note_hant": "A 的 B = A's B; 的 can drop with close relations (我媽媽).",
    "phrases": [
     {
      "text": "我的书",
@@ -8673,6 +8728,7 @@
    "language": "zh",
    "title": "的 — modifying a noun",
    "title_hant": "的 — modifying a noun",
+   "note_hant": "Describing words and verb phrases go before 的 and the noun.",
    "phrases": [
     {
      "text": "红的苹果",
@@ -8779,6 +8835,7 @@
    "language": "zh",
    "title": "个 本 张 杯",
    "title_hant": "個 本 張 杯",
+   "note_hant": "Number + measure word + noun: 個 general, 本 books, 張 flat things, 杯 cups.",
    "phrases": [
     {
      "text": "一个人",
@@ -8874,6 +8931,7 @@
    "language": "zh",
    "title": "只 件 条 双 辆 把",
    "title_hant": "隻 件 條 雙 輛 把",
+   "note_hant": "隻 small animals, 件 clothes and matters, 條 long things, 雙 pairs, 輛 vehicles, 把 handled things.",
    "phrases": [
     {
      "text": "一只猫",
@@ -8968,6 +9026,7 @@
    "language": "zh",
    "title": "这 / 那 + number + measure word",
    "title_hant": "這 / 那 + number + measure word",
+   "note_hant": "Between 這/那 and the noun you need a measure word.",
    "phrases": [
     {
      "text": "这个人",
@@ -9063,6 +9122,7 @@
    "language": "zh",
    "title": "一点儿 一些 一碗 一块",
    "title_hant": "一點兒 一些 一碗 一塊",
+   "note_hant": "Quantity words: 一點兒/一些 a bit, 碗 bowl, 塊 piece/yuan, 位 polite person.",
    "phrases": [
     {
      "text": "一点儿",
@@ -9158,6 +9218,7 @@
    "language": "zh",
    "title": "了 — completed action",
    "title_hant": "了 — completed action",
+   "note_hant": "Verb + 了 marks a completed action; with an object give a quantity or add a second 了.",
    "phrases": [
     {
      "text": "我吃了",
@@ -9254,6 +9315,7 @@
    "language": "zh",
    "title": "了 — change of state",
    "title_hant": "了 — change of state",
+   "note_hant": "Sentence-final 了 signals a new situation.",
    "phrases": [
     {
      "text": "下雨了",
@@ -9356,6 +9418,7 @@
    "language": "zh",
    "title": "过 — have ever done",
    "title_hant": "過 — have ever done",
+   "note_hant": "Verb + 過 = have done it before; negate with 沒…過.",
    "phrases": [
     {
      "text": "我去过中国",
@@ -9466,6 +9529,7 @@
    "language": "zh",
    "title": "在 / 正在 — in progress",
    "title_hant": "在 / 正在 — in progress",
+   "note_hant": "在 or 正在 before the verb = doing it right now; negate with 沒在.",
    "phrases": [
     {
      "text": "我在吃饭",
@@ -9575,6 +9639,7 @@
    "language": "zh",
    "title": "着 — continuing state",
    "title_hant": "著 — continuing state",
+   "note_hant": "Verb + 著 describes a state that continues (door open, wearing, holding).",
    "phrases": [
     {
      "text": "门开着",
@@ -9685,6 +9750,7 @@
    "language": "zh",
    "title": "了 / 过 / 在 compared",
    "title_hant": "了 / 過 / 在 compared",
+   "note_hant": "Same verb, different aspect: finished, experienced, in progress.",
    "phrases": [
     {
      "text": "我写了信",
@@ -9765,6 +9831,7 @@
    "language": "zh",
    "title": "不 vs 没",
    "title_hant": "不 vs 沒",
+   "note_hant": "不 for habits, wishes, future, 'to be'; 沒 for past events and 有.",
    "phrases": [
     {
      "text": "我不去",
@@ -9863,6 +9930,7 @@
    "language": "zh",
    "title": "吗 questions",
    "title_hant": "嗎 questions",
+   "note_hant": "Add 嗎 to a statement to make a yes/no question.",
    "phrases": [
     {
      "text": "你好吗",
@@ -9966,6 +10034,7 @@
    "language": "zh",
    "title": "A-not-A questions",
    "title_hant": "A-not-A questions",
+   "note_hant": "Verb + 不 + same verb asks a yes/no question without 嗎.",
    "phrases": [
     {
      "text": "你是不是学生",
@@ -10071,6 +10140,7 @@
    "language": "zh",
    "title": "Question words 什么 谁 哪儿 几 多少",
    "title_hant": "Question words 什麼 誰 哪兒 幾 多少",
+   "note_hant": "The question word replaces the answer in place; word order stays the same.",
    "phrases": [
     {
      "text": "这是什么",
@@ -10176,6 +10246,7 @@
    "language": "zh",
    "title": "More question words",
    "title_hant": "More question words",
+   "note_hant": "怎麼樣 how is it, 幾點 what time, 哪 which, 誰 as subject.",
    "phrases": [
     {
      "text": "今天怎么样",
@@ -10283,6 +10354,7 @@
    "language": "zh",
    "title": "呢 and 吧",
    "title_hant": "呢 and 吧",
+   "note_hant": "呢 follows up ('and you?', 'where is…?'); 吧 suggests or guesses.",
    "phrases": [
     {
      "text": "你呢",
@@ -10370,6 +10442,7 @@
    "language": "zh",
    "title": "别 / 不要 / 不用 — don't",
    "title_hant": "別 / 不要 / 不用 — don't",
+   "note_hant": "別 and 不要 forbid; 不用 means no need.",
    "phrases": [
     {
      "text": "别走",
@@ -10464,6 +10537,7 @@
    "language": "zh",
    "title": "Resultative — 看完, 听懂",
    "title_hant": "Resultative — 看完, 聽懂",
+   "note_hant": "Verb + result (完 finished, 懂 understand, 到 achieved, 好 done well).",
    "phrases": [
     {
      "text": "我看完了",
@@ -10568,6 +10642,7 @@
    "language": "zh",
    "title": "Resultative — negative with 没",
    "title_hant": "Resultative — negative with 沒",
+   "note_hant": "Negate a resultative with 沒: the result did not happen.",
    "phrases": [
     {
      "text": "我没听懂",
@@ -10660,6 +10735,7 @@
    "language": "zh",
    "title": "Directional — 进来, 出去",
    "title_hant": "Directional — 進來, 出去",
+   "note_hant": "來 toward the speaker, 去 away; 上 下 進 出 回 過 起 give the direction.",
    "phrases": [
     {
      "text": "请进来",
@@ -10764,6 +10840,7 @@
    "language": "zh",
    "title": "Potential — 听得懂 / 听不懂",
    "title_hant": "Potential — 聽得懂 / 聽不懂",
+   "note_hant": "得 or 不 inserted before the result: can / cannot achieve it.",
    "phrases": [
     {
      "text": "听得懂",
@@ -10861,6 +10938,7 @@
    "language": "zh",
    "title": "Degree — 得",
    "title_hant": "Degree — 得",
+   "note_hant": "Verb + 得 + description says how well or how fast something is done.",
    "phrases": [
     {
      "text": "他跑得很快",
@@ -10976,6 +11054,7 @@
    "language": "zh",
    "title": "Duration and frequency",
    "title_hant": "Duration and frequency",
+   "note_hant": "Time length and number of times come after the verb.",
    "phrases": [
     {
      "text": "我学了两年中文",
@@ -11085,6 +11164,7 @@
    "language": "zh",
    "title": "把 sentences",
    "title_hant": "把 sentences",
+   "note_hant": "把 + object + verb + result: what you do to a specific thing.",
    "phrases": [
     {
      "text": "我把书放在桌子上",
@@ -11207,6 +11287,7 @@
    "language": "zh",
    "title": "被 passive",
    "title_hant": "被 passive",
+   "note_hant": "Receiver + 被 (+ doer) + verb + result; often something unwelcome.",
    "phrases": [
     {
      "text": "我的自行车被偷了",
@@ -11330,6 +11411,7 @@
    "language": "zh",
    "title": "比 — comparison",
    "title_hant": "比 — comparison",
+   "note_hant": "A 比 B + adjective; add 更/還 for 'even more', a number after the adjective for the difference.",
    "phrases": [
     {
      "text": "我比他高",
@@ -11448,6 +11530,7 @@
    "language": "zh",
    "title": "没有…那么 — not as … as",
    "title_hant": "沒有…那麼 — not as … as",
+   "note_hant": "A 沒有 B (那麼) + adjective: A falls short of B.",
    "phrases": [
     {
      "text": "我没有他高",
@@ -11576,6 +11659,7 @@
    "language": "zh",
    "title": "跟 / 和…一样 — same as",
    "title_hant": "跟 / 和…一樣 — same as",
+   "note_hant": "A 跟 B 一樣 (+ adjective); negate with 不一樣.",
    "phrases": [
     {
      "text": "我跟你一样高",
@@ -11660,6 +11744,7 @@
    "language": "zh",
    "title": "是…的 — when, how, where",
    "title_hant": "是…的 — when, how, where",
+   "note_hant": "Stresses the time, manner or place of a past event already known to have happened.",
    "phrases": [
     {
      "text": "我是昨天来的",
@@ -11786,6 +11871,7 @@
    "language": "zh",
    "title": "会 / 能 / 可以",
    "title_hant": "會 / 能 / 可以",
+   "note_hant": "會 learned skill or will, 能 ability or circumstance, 可以 permission.",
    "phrases": [
     {
      "text": "我会说中文",
@@ -11896,6 +11982,7 @@
    "language": "zh",
    "title": "应该 / 得 / 必须",
    "title_hant": "應該 / 得 / 必須",
+   "note_hant": "應該 should, 得 have to, 必須 must.",
    "phrases": [
     {
      "text": "你应该多喝水",
@@ -11985,6 +12072,7 @@
    "language": "zh",
    "title": "Time words before the verb",
    "title_hant": "Time words before the verb",
+   "note_hant": "Time words go after the subject and before the verb, never at the end.",
    "phrases": [
     {
      "text": "我明天去北京",
@@ -12107,6 +12195,7 @@
    "language": "zh",
    "title": "在 / 从 / 到 / 给 / 跟 + verb",
    "title_hant": "在 / 從 / 到 / 給 / 跟 + verb",
+   "note_hant": "Prepositional phrases come before the main verb.",
    "phrases": [
     {
      "text": "我在家吃饭",
@@ -12222,6 +12311,7 @@
    "language": "zh",
    "title": "Linking clauses",
    "title_hant": "Linking clauses",
+   "note_hant": "Paired connectors: 因爲…所以, 雖然…但是, 如果…就, 不但…而且.",
    "phrases": [
     {
      "text": "因为下雨，所以我没去",
@@ -12354,6 +12444,7 @@
    "language": "zh",
    "title": "有点儿 vs 一点儿",
    "title_hant": "有點兒 vs 一點兒",
+   "note_hant": "有點兒 + adjective (a bit too, negative); adjective + 一點兒 (a little more).",
    "phrases": [
     {
      "text": "有点儿贵",
@@ -12451,6 +12542,7 @@
    "language": "zh",
    "title": "也 / 都 / 还 adverbs",
    "title_hant": "也 / 都 / 還 adverbs",
+   "note_hant": "Adverbs sit before the verb, after the subject.",
    "phrases": [
     {
      "text": "我也是学生",
@@ -12560,6 +12652,7 @@
    "language": "zh",
    "title": "离 / 从…到 / 往",
    "title_hant": "離 / 從…到 / 往",
+   "note_hant": "離 distance from, 從…到 from…to, 往 toward.",
    "phrases": [
     {
      "text": "我家离学校很近",
@@ -12673,6 +12766,7 @@
    "language": "zh",
    "title": "Numbers 1–100",
    "title_hant": "Numbers 1–100",
+   "note_hant": "Tens are built as 二十, 三十五, 九十九.",
    "phrases": [
     {
      "text": "一二三四五",
@@ -12769,6 +12863,7 @@
    "language": "zh",
    "title": "Hundreds, thousands, 万",
    "title_hant": "Hundreds, thousands, 萬",
+   "note_hant": "零 fills an empty place; 兩 is used before 百 千 萬.",
    "phrases": [
     {
      "text": "一百零五",
@@ -12863,6 +12958,7 @@
    "language": "zh",
    "title": "Money and prices",
    "title_hant": "Money and prices",
+   "note_hant": "塊 (kuai) is spoken yuan; 毛 is a tenth.",
    "phrases": [
     {
      "text": "一块钱",
@@ -12968,6 +13064,7 @@
    "language": "zh",
    "title": "Dates and weekdays",
    "title_hant": "Dates and weekdays",
+   "note_hant": "Large to small: year, month, day; weekdays 星期一…星期日.",
    "phrases": [
     {
      "text": "今天几月几号",
@@ -13071,6 +13168,7 @@
    "language": "zh",
    "title": "Telling the time",
    "title_hant": "Telling the time",
+   "note_hant": "點 o'clock, 刻 quarter, 半 half, 差 to.",
    "phrases": [
     {
      "text": "现在几点",
@@ -13176,6 +13274,7 @@
    "language": "zh",
    "title": "Day, week and year words",
    "title_hant": "Day, week and year words",
+   "note_hant": "Relative time words you will place before the verb.",
    "phrases": [
     {
      "text": "前天",
@@ -13263,6 +13362,7 @@
    "language": "zh",
    "title": "Tone pairs: first tone + any",
    "title_hant": "Tone pairs: first tone + any",
+   "note_hant": "Flat first tone followed by tones 1, 2, 3, 4 and neutral: 今天 中文 開始 生日 休息.",
    "phrases": [
     {
      "text": "今天",
@@ -13320,6 +13420,7 @@
    "language": "zh",
    "title": "Tone pairs: second tone + any",
    "title_hant": "Tone pairs: second tone + any",
+   "note_hant": "Rising first tone followed by tones 1, 2, 3, 4 and neutral: 明天 學習 啤酒 學校 朋友.",
    "phrases": [
     {
      "text": "明天",
@@ -13377,6 +13478,7 @@
    "language": "zh",
    "title": "Tone pairs: third tone + any",
    "title_hant": "Tone pairs: third tone + any",
+   "note_hant": "Low first tone (half-third before another tone) followed by 1, 2, 3, 4 and neutral: 北京 起牀 水果 感謝 椅子.",
    "phrases": [
     {
      "text": "北京",
@@ -13434,6 +13536,7 @@
    "language": "zh",
    "title": "Tone pairs: fourth tone + any",
    "title_hant": "Tone pairs: fourth tone + any",
+   "note_hant": "Falling first tone followed by tones 1, 2, 3, 4 and neutral: 汽車 問題 電腦 再見 謝謝.",
    "phrases": [
     {
      "text": "汽车",
@@ -13491,6 +13594,7 @@
    "language": "zh",
    "title": "Third-tone sandhi",
    "title_hant": "Third-tone sandhi",
+   "note_hant": "Two third tones in a row: the first becomes rising (你好 sounds like ní hǎo).",
    "phrases": [
     {
      "text": "你好",
@@ -13567,6 +13671,7 @@
    "language": "zh",
    "title": "一 tone changes",
    "title_hant": "一 tone changes",
+   "note_hant": "一 is yī alone or as a number; yì before tones 1, 2, 3; yí before tone 4 (and before the measure word 個).",
    "phrases": [
     {
      "text": "一天",
@@ -13642,6 +13747,7 @@
    "language": "zh",
    "title": "不 tone changes",
    "title_hant": "不 tone changes",
+   "note_hant": "不 is bù, but bú before another fourth tone.",
    "phrases": [
     {
      "text": "不吃",
@@ -13717,6 +13823,7 @@
    "language": "en",
    "title": "be, have and do",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I am a teacher.",
@@ -13804,6 +13911,7 @@
    "language": "en",
    "title": "Present simple vs present continuous",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I work in a bank.",
@@ -13893,6 +14001,7 @@
    "language": "en",
    "title": "Past simple: common irregular verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I went to the market.",
@@ -13984,6 +14093,7 @@
    "language": "en",
    "title": "Present perfect vs past simple",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I've lived here for ten years.",
@@ -14079,6 +14189,7 @@
    "language": "en",
    "title": "Future: will and going to",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I'll help you with that.",
@@ -14177,6 +14288,7 @@
    "language": "en",
    "title": "Modal verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I can swim.",
@@ -14266,6 +14378,7 @@
    "language": "en",
    "title": "Conditionals 0, 1 and 2",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "If you heat ice, it melts.",
@@ -14373,6 +14486,7 @@
    "language": "en",
    "title": "Questions with do, does and did",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "Do you like coffee?",
@@ -14460,6 +14574,7 @@
    "language": "en",
    "title": "Tag questions",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "It's cold, isn't it?",
@@ -14550,6 +14665,7 @@
    "language": "en",
    "title": "Comparatives and superlatives",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "This bag is cheaper than that one.",
@@ -14649,6 +14765,7 @@
    "language": "en",
    "title": "Articles: a, an, the and none",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I have a dog.",
@@ -14735,6 +14852,7 @@
    "language": "en",
    "title": "Common phrasal verbs",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "Please turn on the light.",
@@ -14820,6 +14938,7 @@
    "language": "en",
    "title": "Weak forms",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "I can come at six.",
@@ -14904,6 +15023,7 @@
    "language": "en",
    "title": "-ed endings: /t/ /d/ /ɪd/",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "She walked home.",
@@ -14983,6 +15103,7 @@
    "language": "en",
    "title": "-s endings: /s/ /z/ /ɪz/",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "He walks and talks.",
@@ -15062,6 +15183,7 @@
    "language": "en",
    "title": "Word stress: noun vs verb",
    "title_hant": null,
+   "note_hant": null,
    "phrases": [
     {
      "text": "Keep a record of it.",
@@ -15140,6 +15262,3326 @@
    "level": "B1",
    "topic": "Pronunciation",
    "note": "Two-syllable pairs: the noun is stressed on the first syllable, the verb on the second (RECord, reCORD).",
+   "source": null
+  },
+  {
+   "id": "es-cafe",
+   "language": "es",
+   "title": "At the café or bar",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Un café con leche, por favor.",
+     "ipa": [
+      "un",
+      "kafe",
+      "kon",
+      "letʃe",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "A coffee with milk, please."
+    },
+    {
+     "text": "¿Me pones un cortado?",
+     "ipa": [
+      "me",
+      "pones",
+      "un",
+      "koɾtaðo"
+     ],
+     "gloss": "Could you get me a cortado?"
+    },
+    {
+     "text": "Para llevar, ¿vale?",
+     "ipa": [
+      "paɾa",
+      "ʎeβaɾ",
+      "βale"
+     ],
+     "gloss": "To take away, OK?"
+    },
+    {
+     "text": "¿Qué tenéis de tapas?",
+     "ipa": [
+      "ke",
+      "teneis",
+      "ðe",
+      "tapas"
+     ],
+     "gloss": "What tapas do you have?"
+    },
+    {
+     "text": "Una caña y unas patatas bravas.",
+     "ipa": [
+      "una",
+      "kaɲa",
+      "i",
+      "unas",
+      "patatas",
+      "βɾaβas"
+     ],
+     "gloss": "A small draught beer and some patatas bravas."
+    },
+    {
+     "text": "¿Se puede pagar con tarjeta?",
+     "ipa": [
+      "se",
+      "pweðe",
+      "paɣaɾ",
+      "kon",
+      "taɾxeta"
+     ],
+     "gloss": "Can I pay by card?"
+    },
+    {
+     "text": "La cuenta, por favor.",
+     "ipa": [
+      "la",
+      "kwenta",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "The bill, please."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Spain Castilian: bar orders are short and friendly; vosotros forms for a group.",
+   "source": null
+  },
+  {
+   "id": "es-mercado",
+   "language": "es",
+   "title": "At the market",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "¿A cuánto está el kilo de naranjas?",
+     "ipa": [
+      "a",
+      "kwanto",
+      "esta",
+      "el",
+      "kilo",
+      "ðe",
+      "naɾaŋxas"
+     ],
+     "gloss": "How much is a kilo of oranges?"
+    },
+    {
+     "text": "Medio kilo de tomates, por favor.",
+     "ipa": [
+      "meðjo",
+      "kilo",
+      "ðe",
+      "tomates",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "Half a kilo of tomatoes, please."
+    },
+    {
+     "text": "¿Está fresco el pescado?",
+     "ipa": [
+      "esta",
+      "fɾesko",
+      "el",
+      "peskaðo"
+     ],
+     "gloss": "Is the fish fresh?"
+    },
+    {
+     "text": "¿Qué me recomienda?",
+     "ipa": [
+      "ke",
+      "me",
+      "rekomjenda"
+     ],
+     "gloss": "What do you recommend?"
+    },
+    {
+     "text": "Un poquito más, por favor.",
+     "ipa": [
+      "um",
+      "pokito",
+      "mas",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "A little bit more, please."
+    },
+    {
+     "text": "¿Me lo pone en una bolsa?",
+     "ipa": [
+      "me",
+      "lo",
+      "pone",
+      "en",
+      "una",
+      "βolsa"
+     ],
+     "gloss": "Could you put it in a bag?"
+    },
+    {
+     "text": "Eso es todo, gracias.",
+     "ipa": [
+      "eso",
+      "es",
+      "toðo",
+      "ɣɾaθjas"
+     ],
+     "gloss": "That's all, thanks."
+    },
+    {
+     "text": "¿Cuánto es?",
+     "ipa": [
+      "kwanto",
+      "es"
+     ],
+     "gloss": "How much is it?"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Mercado stallholders say usted; prices are per kilo.",
+   "source": null
+  },
+  {
+   "id": "es-salud",
+   "language": "es",
+   "title": "Doctor and pharmacy",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Quería pedir cita con el médico.",
+     "ipa": [
+      "keɾia",
+      "peðiɾ",
+      "θita",
+      "kon",
+      "el",
+      "meðiko"
+     ],
+     "gloss": "I'd like to make an appointment with the doctor."
+    },
+    {
+     "text": "Tengo la tarjeta sanitaria.",
+     "ipa": [
+      "teŋɡo",
+      "la",
+      "taɾxeta",
+      "sanitaɾja"
+     ],
+     "gloss": "I have my health card."
+    },
+    {
+     "text": "Me duele la cabeza.",
+     "ipa": [
+      "me",
+      "dwele",
+      "la",
+      "kaβeθa"
+     ],
+     "gloss": "I have a headache."
+    },
+    {
+     "text": "Tengo fiebre desde ayer.",
+     "ipa": [
+      "teŋɡo",
+      "fjeβɾe",
+      "ðesðe",
+      "aʝeɾ"
+     ],
+     "gloss": "I've had a fever since yesterday."
+    },
+    {
+     "text": "Soy alérgico a la penicilina.",
+     "ipa": [
+      "soj",
+      "aleɾxiko",
+      "a",
+      "la",
+      "peniθilina"
+     ],
+     "gloss": "I'm allergic to penicillin."
+    },
+    {
+     "text": "¿Tiene algo para la tos?",
+     "ipa": [
+      "tjene",
+      "alɣo",
+      "paɾa",
+      "la",
+      "tos"
+     ],
+     "gloss": "Do you have something for a cough?"
+    },
+    {
+     "text": "¿Se toma con las comidas?",
+     "ipa": [
+      "se",
+      "toma",
+      "kon",
+      "las",
+      "komiðas"
+     ],
+     "gloss": "Is it taken with meals?"
+    },
+    {
+     "text": "Necesito una receta.",
+     "ipa": [
+      "neθesito",
+      "una",
+      "reθeta"
+     ],
+     "gloss": "I need a prescription."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Centro de salud and farmacia phrases.",
+   "source": null
+  },
+  {
+   "id": "es-piso",
+   "language": "es",
+   "title": "Renting a flat",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Busco un piso de dos habitaciones.",
+     "ipa": [
+      "busko",
+      "um",
+      "piso",
+      "ðe",
+      "ðos",
+      "aβitaθjones"
+     ],
+     "gloss": "I'm looking for a two-bedroom flat."
+    },
+    {
+     "text": "¿Cuánto es el alquiler al mes?",
+     "ipa": [
+      "kwanto",
+      "es",
+      "el",
+      "alkileɾ",
+      "al",
+      "mes"
+     ],
+     "gloss": "How much is the rent per month?"
+    },
+    {
+     "text": "¿Están los gastos incluidos?",
+     "ipa": [
+      "estan",
+      "los",
+      "ɣastos",
+      "inkluiðos"
+     ],
+     "gloss": "Are the bills included?"
+    },
+    {
+     "text": "¿Hay que dejar fianza?",
+     "ipa": [
+      "aj",
+      "ke",
+      "ðexaɾ",
+      "fjanθa"
+     ],
+     "gloss": "Do I have to leave a deposit?"
+    },
+    {
+     "text": "¿Tiene aire acondicionado?",
+     "ipa": [
+      "tjene",
+      "ajɾe",
+      "akondiθjonaðo"
+     ],
+     "gloss": "Does it have air conditioning?"
+    },
+    {
+     "text": "¿Se admiten mascotas?",
+     "ipa": [
+      "se",
+      "admiten",
+      "maskotas"
+     ],
+     "gloss": "Are pets allowed?"
+    },
+    {
+     "text": "¿Se puede visitar hoy?",
+     "ipa": [
+      "se",
+      "pweðe",
+      "βisitaɾ",
+      "oj"
+     ],
+     "gloss": "Can we view it today?"
+    },
+    {
+     "text": "Me interesa el piso.",
+     "ipa": [
+      "me",
+      "inteɾesa",
+      "el",
+      "piso"
+     ],
+     "gloss": "I'm interested in the flat."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Spanish says piso for flat; fianza is the deposit.",
+   "source": null
+  },
+  {
+   "id": "es-tramites",
+   "language": "es",
+   "title": "Bank and paperwork",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Quería abrir una cuenta.",
+     "ipa": [
+      "keɾia",
+      "aβɾiɾ",
+      "una",
+      "kwenta"
+     ],
+     "gloss": "I'd like to open an account."
+    },
+    {
+     "text": "Necesito el empadronamiento.",
+     "ipa": [
+      "neθesito",
+      "el",
+      "empaðɾonamjento"
+     ],
+     "gloss": "I need the empadronamiento (registration certificate)."
+    },
+    {
+     "text": "Tengo cita para el NIE.",
+     "ipa": [
+      "teŋɡo",
+      "θita",
+      "paɾa",
+      "el",
+      "eneie"
+     ],
+     "gloss": "I have an appointment for the NIE."
+    },
+    {
+     "text": "Vengo a pedir cita previa.",
+     "ipa": [
+      "beŋɡo",
+      "a",
+      "peðiɾ",
+      "θita",
+      "pɾeβja"
+     ],
+     "gloss": "I'm here to ask for an appointment."
+    },
+    {
+     "text": "¿Qué documentos hacen falta?",
+     "ipa": [
+      "ke",
+      "ðokumentos",
+      "aθen",
+      "falta"
+     ],
+     "gloss": "What documents are needed?"
+    },
+    {
+     "text": "Aquí tiene mi pasaporte.",
+     "ipa": [
+      "aki",
+      "tjene",
+      "mi",
+      "pasapoɾte"
+     ],
+     "gloss": "Here is my passport."
+    },
+    {
+     "text": "¿Dónde tengo que firmar?",
+     "ipa": [
+      "donde",
+      "teŋɡo",
+      "ke",
+      "fiɾmaɾ"
+     ],
+     "gloss": "Where do I have to sign?"
+    },
+    {
+     "text": "¿Puede repetirlo, por favor?",
+     "ipa": [
+      "pweðe",
+      "repetiɾlo",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "Can you repeat that, please?"
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Trámites: empadronamiento (town registration) and NIE (foreigner number).",
+   "source": null
+  },
+  {
+   "id": "es-transporte",
+   "language": "es",
+   "title": "Metro, bus and tickets",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Un billete sencillo, por favor.",
+     "ipa": [
+      "um",
+      "biʎete",
+      "senθiʎo",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "A single ticket, please."
+    },
+    {
+     "text": "¿Dónde está la parada del metro?",
+     "ipa": [
+      "donde",
+      "esta",
+      "la",
+      "paɾaða",
+      "ðel",
+      "metɾo"
+     ],
+     "gloss": "Where is the metro stop?"
+    },
+    {
+     "text": "¿Este autobús va al centro?",
+     "ipa": [
+      "este",
+      "awtoβus",
+      "βa",
+      "al",
+      "θentɾo"
+     ],
+     "gloss": "Does this bus go to the centre?"
+    },
+    {
+     "text": "¿Es esta la línea cinco?",
+     "ipa": [
+      "es",
+      "esta",
+      "la",
+      "linea",
+      "θinko"
+     ],
+     "gloss": "Is this line five?"
+    },
+    {
+     "text": "¿Cuándo sale el próximo?",
+     "ipa": [
+      "kwando",
+      "sale",
+      "el",
+      "pɾoksimo"
+     ],
+     "gloss": "When does the next one leave?"
+    },
+    {
+     "text": "¿Dónde puedo recargar la tarjeta?",
+     "ipa": [
+      "donde",
+      "pweðo",
+      "rekaɾɣaɾ",
+      "la",
+      "taɾxeta"
+     ],
+     "gloss": "Where can I top up the card?"
+    },
+    {
+     "text": "Me bajo en la próxima.",
+     "ipa": [
+      "me",
+      "βaxo",
+      "en",
+      "la",
+      "pɾoksima"
+     ],
+     "gloss": "I'm getting off at the next one."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Valencia: Metrovalencia, EMT buses; tarjeta recargable.",
+   "source": null
+  },
+  {
+   "id": "es-vecinos",
+   "language": "es",
+   "title": "Neighbours and small talk",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Buenos días, vecina.",
+     "ipa": [
+      "bwenos",
+      "ðias",
+      "βeθina"
+     ],
+     "gloss": "Good morning, neighbour."
+    },
+    {
+     "text": "¿Qué tal todo?",
+     "ipa": [
+      "ke",
+      "tal",
+      "toðo"
+     ],
+     "gloss": "How's everything?"
+    },
+    {
+     "text": "Hace un calor tremendo, ¿eh?",
+     "ipa": [
+      "aθe",
+      "un",
+      "kaloɾ",
+      "tɾemendo",
+      "e"
+     ],
+     "gloss": "It's terribly hot, isn't it?"
+    },
+    {
+     "text": "Me acabo de mudar al tercero.",
+     "ipa": [
+      "me",
+      "akaβo",
+      "ðe",
+      "muðaɾ",
+      "al",
+      "teɾθeɾo"
+     ],
+     "gloss": "I've just moved into the third floor."
+    },
+    {
+     "text": "¿Vosotros sois de aquí?",
+     "ipa": [
+      "bosotɾos",
+      "sojs",
+      "ðe",
+      "aki"
+     ],
+     "gloss": "Are you (pl.) from here?"
+    },
+    {
+     "text": "Perdonad, ¿sabéis dónde hay un súper?",
+     "ipa": [
+      "peɾðonad",
+      "saβeis",
+      "ðonde",
+      "aj",
+      "un",
+      "supeɾ"
+     ],
+     "gloss": "Excuse me, do you know where there's a supermarket?"
+    },
+    {
+     "text": "Hasta luego, nos vemos.",
+     "ipa": [
+      "asta",
+      "lueɣo",
+      "nos",
+      "βemos"
+     ],
+     "gloss": "See you later."
+    },
+    {
+     "text": "¡Que os vaya bien!",
+     "ipa": [
+      "ke",
+      "os",
+      "βaʝa",
+      "βjen"
+     ],
+     "gloss": "Take care, all of you!"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Friendly informal chat; vosotros for several people.",
+   "source": null
+  },
+  {
+   "id": "es-emergencias",
+   "language": "es",
+   "title": "Emergencies",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "¡Ayuda, por favor!",
+     "ipa": [
+      "aʝuða",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "Help, please!"
+    },
+    {
+     "text": "Llamad a una ambulancia.",
+     "ipa": [
+      "ʎamað",
+      "a",
+      "una",
+      "ambulanθja"
+     ],
+     "gloss": "Call an ambulance (you all)."
+    },
+    {
+     "text": "Llamad a la policía.",
+     "ipa": [
+      "ʎamað",
+      "a",
+      "la",
+      "poliθia"
+     ],
+     "gloss": "Call the police (you all)."
+    },
+    {
+     "text": "Necesito un médico urgente.",
+     "ipa": [
+      "neθesito",
+      "un",
+      "meðiko",
+      "uɾxente"
+     ],
+     "gloss": "I urgently need a doctor."
+    },
+    {
+     "text": "Ha habido un accidente.",
+     "ipa": [
+      "a",
+      "aβiðo",
+      "un",
+      "akθiðente"
+     ],
+     "gloss": "There's been an accident."
+    },
+    {
+     "text": "Me han robado la cartera.",
+     "ipa": [
+      "me",
+      "an",
+      "roβaðo",
+      "la",
+      "kaɾteɾa"
+     ],
+     "gloss": "My wallet has been stolen."
+    },
+    {
+     "text": "¿Dónde está el hospital más cercano?",
+     "ipa": [
+      "donde",
+      "esta",
+      "el",
+      "ospital",
+      "mas",
+      "θeɾkano"
+     ],
+     "gloss": "Where is the nearest hospital?"
+    },
+    {
+     "text": "Me he perdido.",
+     "ipa": [
+      "me",
+      "e",
+      "peɾðiðo"
+     ],
+     "gloss": "I'm lost."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "In Spain the emergency number is 112.",
+   "source": null
+  },
+  {
+   "id": "fr-boulangerie",
+   "language": "fr",
+   "title": "At the bakery",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Bonjour, une baguette, s'il vous plaît.",
+     "ipa": [
+      "bɔ̃ʒuʁ",
+      "yn",
+      "baɡɛt",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "Hello, a baguette, please."
+    },
+    {
+     "text": "Je vais prendre deux croissants.",
+     "ipa": [
+      "ʒə",
+      "vɛ",
+      "pʁɑ̃dʁ",
+      "dø",
+      "kʁwasɑ̃"
+     ],
+     "gloss": "I'll take two croissants."
+    },
+    {
+     "text": "Vous avez des pains au chocolat ?",
+     "ipa": [
+      "vuz",
+      "ave",
+      "de",
+      "pɛ̃z",
+      "o",
+      "ʃokola"
+     ],
+     "gloss": "Do you have pains au chocolat?"
+    },
+    {
+     "text": "Une tradition bien cuite, s'il vous plaît.",
+     "ipa": [
+      "yn",
+      "tʁadisjɔ̃",
+      "bjɛ̃",
+      "kɥit",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "A well-baked tradition loaf, please."
+    },
+    {
+     "text": "C'est pour emporter.",
+     "ipa": [
+      "sɛ",
+      "puʁ",
+      "ɑ̃pɔʁte"
+     ],
+     "gloss": "It's to take away."
+    },
+    {
+     "text": "Ça fait combien ?",
+     "ipa": [
+      "sa",
+      "fɛ",
+      "kɔ̃bjɛ̃"
+     ],
+     "gloss": "How much is that?"
+    },
+    {
+     "text": "Je peux payer par carte ?",
+     "ipa": [
+      "ʒə",
+      "pø",
+      "pɛje",
+      "paʁ",
+      "kaʁt"
+     ],
+     "gloss": "Can I pay by card?"
+    },
+    {
+     "text": "Bonne journée !",
+     "ipa": [
+      "bɔn",
+      "ʒuʁne"
+     ],
+     "gloss": "Have a good day!"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Greet first: Bonjour is expected before ordering.",
+   "source": null
+  },
+  {
+   "id": "fr-cafe",
+   "language": "fr",
+   "title": "At the café",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Un café, s'il vous plaît.",
+     "ipa": [
+      "œ̃",
+      "kafe",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "An espresso, please."
+    },
+    {
+     "text": "Je voudrais un grand crème.",
+     "ipa": [
+      "ʒə",
+      "vudʁɛz",
+      "œ̃",
+      "ɡʁɑ̃",
+      "kʁɛm"
+     ],
+     "gloss": "I'd like a large white coffee."
+    },
+    {
+     "text": "On peut s'asseoir en terrasse ?",
+     "ipa": [
+      "ɔ̃",
+      "pø",
+      "saswaʁ",
+      "ɑ̃",
+      "tɛʁas"
+     ],
+     "gloss": "Can we sit on the terrace?"
+    },
+    {
+     "text": "Vous avez la carte ?",
+     "ipa": [
+      "vuz",
+      "ave",
+      "la",
+      "kaʁt"
+     ],
+     "gloss": "Do you have the menu?"
+    },
+    {
+     "text": "Une carafe d'eau, s'il vous plaît.",
+     "ipa": [
+      "yn",
+      "kaʁaf",
+      "do",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "A jug of tap water, please."
+    },
+    {
+     "text": "L'addition, s'il vous plaît.",
+     "ipa": [
+      "ladisjɔ̃",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "The bill, please."
+    },
+    {
+     "text": "C'est tout, merci.",
+     "ipa": [
+      "sɛ",
+      "tu",
+      "mɛʁsi"
+     ],
+     "gloss": "That's all, thanks."
+    },
+    {
+     "text": "Où sont les toilettes ?",
+     "ipa": [
+      "u",
+      "sɔ̃",
+      "le",
+      "twalɛt"
+     ],
+     "gloss": "Where are the toilets?"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Standing at the bar is cheaper than sitting on the terrasse.",
+   "source": null
+  },
+  {
+   "id": "fr-transports",
+   "language": "fr",
+   "title": "Trains and metro",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Un ticket, s'il vous plaît.",
+     "ipa": [
+      "œ̃",
+      "tikɛ",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "A ticket, please."
+    },
+    {
+     "text": "Où est la station de RER ?",
+     "ipa": [
+      "u",
+      "ɛ",
+      "la",
+      "stasjɔ̃",
+      "də",
+      "ɛʁəɛʁ"
+     ],
+     "gloss": "Where is the RER station?"
+    },
+    {
+     "text": "Je dois recharger mon Navigo.",
+     "ipa": [
+      "ʒə",
+      "dwa",
+      "ʁəʃaʁʒe",
+      "mɔ̃",
+      "naviɡo"
+     ],
+     "gloss": "I need to top up my Navigo."
+    },
+    {
+     "text": "Quelle ligne pour la gare de Lyon ?",
+     "ipa": [
+      "kɛl",
+      "liɲ",
+      "puʁ",
+      "la",
+      "ɡaʁ",
+      "də",
+      "ljɔ̃"
+     ],
+     "gloss": "Which line for Gare de Lyon?"
+    },
+    {
+     "text": "C'est direct ?",
+     "ipa": [
+      "sɛ",
+      "diʁɛkt"
+     ],
+     "gloss": "Is it direct?"
+    },
+    {
+     "text": "Le prochain train part à quelle heure ?",
+     "ipa": [
+      "lə",
+      "pʁoʃɛ̃",
+      "tʁɛ̃",
+      "paʁ",
+      "a",
+      "kɛl",
+      "œʁ"
+     ],
+     "gloss": "What time does the next train leave?"
+    },
+    {
+     "text": "Il y a une grève aujourd'hui ?",
+     "ipa": [
+      "il",
+      "i",
+      "a",
+      "yn",
+      "ɡʁɛv",
+      "oʒuʁdɥi"
+     ],
+     "gloss": "Is there a strike today?"
+    },
+    {
+     "text": "Pardon, je descends ici.",
+     "ipa": [
+      "paʁdɔ̃",
+      "ʒə",
+      "dɛsɑ̃z",
+      "isi"
+     ],
+     "gloss": "Excuse me, I'm getting off here."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Île-de-France: RER, métro, Navigo pass.",
+   "source": null
+  },
+  {
+   "id": "fr-medecin",
+   "language": "fr",
+   "title": "At the doctor's",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Je voudrais prendre rendez-vous.",
+     "ipa": [
+      "ʒə",
+      "vudʁɛ",
+      "pʁɑ̃dʁ",
+      "ʁɑ̃devu"
+     ],
+     "gloss": "I'd like to make an appointment."
+    },
+    {
+     "text": "J'ai rendez-vous à quatorze heures.",
+     "ipa": [
+      "ʒe",
+      "ʁɑ̃devuz",
+      "a",
+      "katɔʁz",
+      "œʁ"
+     ],
+     "gloss": "I have an appointment at 2 p.m."
+    },
+    {
+     "text": "J'ai mal à la gorge.",
+     "ipa": [
+      "ʒe",
+      "mal",
+      "a",
+      "la",
+      "ɡɔʁʒ"
+     ],
+     "gloss": "I have a sore throat."
+    },
+    {
+     "text": "Ça fait trois jours que je tousse.",
+     "ipa": [
+      "sa",
+      "fɛ",
+      "tʁwa",
+      "ʒuʁ",
+      "kə",
+      "ʒə",
+      "tus"
+     ],
+     "gloss": "I've been coughing for three days."
+    },
+    {
+     "text": "Je n'ai pas de fièvre.",
+     "ipa": [
+      "ʒə",
+      "ne",
+      "pa",
+      "də",
+      "fjɛvʁ"
+     ],
+     "gloss": "I don't have a fever."
+    },
+    {
+     "text": "Vous avez la carte Vitale ?",
+     "ipa": [
+      "vuz",
+      "ave",
+      "la",
+      "kaʁt",
+      "vital"
+     ],
+     "gloss": "Do you have your Vitale card?"
+    },
+    {
+     "text": "Je suis allergique à la pénicilline.",
+     "ipa": [
+      "ʒə",
+      "sɥiz",
+      "alɛʁʒik",
+      "a",
+      "la",
+      "penisilin"
+     ],
+     "gloss": "I'm allergic to penicillin."
+    },
+    {
+     "text": "Je dois le prendre deux fois par jour ?",
+     "ipa": [
+      "ʒə",
+      "dwa",
+      "lə",
+      "pʁɑ̃dʁ",
+      "dø",
+      "fwa",
+      "paʁ",
+      "ʒuʁ"
+     ],
+     "gloss": "Do I take it twice a day?"
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Carte Vitale is the French health insurance card.",
+   "source": null
+  },
+  {
+   "id": "fr-travail",
+   "language": "fr",
+   "title": "At work",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Bonjour à tous !",
+     "ipa": [
+      "bɔ̃ʒuʁ",
+      "a",
+      "tus"
+     ],
+     "gloss": "Hello everyone!"
+    },
+    {
+     "text": "Tu as cinq minutes ?",
+     "ipa": [
+      "ty",
+      "a",
+      "sɛ̃k",
+      "minyt"
+     ],
+     "gloss": "Have you got five minutes?"
+    },
+    {
+     "text": "On fait un point demain ?",
+     "ipa": [
+      "ɔ̃",
+      "fɛt",
+      "œ̃",
+      "pwɛ̃",
+      "dəmɛ̃"
+     ],
+     "gloss": "Shall we do a catch-up tomorrow?"
+    },
+    {
+     "text": "Je suis en réunion.",
+     "ipa": [
+      "ʒə",
+      "sɥiz",
+      "ɑ̃",
+      "ʁeynjɔ̃"
+     ],
+     "gloss": "I'm in a meeting."
+    },
+    {
+     "text": "Je te l'envoie par message.",
+     "ipa": [
+      "ʒə",
+      "tə",
+      "lɑ̃vwa",
+      "paʁ",
+      "mɛsaʒ"
+     ],
+     "gloss": "I'll send it to you by message."
+    },
+    {
+     "text": "On déjeune ensemble ?",
+     "ipa": [
+      "ɔ̃",
+      "deʒøn",
+      "ɑ̃sɑ̃bl"
+     ],
+     "gloss": "Shall we have lunch together?"
+    },
+    {
+     "text": "Je suis en télétravail demain.",
+     "ipa": [
+      "ʒə",
+      "sɥiz",
+      "ɑ̃",
+      "teletʁavaj",
+      "dəmɛ̃"
+     ],
+     "gloss": "I'm working from home tomorrow."
+    },
+    {
+     "text": "Bon courage !",
+     "ipa": [
+      "bɔ̃",
+      "kuʁaʒ"
+     ],
+     "gloss": "Good luck with it! (hang in there)"
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Colleagues use tu; clients and bosses often vous.",
+   "source": null
+  },
+  {
+   "id": "fr-smalltalk",
+   "language": "fr",
+   "title": "Small talk",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Ça va ?",
+     "ipa": [
+      "sa",
+      "va"
+     ],
+     "gloss": "How's it going?"
+    },
+    {
+     "text": "Quoi de neuf ?",
+     "ipa": [
+      "kwa",
+      "də",
+      "nœf"
+     ],
+     "gloss": "What's new?"
+    },
+    {
+     "text": "Il fait beau aujourd'hui, non ?",
+     "ipa": [
+      "il",
+      "fɛ",
+      "bo",
+      "oʒuʁdɥi",
+      "nɔ̃"
+     ],
+     "gloss": "Nice weather today, isn't it?"
+    },
+    {
+     "text": "Tu as passé un bon week-end ?",
+     "ipa": [
+      "ty",
+      "a",
+      "pase",
+      "œ̃",
+      "bɔ̃",
+      "wikɛnd"
+     ],
+     "gloss": "Did you have a good weekend?"
+    },
+    {
+     "text": "Tu habites dans le coin ?",
+     "ipa": [
+      "ty",
+      "abit",
+      "dɑ̃",
+      "lə",
+      "kwɛ̃"
+     ],
+     "gloss": "Do you live around here?"
+    },
+    {
+     "text": "Enchanté !",
+     "ipa": [
+      "ɑ̃ʃɑ̃te"
+     ],
+     "gloss": "Nice to meet you!"
+    },
+    {
+     "text": "À bientôt !",
+     "ipa": [
+      "a",
+      "bjɛ̃to"
+     ],
+     "gloss": "See you soon!"
+    },
+    {
+     "text": "Bonne soirée !",
+     "ipa": [
+      "bɔn",
+      "swaʁe"
+     ],
+     "gloss": "Have a good evening!"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Light, polite chit-chat.",
+   "source": null
+  },
+  {
+   "id": "fr-telephone",
+   "language": "fr",
+   "title": "Phone and admin",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Allô, bonjour, c'est Marie.",
+     "ipa": [
+      "alo",
+      "bɔ̃ʒuʁ",
+      "sɛ",
+      "maʁi"
+     ],
+     "gloss": "Hello, it's Marie."
+    },
+    {
+     "text": "Je voudrais parler à madame Martin.",
+     "ipa": [
+      "ʒə",
+      "vudʁɛ",
+      "paʁle",
+      "a",
+      "madam",
+      "maʁtɛ̃"
+     ],
+     "gloss": "I'd like to speak to Mrs Martin."
+    },
+    {
+     "text": "Ne quittez pas.",
+     "ipa": [
+      "nə",
+      "kite",
+      "pa"
+     ],
+     "gloss": "Please hold."
+    },
+    {
+     "text": "Vous pouvez répéter, s'il vous plaît ?",
+     "ipa": [
+      "vu",
+      "puve",
+      "ʁepete",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "Can you repeat that, please?"
+    },
+    {
+     "text": "J'appelle au sujet de mon dossier.",
+     "ipa": [
+      "ʒapɛl",
+      "o",
+      "syʒɛ",
+      "də",
+      "mɔ̃",
+      "dɔsje"
+     ],
+     "gloss": "I'm calling about my file."
+    },
+    {
+     "text": "Quel est le numéro de dossier ?",
+     "ipa": [
+      "kɛl",
+      "ɛ",
+      "lə",
+      "nymeʁo",
+      "də",
+      "dɔsje"
+     ],
+     "gloss": "What's the file number?"
+    },
+    {
+     "text": "Je dois envoyer un justificatif de domicile.",
+     "ipa": [
+      "ʒə",
+      "dwaz",
+      "ɑ̃vwaje",
+      "œ̃",
+      "ʒystifikatif",
+      "də",
+      "domisil"
+     ],
+     "gloss": "I have to send proof of address."
+    },
+    {
+     "text": "Je vous rappelle dans cinq minutes.",
+     "ipa": [
+      "ʒə",
+      "vu",
+      "ʁapɛl",
+      "dɑ̃",
+      "sɛ̃k",
+      "minyt"
+     ],
+     "gloss": "I'll call you back in five minutes."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Calls to offices and the administration.",
+   "source": null
+  },
+  {
+   "id": "fr-marche",
+   "language": "fr",
+   "title": "At the market",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Bonjour, madame !",
+     "ipa": [
+      "bɔ̃ʒuʁ",
+      "madam"
+     ],
+     "gloss": "Hello, madam!"
+    },
+    {
+     "text": "Un kilo de pommes, s'il vous plaît.",
+     "ipa": [
+      "œ̃",
+      "kilo",
+      "də",
+      "pɔm",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "A kilo of apples, please."
+    },
+    {
+     "text": "C'est combien le kilo ?",
+     "ipa": [
+      "sɛ",
+      "kɔ̃bjɛ̃",
+      "lə",
+      "kilo"
+     ],
+     "gloss": "How much is a kilo?"
+    },
+    {
+     "text": "Vous en avez des plus mûres ?",
+     "ipa": [
+      "vuz",
+      "ɑ̃n",
+      "ave",
+      "de",
+      "ply",
+      "myʁ"
+     ],
+     "gloss": "Do you have riper ones?"
+    },
+    {
+     "text": "Il m'en faut six.",
+     "ipa": [
+      "il",
+      "mɑ̃",
+      "fo",
+      "sis"
+     ],
+     "gloss": "I need six of them."
+    },
+    {
+     "text": "Je vais prendre ça.",
+     "ipa": [
+      "ʒə",
+      "vɛ",
+      "pʁɑ̃dʁ",
+      "sa"
+     ],
+     "gloss": "I'll take that."
+    },
+    {
+     "text": "Vous pouvez le couper en deux ?",
+     "ipa": [
+      "vu",
+      "puve",
+      "lə",
+      "kupe",
+      "ɑ̃",
+      "dø"
+     ],
+     "gloss": "Can you cut it in half?"
+    },
+    {
+     "text": "Ce sera tout ?",
+     "ipa": [
+      "sə",
+      "səʁa",
+      "tu"
+     ],
+     "gloss": "Will that be all?"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Say bonjour to the stallholder first.",
+   "source": null
+  },
+  {
+   "id": "zh-canting",
+   "language": "zh",
+   "title": "Ordering at a restaurant",
+   "title_hant": "Ordering at a restaurant",
+   "note_hant": "Mainland restaurant talk; 買單 asks for the bill.",
+   "phrases": [
+    {
+     "text": "你好，几位？",
+     "ipa": [
+      "ni",
+      "xau",
+      "tɕi",
+      "wei"
+     ],
+     "hant": "你好，幾位？",
+     "pinyin": "nǐ hǎo jǐ wèi",
+     "gloss": "Hello, how many people?"
+    },
+    {
+     "text": "我们两个人。",
+     "ipa": [
+      "wo",
+      "mən",
+      "ljaŋ",
+      "kɤ",
+      "ʐən"
+     ],
+     "hant": "我們兩個人。",
+     "pinyin": "wǒ men liǎng gè rén",
+     "gloss": "There are two of us."
+    },
+    {
+     "text": "请给我菜单。",
+     "ipa": [
+      "tɕʰiŋ",
+      "kei",
+      "wo",
+      "tsʰai",
+      "tan"
+     ],
+     "hant": "請給我菜單。",
+     "pinyin": "qǐng gěi wǒ cài dān",
+     "gloss": "Please give me the menu."
+    },
+    {
+     "text": "有什么推荐的吗？",
+     "ipa": [
+      "jou",
+      "ʂən",
+      "mɤ",
+      "tʰwei",
+      "tɕjɛn",
+      "tɤ",
+      "ma"
+     ],
+     "hant": "有什麼推薦的嗎？",
+     "pinyin": "yǒu shén me tuī jiàn de ma",
+     "gloss": "Any recommendations?"
+    },
+    {
+     "text": "不要辣，谢谢。",
+     "ipa": [
+      "pu",
+      "jau",
+      "la",
+      "ɕje",
+      "ɕje"
+     ],
+     "hant": "不要辣，謝謝。",
+     "pinyin": "bú yào là xiè xiè",
+     "gloss": "No spice, thanks."
+    },
+    {
+     "text": "再来一瓶啤酒。",
+     "ipa": [
+      "tsai",
+      "lai",
+      "i",
+      "pʰiŋ",
+      "pʰi",
+      "tɕjou"
+     ],
+     "hant": "再來一瓶啤酒。",
+     "pinyin": "zài lái yī píng pí jiǔ",
+     "gloss": "One more bottle of beer."
+    },
+    {
+     "text": "买单！",
+     "ipa": [
+      "mai",
+      "tan"
+     ],
+     "hant": "買單！",
+     "pinyin": "mǎi dān",
+     "gloss": "The bill, please!"
+    },
+    {
+     "text": "可以打包吗？",
+     "ipa": [
+      "kʰɤ",
+      "i",
+      "ta",
+      "pau",
+      "ma"
+     ],
+     "hant": "可以打包嗎？",
+     "pinyin": "kě yǐ dǎ bāo ma",
+     "gloss": "Can I take the leftovers to go?"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Mainland restaurant talk; 买单 asks for the bill.",
+   "source": null
+  },
+  {
+   "id": "zh-dache",
+   "language": "zh",
+   "title": "Taxis and metro",
+   "title_hant": "Taxis and metro",
+   "note_hant": "Didi/taxi and metro talk; 師傅 addresses drivers.",
+   "phrases": [
+    {
+     "text": "我想打车去火车站。",
+     "ipa": [
+      "wo",
+      "ɕjaŋ",
+      "ta",
+      "ʈʂʰɤ",
+      "tɕʰy",
+      "xwo",
+      "ʈʂʰɤ",
+      "ʈʂan"
+     ],
+     "hant": "我想打車去火車站。",
+     "pinyin": "wǒ xiǎng dǎ chē qù huǒ chē zhàn",
+     "gloss": "I want to take a taxi to the train station."
+    },
+    {
+     "text": "师傅，去这个地址。",
+     "ipa": [
+      "ʂɻ̩",
+      "fu",
+      "tɕʰy",
+      "ʈʂɤ",
+      "kɤ",
+      "ti",
+      "ʈʂɻ̩"
+     ],
+     "hant": "師傅，去這個地址。",
+     "pinyin": "shī fù qù zhè ge dì zhǐ",
+     "gloss": "Driver, to this address please."
+    },
+    {
+     "text": "麻烦开一下导航。",
+     "ipa": [
+      "ma",
+      "fan",
+      "kʰai",
+      "i",
+      "ɕja",
+      "tau",
+      "xaŋ"
+     ],
+     "hant": "麻煩開一下導航。",
+     "pinyin": "má fán kāi yī xià dǎo háng",
+     "gloss": "Could you turn on the navigation?"
+    },
+    {
+     "text": "在这里停就行。",
+     "ipa": [
+      "tsai",
+      "ʈʂɤ",
+      "li",
+      "tʰiŋ",
+      "tɕjou",
+      "ɕiŋ"
+     ],
+     "hant": "在這裡停就行。",
+     "pinyin": "zài zhè lǐ tíng jiù xíng",
+     "gloss": "Stopping here is fine."
+    },
+    {
+     "text": "地铁站在哪儿？",
+     "ipa": [
+      "ti",
+      "tʰje",
+      "ʈʂan",
+      "tsai",
+      "na",
+      "ɚ"
+     ],
+     "hant": "地鐵站在哪兒？",
+     "pinyin": "dì tiě zhàn zài nǎ ér",
+     "gloss": "Where is the metro station?"
+    },
+    {
+     "text": "到人民广场坐几号线？",
+     "ipa": [
+      "tau",
+      "ʐən",
+      "min",
+      "kwaŋ",
+      "ʈʂʰaŋ",
+      "tswo",
+      "tɕi",
+      "xau",
+      "ɕjɛn"
+     ],
+     "hant": "到人民廣場坐幾號線？",
+     "pinyin": "dào rén mín guǎng chǎng zuò jǐ hào xiàn",
+     "gloss": "Which line to People's Square?"
+    },
+    {
+     "text": "可以扫码进站吗？",
+     "ipa": [
+      "kʰɤ",
+      "i",
+      "sau",
+      "ma",
+      "tɕin",
+      "ʈʂan",
+      "ma"
+     ],
+     "hant": "可以掃碼進站嗎？",
+     "pinyin": "kě yǐ sǎo mǎ jìn zhàn ma",
+     "gloss": "Can I scan a code to enter the station?"
+    },
+    {
+     "text": "我要在前面下车。",
+     "ipa": [
+      "wo",
+      "jau",
+      "tsai",
+      "tɕʰjɛn",
+      "mjɛn",
+      "ɕja",
+      "ʈʂʰɤ"
+     ],
+     "hant": "我要在前面下車。",
+     "pinyin": "wǒ yào zài qián miàn xià chē",
+     "gloss": "I'm getting off up ahead."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Didi/taxi and metro talk; 师傅 addresses drivers.",
+   "source": null
+  },
+  {
+   "id": "zh-goumai",
+   "language": "zh",
+   "title": "Shopping and bargaining",
+   "title_hant": "Shopping and bargaining",
+   "note_hant": "Market-style bargaining.",
+   "phrases": [
+    {
+     "text": "这个多少钱？",
+     "ipa": [
+      "ʈʂɤ",
+      "kɤ",
+      "two",
+      "ʂau",
+      "tɕʰjɛn"
+     ],
+     "hant": "這個多少錢？",
+     "pinyin": "zhè ge duō shǎo qián",
+     "gloss": "How much is this?"
+    },
+    {
+     "text": "太贵了，便宜点吧。",
+     "ipa": [
+      "tʰai",
+      "kwei",
+      "lɤ",
+      "pʰjɛn",
+      "i",
+      "tjɛn",
+      "pa"
+     ],
+     "hant": "太貴了，便宜點吧。",
+     "pinyin": "tài guì le pián yi diǎn ba",
+     "gloss": "Too expensive, make it cheaper."
+    },
+    {
+     "text": "能再便宜一点吗？",
+     "ipa": [
+      "nəŋ",
+      "tsai",
+      "pʰjɛn",
+      "i",
+      "i",
+      "tjɛn",
+      "ma"
+     ],
+     "hant": "能再便宜一點嗎？",
+     "pinyin": "néng zài pián yi yì diǎn ma",
+     "gloss": "Can it be a bit cheaper?"
+    },
+    {
+     "text": "我随便看看。",
+     "ipa": [
+      "wo",
+      "swei",
+      "pjɛn",
+      "kʰan",
+      "kʰan"
+     ],
+     "hant": "我隨便看看。",
+     "pinyin": "wǒ suí biàn kàn kàn",
+     "gloss": "I'm just looking."
+    },
+    {
+     "text": "有没有大一号的？",
+     "ipa": [
+      "jou",
+      "mei",
+      "jou",
+      "ta",
+      "i",
+      "xau",
+      "tɤ"
+     ],
+     "hant": "有沒有大一號的？",
+     "pinyin": "yǒu méi yǒu dà yī hào de",
+     "gloss": "Do you have one size bigger?"
+    },
+    {
+     "text": "我可以试试吗？",
+     "ipa": [
+      "wo",
+      "kʰɤ",
+      "i",
+      "ʂɻ̩",
+      "ʂɻ̩",
+      "ma"
+     ],
+     "hant": "我可以試試嗎？",
+     "pinyin": "wǒ kě yǐ shì shì ma",
+     "gloss": "May I try it?"
+    },
+    {
+     "text": "这个我要了。",
+     "ipa": [
+      "ʈʂɤ",
+      "kɤ",
+      "wo",
+      "jau",
+      "lɤ"
+     ],
+     "hant": "這個我要了。",
+     "pinyin": "zhè ge wǒ yào le",
+     "gloss": "I'll take this one."
+    },
+    {
+     "text": "可以退货吗？",
+     "ipa": [
+      "kʰɤ",
+      "i",
+      "tʰwei",
+      "xwo",
+      "ma"
+     ],
+     "hant": "可以退貨嗎？",
+     "pinyin": "kě yǐ tuì huò ma",
+     "gloss": "Can I return it?"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Market-style bargaining.",
+   "source": null
+  },
+  {
+   "id": "zh-wenlu",
+   "language": "zh",
+   "title": "Asking the way",
+   "title_hant": "Asking the way",
+   "note_hant": "Everyday direction words.",
+   "phrases": [
+    {
+     "text": "请问，厕所在哪儿？",
+     "ipa": [
+      "tɕʰiŋ",
+      "wən",
+      "tsʰɤ",
+      "swo",
+      "tsai",
+      "na",
+      "ɚ"
+     ],
+     "hant": "請問，廁所在哪兒？",
+     "pinyin": "qǐng wèn cè suǒ zài nǎ ér",
+     "gloss": "Excuse me, where's the toilet?"
+    },
+    {
+     "text": "去超市怎么走？",
+     "ipa": [
+      "tɕʰy",
+      "ʈʂʰau",
+      "ʂɻ̩",
+      "tsən",
+      "mɤ",
+      "tsou"
+     ],
+     "hant": "去超市怎麼走？",
+     "pinyin": "qù chāo shì zěn me zǒu",
+     "gloss": "How do I get to the supermarket?"
+    },
+    {
+     "text": "一直往前走。",
+     "ipa": [
+      "i",
+      "ʈʂɻ̩",
+      "waŋ",
+      "tɕʰjɛn",
+      "tsou"
+     ],
+     "hant": "一直往前走。",
+     "pinyin": "yì zhí wǎng qián zǒu",
+     "gloss": "Keep going straight."
+    },
+    {
+     "text": "在红绿灯左拐。",
+     "ipa": [
+      "tsai",
+      "xʊŋ",
+      "ly",
+      "təŋ",
+      "tswo",
+      "kwai"
+     ],
+     "hant": "在紅綠燈左拐。",
+     "pinyin": "zài hóng lǜ dēng zuǒ guǎi",
+     "gloss": "Turn left at the traffic lights."
+    },
+    {
+     "text": "离这儿远吗？",
+     "ipa": [
+      "li",
+      "ʈʂɤ",
+      "ɚ",
+      "ɥɛn",
+      "ma"
+     ],
+     "hant": "離這兒遠嗎？",
+     "pinyin": "lí zhè ér yuǎn ma",
+     "gloss": "Is it far from here?"
+    },
+    {
+     "text": "走路大概十分钟。",
+     "ipa": [
+      "tsou",
+      "lu",
+      "ta",
+      "kai",
+      "ʂɻ̩",
+      "fən",
+      "ʈʂʊŋ"
+     ],
+     "hant": "走路大概十分鐘。",
+     "pinyin": "zǒu lù dà gài shí fēn zhōng",
+     "gloss": "About ten minutes on foot."
+    },
+    {
+     "text": "就在马路对面。",
+     "ipa": [
+      "tɕjou",
+      "tsai",
+      "ma",
+      "lu",
+      "twei",
+      "mjɛn"
+     ],
+     "hant": "就在馬路對面。",
+     "pinyin": "jiù zài mǎ lù duì miàn",
+     "gloss": "It's just across the road."
+    },
+    {
+     "text": "我迷路了。",
+     "ipa": [
+      "wo",
+      "mi",
+      "lu",
+      "lɤ"
+     ],
+     "hant": "我迷路了。",
+     "pinyin": "wǒ mí lù le",
+     "gloss": "I'm lost."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Everyday direction words.",
+   "source": null
+  },
+  {
+   "id": "zh-yiyuan",
+   "language": "zh",
+   "title": "Hospital and pharmacy",
+   "title_hant": "Hospital and pharmacy",
+   "note_hant": "掛號 means registering at the hospital desk.",
+   "phrases": [
+    {
+     "text": "我想挂个号。",
+     "ipa": [
+      "wo",
+      "ɕjaŋ",
+      "kwa",
+      "kɤ",
+      "xau"
+     ],
+     "hant": "我想掛個號。",
+     "pinyin": "wǒ xiǎng guà gè hào",
+     "gloss": "I'd like to register for an appointment."
+    },
+    {
+     "text": "我肚子疼。",
+     "ipa": [
+      "wo",
+      "tu",
+      "tsɹ̩",
+      "tʰəŋ"
+     ],
+     "hant": "我肚子疼。",
+     "pinyin": "wǒ dǔ zi téng",
+     "gloss": "My stomach hurts."
+    },
+    {
+     "text": "我发烧了。",
+     "ipa": [
+      "wo",
+      "fa",
+      "ʂau",
+      "lɤ"
+     ],
+     "hant": "我發燒了。",
+     "pinyin": "wǒ fā shāo le",
+     "gloss": "I have a fever."
+    },
+    {
+     "text": "我对青霉素过敏。",
+     "ipa": [
+      "wo",
+      "twei",
+      "tɕʰiŋ",
+      "mei",
+      "su",
+      "kwo",
+      "min"
+     ],
+     "hant": "我對青黴素過敏。",
+     "pinyin": "wǒ duì qīng méi sù guò mǐn",
+     "gloss": "I'm allergic to penicillin."
+    },
+    {
+     "text": "这药怎么吃？",
+     "ipa": [
+      "ʈʂɤ",
+      "jau",
+      "tsən",
+      "mɤ",
+      "ʈʂʰɻ̩"
+     ],
+     "hant": "這藥怎麼吃？",
+     "pinyin": "zhè yào zěn me chī",
+     "gloss": "How do I take this medicine?"
+    },
+    {
+     "text": "一天吃三次。",
+     "ipa": [
+      "i",
+      "tʰjɛn",
+      "ʈʂʰɻ̩",
+      "san",
+      "tsʰɹ̩"
+     ],
+     "hant": "一天吃三次。",
+     "pinyin": "yī tiān chī sān cì",
+     "gloss": "Three times a day."
+    },
+    {
+     "text": "饭后吃。",
+     "ipa": [
+      "fan",
+      "xou",
+      "ʈʂʰɻ̩"
+     ],
+     "hant": "飯後吃。",
+     "pinyin": "fàn hòu chī",
+     "gloss": "Take it after meals."
+    },
+    {
+     "text": "药店在哪儿？",
+     "ipa": [
+      "jau",
+      "tjɛn",
+      "tsai",
+      "na",
+      "ɚ"
+     ],
+     "hant": "藥店在哪兒？",
+     "pinyin": "yào diàn zài nǎ ér",
+     "gloss": "Where's the pharmacy?"
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "挂号 means registering at the hospital desk.",
+   "source": null
+  },
+  {
+   "id": "zh-shouji",
+   "language": "zh",
+   "title": "Phone and WeChat Pay",
+   "title_hant": "Phone and WeChat Pay",
+   "note_hant": "Mobile payment is the default in Mainland shops.",
+   "phrases": [
+    {
+     "text": "可以微信支付吗？",
+     "ipa": [
+      "kʰɤ",
+      "i",
+      "wei",
+      "ɕin",
+      "ʈʂɻ̩",
+      "fu",
+      "ma"
+     ],
+     "hant": "可以微信支付嗎？",
+     "pinyin": "kě yǐ wēi xìn zhī fù ma",
+     "gloss": "Can I pay with WeChat Pay?"
+    },
+    {
+     "text": "我扫你，还是你扫我？",
+     "ipa": [
+      "wo",
+      "sau",
+      "ni",
+      "xai",
+      "ʂɻ̩",
+      "ni",
+      "sau",
+      "wo"
+     ],
+     "hant": "我掃你，還是你掃我？",
+     "pinyin": "wǒ sǎo nǐ hái shì nǐ sǎo wǒ",
+     "gloss": "Do I scan you, or do you scan me?"
+    },
+    {
+     "text": "我加你微信吧。",
+     "ipa": [
+      "wo",
+      "tɕja",
+      "ni",
+      "wei",
+      "ɕin",
+      "pa"
+     ],
+     "hant": "我加你微信吧。",
+     "pinyin": "wǒ jiā nǐ wēi xìn ba",
+     "gloss": "Let me add you on WeChat."
+    },
+    {
+     "text": "我把二维码发给你。",
+     "ipa": [
+      "wo",
+      "pa",
+      "ɚ",
+      "wei",
+      "ma",
+      "fa",
+      "kei",
+      "ni"
+     ],
+     "hant": "我把二維碼發給你。",
+     "pinyin": "wǒ bǎ èr wéi mǎ fā gěi nǐ",
+     "gloss": "I'll send you the QR code."
+    },
+    {
+     "text": "付款成功了。",
+     "ipa": [
+      "fu",
+      "kʰwan",
+      "ʈʂʰəŋ",
+      "kʊŋ",
+      "lɤ"
+     ],
+     "hant": "付款成功了。",
+     "pinyin": "fù kuǎn chéng gōng le",
+     "gloss": "The payment went through."
+    },
+    {
+     "text": "手机没电了。",
+     "ipa": [
+      "ʂou",
+      "tɕi",
+      "mei",
+      "tjɛn",
+      "lɤ"
+     ],
+     "hant": "手機沒電了。",
+     "pinyin": "shǒu jī méi diàn le",
+     "gloss": "My phone's out of battery."
+    },
+    {
+     "text": "你有充电宝吗？",
+     "ipa": [
+      "ni",
+      "jou",
+      "ʈʂʰʊŋ",
+      "tjɛn",
+      "pau",
+      "ma"
+     ],
+     "hant": "你有充電寶嗎？",
+     "pinyin": "nǐ yǒu chōng diàn bǎo ma",
+     "gloss": "Do you have a power bank?"
+    },
+    {
+     "text": "网速太慢了。",
+     "ipa": [
+      "waŋ",
+      "su",
+      "tʰai",
+      "man",
+      "lɤ"
+     ],
+     "hant": "網速太慢了。",
+     "pinyin": "wǎng sù tài màn le",
+     "gloss": "The connection is too slow."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Mobile payment is the default in Mainland shops.",
+   "source": null
+  },
+  {
+   "id": "zh-hanxuan",
+   "language": "zh",
+   "title": "Small talk",
+   "title_hant": "Small talk",
+   "note_hant": "Everyday greetings.",
+   "phrases": [
+    {
+     "text": "吃饭了吗？",
+     "ipa": [
+      "ʈʂʰɻ̩",
+      "fan",
+      "lɤ",
+      "ma"
+     ],
+     "hant": "吃飯了嗎？",
+     "pinyin": "chī fàn le ma",
+     "gloss": "Have you eaten? (a friendly greeting)"
+    },
+    {
+     "text": "好久不见！",
+     "ipa": [
+      "xau",
+      "tɕjou",
+      "pu",
+      "tɕjɛn"
+     ],
+     "hant": "好久不見！",
+     "pinyin": "hǎo jiǔ bú jiàn",
+     "gloss": "Long time no see!"
+    },
+    {
+     "text": "最近怎么样？",
+     "ipa": [
+      "tswei",
+      "tɕin",
+      "tsən",
+      "mɤ",
+      "jaŋ"
+     ],
+     "hant": "最近怎麼樣？",
+     "pinyin": "zuì jìn zěn me yàng",
+     "gloss": "How have you been lately?"
+    },
+    {
+     "text": "你是哪里人？",
+     "ipa": [
+      "ni",
+      "ʂɻ̩",
+      "na",
+      "li",
+      "ʐən"
+     ],
+     "hant": "你是哪裡人？",
+     "pinyin": "nǐ shì nǎ lǐ rén",
+     "gloss": "Where are you from?"
+    },
+    {
+     "text": "我在这儿工作。",
+     "ipa": [
+      "wo",
+      "tsai",
+      "ʈʂɤ",
+      "ɚ",
+      "kʊŋ",
+      "tswo"
+     ],
+     "hant": "我在這兒工作。",
+     "pinyin": "wǒ zài zhè ér gōng zuò",
+     "gloss": "I work here."
+    },
+    {
+     "text": "周末有空吗？",
+     "ipa": [
+      "ʈʂou",
+      "mo",
+      "jou",
+      "kʰʊŋ",
+      "ma"
+     ],
+     "hant": "週末有空嗎？",
+     "pinyin": "zhōu mò yǒu kòng ma",
+     "gloss": "Are you free at the weekend?"
+    },
+    {
+     "text": "不好意思，借过一下。",
+     "ipa": [
+      "pu",
+      "xau",
+      "i",
+      "sɹ̩",
+      "tɕje",
+      "kwo",
+      "i",
+      "ɕja"
+     ],
+     "hant": "不好意思，借過一下。",
+     "pinyin": "bù hǎo yì sī jiè guò yī xià",
+     "gloss": "Sorry, may I get past?"
+    },
+    {
+     "text": "慢走，下次见！",
+     "ipa": [
+      "man",
+      "tsou",
+      "ɕja",
+      "tsʰɹ̩",
+      "tɕjɛn"
+     ],
+     "hant": "慢走，下次見！",
+     "pinyin": "màn zǒu xià cì jiàn",
+     "gloss": "Take care, see you next time!"
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Everyday greetings.",
+   "source": null
+  },
+  {
+   "id": "zh-zufang",
+   "language": "zh",
+   "title": "Renting a flat",
+   "title_hant": "Renting a flat",
+   "note_hant": "押一付三 = one month's deposit, three months' rent up front.",
+   "phrases": [
+    {
+     "text": "我想租一套两居室。",
+     "ipa": [
+      "wo",
+      "ɕjaŋ",
+      "tsu",
+      "i",
+      "tʰau",
+      "ljaŋ",
+      "tɕy",
+      "ʂɻ̩"
+     ],
+     "hant": "我想租一套兩居室。",
+     "pinyin": "wǒ xiǎng zū yī tào liǎng jū shì",
+     "gloss": "I want to rent a two-bedroom flat."
+    },
+    {
+     "text": "房租一个月多少？",
+     "ipa": [
+      "faŋ",
+      "tsu",
+      "i",
+      "kɤ",
+      "ɥe",
+      "two",
+      "ʂau"
+     ],
+     "hant": "房租一個月多少？",
+     "pinyin": "fáng zū yí gè yuè duō shǎo",
+     "gloss": "How much is the rent a month?"
+    },
+    {
+     "text": "押一付三，可以吗？",
+     "ipa": [
+      "ja",
+      "i",
+      "fu",
+      "san",
+      "kʰɤ",
+      "i",
+      "ma"
+     ],
+     "hant": "押一付三，可以嗎？",
+     "pinyin": "yā yī fù sān kě yǐ ma",
+     "gloss": "One month deposit, three months up front, OK?"
+    },
+    {
+     "text": "水电费怎么算？",
+     "ipa": [
+      "ʂwei",
+      "tjɛn",
+      "fei",
+      "tsən",
+      "mɤ",
+      "swan"
+     ],
+     "hant": "水電費怎麼算？",
+     "pinyin": "shuǐ diàn fèi zěn me suàn",
+     "gloss": "How are water and electricity charged?"
+    },
+    {
+     "text": "房子带家具吗？",
+     "ipa": [
+      "faŋ",
+      "tsɹ̩",
+      "tai",
+      "tɕja",
+      "tɕy",
+      "ma"
+     ],
+     "hant": "房子帶家具嗎？",
+     "pinyin": "fáng zi dài jiā jù ma",
+     "gloss": "Does it come furnished?"
+    },
+    {
+     "text": "能看房吗？",
+     "ipa": [
+      "nəŋ",
+      "kʰan",
+      "faŋ",
+      "ma"
+     ],
+     "hant": "能看房嗎？",
+     "pinyin": "néng kàn fáng ma",
+     "gloss": "Can I view the place?"
+    },
+    {
+     "text": "附近有地铁吗？",
+     "ipa": [
+      "fu",
+      "tɕin",
+      "jou",
+      "ti",
+      "tʰje",
+      "ma"
+     ],
+     "hant": "附近有地鐵嗎？",
+     "pinyin": "fù jìn yǒu dì tiě ma",
+     "gloss": "Is there a metro nearby?"
+    },
+    {
+     "text": "我们签合同吧。",
+     "ipa": [
+      "wo",
+      "mən",
+      "tɕʰjɛn",
+      "xɤ",
+      "tʰʊŋ",
+      "pa"
+     ],
+     "hant": "我們簽合同吧。",
+     "pinyin": "wǒ men qiān hé tóng ba",
+     "gloss": "Let's sign the contract."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "押一付三 = one month's deposit, three months' rent up front.",
+   "source": null
+  },
+  {
+   "id": "en-coffee",
+   "language": "en",
+   "title": "Coffee shop",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Can I get a flat white, please?",
+     "ipa": [
+      "kæn",
+      "aɪ",
+      "ɡɛt",
+      "ə",
+      "flæt",
+      "waɪt",
+      "pliz"
+     ],
+     "gloss": "Polite everyday order."
+    },
+    {
+     "text": "Medium oat latte, to go.",
+     "ipa": [
+      "midiəm",
+      "oʊt",
+      "lɑteɪ",
+      "tə",
+      "ɡoʊ"
+     ],
+     "gloss": "Clipped, normal at the counter."
+    },
+    {
+     "text": "Is that for here or to go?",
+     "ipa": [
+      "ɪz",
+      "ðæt",
+      "fɔɹ",
+      "hɪɹ",
+      "ɔɹ",
+      "tə",
+      "ɡoʊ"
+     ],
+     "gloss": "What the barista asks."
+    },
+    {
+     "text": "What name is it under?",
+     "ipa": [
+      "wʌt",
+      "neɪm",
+      "ɪz",
+      "ɪt",
+      "ʌndɚ"
+     ],
+     "gloss": "Asked so they can call your order."
+    },
+    {
+     "text": "Do you have any decaf?",
+     "ipa": [
+      "du",
+      "ju",
+      "hæv",
+      "ɛni",
+      "dikæf"
+     ],
+     "gloss": "Handy question for late orders."
+    },
+    {
+     "text": "Can I pay by card?",
+     "ipa": [
+      "kæn",
+      "aɪ",
+      "peɪ",
+      "baɪ",
+      "kɑɹd"
+     ],
+     "gloss": "Neutral, works anywhere."
+    },
+    {
+     "text": "Keep the change.",
+     "ipa": [
+      "kip",
+      "ðə",
+      "tʃeɪndʒ"
+     ],
+     "gloss": "Said when tipping with cash."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Counter orders are short; 'for here or to go' is US, 'eat in or take away' UK.",
+   "source": null
+  },
+  {
+   "id": "en-directions",
+   "language": "en",
+   "title": "Directions",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Excuse me, how do I get to the station?",
+     "ipa": [
+      "ɛkskjus",
+      "mi",
+      "haʊ",
+      "du",
+      "aɪ",
+      "ɡɛt",
+      "tə",
+      "ðə",
+      "steɪʃən"
+     ],
+     "gloss": "Polite way to stop a stranger."
+    },
+    {
+     "text": "Is it far from here?",
+     "ipa": [
+      "ɪz",
+      "ɪt",
+      "fɑɹ",
+      "fɹʌm",
+      "hɪɹ"
+     ],
+     "gloss": "Asks distance."
+    },
+    {
+     "text": "Take the second left.",
+     "ipa": [
+      "teɪk",
+      "ðə",
+      "sɛkənd",
+      "lɛft"
+     ],
+     "gloss": "Instruction you'll hear."
+    },
+    {
+     "text": "Go straight on for five minutes.",
+     "ipa": [
+      "ɡoʊ",
+      "stɹeɪt",
+      "ɔn",
+      "fɔɹ",
+      "faɪv",
+      "mɪnɪts"
+     ],
+     "gloss": "UK; 'straight ahead' is US."
+    },
+    {
+     "text": "It's right next to the bank.",
+     "ipa": [
+      "ɪts",
+      "ɹaɪt",
+      "nɛkst",
+      "tə",
+      "ðə",
+      "bæŋk"
+     ],
+     "gloss": "Landmark-based direction."
+    },
+    {
+     "text": "You can't miss it.",
+     "ipa": [
+      "ju",
+      "kænt",
+      "mɪs",
+      "ɪt"
+     ],
+     "gloss": "Reassurance after directions."
+    },
+    {
+     "text": "Am I going the right way?",
+     "ipa": [
+      "æm",
+      "aɪ",
+      "ɡoʊɪŋ",
+      "ðə",
+      "ɹaɪt",
+      "weɪ"
+     ],
+     "gloss": "Checking mid-route."
+    },
+    {
+     "text": "Sorry, I'm not from around here.",
+     "ipa": [
+      "sɑɹi",
+      "aɪm",
+      "nɑt",
+      "fɹʌm",
+      "ɚɹaʊnd",
+      "hɪɹ"
+     ],
+     "gloss": "Polite way to say you don't know."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Giving and asking the way.",
+   "source": null
+  },
+  {
+   "id": "en-doctor",
+   "language": "en",
+   "title": "At the doctor's",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "I'd like to make an appointment.",
+     "ipa": [
+      "aɪd",
+      "laɪk",
+      "tə",
+      "meɪk",
+      "ən",
+      "əpɔɪntmənt"
+     ],
+     "gloss": "Said to the receptionist."
+    },
+    {
+     "text": "I've had a sore throat for three days.",
+     "ipa": [
+      "aɪvhæd",
+      "ə",
+      "sɔɹ",
+      "θɹoʊt",
+      "fɔɹ",
+      "θɹi",
+      "deɪz"
+     ],
+     "gloss": "'I've had' plus duration."
+    },
+    {
+     "text": "It hurts when I swallow.",
+     "ipa": [
+      "ɪt",
+      "hɝts",
+      "wɛn",
+      "aɪ",
+      "swɔloʊ"
+     ],
+     "gloss": "Describes a trigger."
+    },
+    {
+     "text": "I've been feeling dizzy.",
+     "ipa": [
+      "aɪv",
+      "bɪn",
+      "filɪŋ",
+      "dɪzi"
+     ],
+     "gloss": "Present perfect continuous for symptoms."
+    },
+    {
+     "text": "I'm allergic to penicillin.",
+     "ipa": [
+      "aɪm",
+      "əlɝdʒɪk",
+      "tə",
+      "pɛnɪsɪlɪn"
+     ],
+     "gloss": "Important to say early."
+    },
+    {
+     "text": "Do I need a prescription?",
+     "ipa": [
+      "du",
+      "aɪ",
+      "nid",
+      "ə",
+      "pɹɪskɹɪpʃən"
+     ],
+     "gloss": "Asked at pharmacy or surgery."
+    },
+    {
+     "text": "How often should I take this?",
+     "ipa": [
+      "haʊ",
+      "ɔfən",
+      "ʃʊd",
+      "aɪ",
+      "teɪk",
+      "ðɪs"
+     ],
+     "gloss": "Dosage question."
+    },
+    {
+     "text": "Should I come back next week?",
+     "ipa": [
+      "ʃʊd",
+      "aɪ",
+      "kʌm",
+      "bæk",
+      "nɛkst",
+      "wik"
+     ],
+     "gloss": "Follow-up question."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Describe symptoms plainly.",
+   "source": null
+  },
+  {
+   "id": "en-phone",
+   "language": "en",
+   "title": "Phone calls",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Hi, this is Sam speaking.",
+     "ipa": [
+      "haɪ",
+      "ðɪs",
+      "ɪz",
+      "sæm",
+      "spikɪŋ"
+     ],
+     "gloss": "Introducing yourself on the phone."
+    },
+    {
+     "text": "Could I speak to Ms Patel, please?",
+     "ipa": [
+      "kʊd",
+      "aɪ",
+      "spik",
+      "tʊ",
+      "ɛmɛs",
+      "pətɛl",
+      "pliz"
+     ],
+     "gloss": "Asking for someone, polite."
+    },
+    {
+     "text": "Can I take a message?",
+     "ipa": [
+      "kæn",
+      "aɪ",
+      "teɪk",
+      "ə",
+      "mɛsɪdʒ"
+     ],
+     "gloss": "What the receptionist offers."
+    },
+    {
+     "text": "I'll call you back in ten minutes.",
+     "ipa": [
+      "aɪl",
+      "kɔl",
+      "ju",
+      "bæk",
+      "ɪn",
+      "tɛn",
+      "mɪnɪts"
+     ],
+     "gloss": "Promise to return a call."
+    },
+    {
+     "text": "Sorry, you're breaking up.",
+     "ipa": [
+      "sɑɹi",
+      "jʊɹ",
+      "bɹeɪkɪŋ",
+      "ʌp"
+     ],
+     "gloss": "Bad line."
+    },
+    {
+     "text": "Could you say that again?",
+     "ipa": [
+      "kʊd",
+      "ju",
+      "seɪ",
+      "ðæt",
+      "əɡɛn"
+     ],
+     "gloss": "Asking for a repeat."
+    },
+    {
+     "text": "I'm on my way.",
+     "ipa": [
+      "aɪm",
+      "ɔn",
+      "maɪ",
+      "weɪ"
+     ],
+     "gloss": "Quick update."
+    },
+    {
+     "text": "Thanks for calling.",
+     "ipa": [
+      "θæŋks",
+      "fɔɹ",
+      "kɔlɪŋ"
+     ],
+     "gloss": "Polite close."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Phone etiquette.",
+   "source": null
+  },
+  {
+   "id": "en-work",
+   "language": "en",
+   "title": "Work small talk",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Morning! How was your weekend?",
+     "ipa": [
+      "mɔɹnɪŋ",
+      "haʊ",
+      "wʌz",
+      "jʊɹ",
+      "wikɛnd"
+     ],
+     "gloss": "Friendly Monday opener."
+    },
+    {
+     "text": "Have you got a minute?",
+     "ipa": [
+      "hæv",
+      "ju",
+      "ɡɑt",
+      "ə",
+      "mɪnɪt"
+     ],
+     "gloss": "Interrupting politely."
+    },
+    {
+     "text": "Let's catch up later.",
+     "ipa": [
+      "lɛts",
+      "kætʃ",
+      "ʌp",
+      "leɪtɚ"
+     ],
+     "gloss": "Informal, postpones chat."
+    },
+    {
+     "text": "I'll send that over this afternoon.",
+     "ipa": [
+      "aɪl",
+      "sɛnd",
+      "ðæt",
+      "oʊvɚ",
+      "ðɪs",
+      "æftɚnun"
+     ],
+     "gloss": "Promise with a time."
+    },
+    {
+     "text": "Sounds good to me.",
+     "ipa": [
+      "saʊndz",
+      "ɡʊd",
+      "tə",
+      "mi"
+     ],
+     "gloss": "Agreeing casually."
+    },
+    {
+     "text": "Shall we grab lunch?",
+     "ipa": [
+      "ʃæl",
+      "wi",
+      "ɡɹæb",
+      "lʌntʃ"
+     ],
+     "gloss": "UK and US, informal invitation."
+    },
+    {
+     "text": "I'm in a meeting till three.",
+     "ipa": [
+      "aɪm",
+      "ɪn",
+      "ə",
+      "mitɪŋ",
+      "tɪl",
+      "θɹi"
+     ],
+     "gloss": "Status update."
+    },
+    {
+     "text": "Have a good one!",
+     "ipa": [
+      "hæv",
+      "ə",
+      "ɡʊd",
+      "wʌn"
+     ],
+     "gloss": "Casual goodbye, mostly US but common in UK."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Office chat.",
+   "source": null
+  },
+  {
+   "id": "en-shopping",
+   "language": "en",
+   "title": "Shopping",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Just looking, thanks.",
+     "ipa": [
+      "dʒʌst",
+      "lʊkɪŋ",
+      "θæŋks"
+     ],
+     "gloss": "Declining help politely."
+    },
+    {
+     "text": "Do you have this in a medium?",
+     "ipa": [
+      "du",
+      "ju",
+      "hæv",
+      "ðɪs",
+      "ɪn",
+      "ə",
+      "midiəm"
+     ],
+     "gloss": "Asking for a size."
+    },
+    {
+     "text": "Where are the fitting rooms?",
+     "ipa": [
+      "wɛɹ",
+      "ɑɹ",
+      "ðə",
+      "fɪtɪŋ",
+      "ɹumz"
+     ],
+     "gloss": "UK also 'changing rooms'."
+    },
+    {
+     "text": "How much is this?",
+     "ipa": [
+      "haʊ",
+      "mʌtʃ",
+      "ɪz",
+      "ðɪs"
+     ],
+     "gloss": "Basic price question."
+    },
+    {
+     "text": "Do you take contactless?",
+     "ipa": [
+      "du",
+      "ju",
+      "teɪk",
+      "kɑntæktləs"
+     ],
+     "gloss": "Mostly UK; US says 'tap to pay'."
+    },
+    {
+     "text": "Do you need a bag?",
+     "ipa": [
+      "du",
+      "ju",
+      "nid",
+      "ə",
+      "bæɡ"
+     ],
+     "gloss": "Cashier question."
+    },
+    {
+     "text": "Can I get a receipt, please?",
+     "ipa": [
+      "kæn",
+      "aɪ",
+      "ɡɛt",
+      "ə",
+      "ɹɪsit",
+      "pliz"
+     ],
+     "gloss": "Asking for proof of purchase."
+    },
+    {
+     "text": "I'd like to return this.",
+     "ipa": [
+      "aɪd",
+      "laɪk",
+      "tə",
+      "ɹɪtɝn",
+      "ðɪs"
+     ],
+     "gloss": "At the returns desk."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "In shops.",
+   "source": null
+  },
+  {
+   "id": "en-travel",
+   "language": "en",
+   "title": "Travel",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "One ticket to Oxford, please.",
+     "ipa": [
+      "wʌn",
+      "tɪkɪt",
+      "tʊ",
+      "ɑksfɚd",
+      "pliz"
+     ],
+     "gloss": "Counter request."
+    },
+    {
+     "text": "Which platform does it leave from?",
+     "ipa": [
+      "wɪtʃ",
+      "plætfɔɹm",
+      "dʌz",
+      "ɪt",
+      "liv",
+      "fɹʌm"
+     ],
+     "gloss": "UK train speak."
+    },
+    {
+     "text": "Is this seat taken?",
+     "ipa": [
+      "ɪz",
+      "ðɪs",
+      "sit",
+      "teɪkən"
+     ],
+     "gloss": "Polite check."
+    },
+    {
+     "text": "What time does it get in?",
+     "ipa": [
+      "wʌt",
+      "taɪm",
+      "dʌz",
+      "ɪt",
+      "ɡɛt",
+      "ɪn"
+     ],
+     "gloss": "Arrival time."
+    },
+    {
+     "text": "I'd like to check in, please.",
+     "ipa": [
+      "aɪd",
+      "laɪk",
+      "tə",
+      "tʃɛk",
+      "ɪn",
+      "pliz"
+     ],
+     "gloss": "At the hotel or airport."
+    },
+    {
+     "text": "Where do I pick up my luggage?",
+     "ipa": [
+      "wɛɹ",
+      "du",
+      "aɪ",
+      "pɪk",
+      "ʌp",
+      "maɪ",
+      "lʌɡɪdʒ"
+     ],
+     "gloss": "UK 'baggage reclaim', US 'baggage claim'."
+    },
+    {
+     "text": "My flight's been delayed.",
+     "ipa": [
+      "maɪ",
+      "flaɪts",
+      "bɪn",
+      "dɪleɪd"
+     ],
+     "gloss": "Contracted speech."
+    },
+    {
+     "text": "Is there a bus to the airport?",
+     "ipa": [
+      "ɪz",
+      "ðɛɹ",
+      "ə",
+      "bʌs",
+      "tə",
+      "ðɪ",
+      "ɛɹpɔɹt"
+     ],
+     "gloss": "Basic travel question."
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Trains, planes and buses.",
+   "source": null
+  },
+  {
+   "id": "en-thanks",
+   "language": "en",
+   "title": "Apologising and thanking",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Sorry about that.",
+     "ipa": [
+      "sɑɹi",
+      "əbaʊt",
+      "ðæt"
+     ],
+     "gloss": "Casual apology."
+    },
+    {
+     "text": "Thanks so much.",
+     "ipa": [
+      "θæŋks",
+      "soʊ",
+      "mʌtʃ"
+     ],
+     "gloss": "Warm thanks."
+    },
+    {
+     "text": "No worries at all.",
+     "ipa": [
+      "noʊ",
+      "wʌɹiz",
+      "æt",
+      "ɔl"
+     ],
+     "gloss": "Reply to thanks or apology."
+    },
+    {
+     "text": "I really appreciate it.",
+     "ipa": [
+      "aɪ",
+      "ɹiəli",
+      "əpɹiʃɪeɪt",
+      "ɪt"
+     ],
+     "gloss": "Stronger thanks."
+    },
+    {
+     "text": "Excuse me, sorry to bother you.",
+     "ipa": [
+      "ɛkskjus",
+      "mi",
+      "sɑɹi",
+      "tə",
+      "bɑðɚ",
+      "ju"
+     ],
+     "gloss": "Opener to a stranger."
+    },
+    {
+     "text": "My mistake, sorry.",
+     "ipa": [
+      "maɪ",
+      "mɪsteɪk",
+      "sɑɹi"
+     ],
+     "gloss": "Owning an error."
+    },
+    {
+     "text": "Thanks for waiting.",
+     "ipa": [
+      "θæŋks",
+      "fɔɹ",
+      "weɪtɪŋ"
+     ],
+     "gloss": "Said to someone who waited."
+    },
+    {
+     "text": "Don't mention it.",
+     "ipa": [
+      "doʊnt",
+      "mɛnʃən",
+      "ɪt"
+     ],
+     "gloss": "Response to thanks."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Small courtesy phrases.",
    "source": null
   }
  ],
@@ -15335,13 +18777,15 @@
       "text": "rue",
       "ipa": [
        "ʁy"
-      ]
+      ],
+      "gloss": "street"
      },
      {
       "text": "roue",
       "ipa": [
        "ʁu"
-      ]
+      ],
+      "gloss": "wheel"
      }
     ],
     [
@@ -15349,13 +18793,15 @@
       "text": "tu",
       "ipa": [
        "ty"
-      ]
+      ],
+      "gloss": "you"
      },
      {
       "text": "tout",
       "ipa": [
        "tu"
-      ]
+      ],
+      "gloss": "all"
      }
     ],
     [
@@ -15363,13 +18809,15 @@
       "text": "vu",
       "ipa": [
        "vy"
-      ]
+      ],
+      "gloss": "seen"
      },
      {
       "text": "vous",
       "ipa": [
        "vu"
-      ]
+      ],
+      "gloss": "you (formal)"
      }
     ],
     [
@@ -15377,13 +18825,15 @@
       "text": "dessus",
       "ipa": [
        "dəsy"
-      ]
+      ],
+      "gloss": "on top"
      },
      {
       "text": "dessous",
       "ipa": [
        "dəsu"
-      ]
+      ],
+      "gloss": "underneath"
      }
     ]
    ]
@@ -15397,19 +18847,22 @@
       "text": "pain",
       "ipa": [
        "pɛ̃"
-      ]
+      ],
+      "gloss": "bread"
      },
      {
       "text": "bain",
       "ipa": [
        "bɛ̃"
-      ]
+      ],
+      "gloss": "bath"
      },
      {
       "text": "main",
       "ipa": [
        "mɛ̃"
-      ]
+      ],
+      "gloss": "hand"
      }
     ],
     [
@@ -15417,19 +18870,22 @@
       "text": "pas",
       "ipa": [
        "pa"
-      ]
+      ],
+      "gloss": "step; not"
      },
      {
       "text": "bas",
       "ipa": [
        "ba"
-      ]
+      ],
+      "gloss": "low"
      },
      {
       "text": "mas",
       "ipa": [
        "mas"
-      ]
+      ],
+      "gloss": "farmhouse"
      }
     ]
    ]
@@ -15443,13 +18899,15 @@
       "text": "fin",
       "ipa": [
        "fɛ̃"
-      ]
+      ],
+      "gloss": "end"
      },
      {
       "text": "vin",
       "ipa": [
        "vɛ̃"
-      ]
+      ],
+      "gloss": "wine"
      }
     ],
     [
@@ -15457,13 +18915,15 @@
       "text": "faux",
       "ipa": [
        "fo"
-      ]
+      ],
+      "gloss": "false"
      },
      {
       "text": "veau",
       "ipa": [
        "vo"
-      ]
+      ],
+      "gloss": "calf"
      }
     ]
    ]
@@ -15477,13 +18937,15 @@
       "text": "bon",
       "ipa": [
        "bɔ̃"
-      ]
+      ],
+      "gloss": "good"
      },
      {
       "text": "banc",
       "ipa": [
        "bɑ̃"
-      ]
+      ],
+      "gloss": "bench"
      }
     ],
     [
@@ -15491,13 +18953,15 @@
       "text": "long",
       "ipa": [
        "lɔ̃"
-      ]
+      ],
+      "gloss": "long"
      },
      {
       "text": "lent",
       "ipa": [
        "lɑ̃"
-      ]
+      ],
+      "gloss": "slow"
      }
     ]
    ]
@@ -15511,13 +18975,15 @@
       "text": "pero",
       "ipa": [
        "peɾo"
-      ]
+      ],
+      "gloss": "but"
      },
      {
       "text": "perro",
       "ipa": [
        "pero"
-      ]
+      ],
+      "gloss": "dog"
      }
     ],
     [
@@ -15525,13 +18991,15 @@
       "text": "caro",
       "ipa": [
        "kaɾo"
-      ]
+      ],
+      "gloss": "expensive"
      },
      {
       "text": "carro",
       "ipa": [
        "karo"
-      ]
+      ],
+      "gloss": "cart; car"
      }
     ],
     [
@@ -15539,13 +19007,15 @@
       "text": "coro",
       "ipa": [
        "koɾo"
-      ]
+      ],
+      "gloss": "choir"
      },
      {
       "text": "corro",
       "ipa": [
        "koro"
-      ]
+      ],
+      "gloss": "I run"
      }
     ]
    ]
@@ -15559,13 +19029,15 @@
       "text": "peso",
       "ipa": [
        "peso"
-      ]
+      ],
+      "gloss": "weight"
      },
      {
       "text": "beso",
       "ipa": [
        "beso"
-      ]
+      ],
+      "gloss": "kiss"
      }
     ],
     [
@@ -15573,19 +19045,22 @@
       "text": "pala",
       "ipa": [
        "pala"
-      ]
+      ],
+      "gloss": "shovel"
      },
      {
       "text": "bala",
       "ipa": [
        "bala"
-      ]
+      ],
+      "gloss": "bullet"
      },
      {
       "text": "mala",
       "ipa": [
        "mala"
-      ]
+      ],
+      "gloss": "bad"
      }
     ]
    ]
@@ -15601,7 +19076,8 @@
        "pa"
       ],
       "hant": "八",
-      "pinyin": "bā"
+      "pinyin": "bā",
+      "gloss": "eight"
      },
      {
       "text": "趴",
@@ -15609,7 +19085,8 @@
        "pʰa"
       ],
       "hant": "趴",
-      "pinyin": "pā"
+      "pinyin": "pā",
+      "gloss": "lie face down"
      },
      {
       "text": "妈",
@@ -15617,7 +19094,8 @@
        "ma"
       ],
       "hant": "媽",
-      "pinyin": "mā"
+      "pinyin": "mā",
+      "gloss": "mum"
      }
     ],
     [
@@ -15627,7 +19105,8 @@
        "pau"
       ],
       "hant": "包",
-      "pinyin": "bāo"
+      "pinyin": "bāo",
+      "gloss": "bag"
      },
      {
       "text": "抛",
@@ -15635,7 +19114,8 @@
        "pʰau"
       ],
       "hant": "拋",
-      "pinyin": "pāo"
+      "pinyin": "pāo",
+      "gloss": "throw"
      },
      {
       "text": "猫",
@@ -15643,7 +19123,8 @@
        "mau"
       ],
       "hant": "貓",
-      "pinyin": "māo"
+      "pinyin": "māo",
+      "gloss": "cat"
      }
     ]
    ]
@@ -15659,7 +19140,8 @@
        "ny"
       ],
       "hant": "女",
-      "pinyin": "nǚ"
+      "pinyin": "nǚ",
+      "gloss": "woman"
      },
      {
       "text": "你",
@@ -15667,7 +19149,8 @@
        "ni"
       ],
       "hant": "你",
-      "pinyin": "nǐ"
+      "pinyin": "nǐ",
+      "gloss": "you"
      },
      {
       "text": "怒",
@@ -15675,7 +19158,8 @@
        "nu"
       ],
       "hant": "怒",
-      "pinyin": "nù"
+      "pinyin": "nù",
+      "gloss": "anger"
      }
     ],
     [
@@ -15685,7 +19169,8 @@
        "y"
       ],
       "hant": "魚",
-      "pinyin": "yú"
+      "pinyin": "yú",
+      "gloss": "fish"
      },
      {
       "text": "移",
@@ -15693,7 +19178,8 @@
        "i"
       ],
       "hant": "移",
-      "pinyin": "yí"
+      "pinyin": "yí",
+      "gloss": "move"
      },
      {
       "text": "无",
@@ -15701,7 +19187,8 @@
        "u"
       ],
       "hant": "無",
-      "pinyin": "wú"
+      "pinyin": "wú",
+      "gloss": "without"
      }
     ]
    ]
@@ -15853,20 +19340,20 @@
     "ipa": "ɔ",
     "group": "Vowels",
     "name": "aw",
-    "guide": "aw as in 'law' or 'thought'",
+    "guide": "aw as in 'law' and 'saw'",
     "tip": "Jaw open, lips rounded loosely.",
     "say": "ɔː",
     "examples": [
      {
-      "text": "all",
+      "text": "law",
       "ipa": [
-       "ɔl"
+       "lɔ"
       ]
      },
      {
-      "text": "off",
+      "text": "saw",
       "ipa": [
-       "ɔf"
+       "sɔ"
       ]
      },
      {
@@ -15992,7 +19479,7 @@
    {
     "ipa": "ɚ",
     "group": "Vowels",
-    "name": "unstressed er",
+    "name": "er (weak)",
     "guide": "the weak 'er' in 'butter' - an 'uh' coloured by the r sound",
     "tip": "Lips slightly rounded, tongue tip curled or bunched back.",
     "say": "ɚ",
@@ -17059,7 +20546,7 @@
     "ipa": "ɔ",
     "group": "Vowels",
     "name": "o (open)",
-    "guide": "like the 'o' in 'off' (British) - short and open",
+    "guide": "like the 'o' in 'lot' said with rounded lips; short and open",
     "tip": "Lips rounded loosely, jaw half open.",
     "say": "ɔ",
     "examples": [
@@ -17115,7 +20602,7 @@
     "ipa": "œ",
     "group": "Vowels",
     "name": "eu (open)",
-    "guide": "like 'ur' in 'fur' but shorter, with rounded lips",
+    "guide": "a short, open 'uh' with the lips rounded and no r sound, as in 'peur'",
     "tip": "Lips rounded, jaw half open, tongue front.",
     "say": "œ",
     "examples": [
@@ -17873,7 +21360,7 @@
     "ipa": "e",
     "group": "Vowels",
     "name": "e",
-    "guide": "like the 'e' in 'bed' but tenser, with no 'ay' glide",
+    "guide": "a pure 'e' between 'ay' and 'eh', with no glide into 'ee'",
     "tip": "Jaw half open, lips slightly spread; hold steady.",
     "say": "e",
     "examples": [
@@ -18376,7 +21863,7 @@
    {
     "ipa": "ʝ",
     "group": "Consonants",
-    "name": "y (consonant)",
+    "name": "y (yo)",
     "guide": "like English 'y' in 'yes' but with more friction, like a soft 'j'",
     "tip": "Tongue high against the hard palate, lips spread.",
     "say": "ʝa",
@@ -18404,7 +21891,7 @@
    {
     "ipa": "ʎ",
     "group": "Consonants",
-    "name": "ll (traditional)",
+    "name": "ll (calle)",
     "guide": "like 'lli' in 'million'; in most regions merged with y",
     "tip": "Middle of tongue pressed up on the palate, lips spread.",
     "say": "ʎa",
@@ -18727,8 +22214,8 @@
    {
     "ipa": "e",
     "group": "Vowels",
-    "name": "e (in ie, ei)",
-    "guide": "like the 'e' in 'bed' but tenser; appears in 'ie', 'ei', 'ye'",
+    "name": "e (ie, ei)",
+    "guide": "a pure 'e', between 'ay' and 'eh'; the e of ie and ei (xiè, běi)",
     "tip": "Lips spread, jaw half open.",
     "say": "e",
     "examples": [
@@ -18763,8 +22250,8 @@
    {
     "ipa": "ɛ",
     "group": "Vowels",
-    "name": "e (in ian)",
-    "guide": "like the 'e' in 'bed'; appears in 'ian', 'yan', 'uan'",
+    "name": "e (ian)",
+    "guide": "an open 'eh' as in 'bed'; the e of ian and yan (tiān, nián)",
     "tip": "Lips spread, jaw half open.",
     "say": "ɛ",
     "examples": [
@@ -19001,7 +22488,7 @@
    {
     "ipa": "ɹ̩",
     "group": "Vowels",
-    "name": "z/c/s vowel",
+    "name": "zi vowel",
     "guide": "a buzzing 'zzz' held on, the vowel in 'zi', 'ci', 'si'; tongue stays at the 'z' position",
     "tip": "Lips spread flat, teeth almost closed, tongue still.",
     "say": "sɹ̩",
@@ -19035,7 +22522,7 @@
    {
     "ipa": "ɻ̩",
     "group": "Vowels",
-    "name": "zh/ch/sh vowel",
+    "name": "zhi vowel",
     "guide": "a buzzing curled-back 'r' held on, the vowel in 'zhi', 'chi', 'shi', 'ri'",
     "tip": "Lips slightly rounded, tongue tip curled back and still.",
     "say": "ʂɻ̩",
@@ -19070,7 +22557,7 @@
     "ipa": "ʊ",
     "group": "Vowels",
     "name": "ong",
-    "guide": "like 'oo' in 'book' as in 'ong'; sits before ng",
+    "guide": "a short 'oo' as in 'book', only before ng (ong); some books write it /u/",
     "tip": "Lips lightly rounded, jaw half closed.",
     "say": "ʊŋ",
     "examples": [
@@ -19205,7 +22692,7 @@
    {
     "ipa": "p",
     "group": "Consonants",
-    "name": "b (unaspirated p)",
+    "name": "b · no puff",
     "guide": "like the 'p' in 'spin' - no puff of air; pinyin writes it 'b'",
     "tip": "Lips pressed together and released gently.",
     "say": "pa",
@@ -19239,7 +22726,7 @@
    {
     "ipa": "pʰ",
     "group": "Consonants",
-    "name": "p (aspirated)",
+    "name": "p · puff",
     "guide": "like English 'p' in 'pie' with a strong puff of air",
     "tip": "Lips pressed, then released with a puff.",
     "say": "pʰa",
@@ -19342,7 +22829,7 @@
    {
     "ipa": "t",
     "group": "Consonants",
-    "name": "d (unaspirated t)",
+    "name": "d · no puff",
     "guide": "like the 't' in 'stop' - no puff; pinyin writes it 'd'",
     "tip": "Tongue tip on the ridge behind the upper teeth.",
     "say": "ta",
@@ -19376,7 +22863,7 @@
    {
     "ipa": "tʰ",
     "group": "Consonants",
-    "name": "t (aspirated)",
+    "name": "t · puff",
     "guide": "like English 't' in 'top' with a strong puff of air",
     "tip": "Tongue tip on the ridge, released with a puff.",
     "say": "tʰa",
@@ -19478,7 +22965,7 @@
    {
     "ipa": "k",
     "group": "Consonants",
-    "name": "g (unaspirated k)",
+    "name": "g · no puff",
     "guide": "like the 'k' in 'sky' - no puff; pinyin writes it 'g'",
     "tip": "Back of tongue touches the soft palate.",
     "say": "ka",
@@ -19512,7 +22999,7 @@
    {
     "ipa": "kʰ",
     "group": "Consonants",
-    "name": "k (aspirated)",
+    "name": "k · puff",
     "guide": "like English 'k' in 'key' with a strong puff of air",
     "tip": "Back of tongue touches the soft palate, released with a puff.",
     "say": "kʰa",
@@ -19615,7 +23102,7 @@
     "ipa": "tɕ",
     "group": "Consonants",
     "name": "j",
-    "guide": "like 'j' in 'jeep' but with a flatter tongue, lips spread",
+    "guide": "like the 'ch' in 'cheese' but with no puff of air and not voiced; tongue flat behind the lower teeth",
     "tip": "Lips spread, tongue flat behind the lower teeth, front of tongue to the palate.",
     "say": "tɕi",
     "examples": [
@@ -19717,7 +23204,7 @@
     "ipa": "ts",
     "group": "Consonants",
     "name": "z",
-    "guide": "like the 'ds' in 'adds'; no puff",
+    "guide": "like the 'ts' in 'cats' at the start of a syllable, with no puff of air (not a voiced 'dz')",
     "tip": "Lips spread, tongue tip on the back of the teeth.",
     "say": "tsa",
     "examples": [
@@ -19819,7 +23306,7 @@
     "ipa": "ʈʂ",
     "group": "Consonants",
     "name": "zh",
-    "guide": "like 'j' in 'jump' with the tongue curled back; no puff",
+    "guide": "like the 'ch' in 'church' with the tongue tip curled back, no puff of air and not voiced",
     "tip": "Lips slightly rounded, tongue tip curled back to the roof.",
     "say": "ʈʂa",
     "examples": [

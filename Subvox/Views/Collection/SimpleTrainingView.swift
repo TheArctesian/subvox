@@ -10,11 +10,16 @@ struct SimpleTrainingView: View {
     private var recordedSentences: Int { workflow.data.mouthedPromptIDs.filter { workflow.community.prompt($0) != nil }.count }
 
     var body: some View {
-        AppPageLayout {
+        AppPageLayout(showsMotion: false) {
             HStack {
                 AppPageHeading(title: "Reading", subtitle: "Read a short sentence aloud, then mouth it silently. About ten minutes a session.")
                 Spacer()
-                Button("Share recordings…") { model.showContribute = true }.disabled(workflow.isBusy)
+                Button("Share Recordings…") { model.showContribute = true }.disabled(workflow.isBusy)
+                Button { model.startSentenceTraining() } label: {
+                    Label(calibrationLeft > 0 ? "Start Recording" : "Record Next Passages", systemImage: "record.circle")
+                }
+                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty)
+                .help("⌘↩")
             }
         } content: {
             if workflow.isBusy {
@@ -29,16 +34,11 @@ struct SimpleTrainingView: View {
                         checklist
                         progress
                         VStack(alignment: .leading, spacing: 8) {
-                            Button { model.startSentenceTraining() } label: {
-                                Label(calibrationLeft > 0 ? "Start recording" : "Record the next passages", systemImage: "record.circle")
-                                    .frame(minWidth: 220)
-                            }
-                            .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty)
                             if let error = workflow.error { Text(error).font(.callout).foregroundStyle(.orange) }
-                            Text("Recordings stay on this Mac unless you choose to share them.").font(.caption).foregroundStyle(.secondary)
+                            Text("Recordings stay on this Mac unless you choose to share them.").font(.callout).foregroundStyle(.secondary)
                         }
                         Divider()
-                        Toggle("Show research tools", isOn: Binding(get: { model.researchTools }, set: { model.researchTools = $0 }))
+                        Toggle("Advanced tools for researchers", isOn: Binding(get: { model.researchTools }, set: { model.researchTools = $0 }))
                             .toggleStyle(.switch).font(.callout)
                     }.frame(maxWidth: 720, alignment: .leading).padding(32).frame(maxWidth: .infinity)
                 }

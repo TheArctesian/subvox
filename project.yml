@@ -27,6 +27,7 @@ targets:
         LSApplicationCategoryType: public.app-category.developer-tools
         NSMotionUsageDescription: Subvox reads AirPods head-motion data to study whether mouthed words can be decoded into text.
         NSCameraUsageDescription: Subvox processes camera frames locally to track head pose and mouth landmarks during controlled motion tests. Only numeric points are saved; images and video are not recorded.
+        ATSApplicationFontsPath: "."
         NSMicrophoneUsageDescription: Subvox records spoken reference audio locally to align paired speech and mouth motion.
     settings:
       base:

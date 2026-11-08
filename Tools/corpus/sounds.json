@@ -69,12 +69,12 @@
    "ipa": "ɔ",
    "group": "Vowels",
    "name": "aw",
-   "guide": "aw as in 'law' or 'thought'",
+   "guide": "aw as in 'law' and 'saw'",
    "tip": "Jaw open, lips rounded loosely.",
    "say": "ɔː",
    "examples": [
-    "all",
-    "off",
+    "law",
+    "saw",
     "talk"
    ]
   },
@@ -133,7 +133,7 @@
   {
    "ipa": "ɚ",
    "group": "Vowels",
-   "name": "unstressed er",
+   "name": "er (weak)",
    "guide": "the weak 'er' in 'butter' - an 'uh' coloured by the r sound",
    "tip": "Lips slightly rounded, tongue tip curled or bunched back.",
    "say": "ɚ",
@@ -630,7 +630,7 @@
    "ipa": "ɔ",
    "group": "Vowels",
    "name": "o (open)",
-   "guide": "like the 'o' in 'off' (British) - short and open",
+   "guide": "like the 'o' in 'lot' said with rounded lips; short and open",
    "tip": "Lips rounded loosely, jaw half open.",
    "say": "ɔ",
    "examples": [
@@ -656,7 +656,7 @@
    "ipa": "œ",
    "group": "Vowels",
    "name": "eu (open)",
-   "guide": "like 'ur' in 'fur' but shorter, with rounded lips",
+   "guide": "a short, open 'uh' with the lips rounded and no r sound, as in 'peur'",
    "tip": "Lips rounded, jaw half open, tongue front.",
    "say": "œ",
    "examples": [
@@ -1009,7 +1009,7 @@
    "ipa": "e",
    "group": "Vowels",
    "name": "e",
-   "guide": "like the 'e' in 'bed' but tenser, with no 'ay' glide",
+   "guide": "a pure 'e' between 'ay' and 'eh', with no glide into 'ee'",
    "tip": "Jaw half open, lips slightly spread; hold steady.",
    "say": "e",
    "examples": [
@@ -1242,7 +1242,7 @@
   {
    "ipa": "ʝ",
    "group": "Consonants",
-   "name": "y (consonant)",
+   "name": "y (yo)",
    "guide": "like English 'y' in 'yes' but with more friction, like a soft 'j'",
    "tip": "Tongue high against the hard palate, lips spread.",
    "say": "ʝa",
@@ -1255,7 +1255,7 @@
   {
    "ipa": "ʎ",
    "group": "Consonants",
-   "name": "ll (traditional)",
+   "name": "ll (calle)",
    "guide": "like 'lli' in 'million'; in most regions merged with y",
    "tip": "Middle of tongue pressed up on the palate, lips spread.",
    "say": "ʎa",
@@ -1418,8 +1418,8 @@
   {
    "ipa": "e",
    "group": "Vowels",
-   "name": "e (in ie, ei)",
-   "guide": "like the 'e' in 'bed' but tenser; appears in 'ie', 'ei', 'ye'",
+   "name": "e (ie, ei)",
+   "guide": "a pure 'e', between 'ay' and 'eh'; the e of ie and ei (xiè, běi)",
    "tip": "Lips spread, jaw half open.",
    "say": "e",
    "examples": [
@@ -1440,8 +1440,8 @@
   {
    "ipa": "ɛ",
    "group": "Vowels",
-   "name": "e (in ian)",
-   "guide": "like the 'e' in 'bed'; appears in 'ian', 'yan', 'uan'",
+   "name": "e (ian)",
+   "guide": "an open 'eh' as in 'bed'; the e of ian and yan (tiān, nián)",
    "tip": "Lips spread, jaw half open.",
    "say": "ɛ",
    "examples": [
@@ -1594,7 +1594,7 @@
   {
    "ipa": "ɹ̩",
    "group": "Vowels",
-   "name": "z/c/s vowel",
+   "name": "zi vowel",
    "guide": "a buzzing 'zzz' held on, the vowel in 'zi', 'ci', 'si'; tongue stays at the 'z' position",
    "tip": "Lips spread flat, teeth almost closed, tongue still.",
    "say": "sɹ̩",
@@ -1616,7 +1616,7 @@
   {
    "ipa": "ɻ̩",
    "group": "Vowels",
-   "name": "zh/ch/sh vowel",
+   "name": "zhi vowel",
    "guide": "a buzzing curled-back 'r' held on, the vowel in 'zhi', 'chi', 'shi', 'ri'",
    "tip": "Lips slightly rounded, tongue tip curled back and still.",
    "say": "ʂɻ̩",
@@ -1639,7 +1639,7 @@
    "ipa": "ʊ",
    "group": "Vowels",
    "name": "ong",
-   "guide": "like 'oo' in 'book' as in 'ong'; sits before ng",
+   "guide": "a short 'oo' as in 'book', only before ng (ong); some books write it /u/",
    "tip": "Lips lightly rounded, jaw half closed.",
    "say": "ʊŋ",
    "examples": [
@@ -1726,7 +1726,7 @@
   {
    "ipa": "p",
    "group": "Consonants",
-   "name": "b (unaspirated p)",
+   "name": "b · no puff",
    "guide": "like the 'p' in 'spin' - no puff of air; pinyin writes it 'b'",
    "tip": "Lips pressed together and released gently.",
    "say": "pa",
@@ -1748,7 +1748,7 @@
   {
    "ipa": "pʰ",
    "group": "Consonants",
-   "name": "p (aspirated)",
+   "name": "p · puff",
    "guide": "like English 'p' in 'pie' with a strong puff of air",
    "tip": "Lips pressed, then released with a puff.",
    "say": "pʰa",
@@ -1814,7 +1814,7 @@
   {
    "ipa": "t",
    "group": "Consonants",
-   "name": "d (unaspirated t)",
+   "name": "d · no puff",
    "guide": "like the 't' in 'stop' - no puff; pinyin writes it 'd'",
    "tip": "Tongue tip on the ridge behind the upper teeth.",
    "say": "ta",
@@ -1836,7 +1836,7 @@
   {
    "ipa": "tʰ",
    "group": "Consonants",
-   "name": "t (aspirated)",
+   "name": "t · puff",
    "guide": "like English 't' in 'top' with a strong puff of air",
    "tip": "Tongue tip on the ridge, released with a puff.",
    "say": "tʰa",
@@ -1902,7 +1902,7 @@
   {
    "ipa": "k",
    "group": "Consonants",
-   "name": "g (unaspirated k)",
+   "name": "g · no puff",
    "guide": "like the 'k' in 'sky' - no puff; pinyin writes it 'g'",
    "tip": "Back of tongue touches the soft palate.",
    "say": "ka",
@@ -1924,7 +1924,7 @@
   {
    "ipa": "kʰ",
    "group": "Consonants",
-   "name": "k (aspirated)",
+   "name": "k · puff",
    "guide": "like English 'k' in 'key' with a strong puff of air",
    "tip": "Back of tongue touches the soft palate, released with a puff.",
    "say": "kʰa",
@@ -1991,7 +1991,7 @@
    "ipa": "tɕ",
    "group": "Consonants",
    "name": "j",
-   "guide": "like 'j' in 'jeep' but with a flatter tongue, lips spread",
+   "guide": "like the 'ch' in 'cheese' but with no puff of air and not voiced; tongue flat behind the lower teeth",
    "tip": "Lips spread, tongue flat behind the lower teeth, front of tongue to the palate.",
    "say": "tɕi",
    "examples": [
@@ -2057,7 +2057,7 @@
    "ipa": "ts",
    "group": "Consonants",
    "name": "z",
-   "guide": "like the 'ds' in 'adds'; no puff",
+   "guide": "like the 'ts' in 'cats' at the start of a syllable, with no puff of air (not a voiced 'dz')",
    "tip": "Lips spread, tongue tip on the back of the teeth.",
    "say": "tsa",
    "examples": [
@@ -2123,7 +2123,7 @@
    "ipa": "ʈʂ",
    "group": "Consonants",
    "name": "zh",
-   "guide": "like 'j' in 'jump' with the tongue curled back; no puff",
+   "guide": "like the 'ch' in 'church' with the tongue tip curled back, no puff of air and not voiced",
    "tip": "Lips slightly rounded, tongue tip curled back to the roof.",
    "say": "ʈʂa",
    "examples": [

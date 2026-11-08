@@ -17,6 +17,14 @@ struct SubvoxApp: App {
         .windowResizability(.contentMinSize)
         .commands {
             CommandMenu("Practice") {
+                Button("Start") {
+                    if model.screen == .train && model.trainMode == .reading { model.startSentenceTraining() } else { model.startRequest += 1 }
+                }.keyboardShortcut(.return, modifiers: .command)
+                Button("Show or Hide IPA") {
+                    let defaults = UserDefaults.standard
+                    defaults.set(!(defaults.object(forKey: "practice.showIPA") as? Bool ?? true), forKey: "practice.showIPA")
+                }.keyboardShortcut("i", modifiers: .command)
+                Divider()
                 ForEach(TrainMode.allCases) { mode in
                     Button(mode.rawValue) { if mode != model.trainMode { model.closeOverlays() }; model.screen = .train; model.trainMode = mode }
                         .keyboardShortcut(KeyEquivalent(mode.shortcut), modifiers: .command)

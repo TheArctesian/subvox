@@ -54,7 +54,9 @@ PIECES = [
 # Grammar drills per language (Tools/corpus/grammar/*.json): A1–B1 (CEFR) and HSK 1–4 topics,
 # 5–8 short phrases each, with a level, topic and one-line note. Chinese phrases carry both
 # simplified ("hans") and traditional ("hant") forms.
-GRAMMAR = [ROOT / "Tools" / "corpus" / "grammar" / name for name in ("grammar-fr-es.json", "grammar-zh-en.json")]
+GRAMMAR = [ROOT / "Tools" / "corpus" / "grammar" / name for name in ("grammar-fr-es.json", "grammar-zh-en.json", "everyday.json")]
+# Valencian is not Spanish: the Spanish converter would give it wrong IPA, so it waits for a Catalan one.
+SKIP_DRILLS = {"es-valencia"}
 
 
 def load_drills():
@@ -62,7 +64,9 @@ def load_drills():
     for path in GRAMMAR:
         for language, items in json.loads(path.read_text()).items():
             for d in items:
-                phrases = [(p["hans"], p["hant"]) if isinstance(p, dict) else p for p in d["phrases"]]
+                if f"{language}-{d['id']}" in SKIP_DRILLS:
+                    continue
+                phrases = [p if isinstance(p, str) else dict(p) for p in d["phrases"]]
                 drills.append((f"{language}-{d['id']}", language, d["title"], phrases,
                                dict(level=d.get("level"), topic=d.get("topic"), note=d.get("note"), source=d.get("source"))))
     return drills
@@ -114,6 +118,36 @@ def traditional_title(title, meta):
     # aspect particle as 着 where Traditional text (and these drills' phrases) write 著.
     hant = traditional(title).replace("着", "著")
     return hant.replace("只", "隻") if meta.get("topic") == "Measure words" else hant
+
+
+# Meanings for the minimal-pair words, so a learner can tell "caro" from "carro".
+PAIR_GLOSS = {
+    "fr": dict(rue="street", roue="wheel", tu="you", tout="all", vu="seen", vous="you (formal)", dessus="on top", dessous="underneath",
+               pain="bread", bain="bath", main="hand", pas="step; not", bas="low", mas="farmhouse", fin="end", vin="wine",
+               faux="false", veau="calf", bon="good", banc="bench", long="long", lent="slow"),
+    "es": dict(pero="but", perro="dog", caro="expensive", carro="cart; car", coro="choir", corro="I run", peso="weight", beso="kiss",
+               pala="shovel", bala="bullet", mala="bad"),
+    "zh": {"八": "eight", "趴": "lie face down", "妈": "mum", "包": "bag", "抛": "throw", "猫": "cat", "女": "woman", "你": "you",
+           "怒": "anger", "鱼": "fish", "移": "move", "无": "without"},
+}
+
+
+def glossed(word, language):
+    item = entry(word, language)
+    gloss = PAIR_GLOSS.get(language, {}).get(item["text"])
+    if gloss:
+        item["gloss"] = gloss
+    return item
+
+
+def phrase(p, language):
+    """A drill phrase: a string, or {"hans", "hant"} / {"text"} with an optional English gloss."""
+    if isinstance(p, str):
+        return entry(p, language)
+    item = entry((p["hans"], p["hant"]) if "hans" in p else p["text"], language)
+    if p.get("gloss"):
+        item["gloss"] = p["gloss"]
+    return item
 
 
 def both(value):
@@ -191,9 +225,10 @@ def build(year=2026):
                            author_hant=author_hant, year=published, date=date or (f"c. {published}" if published < 1000 else None),
                            lines=[entry(line, language) for line in lines]))
     drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
-                   phrases=[entry(p, language) for p in phrases], **meta)
+                   note_hant=traditional_title(meta.get("note") or "", meta) if language == "zh" and meta.get("note") else None,
+                   phrases=[phrase(p, language) for p in phrases], **meta)
               for did, language, title, phrases, meta in load_drills()]
-    pairs = [dict(language=language, contrast=contrast, sets=[[entry(w, language) for w in group] for group in groups])
+    pairs = [dict(language=language, contrast=contrast, sets=[[glossed(w, language) for w in group] for group in groups])
              for language, contrast, groups in MINIMAL_PAIRS]
     sounds, problems = load_sounds()
     return dict(version=1, pieces=pieces, drills=drills, minimal_pairs=pairs, sounds=sounds), problems

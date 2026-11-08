@@ -1,0 +1,1407 @@
+{
+ "es": [
+  {
+   "id": "cafe",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "At the café or bar",
+   "note": "Spain Castilian: bar orders are short and friendly; vosotros forms for a group.",
+   "phrases": [
+    {
+     "text": "Un café con leche, por favor.",
+     "gloss": "A coffee with milk, please."
+    },
+    {
+     "text": "¿Me pones un cortado?",
+     "gloss": "Could you get me a cortado?"
+    },
+    {
+     "text": "Para llevar, ¿vale?",
+     "gloss": "To take away, OK?"
+    },
+    {
+     "text": "¿Qué tenéis de tapas?",
+     "gloss": "What tapas do you have?"
+    },
+    {
+     "text": "Una caña y unas patatas bravas.",
+     "gloss": "A small draught beer and some patatas bravas."
+    },
+    {
+     "text": "¿Se puede pagar con tarjeta?",
+     "gloss": "Can I pay by card?"
+    },
+    {
+     "text": "La cuenta, por favor.",
+     "gloss": "The bill, please."
+    }
+   ]
+  },
+  {
+   "id": "mercado",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "At the market",
+   "note": "Mercado stallholders say usted; prices are per kilo.",
+   "phrases": [
+    {
+     "text": "¿A cuánto está el kilo de naranjas?",
+     "gloss": "How much is a kilo of oranges?"
+    },
+    {
+     "text": "Medio kilo de tomates, por favor.",
+     "gloss": "Half a kilo of tomatoes, please."
+    },
+    {
+     "text": "¿Está fresco el pescado?",
+     "gloss": "Is the fish fresh?"
+    },
+    {
+     "text": "¿Qué me recomienda?",
+     "gloss": "What do you recommend?"
+    },
+    {
+     "text": "Un poquito más, por favor.",
+     "gloss": "A little bit more, please."
+    },
+    {
+     "text": "¿Me lo pone en una bolsa?",
+     "gloss": "Could you put it in a bag?"
+    },
+    {
+     "text": "Eso es todo, gracias.",
+     "gloss": "That's all, thanks."
+    },
+    {
+     "text": "¿Cuánto es?",
+     "gloss": "How much is it?"
+    }
+   ]
+  },
+  {
+   "id": "salud",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Doctor and pharmacy",
+   "note": "Centro de salud and farmacia phrases.",
+   "phrases": [
+    {
+     "text": "Quería pedir cita con el médico.",
+     "gloss": "I'd like to make an appointment with the doctor."
+    },
+    {
+     "text": "Tengo la tarjeta sanitaria.",
+     "gloss": "I have my health card."
+    },
+    {
+     "text": "Me duele la cabeza.",
+     "gloss": "I have a headache."
+    },
+    {
+     "text": "Tengo fiebre desde ayer.",
+     "gloss": "I've had a fever since yesterday."
+    },
+    {
+     "text": "Soy alérgico a la penicilina.",
+     "gloss": "I'm allergic to penicillin."
+    },
+    {
+     "text": "¿Tiene algo para la tos?",
+     "gloss": "Do you have something for a cough?"
+    },
+    {
+     "text": "¿Se toma con las comidas?",
+     "gloss": "Is it taken with meals?"
+    },
+    {
+     "text": "Necesito una receta.",
+     "gloss": "I need a prescription."
+    }
+   ]
+  },
+  {
+   "id": "piso",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Renting a flat",
+   "note": "Spanish says piso for flat; fianza is the deposit.",
+   "phrases": [
+    {
+     "text": "Busco un piso de dos habitaciones.",
+     "gloss": "I'm looking for a two-bedroom flat."
+    },
+    {
+     "text": "¿Cuánto es el alquiler al mes?",
+     "gloss": "How much is the rent per month?"
+    },
+    {
+     "text": "¿Están los gastos incluidos?",
+     "gloss": "Are the bills included?"
+    },
+    {
+     "text": "¿Hay que dejar fianza?",
+     "gloss": "Do I have to leave a deposit?"
+    },
+    {
+     "text": "¿Tiene aire acondicionado?",
+     "gloss": "Does it have air conditioning?"
+    },
+    {
+     "text": "¿Se admiten mascotas?",
+     "gloss": "Are pets allowed?"
+    },
+    {
+     "text": "¿Se puede visitar hoy?",
+     "gloss": "Can we view it today?"
+    },
+    {
+     "text": "Me interesa el piso.",
+     "gloss": "I'm interested in the flat."
+    }
+   ]
+  },
+  {
+   "id": "tramites",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Bank and paperwork",
+   "note": "Trámites: empadronamiento (town registration) and NIE (foreigner number).",
+   "phrases": [
+    {
+     "text": "Quería abrir una cuenta.",
+     "gloss": "I'd like to open an account."
+    },
+    {
+     "text": "Necesito el empadronamiento.",
+     "gloss": "I need the empadronamiento (registration certificate)."
+    },
+    {
+     "text": "Tengo cita para el NIE.",
+     "gloss": "I have an appointment for the NIE."
+    },
+    {
+     "text": "Vengo a pedir cita previa.",
+     "gloss": "I'm here to ask for an appointment."
+    },
+    {
+     "text": "¿Qué documentos hacen falta?",
+     "gloss": "What documents are needed?"
+    },
+    {
+     "text": "Aquí tiene mi pasaporte.",
+     "gloss": "Here is my passport."
+    },
+    {
+     "text": "¿Dónde tengo que firmar?",
+     "gloss": "Where do I have to sign?"
+    },
+    {
+     "text": "¿Puede repetirlo, por favor?",
+     "gloss": "Can you repeat that, please?"
+    }
+   ]
+  },
+  {
+   "id": "transporte",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Metro, bus and tickets",
+   "note": "Valencia: Metrovalencia, EMT buses; tarjeta recargable.",
+   "phrases": [
+    {
+     "text": "Un billete sencillo, por favor.",
+     "gloss": "A single ticket, please."
+    },
+    {
+     "text": "¿Dónde está la parada del metro?",
+     "gloss": "Where is the metro stop?"
+    },
+    {
+     "text": "¿Este autobús va al centro?",
+     "gloss": "Does this bus go to the centre?"
+    },
+    {
+     "text": "¿Es esta la línea cinco?",
+     "gloss": "Is this line five?"
+    },
+    {
+     "text": "¿Cuándo sale el próximo?",
+     "gloss": "When does the next one leave?"
+    },
+    {
+     "text": "¿Dónde puedo recargar la tarjeta?",
+     "gloss": "Where can I top up the card?"
+    },
+    {
+     "text": "Me bajo en la próxima.",
+     "gloss": "I'm getting off at the next one."
+    }
+   ]
+  },
+  {
+   "id": "vecinos",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Neighbours and small talk",
+   "note": "Friendly informal chat; vosotros for several people.",
+   "phrases": [
+    {
+     "text": "Buenos días, vecina.",
+     "gloss": "Good morning, neighbour."
+    },
+    {
+     "text": "¿Qué tal todo?",
+     "gloss": "How's everything?"
+    },
+    {
+     "text": "Hace un calor tremendo, ¿eh?",
+     "gloss": "It's terribly hot, isn't it?"
+    },
+    {
+     "text": "Me acabo de mudar al tercero.",
+     "gloss": "I've just moved into the third floor."
+    },
+    {
+     "text": "¿Vosotros sois de aquí?",
+     "gloss": "Are you (pl.) from here?"
+    },
+    {
+     "text": "Perdonad, ¿sabéis dónde hay un súper?",
+     "gloss": "Excuse me, do you know where there's a supermarket?"
+    },
+    {
+     "text": "Hasta luego, nos vemos.",
+     "gloss": "See you later."
+    },
+    {
+     "text": "¡Que os vaya bien!",
+     "gloss": "Take care, all of you!"
+    }
+   ]
+  },
+  {
+   "id": "emergencias",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Emergencies",
+   "note": "In Spain the emergency number is 112.",
+   "phrases": [
+    {
+     "text": "¡Ayuda, por favor!",
+     "gloss": "Help, please!"
+    },
+    {
+     "text": "Llamad a una ambulancia.",
+     "gloss": "Call an ambulance (you all)."
+    },
+    {
+     "text": "Llamad a la policía.",
+     "gloss": "Call the police (you all)."
+    },
+    {
+     "text": "Necesito un médico urgente.",
+     "gloss": "I urgently need a doctor."
+    },
+    {
+     "text": "Ha habido un accidente.",
+     "gloss": "There's been an accident."
+    },
+    {
+     "text": "Me han robado la cartera.",
+     "gloss": "My wallet has been stolen."
+    },
+    {
+     "text": "¿Dónde está el hospital más cercano?",
+     "gloss": "Where is the nearest hospital?"
+    },
+    {
+     "text": "Me he perdido.",
+     "gloss": "I'm lost."
+    }
+   ]
+  },
+  {
+   "id": "valencia",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Valencià on signs",
+   "note": "Language: Valencian (Valencià), not Castilian; single words you will see on signs.",
+   "phrases": [
+    {
+     "text": "Eixida",
+     "gloss": "Exit"
+    },
+    {
+     "text": "Entrada",
+     "gloss": "Entrance"
+    },
+    {
+     "text": "Carrer",
+     "gloss": "Street"
+    },
+    {
+     "text": "Platja",
+     "gloss": "Beach"
+    },
+    {
+     "text": "Ajuntament",
+     "gloss": "Town hall"
+    },
+    {
+     "text": "Obert",
+     "gloss": "Open"
+    }
+   ]
+  }
+ ],
+ "fr": [
+  {
+   "id": "boulangerie",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "At the bakery",
+   "note": "Greet first: Bonjour is expected before ordering.",
+   "phrases": [
+    {
+     "text": "Bonjour, une baguette, s'il vous plaît.",
+     "gloss": "Hello, a baguette, please."
+    },
+    {
+     "text": "Je vais prendre deux croissants.",
+     "gloss": "I'll take two croissants."
+    },
+    {
+     "text": "Vous avez des pains au chocolat ?",
+     "gloss": "Do you have pains au chocolat?"
+    },
+    {
+     "text": "Une tradition bien cuite, s'il vous plaît.",
+     "gloss": "A well-baked tradition loaf, please."
+    },
+    {
+     "text": "C'est pour emporter.",
+     "gloss": "It's to take away."
+    },
+    {
+     "text": "Ça fait combien ?",
+     "gloss": "How much is that?"
+    },
+    {
+     "text": "Je peux payer par carte ?",
+     "gloss": "Can I pay by card?"
+    },
+    {
+     "text": "Bonne journée !",
+     "gloss": "Have a good day!"
+    }
+   ]
+  },
+  {
+   "id": "cafe",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "At the café",
+   "note": "Standing at the bar is cheaper than sitting on the terrasse.",
+   "phrases": [
+    {
+     "text": "Un café, s'il vous plaît.",
+     "gloss": "An espresso, please."
+    },
+    {
+     "text": "Je voudrais un grand crème.",
+     "gloss": "I'd like a large white coffee."
+    },
+    {
+     "text": "On peut s'asseoir en terrasse ?",
+     "gloss": "Can we sit on the terrace?"
+    },
+    {
+     "text": "Vous avez la carte ?",
+     "gloss": "Do you have the menu?"
+    },
+    {
+     "text": "Une carafe d'eau, s'il vous plaît.",
+     "gloss": "A jug of tap water, please."
+    },
+    {
+     "text": "L'addition, s'il vous plaît.",
+     "gloss": "The bill, please."
+    },
+    {
+     "text": "C'est tout, merci.",
+     "gloss": "That's all, thanks."
+    },
+    {
+     "text": "Où sont les toilettes ?",
+     "gloss": "Where are the toilets?"
+    }
+   ]
+  },
+  {
+   "id": "transports",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Trains and metro",
+   "note": "Île-de-France: RER, métro, Navigo pass.",
+   "phrases": [
+    {
+     "text": "Un ticket, s'il vous plaît.",
+     "gloss": "A ticket, please."
+    },
+    {
+     "text": "Où est la station de RER ?",
+     "gloss": "Where is the RER station?"
+    },
+    {
+     "text": "Je dois recharger mon Navigo.",
+     "gloss": "I need to top up my Navigo."
+    },
+    {
+     "text": "Quelle ligne pour la gare de Lyon ?",
+     "gloss": "Which line for Gare de Lyon?"
+    },
+    {
+     "text": "C'est direct ?",
+     "gloss": "Is it direct?"
+    },
+    {
+     "text": "Le prochain train part à quelle heure ?",
+     "gloss": "What time does the next train leave?"
+    },
+    {
+     "text": "Il y a une grève aujourd'hui ?",
+     "gloss": "Is there a strike today?"
+    },
+    {
+     "text": "Pardon, je descends ici.",
+     "gloss": "Excuse me, I'm getting off here."
+    }
+   ]
+  },
+  {
+   "id": "medecin",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "At the doctor's",
+   "note": "Carte Vitale is the French health insurance card.",
+   "phrases": [
+    {
+     "text": "Je voudrais prendre rendez-vous.",
+     "gloss": "I'd like to make an appointment."
+    },
+    {
+     "text": "J'ai rendez-vous à quatorze heures.",
+     "gloss": "I have an appointment at 2 p.m."
+    },
+    {
+     "text": "J'ai mal à la gorge.",
+     "gloss": "I have a sore throat."
+    },
+    {
+     "text": "Ça fait trois jours que je tousse.",
+     "gloss": "I've been coughing for three days."
+    },
+    {
+     "text": "Je n'ai pas de fièvre.",
+     "gloss": "I don't have a fever."
+    },
+    {
+     "text": "Vous avez la carte Vitale ?",
+     "gloss": "Do you have your Vitale card?"
+    },
+    {
+     "text": "Je suis allergique à la pénicilline.",
+     "gloss": "I'm allergic to penicillin."
+    },
+    {
+     "text": "Je dois le prendre deux fois par jour ?",
+     "gloss": "Do I take it twice a day?"
+    }
+   ]
+  },
+  {
+   "id": "travail",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "At work",
+   "note": "Colleagues use tu; clients and bosses often vous.",
+   "phrases": [
+    {
+     "text": "Bonjour à tous !",
+     "gloss": "Hello everyone!"
+    },
+    {
+     "text": "Tu as cinq minutes ?",
+     "gloss": "Have you got five minutes?"
+    },
+    {
+     "text": "On fait un point demain ?",
+     "gloss": "Shall we do a catch-up tomorrow?"
+    },
+    {
+     "text": "Je suis en réunion.",
+     "gloss": "I'm in a meeting."
+    },
+    {
+     "text": "Je te l'envoie par message.",
+     "gloss": "I'll send it to you by message."
+    },
+    {
+     "text": "On déjeune ensemble ?",
+     "gloss": "Shall we have lunch together?"
+    },
+    {
+     "text": "Je suis en télétravail demain.",
+     "gloss": "I'm working from home tomorrow."
+    },
+    {
+     "text": "Bon courage !",
+     "gloss": "Good luck with it! (hang in there)"
+    }
+   ]
+  },
+  {
+   "id": "smalltalk",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Small talk",
+   "note": "Light, polite chit-chat.",
+   "phrases": [
+    {
+     "text": "Ça va ?",
+     "gloss": "How's it going?"
+    },
+    {
+     "text": "Quoi de neuf ?",
+     "gloss": "What's new?"
+    },
+    {
+     "text": "Il fait beau aujourd'hui, non ?",
+     "gloss": "Nice weather today, isn't it?"
+    },
+    {
+     "text": "Tu as passé un bon week-end ?",
+     "gloss": "Did you have a good weekend?"
+    },
+    {
+     "text": "Tu habites dans le coin ?",
+     "gloss": "Do you live around here?"
+    },
+    {
+     "text": "Enchanté !",
+     "gloss": "Nice to meet you!"
+    },
+    {
+     "text": "À bientôt !",
+     "gloss": "See you soon!"
+    },
+    {
+     "text": "Bonne soirée !",
+     "gloss": "Have a good evening!"
+    }
+   ]
+  },
+  {
+   "id": "telephone",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Phone and admin",
+   "note": "Calls to offices and the administration.",
+   "phrases": [
+    {
+     "text": "Allô, bonjour, c'est Marie.",
+     "gloss": "Hello, it's Marie."
+    },
+    {
+     "text": "Je voudrais parler à madame Martin.",
+     "gloss": "I'd like to speak to Mrs Martin."
+    },
+    {
+     "text": "Ne quittez pas.",
+     "gloss": "Please hold."
+    },
+    {
+     "text": "Vous pouvez répéter, s'il vous plaît ?",
+     "gloss": "Can you repeat that, please?"
+    },
+    {
+     "text": "J'appelle au sujet de mon dossier.",
+     "gloss": "I'm calling about my file."
+    },
+    {
+     "text": "Quel est le numéro de dossier ?",
+     "gloss": "What's the file number?"
+    },
+    {
+     "text": "Je dois envoyer un justificatif de domicile.",
+     "gloss": "I have to send proof of address."
+    },
+    {
+     "text": "Je vous rappelle dans cinq minutes.",
+     "gloss": "I'll call you back in five minutes."
+    }
+   ]
+  },
+  {
+   "id": "marche",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "At the market",
+   "note": "Say bonjour to the stallholder first.",
+   "phrases": [
+    {
+     "text": "Bonjour, madame !",
+     "gloss": "Hello, madam!"
+    },
+    {
+     "text": "Un kilo de pommes, s'il vous plaît.",
+     "gloss": "A kilo of apples, please."
+    },
+    {
+     "text": "C'est combien le kilo ?",
+     "gloss": "How much is a kilo?"
+    },
+    {
+     "text": "Vous en avez des plus mûres ?",
+     "gloss": "Do you have riper ones?"
+    },
+    {
+     "text": "Il m'en faut six.",
+     "gloss": "I need six of them."
+    },
+    {
+     "text": "Je vais prendre ça.",
+     "gloss": "I'll take that."
+    },
+    {
+     "text": "Vous pouvez le couper en deux ?",
+     "gloss": "Can you cut it in half?"
+    },
+    {
+     "text": "Ce sera tout ?",
+     "gloss": "Will that be all?"
+    }
+   ]
+  }
+ ],
+ "zh": [
+  {
+   "id": "canting",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Ordering at a restaurant",
+   "note": "Mainland restaurant talk; 买单 asks for the bill.",
+   "phrases": [
+    {
+     "hans": "你好，几位？",
+     "hant": "你好，幾位？",
+     "gloss": "Hello, how many people?"
+    },
+    {
+     "hans": "我们两个人。",
+     "hant": "我們兩個人。",
+     "gloss": "There are two of us."
+    },
+    {
+     "hans": "请给我菜单。",
+     "hant": "請給我菜單。",
+     "gloss": "Please give me the menu."
+    },
+    {
+     "hans": "有什么推荐的吗？",
+     "hant": "有什麼推薦的嗎？",
+     "gloss": "Any recommendations?"
+    },
+    {
+     "hans": "不要辣，谢谢。",
+     "hant": "不要辣，謝謝。",
+     "gloss": "No spice, thanks."
+    },
+    {
+     "hans": "再来一瓶啤酒。",
+     "hant": "再來一瓶啤酒。",
+     "gloss": "One more bottle of beer."
+    },
+    {
+     "hans": "买单！",
+     "hant": "買單！",
+     "gloss": "The bill, please!"
+    },
+    {
+     "hans": "可以打包吗？",
+     "hant": "可以打包嗎？",
+     "gloss": "Can I take the leftovers to go?"
+    }
+   ]
+  },
+  {
+   "id": "dache",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Taxis and metro",
+   "note": "Didi/taxi and metro talk; 师傅 addresses drivers.",
+   "phrases": [
+    {
+     "hans": "我想打车去火车站。",
+     "hant": "我想打車去火車站。",
+     "gloss": "I want to take a taxi to the train station."
+    },
+    {
+     "hans": "师傅，去这个地址。",
+     "hant": "師傅，去這個地址。",
+     "gloss": "Driver, to this address please."
+    },
+    {
+     "hans": "麻烦开一下导航。",
+     "hant": "麻煩開一下導航。",
+     "gloss": "Could you turn on the navigation?"
+    },
+    {
+     "hans": "在这里停就行。",
+     "hant": "在這裡停就行。",
+     "gloss": "Stopping here is fine."
+    },
+    {
+     "hans": "地铁站在哪儿？",
+     "hant": "地鐵站在哪兒？",
+     "gloss": "Where is the metro station?"
+    },
+    {
+     "hans": "到人民广场坐几号线？",
+     "hant": "到人民廣場坐幾號線？",
+     "gloss": "Which line to People's Square?"
+    },
+    {
+     "hans": "可以扫码进站吗？",
+     "hant": "可以掃碼進站嗎？",
+     "gloss": "Can I scan a code to enter the station?"
+    },
+    {
+     "hans": "我要在前面下车。",
+     "hant": "我要在前面下車。",
+     "gloss": "I'm getting off up ahead."
+    }
+   ]
+  },
+  {
+   "id": "goumai",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Shopping and bargaining",
+   "note": "Market-style bargaining.",
+   "phrases": [
+    {
+     "hans": "这个多少钱？",
+     "hant": "這個多少錢？",
+     "gloss": "How much is this?"
+    },
+    {
+     "hans": "太贵了，便宜点吧。",
+     "hant": "太貴了，便宜點吧。",
+     "gloss": "Too expensive, make it cheaper."
+    },
+    {
+     "hans": "能再便宜一点吗？",
+     "hant": "能再便宜一點嗎？",
+     "gloss": "Can it be a bit cheaper?"
+    },
+    {
+     "hans": "我随便看看。",
+     "hant": "我隨便看看。",
+     "gloss": "I'm just looking."
+    },
+    {
+     "hans": "有没有大一号的？",
+     "hant": "有沒有大一號的？",
+     "gloss": "Do you have one size bigger?"
+    },
+    {
+     "hans": "我可以试试吗？",
+     "hant": "我可以試試嗎？",
+     "gloss": "May I try it?"
+    },
+    {
+     "hans": "这个我要了。",
+     "hant": "這個我要了。",
+     "gloss": "I'll take this one."
+    },
+    {
+     "hans": "可以退货吗？",
+     "hant": "可以退貨嗎？",
+     "gloss": "Can I return it?"
+    }
+   ]
+  },
+  {
+   "id": "wenlu",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Asking the way",
+   "note": "Everyday direction words.",
+   "phrases": [
+    {
+     "hans": "请问，厕所在哪儿？",
+     "hant": "請問，廁所在哪兒？",
+     "gloss": "Excuse me, where's the toilet?"
+    },
+    {
+     "hans": "去超市怎么走？",
+     "hant": "去超市怎麼走？",
+     "gloss": "How do I get to the supermarket?"
+    },
+    {
+     "hans": "一直往前走。",
+     "hant": "一直往前走。",
+     "gloss": "Keep going straight."
+    },
+    {
+     "hans": "在红绿灯左拐。",
+     "hant": "在紅綠燈左拐。",
+     "gloss": "Turn left at the traffic lights."
+    },
+    {
+     "hans": "离这儿远吗？",
+     "hant": "離這兒遠嗎？",
+     "gloss": "Is it far from here?"
+    },
+    {
+     "hans": "走路大概十分钟。",
+     "hant": "走路大概十分鐘。",
+     "gloss": "About ten minutes on foot."
+    },
+    {
+     "hans": "就在马路对面。",
+     "hant": "就在馬路對面。",
+     "gloss": "It's just across the road."
+    },
+    {
+     "hans": "我迷路了。",
+     "hant": "我迷路了。",
+     "gloss": "I'm lost."
+    }
+   ]
+  },
+  {
+   "id": "yiyuan",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Hospital and pharmacy",
+   "note": "挂号 means registering at the hospital desk.",
+   "phrases": [
+    {
+     "hans": "我想挂个号。",
+     "hant": "我想掛個號。",
+     "gloss": "I'd like to register for an appointment."
+    },
+    {
+     "hans": "我肚子疼。",
+     "hant": "我肚子疼。",
+     "gloss": "My stomach hurts."
+    },
+    {
+     "hans": "我发烧了。",
+     "hant": "我發燒了。",
+     "gloss": "I have a fever."
+    },
+    {
+     "hans": "我对青霉素过敏。",
+     "hant": "我對青黴素過敏。",
+     "gloss": "I'm allergic to penicillin."
+    },
+    {
+     "hans": "这药怎么吃？",
+     "hant": "這藥怎麼吃？",
+     "gloss": "How do I take this medicine?"
+    },
+    {
+     "hans": "一天吃三次。",
+     "hant": "一天吃三次。",
+     "gloss": "Three times a day."
+    },
+    {
+     "hans": "饭后吃。",
+     "hant": "飯後吃。",
+     "gloss": "Take it after meals."
+    },
+    {
+     "hans": "药店在哪儿？",
+     "hant": "藥店在哪兒？",
+     "gloss": "Where's the pharmacy?"
+    }
+   ]
+  },
+  {
+   "id": "shouji",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Phone and WeChat Pay",
+   "note": "Mobile payment is the default in Mainland shops.",
+   "phrases": [
+    {
+     "hans": "可以微信支付吗？",
+     "hant": "可以微信支付嗎？",
+     "gloss": "Can I pay with WeChat Pay?"
+    },
+    {
+     "hans": "我扫你，还是你扫我？",
+     "hant": "我掃你，還是你掃我？",
+     "gloss": "Do I scan you, or do you scan me?"
+    },
+    {
+     "hans": "我加你微信吧。",
+     "hant": "我加你微信吧。",
+     "gloss": "Let me add you on WeChat."
+    },
+    {
+     "hans": "我把二维码发给你。",
+     "hant": "我把二維碼發給你。",
+     "gloss": "I'll send you the QR code."
+    },
+    {
+     "hans": "付款成功了。",
+     "hant": "付款成功了。",
+     "gloss": "The payment went through."
+    },
+    {
+     "hans": "手机没电了。",
+     "hant": "手機沒電了。",
+     "gloss": "My phone's out of battery."
+    },
+    {
+     "hans": "你有充电宝吗？",
+     "hant": "你有充電寶嗎？",
+     "gloss": "Do you have a power bank?"
+    },
+    {
+     "hans": "网速太慢了。",
+     "hant": "網速太慢了。",
+     "gloss": "The connection is too slow."
+    }
+   ]
+  },
+  {
+   "id": "hanxuan",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Small talk",
+   "note": "Everyday greetings.",
+   "phrases": [
+    {
+     "hans": "吃饭了吗？",
+     "hant": "吃飯了嗎？",
+     "gloss": "Have you eaten? (a friendly greeting)"
+    },
+    {
+     "hans": "好久不见！",
+     "hant": "好久不見！",
+     "gloss": "Long time no see!"
+    },
+    {
+     "hans": "最近怎么样？",
+     "hant": "最近怎麼樣？",
+     "gloss": "How have you been lately?"
+    },
+    {
+     "hans": "你是哪里人？",
+     "hant": "你是哪裡人？",
+     "gloss": "Where are you from?"
+    },
+    {
+     "hans": "我在这儿工作。",
+     "hant": "我在這兒工作。",
+     "gloss": "I work here."
+    },
+    {
+     "hans": "周末有空吗？",
+     "hant": "週末有空嗎？",
+     "gloss": "Are you free at the weekend?"
+    },
+    {
+     "hans": "不好意思，借过一下。",
+     "hant": "不好意思，借過一下。",
+     "gloss": "Sorry, may I get past?"
+    },
+    {
+     "hans": "慢走，下次见！",
+     "hant": "慢走，下次見！",
+     "gloss": "Take care, see you next time!"
+    }
+   ]
+  },
+  {
+   "id": "zufang",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Renting a flat",
+   "note": "押一付三 = one month's deposit, three months' rent up front.",
+   "phrases": [
+    {
+     "hans": "我想租一套两居室。",
+     "hant": "我想租一套兩居室。",
+     "gloss": "I want to rent a two-bedroom flat."
+    },
+    {
+     "hans": "房租一个月多少？",
+     "hant": "房租一個月多少？",
+     "gloss": "How much is the rent a month?"
+    },
+    {
+     "hans": "押一付三，可以吗？",
+     "hant": "押一付三，可以嗎？",
+     "gloss": "One month deposit, three months up front, OK?"
+    },
+    {
+     "hans": "水电费怎么算？",
+     "hant": "水電費怎麼算？",
+     "gloss": "How are water and electricity charged?"
+    },
+    {
+     "hans": "房子带家具吗？",
+     "hant": "房子帶家具嗎？",
+     "gloss": "Does it come furnished?"
+    },
+    {
+     "hans": "能看房吗？",
+     "hant": "能看房嗎？",
+     "gloss": "Can I view the place?"
+    },
+    {
+     "hans": "附近有地铁吗？",
+     "hant": "附近有地鐵嗎？",
+     "gloss": "Is there a metro nearby?"
+    },
+    {
+     "hans": "我们签合同吧。",
+     "hant": "我們簽合同吧。",
+     "gloss": "Let's sign the contract."
+    }
+   ]
+  }
+ ],
+ "en": [
+  {
+   "id": "coffee",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Coffee shop",
+   "note": "Counter orders are short; 'for here or to go' is US, 'eat in or take away' UK.",
+   "phrases": [
+    {
+     "text": "Can I get a flat white, please?",
+     "gloss": "Polite everyday order."
+    },
+    {
+     "text": "Medium oat latte, to go.",
+     "gloss": "Clipped, normal at the counter."
+    },
+    {
+     "text": "Is that for here or to go?",
+     "gloss": "What the barista asks."
+    },
+    {
+     "text": "What name is it under?",
+     "gloss": "Asked so they can call your order."
+    },
+    {
+     "text": "Do you have any decaf?",
+     "gloss": "Handy question for late orders."
+    },
+    {
+     "text": "Can I pay by card?",
+     "gloss": "Neutral, works anywhere."
+    },
+    {
+     "text": "Keep the change.",
+     "gloss": "Said when tipping with cash."
+    }
+   ]
+  },
+  {
+   "id": "directions",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Directions",
+   "note": "Giving and asking the way.",
+   "phrases": [
+    {
+     "text": "Excuse me, how do I get to the station?",
+     "gloss": "Polite way to stop a stranger."
+    },
+    {
+     "text": "Is it far from here?",
+     "gloss": "Asks distance."
+    },
+    {
+     "text": "Take the second left.",
+     "gloss": "Instruction you'll hear."
+    },
+    {
+     "text": "Go straight on for five minutes.",
+     "gloss": "UK; 'straight ahead' is US."
+    },
+    {
+     "text": "It's right next to the bank.",
+     "gloss": "Landmark-based direction."
+    },
+    {
+     "text": "You can't miss it.",
+     "gloss": "Reassurance after directions."
+    },
+    {
+     "text": "Am I going the right way?",
+     "gloss": "Checking mid-route."
+    },
+    {
+     "text": "Sorry, I'm not from around here.",
+     "gloss": "Polite way to say you don't know."
+    }
+   ]
+  },
+  {
+   "id": "doctor",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "At the doctor's",
+   "note": "Describe symptoms plainly.",
+   "phrases": [
+    {
+     "text": "I'd like to make an appointment.",
+     "gloss": "Said to the receptionist."
+    },
+    {
+     "text": "I've had a sore throat for three days.",
+     "gloss": "'I've had' plus duration."
+    },
+    {
+     "text": "It hurts when I swallow.",
+     "gloss": "Describes a trigger."
+    },
+    {
+     "text": "I've been feeling dizzy.",
+     "gloss": "Present perfect continuous for symptoms."
+    },
+    {
+     "text": "I'm allergic to penicillin.",
+     "gloss": "Important to say early."
+    },
+    {
+     "text": "Do I need a prescription?",
+     "gloss": "Asked at pharmacy or surgery."
+    },
+    {
+     "text": "How often should I take this?",
+     "gloss": "Dosage question."
+    },
+    {
+     "text": "Should I come back next week?",
+     "gloss": "Follow-up question."
+    }
+   ]
+  },
+  {
+   "id": "phone",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Phone calls",
+   "note": "Phone etiquette.",
+   "phrases": [
+    {
+     "text": "Hi, this is Sam speaking.",
+     "gloss": "Introducing yourself on the phone."
+    },
+    {
+     "text": "Could I speak to Ms Patel, please?",
+     "gloss": "Asking for someone, polite."
+    },
+    {
+     "text": "Can I take a message?",
+     "gloss": "What the receptionist offers."
+    },
+    {
+     "text": "I'll call you back in ten minutes.",
+     "gloss": "Promise to return a call."
+    },
+    {
+     "text": "Sorry, you're breaking up.",
+     "gloss": "Bad line."
+    },
+    {
+     "text": "Could you say that again?",
+     "gloss": "Asking for a repeat."
+    },
+    {
+     "text": "I'm on my way.",
+     "gloss": "Quick update."
+    },
+    {
+     "text": "Thanks for calling.",
+     "gloss": "Polite close."
+    }
+   ]
+  },
+  {
+   "id": "work",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Work small talk",
+   "note": "Office chat.",
+   "phrases": [
+    {
+     "text": "Morning! How was your weekend?",
+     "gloss": "Friendly Monday opener."
+    },
+    {
+     "text": "Have you got a minute?",
+     "gloss": "Interrupting politely."
+    },
+    {
+     "text": "Let's catch up later.",
+     "gloss": "Informal, postpones chat."
+    },
+    {
+     "text": "I'll send that over this afternoon.",
+     "gloss": "Promise with a time."
+    },
+    {
+     "text": "Sounds good to me.",
+     "gloss": "Agreeing casually."
+    },
+    {
+     "text": "Shall we grab lunch?",
+     "gloss": "UK and US, informal invitation."
+    },
+    {
+     "text": "I'm in a meeting till three.",
+     "gloss": "Status update."
+    },
+    {
+     "text": "Have a good one!",
+     "gloss": "Casual goodbye, mostly US but common in UK."
+    }
+   ]
+  },
+  {
+   "id": "shopping",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Shopping",
+   "note": "In shops.",
+   "phrases": [
+    {
+     "text": "Just looking, thanks.",
+     "gloss": "Declining help politely."
+    },
+    {
+     "text": "Do you have this in a medium?",
+     "gloss": "Asking for a size."
+    },
+    {
+     "text": "Where are the fitting rooms?",
+     "gloss": "UK also 'changing rooms'."
+    },
+    {
+     "text": "How much is this?",
+     "gloss": "Basic price question."
+    },
+    {
+     "text": "Do you take contactless?",
+     "gloss": "Mostly UK; US says 'tap to pay'."
+    },
+    {
+     "text": "Do you need a bag?",
+     "gloss": "Cashier question."
+    },
+    {
+     "text": "Can I get a receipt, please?",
+     "gloss": "Asking for proof of purchase."
+    },
+    {
+     "text": "I'd like to return this.",
+     "gloss": "At the returns desk."
+    }
+   ]
+  },
+  {
+   "id": "travel",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Travel",
+   "note": "Trains, planes and buses.",
+   "phrases": [
+    {
+     "text": "One ticket to Oxford, please.",
+     "gloss": "Counter request."
+    },
+    {
+     "text": "Which platform does it leave from?",
+     "gloss": "UK train speak."
+    },
+    {
+     "text": "Is this seat taken?",
+     "gloss": "Polite check."
+    },
+    {
+     "text": "What time does it get in?",
+     "gloss": "Arrival time."
+    },
+    {
+     "text": "I'd like to check in, please.",
+     "gloss": "At the hotel or airport."
+    },
+    {
+     "text": "Where do I pick up my luggage?",
+     "gloss": "UK 'baggage reclaim', US 'baggage claim'."
+    },
+    {
+     "text": "My flight's been delayed.",
+     "gloss": "Contracted speech."
+    },
+    {
+     "text": "Is there a bus to the airport?",
+     "gloss": "Basic travel question."
+    }
+   ]
+  },
+  {
+   "id": "thanks",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Apologising and thanking",
+   "note": "Small courtesy phrases.",
+   "phrases": [
+    {
+     "text": "Sorry about that.",
+     "gloss": "Casual apology."
+    },
+    {
+     "text": "Thanks so much.",
+     "gloss": "Warm thanks."
+    },
+    {
+     "text": "No worries at all.",
+     "gloss": "Reply to thanks or apology."
+    },
+    {
+     "text": "I really appreciate it.",
+     "gloss": "Stronger thanks."
+    },
+    {
+     "text": "Excuse me, sorry to bother you.",
+     "gloss": "Opener to a stranger."
+    },
+    {
+     "text": "My mistake, sorry.",
+     "gloss": "Owning an error."
+    },
+    {
+     "text": "Thanks for waiting.",
+     "gloss": "Said to someone who waited."
+    },
+    {
+     "text": "Don't mention it.",
+     "gloss": "Response to thanks."
+    }
+   ]
+  }
+ ]
+}

@@ -37,3 +37,10 @@ SOFTWARE.
 Data and model weights are licensed separately: contributed recordings in the
 community dataset are released under CC BY 4.0, and released model weights are
 openly licensed as stated on their Hugging Face model card.
+
+Charis SIL 6.200 (Subvox/Fonts/CharisSIL-Regular.ttf) is Copyright (c) 1997-2023 SIL International,
+with Reserved Font Names "Charis" and "SIL", licensed under the SIL Open Font License 1.1
+(Subvox/Fonts/CharisSIL-OFL.txt). It is used unmodified to display IPA.
+
+Speaker and author portraits in Corpus/practice/portraits are public-domain works from
+Wikimedia Commons; each file, creator and licence is listed in Corpus/practice/portraits/SOURCES.tsv.

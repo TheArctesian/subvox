@@ -42,6 +42,8 @@ final class AppModel {
     let uploader = CommunityUploader()
     var showContribute = false
     var trainMode: TrainMode = .reading
+    /// Bumped by Practice › Start (⌘↩); the visible practice page starts its round.
+    var startRequest = 0
     /// The practice language for every mode, chosen from the toolbar.
     var language = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "ui.language") ?? "") ?? .en {
         didSet { UserDefaults.standard.set(language.rawValue, forKey: "ui.language") }
