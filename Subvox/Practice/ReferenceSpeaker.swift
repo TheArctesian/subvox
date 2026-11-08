@@ -9,7 +9,7 @@ import AVFoundation
     override init() { super.init(); synthesizer.delegate = self }
 
     static func voiceLanguage(_ language: String) -> String {
-        ["en": "en-GB", "fr": "fr-FR", "es": "es-ES", "zh": "zh-CN", "zh-Hans": "zh-CN", "zh-Hant": "zh-TW"][language] ?? language
+        ["en": "en-GB", "fr": "fr-FR", "es": "es-ES", "zh": "zh-CN", "es-MX": "es-MX", "zh-Hans": "zh-CN", "zh-Hant": "zh-TW"][language] ?? language
     }
 
     func speak(_ text: String, language: String) async {

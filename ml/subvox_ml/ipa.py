@@ -84,21 +84,35 @@ def espeak_available():
     return bool(shutil.which("espeak-ng") or shutil.which("espeak") or os.environ.get("PHONEMIZER_ESPEAK_LIBRARY"))
 
 
-@lru_cache(maxsize=None)
-def _backend(language):
+# Regional accents: Latin American Spanish has seseo (z, ce, ci are /s/) and yeísmo (ll is /ʝ/).
+ACCENTS = {("es", "MX"): "es-419", ("es", "419"): "es-419"}
+
+
+def _backend(language, accent=None):
     from phonemizer.backend import EspeakBackend
-    return EspeakBackend(LANGUAGES[language], preserve_punctuation=False, with_stress=False, language_switch="remove-flags")
+    voice = ACCENTS.get((language, accent), LANGUAGES[language])
+    return _cached_backend(voice)
 
 
-def phonemize(text, language):
-    """Text -> list of words, each a list of IPA phones. Mandarin words are syllables."""
+@lru_cache(maxsize=None)
+def _cached_backend(voice):
+    from phonemizer.backend import EspeakBackend
+    return EspeakBackend(voice, preserve_punctuation=False, with_stress=False, language_switch="remove-flags")
+
+
+def phonemize(text, language, accent=None):
+    """Text -> list of words, each a list of IPA phones. Mandarin words are syllables.
+    `accent` picks a regional pronunciation where it changes the phones (es + "MX": seseo)."""
     if language == "zh":
         return [s["phones"] for s in mandarin_syllables(text)]
     if language not in LANGUAGES:
         raise ValueError(f"Unsupported language {language!r}")
     from phonemizer.separator import Separator
-    raw = _backend(language).phonemize([text], separator=Separator(phone=" ", word=" | "), strip=True)[0]
+    raw = _backend(language, accent).phonemize([text], separator=Separator(phone=" ", word=" | "), strip=True)[0]
     words = [[p for token in word.split() for p in _split(token, language)] for word in raw.split("|") if word.strip()]
+    if language == "es":
+        # espeak's Latin American voice writes intervocalic ll as j + j (calle /kajje/); it is /ʝ/.
+        words = [_collapse(w, ("j", "j"), "ʝ") for w in words]
     if language == "fr":
         words = [_french_glides(w) for w in words]
         spelled = re.findall(r"[\w'’-]+", text.lower())
@@ -117,6 +131,16 @@ def _french_glides(word):
     return out
 
 
+def _collapse(word, pair, into):
+    out, k = [], 0
+    while k < len(word):
+        if tuple(word[k:k + 2]) == pair:
+            out.append(into); k += 2
+        else:
+            out.append(word[k]); k += 1
+    return out
+
+
 def _french_gn(spelling, word):
     # espeak writes "gn" before a vowel as n + j (agneau /anjo/); it is /ɲ/ (agneau /aɲo/).
     out = list(word)
@@ -128,8 +152,8 @@ def _french_gn(spelling, word):
     return out
 
 
-def phones(text, language):
-    return [p for word in phonemize(text, language) for p in word]
+def phones(text, language, accent=None):
+    return [p for word in phonemize(text, language, accent) for p in word]
 
 
 def arpabet_to_ipa(sequence):

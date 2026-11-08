@@ -1,3 +1,4 @@
+import AVFoundation
 import SwiftUI
 
 /// The default Train page: one way to record, for someone who just installed the app.
@@ -35,7 +36,6 @@ struct SimpleTrainingView: View {
                         progress
                         VStack(alignment: .leading, spacing: 8) {
                             if let error = workflow.error { Text(error).font(.callout).foregroundStyle(.orange) }
-                            Text("Recordings stay on this Mac unless you choose to share them.").font(.callout).foregroundStyle(.secondary)
                         }
                         Divider()
                         Toggle("Advanced tools for researchers", isOn: Binding(get: { model.researchTools }, set: { model.researchTools = $0 }))
@@ -50,9 +50,13 @@ struct SimpleTrainingView: View {
         VStack(alignment: .leading, spacing: 10) {
             row(ok: motionReady, title: motionReady ? "AirPods motion is coming through" : model.motion.statusText,
                 hint: motionReady ? nil : airpodsHint)
-            row(ok: true, title: "The camera reads lip shape while you record", hint: "Only numeric points are kept. No video or photos are saved.")
+            row(ok: cameraAllowed, title: cameraAllowed ? "The camera can read lip shape" : "Camera access is needed to record",
+                hint: cameraAllowed ? nil : "macOS asks the first time you record. If you said no, allow Subvox in System Settings › Privacy & Security › Camera.")
+            PrivacySummary()
         }
     }
+
+    private var cameraAllowed: Bool { AVCaptureDevice.authorizationStatus(for: .video) != .denied && AVCaptureDevice.authorizationStatus(for: .video) != .restricted }
 
     private var airpodsHint: String {
         switch model.motion.status {
@@ -91,5 +95,22 @@ struct SimpleTrainingView: View {
                 }
             }
         }
+    }
+}
+
+/// What a recording saves, where, and what leaves the Mac, shown before the first take.
+struct PrivacySummary: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label("What's saved, and where", systemImage: "lock.shield").font(.headline)
+            Text("On this Mac: your voice as audio, AirPods head motion, and numeric lip and jaw points from the camera. Never video or photos.")
+            Text("Speech recognition runs on this Mac. Nothing leaves it unless you press Send in Share Recordings, and audio is never shared.")
+            HStack {
+                Text(SentenceStore.directory.path).font(.callout.monospaced()).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
+                Button("Show in Finder") { NSWorkspace.shared.activateFileViewerSelecting([SentenceStore.directory]) }
+            }
+        }
+        .font(.callout).fixedSize(horizontal: false, vertical: true)
+        .padding(12).background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
     }
 }

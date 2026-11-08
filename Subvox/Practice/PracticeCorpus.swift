@@ -21,16 +21,23 @@ enum TrainMode: String, CaseIterable, Identifiable {
 /// The practice language, chosen once for the whole app from the toolbar. Simplified and
 /// Traditional Chinese share one corpus language ("zh") but show different characters.
 enum AppLanguage: String, CaseIterable, Identifiable, Codable {
-    case en, fr, es, zhHans = "zh-Hans", zhHant = "zh-Hant"
+    case en, fr, es, esMX = "es-MX", zhHans = "zh-Hans", zhHant = "zh-Hant"
     var id: String { rawValue }
     var name: String {
-        switch self { case .en: "English"; case .fr: "Français"; case .es: "Español"; case .zhHans: "简体中文"; case .zhHant: "繁體中文" }
+        switch self { case .en: "English"; case .fr: "Français"; case .es: "Español (España)"; case .esMX: "Español (México)"; case .zhHans: "简体中文"; case .zhHant: "繁體中文" }
     }
     var short: String {
-        switch self { case .en: "EN"; case .fr: "FR"; case .es: "ES"; case .zhHans: "简"; case .zhHant: "繁" }
+        switch self { case .en: "EN"; case .fr: "FR"; case .es: "ES"; case .esMX: "MX"; case .zhHans: "简"; case .zhHant: "繁" }
     }
     /// The language of the corpus entries and of Whisper.
-    var corpus: String { rawValue.hasPrefix("zh") ? "zh" : rawValue }
+    var corpus: String { String(rawValue.prefix(2)) }
+    /// Drills tagged for one region (Spain "ES", Mexico "MX") show only in that variant.
+    func shows(region: String?) -> Bool {
+        guard let region, corpus == "es" else { return true }
+        return (region == "MX") == (self == .esMX)
+    }
+    /// Sounds a variant doesn't use: Latin American Spanish has no /θ/ (seseo) and merges /ʎ/ into /ʝ/.
+    var absentSounds: Set<String> { self == .esMX ? ["θ", "ʎ"] : [] }
     var isChinese: Bool { corpus == "zh" }
     /// The tag stored on prompts and takes (BCP-47; the script subtag keeps Traditional takes apart).
     var tag: String { rawValue }
@@ -64,7 +71,8 @@ struct PracticeCorpus: Decodable {
         var id: String; var language: String; var title: String; var phrases: [Line]
         var titleHant: String? = nil
         var level: String? = nil; var topic: String? = nil; var note: String? = nil; var noteHant: String? = nil
-        enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, titleHant = "title_hant", noteHant = "note_hant" }
+        var region: String? = nil
+        enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, region, titleHant = "title_hant", noteHant = "note_hant" }
         func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
         func note(_ language: AppLanguage) -> String? { language == .zhHant ? (noteHant ?? note) : note }
     }
@@ -76,7 +84,10 @@ struct PracticeCorpus: Decodable {
     }
     struct MinimalPairs: Decodable, Identifiable, Hashable {
         var language: String; var contrast: String; var sets: [[Line]]
-        var id: String { language + ":" + contrast }
+        var label: String? = nil
+        var id: String { language + ":" + contrast + (label ?? "") }
+        /// "/b/ /v/", or a plain label where the contrast isn't one sound ("word endings p b").
+        var title: String { label ?? "/" + contrast.replacingOccurrences(of: " ", with: "/ /") + "/" }
     }
     var version: Int
     var pieces: [Piece]
@@ -183,5 +194,27 @@ struct PracticeProgress: Equatable {
 
     func practised(_ sound: PracticeCorpus.Sound, language: AppLanguage) -> Bool {
         sound.examples.contains { practisedTexts.contains($0.text(language)) }
+    }
+}
+
+/// Sounds that speakers of one language most often find hard in another (learner-error
+/// literature summarised; broad, not exhaustive). Keyed by practised language, then own language.
+enum TrickySounds {
+    static let table: [String: [String: [String]]] = [
+        "en": ["es": ["ɪ", "i", "v", "b", "ʃ", "z", "h", "θ", "ð", "ʌ", "æ", "ʊ"],
+               "fr": ["θ", "ð", "h", "ɪ", "ʊ", "ɹ", "ŋ", "æ", "ʌ", "oʊ"],
+               "zh": ["θ", "ð", "v", "ɹ", "l", "n", "ɪ", "æ", "ɛ", "z", "dʒ"]],
+        "fr": ["en": ["y", "u", "ʁ", "ɑ̃", "ɔ̃", "ɛ̃", "œ̃", "ø", "œ", "ɥ"],
+               "es": ["y", "ø", "œ", "ə", "ʁ", "ʒ", "z", "v", "ɑ̃", "ɔ̃", "ɛ̃"],
+               "zh": ["y", "ʁ", "ʒ", "v", "ɑ̃", "ɔ̃", "ɛ̃", "b", "d", "ɡ"]],
+        "es": ["en": ["r", "ɾ", "β", "ð", "ɣ", "x", "θ", "e", "o", "ɲ"],
+               "fr": ["r", "ɾ", "x", "θ", "β", "ð", "ɣ", "u"],
+               "zh": ["r", "ɾ", "l", "β", "ð", "ɣ", "b", "d", "ɡ", "x"]],
+        "zh": ["en": ["y", "ʈʂ", "ʂ", "ʐ", "tɕ", "ɕ", "tɕʰ", "ɤ", "ɻ̩", "ɹ̩", "ts"],
+               "es": ["ʂ", "ʐ", "ɕ", "tɕ", "tɕʰ", "y", "ɤ", "pʰ", "tʰ", "kʰ", "ɻ̩"],
+               "fr": ["ʂ", "ʐ", "ɕ", "tɕ", "pʰ", "tʰ", "kʰ", "ɤ", "ɻ̩", "ɹ̩"]],
+    ]
+    static func ipa(practising: String, speaker: String) -> [String] {
+        practising == speaker ? [] : table[practising]?[speaker] ?? []
     }
 }

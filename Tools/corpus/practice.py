@@ -54,7 +54,7 @@ PIECES = [
 # Grammar drills per language (Tools/corpus/grammar/*.json): A1–B1 (CEFR) and HSK 1–4 topics,
 # 5–8 short phrases each, with a level, topic and one-line note. Chinese phrases carry both
 # simplified ("hans") and traditional ("hant") forms.
-GRAMMAR = [ROOT / "Tools" / "corpus" / "grammar" / name for name in ("grammar-fr-es.json", "grammar-zh-en.json", "everyday.json")]
+GRAMMAR = [ROOT / "Tools" / "corpus" / "grammar" / name for name in ("grammar-fr-es.json", "grammar-zh-en.json", "everyday.json", "extra.json")]
 # Valencian is not Spanish: the Spanish converter would give it wrong IPA, so it waits for a Catalan one.
 SKIP_DRILLS = {"es-valencia"}
 
@@ -68,7 +68,8 @@ def load_drills():
                     continue
                 phrases = [p if isinstance(p, str) else dict(p) for p in d["phrases"]]
                 drills.append((f"{language}-{d['id']}", language, d["title"], phrases,
-                               dict(level=d.get("level"), topic=d.get("topic"), note=d.get("note"), source=d.get("source"))))
+                               dict(level=d.get("level"), topic=d.get("topic"), note=d.get("note"), source=d.get("source"),
+                                    region=d.get("region"))))
     return drills
 
 
@@ -77,7 +78,14 @@ MINIMAL_PAIRS = [
     ("en", "p b m", [["pat", "bat", "mat"], ["pie", "buy", "my"], ["pea", "bee", "me"]]),
     ("en", "f v", [["fan", "van"], ["fine", "vine"], ["safe", "save"]]),
     ("en", "θ s", [["think", "sink"], ["thigh", "sigh"]]),
-    ("en", "i ɪ", [["sheep", "ship"], ["feet", "fit"]]),
+    ("en", "i ɪ", [["sheep", "ship"], ["feet", "fit"], ["leave", "live"]]),
+    ("en", "b v", [["ban", "van"], ["berry", "very"], ["boat", "vote"]]),
+    ("en", "ʃ tʃ", [["ship", "chip"], ["share", "chair"], ["wash", "watch"]]),
+    ("en", "s z", [["bus", "buzz"], ["sip", "zip"], ["rice", "rise"]]),
+    ("en", "h", [["hat", "at"], ["hold", "old"], ["heat", "eat"]], "h or no h"),
+    ("en", "ɪ ɛ", [["bit", "bet"], ["sit", "set"], ["pin", "pen"]]),
+    ("en", "p b", [["cap", "cab"], ["rope", "robe"], ["tap", "tab"]], "word endings p b"),
+    ("en", "t d", [["bat", "bad"], ["seat", "seed"], ["cart", "card"]], "word endings t d"),
     ("fr", "y u", [["rue", "roue"], ["tu", "tout"], ["vu", "vous"], ["dessus", "dessous"]]),
     ("fr", "p b m", [["pain", "bain", "main"], ["pas", "bas", "mas"]]),
     ("fr", "f v", [["fin", "vin"], ["faux", "veau"]]),
@@ -97,13 +105,13 @@ SPOKEN = {"gettysburg": "19 November 1863", "tilbury": "9 August 1588", "aint-i-
 SANDHI_DRILLS = {"zh-yi-tone-change", "zh-bu-tone-change"}
 
 
-def entry(text, language, sandhi=False):
+def entry(text, language, sandhi=False, accent=None):
     """A line or phrase. Mandarin text is a (simplified, traditional) pair; IPA and pinyin come
     from the simplified form, which pypinyin reads with the most reliable phrase context."""
     hant = None
     if isinstance(text, tuple):
         text, hant = text
-    item = dict(text=text, ipa=["".join(word) for word in ipa.phonemize(text, language)])
+    item = dict(text=text, ipa=["".join(word) for word in ipa.phonemize(text, language, accent)])
     if language == "zh":
         item["hant"] = hant or text
         item["pinyin"] = ipa.pinyin_marks(text, sandhi)
@@ -143,11 +151,11 @@ def glossed(word, language):
     return item
 
 
-def phrase(p, language, sandhi=False):
+def phrase(p, language, sandhi=False, accent=None):
     """A drill phrase: a string, or {"hans", "hant"} / {"text"} with an optional English gloss."""
     if isinstance(p, str):
-        return entry(p, language, sandhi)
-    item = entry((p["hans"], p["hant"]) if "hans" in p else p["text"], language, sandhi)
+        return entry(p, language, sandhi, accent)
+    item = entry((p["hans"], p["hant"]) if "hans" in p else p["text"], language, sandhi, accent)
     if p.get("gloss"):
         item["gloss"] = p["gloss"]
     return item
@@ -229,10 +237,11 @@ def build(year=2026):
                            lines=[entry(line, language) for line in lines]))
     drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
                    note_hant=traditional_title(meta.get("note") or "", meta) if language == "zh" and meta.get("note") else None,
-                   phrases=[phrase(p, language, did in SANDHI_DRILLS) for p in phrases], **meta)
+                   phrases=[phrase(p, language, did in SANDHI_DRILLS, meta.get("region")) for p in phrases], **meta)
               for did, language, title, phrases, meta in load_drills()]
-    pairs = [dict(language=language, contrast=contrast, sets=[[glossed(w, language) for w in group] for group in groups])
-             for language, contrast, groups in MINIMAL_PAIRS]
+    pairs = [dict(language=language, contrast=contrast, label=(rest[0] if rest else None),
+                  sets=[[glossed(w, language) for w in group] for group in groups])
+             for language, contrast, groups, *rest in MINIMAL_PAIRS]
     sounds, problems = load_sounds()
     return dict(version=1, pieces=pieces, drills=drills, minimal_pairs=pairs, sounds=sounds), problems
 

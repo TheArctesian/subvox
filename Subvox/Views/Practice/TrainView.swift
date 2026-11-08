@@ -49,6 +49,10 @@ struct PracticePage<Controls: View, Content: View>: View {
     var startTitle: String
     var groups: [[SentencePrompt]]
     var mode: SentencePromptKind
+    /// What one take is ("words", "phrases", "parts", "sentences"), for the cost line under Start.
+    var unit = "takes"
+    /// Pages with their own scrolling panes (Sounds) turn the page scroll off.
+    var scrolls = true
     @ViewBuilder var controls: () -> Controls
     @ViewBuilder var content: () -> Content
     @State private var showWhisperSetup = false
@@ -58,11 +62,35 @@ struct PracticePage<Controls: View, Content: View>: View {
     private var canStart: Bool {
         motionReady && model.localWhisper.isConfigured && !groups.isEmpty && !workflow.isBusy && !model.recorder.isRecording
     }
-    /// "6 takes · about 2 min": each phrase is spoken, then mouthed.
+    /// "6 words · about 2 min": each is said aloud, then mouthed.
     private var cost: String {
         let pace = workflow.pace
         let seconds = groups.reduce(0.0) { $0 + 2 * (pace.baseline + workflow.cueDuration($1.map(\.text).joined(separator: " ")) + pace.recovery) }
-        return "\(groups.count * 2) takes · about \(max(1, Int((seconds / 60).rounded()))) min"
+        return "\(groups.count) \(unit) · about \(max(1, Int((seconds / 60).rounded()))) min"
+    }
+    /// Why Start is disabled, in the words of the thing to fix.
+    private var blocker: String? {
+        if !motionReady { return model.motion.status == .waiting ? "Needs AirPods with head tracking" : model.motion.statusText }
+        if !model.localWhisper.isConfigured { return "Needs speech recognition set up" }
+        if groups.isEmpty { return "Nothing to practise yet" }
+        return nil
+    }
+
+    @ViewBuilder private var pageBody: some View {
+                        if !model.localWhisper.isConfigured {
+                            HStack {
+                                Label("Practice needs speech recognition on this Mac (a local Whisper model) to check what you said. Nothing is uploaded.", systemImage: "exclamationmark.triangle")
+                                    .foregroundStyle(.orange)
+                                Button("Set Up Whisper…") { showWhisperSetup = true }
+                            }
+                        }
+                        if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
+                        ProgressStrip()
+                        PracticeFeedback(mode: mode, again: { model.startPractice(groups) })
+                        HStack(spacing: 16) { controls() }
+                        content()
+        Text("Keyboard: ⌘↩ start · ⌘I IPA · ⌘1–6 pages · ⌥⌘1–6 language · while recording, Space next and ← redo")
+            .font(.callout).foregroundStyle(.secondary)
     }
 
     var body: some View {
@@ -74,8 +102,13 @@ struct PracticePage<Controls: View, Content: View>: View {
                     Button { model.startPractice(groups) } label: { Label(startTitle, systemImage: "record.circle") }
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .disabled(!canStart)
-                        .help(groups.isEmpty ? "Nothing to practise yet" : "Shows each phrase; you say it aloud, then mouth it. ⌘↩")
-                    if !groups.isEmpty { Text(cost).font(.callout).foregroundStyle(.secondary) }
+                        .help(blocker ?? "Shows each one; you say it aloud, then mouth it. ⌘↩")
+                        .accessibilityHint(blocker ?? "Command Return")
+                    if let blocker, !motionReady {
+                        Button(blocker + " ›") { model.screen = .devices }.buttonStyle(.link).font(.callout)
+                    } else if !groups.isEmpty {
+                        Text(cost + "  ·  ⌘↩").font(.callout).foregroundStyle(.secondary)
+                    }
                 }
             }
         } content: {
@@ -86,28 +119,14 @@ struct PracticePage<Controls: View, Content: View>: View {
                     Text("Processing stays on this Mac.").foregroundStyle(.secondary)
                     if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if !scrolls {
+                VStack(alignment: .leading, spacing: 16) { pageBody }
+                    .frame(maxWidth: PageMetrics.contentWidth + 120, maxHeight: .infinity, alignment: .topLeading)
+                    .padding(PageMetrics.padding).frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        if !motionReady {
-                            // Same words as the toolbar badge, plus the way to fix it.
-                            HStack {
-                                Label(model.motion.statusText, systemImage: "headphones").foregroundStyle(.orange)
-                                Button("Check AirPods…") { model.screen = .devices }
-                            }
-                        }
-                        if !model.localWhisper.isConfigured {
-                            HStack {
-                                Label("Practice needs a local Whisper model to check what you said.", systemImage: "exclamationmark.triangle")
-                                    .foregroundStyle(.orange)
-                                Button("Set Up Whisper…") { showWhisperSetup = true }
-                            }
-                        }
-                        if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
-                        ProgressStrip()
-                        PracticeFeedback(mode: mode, again: { model.startPractice(groups) })
-                        HStack(spacing: 16) { controls() }
-                        content()
+                        pageBody
                     }
                     .frame(maxWidth: PageMetrics.contentWidth, alignment: .leading)
                     .padding(PageMetrics.padding).frame(maxWidth: .infinity)
@@ -317,9 +336,9 @@ struct SpeechPracticeView: View {
     var body: some View {
         let language = model.language
         PracticePage(title: "Speech & Poetry", subtitle: "Read a public-domain speech or poem at your own pace. The words highlight as you go.",
-                     startTitle: "Read This Piece",
+                     startTitle: "Start Reading",
                      groups: piece.map { p in PracticeCorpus.takes(p.lines, language: language).map { $0.map { SentencePrompt($0, kind: .speech, language: language) } } } ?? [],
-                     mode: .speech) {
+                     mode: .speech, unit: "parts") {
             IPAToggle(isOn: $showIPA)
         } content: {
             if pieces.isEmpty {
@@ -369,7 +388,7 @@ struct LanguagePracticeView: View {
     @State private var selection: String?
     @AppStorage("practice.showIPA") private var showIPA = true
 
-    private var drills: [PracticeCorpus.Drill] { model.practice.drills.filter { $0.language == model.language.corpus } }
+    private var drills: [PracticeCorpus.Drill] { model.practice.drills.filter { $0.language == model.language.corpus && model.language.shows(region: $0.region) } }
     private var drill: PracticeCorpus.Drill? { drills.first { $0.id == selection } ?? drills.first }
     private var topics: [String] { drills.compactMap(\.topic).reduce(into: []) { if !$0.contains($1) { $0.append($1) } } }
 
@@ -378,7 +397,7 @@ struct LanguagePracticeView: View {
         PracticePage(title: "Language", subtitle: "Shadowing: see the phrase, hear it, say it aloud, then mouth it.",
                      startTitle: "Start Drill",
                      groups: drill.map { d in d.phrases.map { [SentencePrompt($0, kind: .drill, language: language)] } } ?? [],
-                     mode: .drill) {
+                     mode: .drill, unit: "phrases") {
             Picker("Drill", selection: Binding(get: { drill?.id }, set: { selection = $0 })) {
                 if topics.isEmpty {
                     ForEach(drills) { Text($0.title(language)).tag(Optional($0.id)) }
@@ -426,17 +445,23 @@ struct MinimalPairsView: View {
     @State private var roundSets: [[PracticeCorpus.Line]] = []
     @AppStorage("practice.showIPA") private var showIPA = true
 
-    private var sets: [PracticeCorpus.MinimalPairs] { model.practice.minimalPairs.filter { $0.language == model.language.corpus } }
+    /// Contrasts that are tricky for the learner's own language come first.
+    private var sets: [PracticeCorpus.MinimalPairs] {
+        let tricky = Set(TrickySounds.ipa(practising: model.language.corpus, speaker: model.nativeLanguage))
+        let all = model.practice.minimalPairs.filter { $0.language == model.language.corpus }
+        return all.filter { !Set($0.contrast.split(separator: " ").map(String.init)).isDisjoint(with: tricky) }
+            + all.filter { Set($0.contrast.split(separator: " ").map(String.init)).isDisjoint(with: tricky) }
+    }
     private var contrast: PracticeCorpus.MinimalPairs? { sets.first { $0.id == selection } ?? sets.first }
 
     var body: some View {
         let language = model.language
         PracticePage(title: "Minimal Pairs", subtitle: "Words that differ by one sound and look alike on the lips. Hear each pair, then say every word.",
-                     startTitle: "Play Round",
+                     startTitle: "Start Pairs",
                      groups: round.map { [SentencePrompt($0, kind: .minimalPair, language: language)] },
-                     mode: .minimalPair) {
+                     mode: .minimalPair, unit: "words") {
             Picker("Sounds", selection: Binding(get: { contrast?.id }, set: { selection = $0; shuffle() })) {
-                ForEach(sets) { Text("/\($0.contrast.replacingOccurrences(of: " ", with: "/ /"))/").font(.ipa(15, relativeTo: .body)).tag(Optional($0.id)) }
+                ForEach(sets) { Text($0.title).font(.ipa(15, relativeTo: .body)).tag(Optional($0.id)) }
             }.fixedSize()
             Button("Shuffle", systemImage: "shuffle", action: shuffle).disabled(contrast == nil)
             IPAToggle(isOn: $showIPA)
@@ -499,9 +524,9 @@ struct FreePracticeView: View {
         let language = model.language
         let sentences = Self.sentences(text)
         PracticePage(title: "Free Practice", subtitle: "Type or paste anything you want to memorise.",
-                     startTitle: "Practise This Text",
+                     startTitle: "Start Practice",
                      groups: sentences.map { [SentencePrompt(text: $0, kind: .freeText, language: language.tag)] },
-                     mode: .freeText) {
+                     mode: .freeText, unit: "sentences") {
             IPAToggle(isOn: $showIPA)
         } content: {
             VStack(alignment: .leading, spacing: 10) {
@@ -551,7 +576,7 @@ struct SoundsView: View {
     @State private var selection: String?
     @AppStorage("practice.showIPA") private var showIPA = true
 
-    private var sounds: [PracticeCorpus.Sound] { model.practice.sounds[model.language.corpus] ?? [] }
+    private var sounds: [PracticeCorpus.Sound] { (model.practice.sounds[model.language.corpus] ?? []).filter { !model.language.absentSounds.contains($0.ipa) } }
     private var sound: PracticeCorpus.Sound? { sounds.first { $0.id == selection } ?? sounds.first }
     private var groups: [String] { sounds.map(\.group).reduce(into: []) { if !$0.contains($1) { $0.append($1) } } }
 
@@ -559,22 +584,40 @@ struct SoundsView: View {
         let language = model.language
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
         PracticePage(title: "Sounds", subtitle: "Learn each sound: hear it, see how it's made, then say the example words.",
-                     startTitle: "Say the Examples",
+                     startTitle: "Start Sounds",
                      groups: sound.map { s in s.examples.map { [SentencePrompt($0, kind: .sound, language: language)] } } ?? [],
-                     mode: .sound) {
+                     mode: .sound, unit: "words", scrolls: false) {
             IPAToggle(isOn: $showIPA)
         } content: {
             if sounds.isEmpty {
                 ContentUnavailableView("No sound guide for \(language.name) yet", systemImage: "waveform", description: Text("Choose another language from the toolbar."))
             } else {
                 HStack(alignment: .top, spacing: 24) {
-                    VStack(alignment: .leading, spacing: 14) {
+                    ScrollView { VStack(alignment: .leading, spacing: 14) {
                         Text("\(sounds.filter { progress.practised($0, language: language) }.count) of \(sounds.count) sounds practised")
                             .font(.headline)
+                        let tricky = TrickySounds.ipa(practising: language.corpus, speaker: model.nativeLanguage).compactMap { ipa in sounds.first { $0.ipa == ipa } }
+                        if !tricky.isEmpty {
+                            Text("Start here: tricky for \(LanguageMenu.nativeName(model.nativeLanguage)) speakers").font(.headline).foregroundStyle(.orange)
+                            chips(tricky, progress: progress, language: language)
+                        }
                         ForEach(groups, id: \.self) { group in
                             Text(group).font(.headline).foregroundStyle(.secondary)
+                            chips(sounds.filter { $0.group == group }, progress: progress, language: language)
+                        }
+                        Text("Broad IPA. English sounds follow General American.").font(.callout).foregroundStyle(.secondary)
+                    }.padding(.trailing, 8) }.frame(width: 370)
+                    // The selected sound stays in view while the grid scrolls.
+                    if let sound { ScrollView { detail(sound, language: language) } }
+                }
+            }
+        }
+        .onChange(of: model.language) { selection = nil }
+    }
+
+    private func chips(_ list: [PracticeCorpus.Sound], progress: PracticeProgress, language: AppLanguage) -> some View {
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 76), spacing: 6)], alignment: .leading, spacing: 6) {
-                                ForEach(sounds.filter { $0.group == group }) { s in
+                                ForEach(list) { s in
                                     Button { selection = s.id; Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
                                         VStack(spacing: 1) {
                                             Text(s.ipa).font(.ipa(24, relativeTo: .title2))
@@ -597,14 +640,6 @@ struct SoundsView: View {
                                     .accessibilityAddTraits(s.id == sound?.id ? .isSelected : [])
                                 }
                             }
-                        }
-                        Text("Broad IPA. English sounds follow General American.").font(.callout).foregroundStyle(.secondary)
-                    }.frame(width: 360)
-                    if let sound { detail(sound, language: language) }
-                }
-            }
-        }
-        .onChange(of: model.language) { selection = nil }
     }
 
     private func detail(_ s: PracticeCorpus.Sound, language: AppLanguage) -> some View {

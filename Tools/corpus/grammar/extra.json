@@ -1,0 +1,76 @@
+{
+ "en": [
+  {"id": "healthcare", "level": "B1", "topic": "Everyday life", "title": "At work: healthcare",
+   "note": "What a nurse or carer says to patients, including numbers that are easy to confuse.",
+   "phrases": [
+    {"text": "What's your date of birth?", "gloss": "Checking identity"},
+    {"text": "Can you spell your surname for me?", "gloss": "Spelling names on the phone or ward"},
+    {"text": "Are you allergic to anything?", "gloss": "Before giving medication"},
+    {"text": "I'm going to take your blood pressure.", "gloss": "Explaining what you'll do"},
+    {"text": "How bad is the pain, from one to ten?", "gloss": "Pain score"},
+    {"text": "Have you had anything to eat today?", "gloss": "Before a procedure"},
+    {"text": "Fifteen milligrams, not fifty.", "gloss": "Stress the second syllable: fifTEEN vs FIFty"},
+    {"text": "I'll be back in five minutes.", "gloss": "Reassuring a patient"}]}
+ ],
+ "fr": [
+  {"id": "famille-lyon", "level": "A1", "topic": "Everyday life", "title": "En famille à Lyon",
+   "note": "Greetings and family phrases for a visit, informal tu with children.",
+   "phrases": [
+    {"text": "Bonjour, je m'appelle Tom.", "gloss": "Hello, my name is Tom."},
+    {"text": "Comment vas-tu ?", "gloss": "How are you? (to a child or friend)"},
+    {"text": "Tu as passé une bonne journée à l'école ?", "gloss": "Did you have a good day at school?"},
+    {"text": "On va au parc cet après-midi ?", "gloss": "Shall we go to the park this afternoon?"},
+    {"text": "Je voudrais un café, s'il vous plaît.", "gloss": "I'd like a coffee, please."},
+    {"text": "Où est la gare Part-Dieu ?", "gloss": "Where is Part-Dieu station?"},
+    {"text": "À tout à l'heure !", "gloss": "See you later!"},
+    {"text": "Bonne nuit, mon chéri.", "gloss": "Good night, darling."}]}
+ ],
+ "es": [
+  {"id": "tacos-mx", "region": "MX", "level": "A1", "topic": "Everyday life", "title": "Tacos y fondas (México)",
+   "note": "Ordering food in Mexico City; usted with staff.",
+   "phrases": [
+    {"text": "¿Me da tres tacos al pastor, por favor?", "gloss": "Can I have three al pastor tacos, please?"},
+    {"text": "¿Con todo?", "gloss": "With everything (onion, coriander)?"},
+    {"text": "Sin cebolla, por favor.", "gloss": "No onion, please."},
+    {"text": "Para llevar, por favor.", "gloss": "To take away, please."},
+    {"text": "¿Me trae la cuenta?", "gloss": "Could you bring the bill?"},
+    {"text": "Está muy rico.", "gloss": "It's delicious."}]},
+  {"id": "metro-mx", "region": "MX", "level": "A1", "topic": "Everyday life", "title": "Metro y camión (CDMX)",
+   "note": "Getting around Mexico City.",
+   "phrases": [
+    {"text": "¿Qué línea va a Coyoacán?", "gloss": "Which line goes to Coyoacán?"},
+    {"text": "Necesito recargar mi tarjeta.", "gloss": "I need to top up my card."},
+    {"text": "¿Dónde me bajo para el Zócalo?", "gloss": "Where do I get off for the Zócalo?"},
+    {"text": "¿Este camión pasa por Reforma?", "gloss": "Does this bus go along Reforma?"},
+    {"text": "¿A cuántas estaciones está?", "gloss": "How many stops away is it?"},
+    {"text": "Voy a pedir un taxi.", "gloss": "I'm going to order a taxi."}]},
+  {"id": "depa-mx", "region": "MX", "level": "A2", "topic": "Everyday life", "title": "Rentar un departamento (México)",
+   "note": "Renting a flat: departamento, renta, depósito.",
+   "phrases": [
+    {"text": "Busco un departamento en renta.", "gloss": "I'm looking for a flat to rent."},
+    {"text": "¿Cuánto es la renta al mes?", "gloss": "How much is the monthly rent?"},
+    {"text": "¿Se pide depósito?", "gloss": "Is a deposit required?"},
+    {"text": "¿Incluye mantenimiento?", "gloss": "Does it include the building fee?"},
+    {"text": "¿Aceptan mascotas?", "gloss": "Are pets allowed?"},
+    {"text": "¿Cuándo lo puedo ver?", "gloss": "When can I see it?"}]},
+  {"id": "platica-mx", "region": "MX", "level": "A1", "topic": "Everyday life", "title": "Plática con vecinos (México)",
+   "note": "Everyday Mexican expressions: mande, ahorita, qué padre.",
+   "phrases": [
+    {"text": "¿Qué onda? ¿Cómo estás?", "gloss": "Hey, how are you?"},
+    {"text": "¿Mande?", "gloss": "Sorry? (polite 'pardon?')"},
+    {"text": "Ahorita vengo.", "gloss": "I'll be right back."},
+    {"text": "¡Qué padre!", "gloss": "How cool!"},
+    {"text": "Mucho gusto.", "gloss": "Nice to meet you."},
+    {"text": "Nos vemos al rato.", "gloss": "See you later."},
+    {"text": "Que te vaya bien.", "gloss": "Take care."}]},
+  {"id": "tramites-mx", "region": "MX", "level": "A2", "topic": "Everyday life", "title": "Trámites (México)",
+   "note": "Paperwork: CURP, SAT, IMSS.",
+   "phrases": [
+    {"text": "Vengo a tramitar mi CURP.", "gloss": "I've come to get my CURP (population ID)."},
+    {"text": "Necesito darme de alta en el SAT.", "gloss": "I need to register with the tax office."},
+    {"text": "¿Dónde está la clínica del IMSS?", "gloss": "Where is the IMSS clinic?"},
+    {"text": "¿Qué documentos necesito?", "gloss": "What documents do I need?"},
+    {"text": "Traigo mi pasaporte y mi comprobante de domicilio.", "gloss": "I have my passport and proof of address."},
+    {"text": "¿Cuánto tarda el trámite?", "gloss": "How long does it take?"}]}
+ ]
+}

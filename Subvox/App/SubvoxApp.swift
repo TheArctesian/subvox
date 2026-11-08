@@ -24,6 +24,12 @@ struct SubvoxApp: App {
                     let defaults = UserDefaults.standard
                     defaults.set(!(defaults.object(forKey: "practice.showIPA") as? Bool ?? true), forKey: "practice.showIPA")
                 }.keyboardShortcut("i", modifiers: .command)
+                Menu("Practise Language") {
+                    ForEach(Array(AppLanguage.allCases.enumerated()), id: \.offset) { index, language in
+                        Button(language.name) { model.language = language }
+                            .keyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: [.command, .option])
+                    }
+                }
                 Divider()
                 ForEach(TrainMode.allCases) { mode in
                     Button(mode.rawValue) { if mode != model.trainMode { model.closeOverlays() }; model.screen = .train; model.trainMode = mode }

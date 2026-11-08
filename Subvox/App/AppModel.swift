@@ -48,6 +48,11 @@ final class AppModel {
     var language = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "ui.language") ?? "") ?? .en {
         didSet { UserDefaults.standard.set(language.rawValue, forKey: "ui.language") }
     }
+    /// The learner's own language ("I speak"), for "tricky for you" hints. Defaults to the Mac's language.
+    var nativeLanguage = UserDefaults.standard.string(forKey: "ui.nativeLanguage")
+        ?? (["en", "fr", "es", "zh"].first { $0 == Locale.current.language.languageCode?.identifier } ?? "en") {
+        didSet { UserDefaults.standard.set(nativeLanguage, forKey: "ui.nativeLanguage") }
+    }
     /// Leaves any Reading-only full-page view (sharing, research tools) when switching mode.
     func closeOverlays() {
         showContribute = false; showObservability = false; showNonSpeechCollection = false

@@ -4538,11 +4538,11 @@
    "note_hant": null,
    "phrases": [
     {
-     "text": "je suis français",
+     "text": "je suis fatigué",
      "ipa": [
       "ʒə",
       "sɥi",
-      "fʁɑ̃sɛ"
+      "fatiɡe"
      ]
     },
     {
@@ -4597,7 +4597,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Full paradigm of the most important irregular verb.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-avoir-present",
@@ -4670,7 +4671,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Full paradigm; many French idioms use avoir where English uses 'to be'.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-aller-faire-present",
@@ -4744,7 +4746,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Two irregular verbs used constantly: aller (to go) and faire (to do/make).",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-pouvoir-vouloir-present",
@@ -4823,7 +4826,8 @@
    "level": "A2",
    "topic": "Verbs",
    "note": "Modal verbs followed by an infinitive; note the stem change nous/vous vs. singular.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-regular-verbs-present",
@@ -4901,7 +4905,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Three regular conjugation groups in the present tense.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-reflexive-verbs",
@@ -4975,7 +4980,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "The reflexive pronoun (me/te/se/nous/vous/se) comes before the verb.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-passe-compose",
@@ -5058,7 +5064,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "Most verbs take avoir; movement and reflexive verbs take être and agree with the subject.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-imparfait",
@@ -5119,7 +5126,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "Past habits, descriptions and states; the stem comes from nous + ending -ais/-ais/-ait/-ions/-iez/-aient.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-futur",
@@ -5188,7 +5196,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "aller + infinitive for the near future; endings -rai/-ras/-ra/-rons/-rez/-ront for the simple future.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-conditionnel",
@@ -5257,7 +5266,8 @@
    "level": "B1",
    "topic": "Tenses",
    "note": "Politeness, wishes and hypotheses; future stem plus imperfect endings.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-subjonctif",
@@ -5342,7 +5352,8 @@
    "level": "B1",
    "topic": "Tenses",
    "note": "The subjunctive follows il faut que, vouloir que, bien que and expressions of emotion.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-negation",
@@ -5419,7 +5430,8 @@
    "level": "A1",
    "topic": "Questions & negation",
    "note": "ne goes before the verb, the second word after it; ne becomes n' before a vowel.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-questions",
@@ -5494,7 +5506,8 @@
    "level": "A1",
    "topic": "Questions & negation",
    "note": "Three ways to ask: intonation, est-ce que, or inversion; plus the common question words.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-pronoms-simples",
@@ -5569,7 +5582,8 @@
    "level": "A2",
    "topic": "Pronouns",
    "note": "Pronouns go before the conjugated verb; y replaces à + place, en replaces de + noun or quantity.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-pronoms-ordre",
@@ -5644,7 +5658,8 @@
    "level": "B1",
    "topic": "Pronouns",
    "note": "Order before the verb: me/te/nous/vous, then le/la/les, then lui/leur, then y, then en.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-accord",
@@ -5718,7 +5733,8 @@
    "level": "A1",
    "topic": "Agreement",
    "note": "Articles, adjectives and possessives agree with the noun; mon/ton/son is used before a vowel sound.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-partitif",
@@ -5788,7 +5804,8 @@
    "level": "A1",
    "topic": "Agreement",
    "note": "Use du/de la/de l' for an unspecified amount; after a negation or quantity use de/d'.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-prepositions",
@@ -5859,7 +5876,8 @@
    "level": "A1",
    "topic": "Prepositions",
    "note": "à + le = au, à + les = aux, de + le = du, de + les = des; countries use en.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-nombres-heure",
@@ -5934,7 +5952,8 @@
    "level": "A1",
    "topic": "Numbers & time",
    "note": "Tricky number systems (70, 80, 90) and telling the time with 'et quart / moins le quart'.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-liaison-elision",
@@ -5998,7 +6017,8 @@
    "level": "A1",
    "topic": "Pronunciation",
    "note": "A silent final consonant is linked to a following vowel; je/le/que drop their vowel before a vowel sound.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-imperatif",
@@ -6070,7 +6090,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Commands and requests; tu/nous/vous forms, -er verbs lose the s in tu form, negative wraps ne…pas around the verb.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-comparatifs",
@@ -6142,7 +6163,8 @@
    "level": "A2",
    "topic": "Agreement",
    "note": "plus/moins/aussi + adjective + que; bon becomes meilleur, bien becomes mieux.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "fr-relatifs",
@@ -6223,7 +6245,8 @@
    "level": "A2",
    "topic": "Pronouns",
    "note": "qui replaces the subject, que the direct object, où a place or time.",
-   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/"
+   "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
+   "region": null
   },
   {
    "id": "es-ser-estar",
@@ -6294,7 +6317,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "ser for identity and traits, estar for location and states; the pairs es/está change meaning.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-ser-present",
@@ -6366,7 +6390,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Full paradigm of ser: identity, origin, profession.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-tener-present",
@@ -6424,7 +6449,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Stem change e to ie, irregular yo form; many idioms use tener (hambre, razón, prisa).",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-ir-hacer-present",
@@ -6492,7 +6518,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Two core irregular verbs; hacer has an irregular yo form (hago).",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-poder-querer-present",
@@ -6556,7 +6583,8 @@
    "level": "A2",
    "topic": "Verbs",
    "note": "Stem-changing verbs (o to ue, e to ie) followed by an infinitive.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-regular-verbs",
@@ -6621,7 +6649,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Three conjugation groups; the subject pronoun is usually dropped.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-reflexive",
@@ -6693,7 +6722,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "The pronoun me/te/se/nos/os/se comes before the verb and matches the subject.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-perfecto-indefinido",
@@ -6758,7 +6788,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "haber + participle for recent or connected past; indefinido for finished moments in the past.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-imperfecto",
@@ -6816,7 +6847,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "Past habits and descriptions; only ser, ir and ver are irregular.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-futuro",
@@ -6881,7 +6913,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "ir a + infinitive for plans; the simple future adds endings to the infinitive (some irregular stems).",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-condicional",
@@ -6940,7 +6973,8 @@
    "level": "B1",
    "topic": "Tenses",
    "note": "Politeness, wishes and hypotheses; infinitive plus -ía endings.",
-   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm"
+   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm",
+   "region": null
   },
   {
    "id": "es-subjuntivo",
@@ -7013,7 +7047,8 @@
    "level": "B1",
    "topic": "Tenses",
    "note": "Subjunctive after querer que, esperar que, ojalá, es posible que, and in cuando clauses about the future.",
-   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm"
+   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm",
+   "region": null
   },
   {
    "id": "es-negacion",
@@ -7082,7 +7117,8 @@
    "level": "A1",
    "topic": "Questions & negation",
    "note": "No goes before the verb; negative words after the verb require no as well.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-preguntas",
@@ -7153,7 +7189,8 @@
    "level": "A1",
    "topic": "Questions & negation",
    "note": "Written accents on interrogatives; inverted question mark at the start.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-pronombres-objeto",
@@ -7222,7 +7259,8 @@
    "level": "A2",
    "topic": "Pronouns",
    "note": "lo/la/los/las for direct, le/les for indirect; placed before the conjugated verb.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-pronombres-orden",
@@ -7300,7 +7338,8 @@
    "level": "B1",
    "topic": "Pronouns",
    "note": "Indirect before direct; le/les becomes se before lo/la/los/las.",
-   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm"
+   "source": "https://cvc.cervantes.es/ENSENANZA/biblioteca_ele/plan_curricular/indice.htm",
+   "region": null
   },
   {
    "id": "es-concordancia",
@@ -7375,7 +7414,8 @@
    "level": "A1",
    "topic": "Agreement",
    "note": "Articles and adjectives agree in gender and number; buen shortens before a masculine singular noun.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-por-para",
@@ -7451,7 +7491,8 @@
    "level": "A2",
    "topic": "Prepositions",
    "note": "por for cause, route and time of day; para for purpose, destination and recipient.",
-   "source": "https://www.spanishdict.com/guide/quick-tips-for-understanding-por-and-para"
+   "source": "https://www.spanishdict.com/guide/quick-tips-for-understanding-por-and-para",
+   "region": null
   },
   {
    "id": "es-numeros-hora",
@@ -7528,7 +7569,8 @@
    "level": "A1",
    "topic": "Numbers & time",
    "note": "Telling time uses es la una / son las; dates use el + number + de + month.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-acento-tilde",
@@ -7610,7 +7652,8 @@
    "level": "A1",
    "topic": "Pronunciation",
    "note": "Stress or a written accent changes meaning: papá/papa, hablo/habló, tú/tu, él/el, té/te, sé/se.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-gustar",
@@ -7685,7 +7728,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "The verb agrees with the thing liked, not the person: me gusta el café, me gustan los libros.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-imperativo",
@@ -7752,7 +7796,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "Affirmative tú commands; irregular: ven, di, haz, sal, pon; pronouns attach to the end.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "es-comparativos",
@@ -7825,7 +7870,8 @@
    "level": "A2",
    "topic": "Agreement",
    "note": "más/menos…que, tan…como, tanto…como; irregular mejor and peor.",
-   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm"
+   "source": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+   "region": null
   },
   {
    "id": "zh-shi-basic",
@@ -7931,7 +7977,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "是 links two nouns (A = B); negate with 不是, no 'to be' with adjectives.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-you-meiyou",
@@ -8042,7 +8089,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "有 = have / there is; negate only with 没有 (never 不有).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-pronouns-men",
@@ -8116,7 +8164,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "Add 们 to 我/你/他/她 to make plurals.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-zai-location",
@@ -8221,7 +8270,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "在 + place says where something or someone is.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-hen-adjective",
@@ -8319,7 +8369,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "Adjectives act as verbs; 很 is a light link, not 'very', in plain statements.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-want-like",
@@ -8428,7 +8479,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "想 want to, 要 want / will, 喜欢 like to; verb follows directly.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-demonstratives",
@@ -8516,7 +8568,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "Demonstrative + measure word + noun.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-age-family",
@@ -8617,7 +8670,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "Age uses 岁; family size uses 口; 几 for small counts.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-de-possession",
@@ -8721,7 +8775,8 @@
    "level": "HSK1",
    "topic": "Basics",
    "note": "A 的 B = A's B; 的 can drop with close relations (我妈妈).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-de-modifying",
@@ -8828,7 +8883,8 @@
    "level": "HSK2",
    "topic": "Basics",
    "note": "Describing words and verb phrases go before 的 and the noun.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-mw-basic",
@@ -8924,7 +8980,8 @@
    "level": "HSK1",
    "topic": "Measure words",
    "note": "Number + measure word + noun: 个 general, 本 books, 张 flat things, 杯 cups.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-mw-more",
@@ -9019,7 +9076,8 @@
    "level": "HSK2",
    "topic": "Measure words",
    "note": "只 small animals, 件 clothes and matters, 条 long things, 双 pairs, 辆 vehicles, 把 handled things.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-mw-demonstrative",
@@ -9115,7 +9173,8 @@
    "level": "HSK2",
    "topic": "Measure words",
    "note": "Between 这/那 and the noun you need a measure word.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-mw-quantity",
@@ -9211,7 +9270,8 @@
    "level": "HSK2",
    "topic": "Measure words",
    "note": "Quantity words: 一点儿/一些 a bit, 碗 bowl, 块 piece/yuan, 位 polite person.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-le-completion",
@@ -9308,7 +9368,8 @@
    "level": "HSK2",
    "topic": "Aspect",
    "note": "Verb + 了 marks a completed action; with an object give a quantity or add a second 了.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-le-change",
@@ -9411,7 +9472,8 @@
    "level": "HSK2",
    "topic": "Aspect",
    "note": "Sentence-final 了 signals a new situation.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-guo-experience",
@@ -9522,7 +9584,8 @@
    "level": "HSK2",
    "topic": "Aspect",
    "note": "Verb + 过 = have done it before; negate with 没…过.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-zai-progressive",
@@ -9632,7 +9695,8 @@
    "level": "HSK2",
    "topic": "Aspect",
    "note": "在 or 正在 before the verb = doing it right now; negate with 没在.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-zhe-continuous",
@@ -9743,7 +9807,8 @@
    "level": "HSK3",
    "topic": "Aspect",
    "note": "Verb + 着 describes a state that continues (door open, wearing, holding).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-aspect-contrast",
@@ -9824,7 +9889,8 @@
    "level": "HSK2",
    "topic": "Aspect",
    "note": "Same verb, different aspect: finished, experienced, in progress.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-bu-vs-mei",
@@ -9923,7 +9989,8 @@
    "level": "HSK1",
    "topic": "Questions & negation",
    "note": "不 for habits, wishes, future, 'to be'; 没 for past events and 有.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-ma-questions",
@@ -10027,7 +10094,8 @@
    "level": "HSK1",
    "topic": "Questions & negation",
    "note": "Add 吗 to a statement to make a yes/no question.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-a-not-a",
@@ -10133,7 +10201,8 @@
    "level": "HSK2",
    "topic": "Questions & negation",
    "note": "Verb + 不 + same verb asks a yes/no question without 吗.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-question-words-1",
@@ -10239,7 +10308,8 @@
    "level": "HSK1",
    "topic": "Questions & negation",
    "note": "The question word replaces the answer in place; word order stays the same.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-question-words-2",
@@ -10347,7 +10417,8 @@
    "level": "HSK2",
    "topic": "Questions & negation",
    "note": "怎么样 how is it, 几点 what time, 哪 which, 谁 as subject.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-particles-ne-ba",
@@ -10435,7 +10506,8 @@
    "level": "HSK2",
    "topic": "Questions & negation",
    "note": "呢 follows up ('and you?', 'where is…?'); 吧 suggests or guesses.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-bie-buyong",
@@ -10530,7 +10602,8 @@
    "level": "HSK2",
    "topic": "Questions & negation",
    "note": "别 and 不要 forbid; 不用 means no need.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-result-complement",
@@ -10635,7 +10708,8 @@
    "level": "HSK3",
    "topic": "Complements",
    "note": "Verb + result (完 finished, 懂 understand, 到 achieved, 好 done well).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-result-negative",
@@ -10728,7 +10802,8 @@
    "level": "HSK3",
    "topic": "Complements",
    "note": "Negate a resultative with 没: the result did not happen.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-directional-complement",
@@ -10833,7 +10908,8 @@
    "level": "HSK3",
    "topic": "Complements",
    "note": "来 toward the speaker, 去 away; 上 下 进 出 回 过 起 give the direction.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-potential-complement",
@@ -10931,7 +11007,8 @@
    "level": "HSK4",
    "topic": "Complements",
    "note": "得 or 不 inserted before the result: can / cannot achieve it.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-degree-complement",
@@ -11047,7 +11124,8 @@
    "level": "HSK3",
    "topic": "Complements",
    "note": "Verb + 得 + description says how well or how fast something is done.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-duration-frequency",
@@ -11157,7 +11235,8 @@
    "level": "HSK3",
    "topic": "Complements",
    "note": "Time length and number of times come after the verb.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-ba-construction",
@@ -11280,7 +11359,8 @@
    "level": "HSK3",
    "topic": "Sentence patterns",
    "note": "把 + object + verb + result: what you do to a specific thing.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-bei-passive",
@@ -11404,7 +11484,8 @@
    "level": "HSK4",
    "topic": "Sentence patterns",
    "note": "Receiver + 被 (+ doer) + verb + result; often something unwelcome.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-bi-comparison",
@@ -11523,7 +11604,8 @@
    "level": "HSK2",
    "topic": "Sentence patterns",
    "note": "A 比 B + adjective; add 更/还 for 'even more', a number after the adjective for the difference.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-meiyou-comparison",
@@ -11652,7 +11734,8 @@
    "level": "HSK3",
    "topic": "Sentence patterns",
    "note": "A 没有 B (那么) + adjective: A falls short of B.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-yiyang",
@@ -11737,7 +11820,8 @@
    "level": "HSK3",
    "topic": "Sentence patterns",
    "note": "A 跟 B 一样 (+ adjective); negate with 不一样.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-shi-de",
@@ -11864,7 +11948,8 @@
    "level": "HSK3",
    "topic": "Sentence patterns",
    "note": "Stresses the time, manner or place of a past event already known to have happened.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-modals-hui-neng-keyi",
@@ -11975,7 +12060,8 @@
    "level": "HSK2",
    "topic": "Sentence patterns",
    "note": "会 learned skill or will, 能 ability or circumstance, 可以 permission.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-should-must",
@@ -12065,7 +12151,8 @@
    "level": "HSK3",
    "topic": "Sentence patterns",
    "note": "应该 should, 得 have to, 必须 must.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-time-word-order",
@@ -12188,7 +12275,8 @@
    "level": "HSK1",
    "topic": "Sentence patterns",
    "note": "Time words go after the subject and before the verb, never at the end.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-coverbs",
@@ -12304,7 +12392,8 @@
    "level": "HSK2",
    "topic": "Sentence patterns",
    "note": "Prepositional phrases come before the main verb.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-connectors",
@@ -12437,7 +12526,8 @@
    "level": "HSK3",
    "topic": "Sentence patterns",
    "note": "Paired connectors: 因为…所以, 虽然…但是, 如果…就, 不但…而且.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-youdian-yidianer",
@@ -12535,7 +12625,8 @@
    "level": "HSK2",
    "topic": "Sentence patterns",
    "note": "有点儿 + adjective (a bit too, negative); adjective + 一点儿 (a little more).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-adverbs-ye-dou",
@@ -12645,7 +12736,8 @@
    "level": "HSK1",
    "topic": "Sentence patterns",
    "note": "Adverbs sit before the verb, after the subject.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-distance-direction",
@@ -12759,7 +12851,8 @@
    "level": "HSK2",
    "topic": "Sentence patterns",
    "note": "离 distance from, 从…到 from…to, 往 toward.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-numbers-1-100",
@@ -12856,7 +12949,8 @@
    "level": "HSK1",
    "topic": "Numbers & time",
    "note": "Tens are built as 二十, 三十五, 九十九.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-numbers-large",
@@ -12951,7 +13045,8 @@
    "level": "HSK2",
    "topic": "Numbers & time",
    "note": "零 fills an empty place; 两 is used before 百 千 万.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-money",
@@ -13057,7 +13152,8 @@
    "level": "HSK1",
    "topic": "Numbers & time",
    "note": "块 (kuai) is spoken yuan; 毛 is a tenth.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-dates",
@@ -13161,7 +13257,8 @@
    "level": "HSK1",
    "topic": "Numbers & time",
    "note": "Large to small: year, month, day; weekdays 星期一…星期日.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-clock-time",
@@ -13267,7 +13364,8 @@
    "level": "HSK1",
    "topic": "Numbers & time",
    "note": "点 o'clock, 刻 quarter, 半 half, 差 to.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-time-words",
@@ -13355,7 +13453,8 @@
    "level": "HSK2",
    "topic": "Numbers & time",
    "note": "Relative time words you will place before the verb.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-tone-pairs-1",
@@ -13413,7 +13512,8 @@
    "level": "HSK1",
    "topic": "Tones",
    "note": "Flat first tone followed by tones 1, 2, 3, 4 and neutral: 今天 中文 开始 生日 休息.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-tone-pairs-2",
@@ -13471,7 +13571,8 @@
    "level": "HSK1",
    "topic": "Tones",
    "note": "Rising first tone followed by tones 1, 2, 3, 4 and neutral: 明天 学习 啤酒 学校 朋友.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-tone-pairs-3",
@@ -13529,7 +13630,8 @@
    "level": "HSK1",
    "topic": "Tones",
    "note": "Low first tone (half-third before another tone) followed by 1, 2, 3, 4 and neutral: 北京 起床 水果 感谢 椅子.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-tone-pairs-4",
@@ -13587,7 +13689,8 @@
    "level": "HSK1",
    "topic": "Tones",
    "note": "Falling first tone followed by tones 1, 2, 3, 4 and neutral: 汽车 问题 电脑 再见 谢谢.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-tone3-sandhi",
@@ -13664,7 +13767,8 @@
    "level": "HSK1",
    "topic": "Tones",
    "note": "Two third tones in a row: the first becomes rising (你好 sounds like ní hǎo).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-yi-tone-change",
@@ -13740,7 +13844,8 @@
    "level": "HSK1",
    "topic": "Tones",
    "note": "一 is yī alone or as a number; yì before tones 1, 2, 3; yí before tone 4 (and before the measure word 个).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-bu-tone-change",
@@ -13816,7 +13921,8 @@
    "level": "HSK1",
    "topic": "Tones",
    "note": "不 is bù, but bú before another fourth tone.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-be-have-do",
@@ -13904,7 +14010,8 @@
    "level": "A1",
    "topic": "Verbs",
    "note": "The three most common verbs, as main verbs and as helpers.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-present-simple-vs-continuous",
@@ -13994,7 +14101,8 @@
    "level": "A1",
    "topic": "Tenses",
    "note": "Simple for habits and facts, continuous for what is happening now.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-past-irregular",
@@ -14086,7 +14194,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "Irregular past forms: go-went, buy-bought, see-saw, eat-ate, come-came, take-took, write-wrote, know-knew.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-present-perfect-vs-past",
@@ -14182,7 +14291,8 @@
    "level": "B1",
    "topic": "Tenses",
    "note": "Present perfect links the past to now; past simple has a finished time.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-future-will-going-to",
@@ -14281,7 +14391,8 @@
    "level": "A2",
    "topic": "Tenses",
    "note": "Will for instant decisions and predictions, going to for plans and evidence.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-modals",
@@ -14371,7 +14482,8 @@
    "level": "A2",
    "topic": "Modals & conditionals",
    "note": "can, could, should, must, might, may, have to, would like.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-conditionals-0-1-2",
@@ -14479,7 +14591,8 @@
    "level": "B1",
    "topic": "Modals & conditionals",
    "note": "Zero: facts. First: real future. Second: unreal or unlikely present.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-do-support-questions",
@@ -14567,7 +14680,8 @@
    "level": "A1",
    "topic": "Questions",
    "note": "Do-support for present and past simple questions.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-tag-questions",
@@ -14658,7 +14772,8 @@
    "level": "B1",
    "topic": "Questions",
    "note": "Positive statement, negative tag; negative statement, positive tag.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-comparatives-superlatives",
@@ -14758,7 +14873,8 @@
    "level": "A2",
    "topic": "Articles & comparison",
    "note": "-er and more for comparing two, -est and most for the top, as...as for equal.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-articles",
@@ -14845,7 +14961,8 @@
    "level": "A1",
    "topic": "Articles & comparison",
    "note": "a before consonant sounds, an before vowel sounds, the for known things, no article for general plurals.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-phrasal-verbs",
@@ -14931,7 +15048,8 @@
    "level": "B1",
    "topic": "Verbs",
    "note": "Separable verbs take a pronoun in the middle.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-weak-forms",
@@ -15016,7 +15134,8 @@
    "level": "A2",
    "topic": "Pronunciation",
    "note": "Small grammar words are reduced in connected speech: can, of, and, to, was, for.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-ed-endings",
@@ -15096,7 +15215,8 @@
    "level": "A2",
    "topic": "Pronunciation",
    "note": "After voiceless sounds -ed is /t/, after voiced sounds /d/, after t or d it is /ɪd/.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-s-endings",
@@ -15176,7 +15296,8 @@
    "level": "A2",
    "topic": "Pronunciation",
    "note": "After voiceless sounds -s is /s/, after voiced sounds /z/, after s z sh ch j it is /ɪz/.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-word-stress-pairs",
@@ -15262,7 +15383,8 @@
    "level": "B1",
    "topic": "Pronunciation",
    "note": "Two-syllable pairs: the noun is stressed on the first syllable, the verb on the second (RECord, reCORD).",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "es-cafe",
@@ -15349,7 +15471,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Spain Castilian: bar orders are short and friendly; vosotros forms for a group.",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "es-mercado",
@@ -15447,7 +15570,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Mercado stallholders say usted; prices are per kilo.",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "es-salud",
@@ -15544,7 +15668,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Centro de salud and farmacia phrases.",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "es-piso",
@@ -15639,7 +15764,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Spanish says piso for flat; fianza is the deposit.",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "es-tramites",
@@ -15733,7 +15859,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Trámites: empadronamiento (town registration) and NIE (foreigner number).",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "es-transporte",
@@ -15823,7 +15950,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Valencia: Metrovalencia, EMT buses; tarjeta recargable.",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "es-vecinos",
@@ -15919,7 +16047,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Friendly informal chat; vosotros for several people.",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "es-emergencias",
@@ -16013,7 +16142,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "In Spain the emergency number is 112.",
-   "source": null
+   "source": null,
+   "region": "ES"
   },
   {
    "id": "fr-boulangerie",
@@ -16111,7 +16241,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Greet first: Bonjour is expected before ordering.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "fr-cafe",
@@ -16208,7 +16339,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Standing at the bar is cheaper than sitting on the terrasse.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "fr-transports",
@@ -16311,7 +16443,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Île-de-France: RER, métro, Navigo pass.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "fr-medecin",
@@ -16417,7 +16550,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Carte Vitale is the French health insurance card.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "fr-travail",
@@ -16509,7 +16643,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Colleagues use tu; clients and bosses often vous.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "fr-smalltalk",
@@ -16596,7 +16731,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Light, polite chit-chat.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "fr-telephone",
@@ -16701,7 +16837,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Calls to offices and the administration.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "fr-marche",
@@ -16798,7 +16935,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Say bonjour to the stallholder first.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-canting",
@@ -16914,7 +17052,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Mainland restaurant talk; 买单 asks for the bill.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-dache",
@@ -17048,7 +17187,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Didi/taxi and metro talk; 师傅 addresses drivers.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-goumai",
@@ -17172,7 +17312,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Market-style bargaining.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-wenlu",
@@ -17295,7 +17436,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Everyday direction words.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-yiyuan",
@@ -17410,7 +17552,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "挂号 means registering at the hospital desk.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-shouji",
@@ -17537,7 +17680,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Mobile payment is the default in Mainland shops.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-hanxuan",
@@ -17656,7 +17800,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Everyday greetings.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "zh-zufang",
@@ -17783,7 +17928,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "押一付三 = one month's deposit, three months' rent up front.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-coffee",
@@ -17875,7 +18021,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Counter orders are short; 'for here or to go' is US, 'eat in or take away' UK.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-directions",
@@ -17982,7 +18129,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Giving and asking the way.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-doctor",
@@ -18086,7 +18234,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Describe symptoms plainly.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-phone",
@@ -18187,7 +18336,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Phone etiquette.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-work",
@@ -18286,7 +18436,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Office chat.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-shopping",
@@ -18386,7 +18537,8 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "In shops.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-travel",
@@ -18492,7 +18644,8 @@
    "level": "A2",
    "topic": "Everyday life",
    "note": "Trains, planes and buses.",
-   "source": null
+   "source": null,
+   "region": null
   },
   {
    "id": "en-thanks",
@@ -18582,13 +18735,613 @@
    "level": "A1",
    "topic": "Everyday life",
    "note": "Small courtesy phrases.",
-   "source": null
+   "source": null,
+   "region": null
+  },
+  {
+   "id": "en-healthcare",
+   "language": "en",
+   "title": "At work: healthcare",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "What's your date of birth?",
+     "ipa": [
+      "wʌts",
+      "jʊɹ",
+      "deɪt",
+      "ʌv",
+      "bɝθ"
+     ],
+     "gloss": "Checking identity"
+    },
+    {
+     "text": "Can you spell your surname for me?",
+     "ipa": [
+      "kæn",
+      "ju",
+      "spɛl",
+      "jʊɹ",
+      "sɝneɪm",
+      "fɔɹ",
+      "mi"
+     ],
+     "gloss": "Spelling names on the phone or ward"
+    },
+    {
+     "text": "Are you allergic to anything?",
+     "ipa": [
+      "ɑɹ",
+      "ju",
+      "əlɝdʒɪk",
+      "tʊ",
+      "ɛnɪθɪŋ"
+     ],
+     "gloss": "Before giving medication"
+    },
+    {
+     "text": "I'm going to take your blood pressure.",
+     "ipa": [
+      "aɪm",
+      "ɡoʊɪŋ",
+      "tə",
+      "teɪk",
+      "jʊɹ",
+      "blʌd",
+      "pɹɛʃɚ"
+     ],
+     "gloss": "Explaining what you'll do"
+    },
+    {
+     "text": "How bad is the pain, from one to ten?",
+     "ipa": [
+      "haʊ",
+      "bæd",
+      "ɪz",
+      "ðə",
+      "peɪn",
+      "fɹʌm",
+      "wʌn",
+      "tə",
+      "tɛn"
+     ],
+     "gloss": "Pain score"
+    },
+    {
+     "text": "Have you had anything to eat today?",
+     "ipa": [
+      "hæv",
+      "ju",
+      "hæd",
+      "ɛnɪθɪŋ",
+      "tʊ",
+      "it",
+      "tədeɪ"
+     ],
+     "gloss": "Before a procedure"
+    },
+    {
+     "text": "Fifteen milligrams, not fifty.",
+     "ipa": [
+      "fɪftin",
+      "mɪlɪɡɹæmz",
+      "nɑt",
+      "fɪfti"
+     ],
+     "gloss": "Stress the second syllable: fifTEEN vs FIFty"
+    },
+    {
+     "text": "I'll be back in five minutes.",
+     "ipa": [
+      "aɪl",
+      "bi",
+      "bæk",
+      "ɪn",
+      "faɪv",
+      "mɪnɪts"
+     ],
+     "gloss": "Reassuring a patient"
+    }
+   ],
+   "level": "B1",
+   "topic": "Everyday life",
+   "note": "What a nurse or carer says to patients, including numbers that are easy to confuse.",
+   "source": null,
+   "region": null
+  },
+  {
+   "id": "fr-famille-lyon",
+   "language": "fr",
+   "title": "En famille à Lyon",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Bonjour, je m'appelle Tom.",
+     "ipa": [
+      "bɔ̃ʒuʁ",
+      "ʒə",
+      "mapɛl",
+      "tɔm"
+     ],
+     "gloss": "Hello, my name is Tom."
+    },
+    {
+     "text": "Comment vas-tu ?",
+     "ipa": [
+      "kɔmɑ̃",
+      "vaty"
+     ],
+     "gloss": "How are you? (to a child or friend)"
+    },
+    {
+     "text": "Tu as passé une bonne journée à l'école ?",
+     "ipa": [
+      "ty",
+      "a",
+      "pase",
+      "yn",
+      "bɔn",
+      "ʒuʁne",
+      "a",
+      "lekɔl"
+     ],
+     "gloss": "Did you have a good day at school?"
+    },
+    {
+     "text": "On va au parc cet après-midi ?",
+     "ipa": [
+      "ɔ̃",
+      "va",
+      "o",
+      "paʁk",
+      "sɛt",
+      "apʁɛmidi"
+     ],
+     "gloss": "Shall we go to the park this afternoon?"
+    },
+    {
+     "text": "Je voudrais un café, s'il vous plaît.",
+     "ipa": [
+      "ʒə",
+      "vudʁɛz",
+      "œ̃",
+      "kafe",
+      "sil",
+      "vu",
+      "plɛ"
+     ],
+     "gloss": "I'd like a coffee, please."
+    },
+    {
+     "text": "Où est la gare Part-Dieu ?",
+     "ipa": [
+      "u",
+      "ɛ",
+      "la",
+      "ɡaʁ",
+      "paʁdjø"
+     ],
+     "gloss": "Where is Part-Dieu station?"
+    },
+    {
+     "text": "À tout à l'heure !",
+     "ipa": [
+      "a",
+      "tut",
+      "a",
+      "lœʁ"
+     ],
+     "gloss": "See you later!"
+    },
+    {
+     "text": "Bonne nuit, mon chéri.",
+     "ipa": [
+      "bɔn",
+      "nɥi",
+      "mɔ̃",
+      "ʃeʁi"
+     ],
+     "gloss": "Good night, darling."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Greetings and family phrases for a visit, informal tu with children.",
+   "source": null,
+   "region": null
+  },
+  {
+   "id": "es-tacos-mx",
+   "language": "es",
+   "title": "Tacos y fondas (México)",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "¿Me da tres tacos al pastor, por favor?",
+     "ipa": [
+      "me",
+      "ða",
+      "tɾes",
+      "takos",
+      "al",
+      "pastoɾ",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "Can I have three al pastor tacos, please?"
+    },
+    {
+     "text": "¿Con todo?",
+     "ipa": [
+      "kon",
+      "toðo"
+     ],
+     "gloss": "With everything (onion, coriander)?"
+    },
+    {
+     "text": "Sin cebolla, por favor.",
+     "ipa": [
+      "sin",
+      "seβoʝa",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "No onion, please."
+    },
+    {
+     "text": "Para llevar, por favor.",
+     "ipa": [
+      "paɾa",
+      "ʝeβaɾ",
+      "poɾ",
+      "faβoɾ"
+     ],
+     "gloss": "To take away, please."
+    },
+    {
+     "text": "¿Me trae la cuenta?",
+     "ipa": [
+      "me",
+      "tɾae",
+      "la",
+      "kwenta"
+     ],
+     "gloss": "Could you bring the bill?"
+    },
+    {
+     "text": "Está muy rico.",
+     "ipa": [
+      "esta",
+      "muj",
+      "riko"
+     ],
+     "gloss": "It's delicious."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Ordering food in Mexico City; usted with staff.",
+   "source": null,
+   "region": "MX"
+  },
+  {
+   "id": "es-metro-mx",
+   "language": "es",
+   "title": "Metro y camión (CDMX)",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "¿Qué línea va a Coyoacán?",
+     "ipa": [
+      "ke",
+      "linea",
+      "βa",
+      "a",
+      "koʝoakan"
+     ],
+     "gloss": "Which line goes to Coyoacán?"
+    },
+    {
+     "text": "Necesito recargar mi tarjeta.",
+     "ipa": [
+      "nesesito",
+      "rekaɾɣaɾ",
+      "mi",
+      "taɾxeta"
+     ],
+     "gloss": "I need to top up my card."
+    },
+    {
+     "text": "¿Dónde me bajo para el Zócalo?",
+     "ipa": [
+      "donde",
+      "me",
+      "βaxo",
+      "paɾa",
+      "el",
+      "sokalo"
+     ],
+     "gloss": "Where do I get off for the Zócalo?"
+    },
+    {
+     "text": "¿Este camión pasa por Reforma?",
+     "ipa": [
+      "este",
+      "kamjom",
+      "pasa",
+      "poɾ",
+      "refoɾma"
+     ],
+     "gloss": "Does this bus go along Reforma?"
+    },
+    {
+     "text": "¿A cuántas estaciones está?",
+     "ipa": [
+      "a",
+      "kwantas",
+      "estasjones",
+      "esta"
+     ],
+     "gloss": "How many stops away is it?"
+    },
+    {
+     "text": "Voy a pedir un taxi.",
+     "ipa": [
+      "boj",
+      "a",
+      "peðiɾ",
+      "un",
+      "taksi"
+     ],
+     "gloss": "I'm going to order a taxi."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Getting around Mexico City.",
+   "source": null,
+   "region": "MX"
+  },
+  {
+   "id": "es-depa-mx",
+   "language": "es",
+   "title": "Rentar un departamento (México)",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Busco un departamento en renta.",
+     "ipa": [
+      "busko",
+      "un",
+      "depaɾtamento",
+      "en",
+      "renta"
+     ],
+     "gloss": "I'm looking for a flat to rent."
+    },
+    {
+     "text": "¿Cuánto es la renta al mes?",
+     "ipa": [
+      "kwanto",
+      "es",
+      "la",
+      "renta",
+      "al",
+      "mes"
+     ],
+     "gloss": "How much is the monthly rent?"
+    },
+    {
+     "text": "¿Se pide depósito?",
+     "ipa": [
+      "se",
+      "piðe",
+      "ðeposito"
+     ],
+     "gloss": "Is a deposit required?"
+    },
+    {
+     "text": "¿Incluye mantenimiento?",
+     "ipa": [
+      "inkluʝe",
+      "mantenimjento"
+     ],
+     "gloss": "Does it include the building fee?"
+    },
+    {
+     "text": "¿Aceptan mascotas?",
+     "ipa": [
+      "aseptan",
+      "maskotas"
+     ],
+     "gloss": "Are pets allowed?"
+    },
+    {
+     "text": "¿Cuándo lo puedo ver?",
+     "ipa": [
+      "kwando",
+      "lo",
+      "pweðo",
+      "βeɾ"
+     ],
+     "gloss": "When can I see it?"
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Renting a flat: departamento, renta, depósito.",
+   "source": null,
+   "region": "MX"
+  },
+  {
+   "id": "es-platica-mx",
+   "language": "es",
+   "title": "Plática con vecinos (México)",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "¿Qué onda? ¿Cómo estás?",
+     "ipa": [
+      "ke",
+      "onda",
+      "komo",
+      "estas"
+     ],
+     "gloss": "Hey, how are you?"
+    },
+    {
+     "text": "¿Mande?",
+     "ipa": [
+      "mande"
+     ],
+     "gloss": "Sorry? (polite 'pardon?')"
+    },
+    {
+     "text": "Ahorita vengo.",
+     "ipa": [
+      "aoɾita",
+      "βeŋɡo"
+     ],
+     "gloss": "I'll be right back."
+    },
+    {
+     "text": "¡Qué padre!",
+     "ipa": [
+      "ke",
+      "paðɾe"
+     ],
+     "gloss": "How cool!"
+    },
+    {
+     "text": "Mucho gusto.",
+     "ipa": [
+      "mutʃo",
+      "ɣusto"
+     ],
+     "gloss": "Nice to meet you."
+    },
+    {
+     "text": "Nos vemos al rato.",
+     "ipa": [
+      "nos",
+      "βemos",
+      "al",
+      "rato"
+     ],
+     "gloss": "See you later."
+    },
+    {
+     "text": "Que te vaya bien.",
+     "ipa": [
+      "ke",
+      "te",
+      "βaʝa",
+      "βjen"
+     ],
+     "gloss": "Take care."
+    }
+   ],
+   "level": "A1",
+   "topic": "Everyday life",
+   "note": "Everyday Mexican expressions: mande, ahorita, qué padre.",
+   "source": null,
+   "region": "MX"
+  },
+  {
+   "id": "es-tramites-mx",
+   "language": "es",
+   "title": "Trámites (México)",
+   "title_hant": null,
+   "note_hant": null,
+   "phrases": [
+    {
+     "text": "Vengo a tramitar mi CURP.",
+     "ipa": [
+      "beŋɡo",
+      "a",
+      "tɾamitaɾ",
+      "mi",
+      "kuɾp"
+     ],
+     "gloss": "I've come to get my CURP (population ID)."
+    },
+    {
+     "text": "Necesito darme de alta en el SAT.",
+     "ipa": [
+      "nesesito",
+      "ðaɾme",
+      "ðe",
+      "alta",
+      "en",
+      "el",
+      "eseate"
+     ],
+     "gloss": "I need to register with the tax office."
+    },
+    {
+     "text": "¿Dónde está la clínica del IMSS?",
+     "ipa": [
+      "donde",
+      "esta",
+      "la",
+      "klinika",
+      "ðel",
+      "imss"
+     ],
+     "gloss": "Where is the IMSS clinic?"
+    },
+    {
+     "text": "¿Qué documentos necesito?",
+     "ipa": [
+      "ke",
+      "ðokumentos",
+      "nesesito"
+     ],
+     "gloss": "What documents do I need?"
+    },
+    {
+     "text": "Traigo mi pasaporte y mi comprobante de domicilio.",
+     "ipa": [
+      "tɾajɣo",
+      "mi",
+      "pasapoɾte",
+      "i",
+      "mi",
+      "kompɾoβante",
+      "ðe",
+      "ðomisiljo"
+     ],
+     "gloss": "I have my passport and proof of address."
+    },
+    {
+     "text": "¿Cuánto tarda el trámite?",
+     "ipa": [
+      "kwanto",
+      "taɾða",
+      "el",
+      "tɾamite"
+     ],
+     "gloss": "How long does it take?"
+    }
+   ],
+   "level": "A2",
+   "topic": "Everyday life",
+   "note": "Paperwork: CURP, SAT, IMSS.",
+   "source": null,
+   "region": "MX"
   }
  ],
  "minimal_pairs": [
   {
    "language": "en",
    "contrast": "p b m",
+   "label": null,
    "sets": [
     [
      {
@@ -18655,6 +19408,7 @@
   {
    "language": "en",
    "contrast": "f v",
+   "label": null,
    "sets": [
     [
      {
@@ -18703,6 +19457,7 @@
   {
    "language": "en",
    "contrast": "θ s",
+   "label": null,
    "sets": [
     [
      {
@@ -18737,6 +19492,7 @@
   {
    "language": "en",
    "contrast": "i ɪ",
+   "label": null,
    "sets": [
     [
      {
@@ -18765,12 +19521,370 @@
        "fɪt"
       ]
      }
+    ],
+    [
+     {
+      "text": "leave",
+      "ipa": [
+       "liv"
+      ]
+     },
+     {
+      "text": "live",
+      "ipa": [
+       "laɪv"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "b v",
+   "label": null,
+   "sets": [
+    [
+     {
+      "text": "ban",
+      "ipa": [
+       "bæn"
+      ]
+     },
+     {
+      "text": "van",
+      "ipa": [
+       "væn"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "berry",
+      "ipa": [
+       "bɛɹi"
+      ]
+     },
+     {
+      "text": "very",
+      "ipa": [
+       "vɛɹi"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "boat",
+      "ipa": [
+       "boʊt"
+      ]
+     },
+     {
+      "text": "vote",
+      "ipa": [
+       "voʊt"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "ʃ tʃ",
+   "label": null,
+   "sets": [
+    [
+     {
+      "text": "ship",
+      "ipa": [
+       "ʃɪp"
+      ]
+     },
+     {
+      "text": "chip",
+      "ipa": [
+       "tʃɪp"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "share",
+      "ipa": [
+       "ʃɛɹ"
+      ]
+     },
+     {
+      "text": "chair",
+      "ipa": [
+       "tʃɛɹ"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "wash",
+      "ipa": [
+       "wɑʃ"
+      ]
+     },
+     {
+      "text": "watch",
+      "ipa": [
+       "wɑtʃ"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "s z",
+   "label": null,
+   "sets": [
+    [
+     {
+      "text": "bus",
+      "ipa": [
+       "bʌs"
+      ]
+     },
+     {
+      "text": "buzz",
+      "ipa": [
+       "bʌz"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "sip",
+      "ipa": [
+       "sɪp"
+      ]
+     },
+     {
+      "text": "zip",
+      "ipa": [
+       "zɪp"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "rice",
+      "ipa": [
+       "ɹaɪs"
+      ]
+     },
+     {
+      "text": "rise",
+      "ipa": [
+       "ɹaɪz"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "h",
+   "label": "h or no h",
+   "sets": [
+    [
+     {
+      "text": "hat",
+      "ipa": [
+       "hæt"
+      ]
+     },
+     {
+      "text": "at",
+      "ipa": [
+       "æt"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "hold",
+      "ipa": [
+       "hoʊld"
+      ]
+     },
+     {
+      "text": "old",
+      "ipa": [
+       "oʊld"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "heat",
+      "ipa": [
+       "hit"
+      ]
+     },
+     {
+      "text": "eat",
+      "ipa": [
+       "it"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "ɪ ɛ",
+   "label": null,
+   "sets": [
+    [
+     {
+      "text": "bit",
+      "ipa": [
+       "bɪt"
+      ]
+     },
+     {
+      "text": "bet",
+      "ipa": [
+       "bɛt"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "sit",
+      "ipa": [
+       "sɪt"
+      ]
+     },
+     {
+      "text": "set",
+      "ipa": [
+       "sɛt"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "pin",
+      "ipa": [
+       "pɪn"
+      ]
+     },
+     {
+      "text": "pen",
+      "ipa": [
+       "pɛn"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "p b",
+   "label": "word endings p b",
+   "sets": [
+    [
+     {
+      "text": "cap",
+      "ipa": [
+       "kæp"
+      ]
+     },
+     {
+      "text": "cab",
+      "ipa": [
+       "kæb"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "rope",
+      "ipa": [
+       "ɹoʊp"
+      ]
+     },
+     {
+      "text": "robe",
+      "ipa": [
+       "ɹoʊb"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "tap",
+      "ipa": [
+       "tæp"
+      ]
+     },
+     {
+      "text": "tab",
+      "ipa": [
+       "tæb"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "t d",
+   "label": "word endings t d",
+   "sets": [
+    [
+     {
+      "text": "bat",
+      "ipa": [
+       "bæt"
+      ]
+     },
+     {
+      "text": "bad",
+      "ipa": [
+       "bæd"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "seat",
+      "ipa": [
+       "sit"
+      ]
+     },
+     {
+      "text": "seed",
+      "ipa": [
+       "sid"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "cart",
+      "ipa": [
+       "kɑɹt"
+      ]
+     },
+     {
+      "text": "card",
+      "ipa": [
+       "kɑɹd"
+      ]
+     }
     ]
    ]
   },
   {
    "language": "fr",
    "contrast": "y u",
+   "label": null,
    "sets": [
     [
      {
@@ -18841,6 +19955,7 @@
   {
    "language": "fr",
    "contrast": "p b m",
+   "label": null,
    "sets": [
     [
      {
@@ -18893,6 +20008,7 @@
   {
    "language": "fr",
    "contrast": "f v",
+   "label": null,
    "sets": [
     [
      {
@@ -18931,6 +20047,7 @@
   {
    "language": "fr",
    "contrast": "ɔ̃ ɑ̃",
+   "label": null,
    "sets": [
     [
      {
@@ -18969,6 +20086,7 @@
   {
    "language": "es",
    "contrast": "ɾ r",
+   "label": null,
    "sets": [
     [
      {
@@ -19023,6 +20141,7 @@
   {
    "language": "es",
    "contrast": "p b m",
+   "label": null,
    "sets": [
     [
      {
@@ -19068,6 +20187,7 @@
   {
    "language": "zh",
    "contrast": "p pʰ m",
+   "label": null,
    "sets": [
     [
      {
@@ -19132,6 +20252,7 @@
   {
    "language": "zh",
    "contrast": "y i u",
+   "label": null,
    "sets": [
     [
      {

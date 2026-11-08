@@ -35,7 +35,8 @@
      "text": "La cuenta, por favor.",
      "gloss": "The bill, please."
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "mercado",
@@ -76,7 +77,8 @@
      "text": "¿Cuánto es?",
      "gloss": "How much is it?"
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "salud",
@@ -117,7 +119,8 @@
      "text": "Necesito una receta.",
      "gloss": "I need a prescription."
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "piso",
@@ -158,7 +161,8 @@
      "text": "Me interesa el piso.",
      "gloss": "I'm interested in the flat."
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "tramites",
@@ -199,7 +203,8 @@
      "text": "¿Puede repetirlo, por favor?",
      "gloss": "Can you repeat that, please?"
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "transporte",
@@ -236,7 +241,8 @@
      "text": "Me bajo en la próxima.",
      "gloss": "I'm getting off at the next one."
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "vecinos",
@@ -277,7 +283,8 @@
      "text": "¡Que os vaya bien!",
      "gloss": "Take care, all of you!"
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "emergencias",
@@ -318,7 +325,8 @@
      "text": "Me he perdido.",
      "gloss": "I'm lost."
     }
-   ]
+   ],
+   "region": "ES"
   },
   {
    "id": "valencia",
@@ -351,7 +359,8 @@
      "text": "Obert",
      "gloss": "Open"
     }
-   ]
+   ],
+   "region": "ES"
   }
  ],
  "fr": [

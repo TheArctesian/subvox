@@ -27,7 +27,7 @@ final class PracticeTests: XCTestCase {
         XCTAssertEqual(poem?.lines[2].text(.zhHans), "举头望明月，")
         XCTAssertFalse(corpus.pieces.contains { $0.author.contains("Churchill") || $0.author.contains("King") })
         let etre = corpus.drills.first { $0.id == "fr-etre-present" }
-        XCTAssertEqual(etre?.phrases.first?.ipa, ["ʒə", "sɥi", "fʁɑ̃sɛ"])
+        XCTAssertEqual(etre?.phrases.first?.ipa, ["ʒə", "sɥi", "fatiɡe"])
         XCTAssertTrue(corpus.drills.filter { $0.language == "zh" }.allSatisfy { d in d.phrases.allSatisfy { $0.hant != nil && $0.pinyin != nil } })
         XCTAssertGreaterThan(corpus.drills.count, 100)
     }

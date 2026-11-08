@@ -27,6 +27,11 @@ class EspeakLanguages(unittest.TestCase):
         self.assertEqual(ipa.phones("el perro", "es"), ["e", "l", "p", "e", "r", "o"])
         self.assertEqual(ipa.phones("ñandú", "es"), ["ɲ", "a", "n", "d", "u"])
 
+    def test_mexican_spanish_has_seseo_and_yeismo(self):
+        self.assertEqual(ipa.phones("zapato", "es", "MX"), ["s", "a", "p", "a", "t", "o"])
+        self.assertEqual(ipa.phones("calle", "es", "MX"), ["k", "a", "ʝ", "e"])
+        self.assertEqual(ipa.phones("zapato", "es"), ["θ", "a", "p", "a", "t", "o"])
+
     def test_spanish_diphthongs_have_glides(self):
         self.assertEqual(ipa.phones("soy", "es"), ["s", "o", "j"])
         self.assertEqual(ipa.phones("hay", "es"), ["a", "j"])
