@@ -47,6 +47,10 @@ final class AppModel {
             if !researchTools { sentenceTraining.readingSource = .community; if screen == .decode { screen = .train } }
         }
     }
+    /// False until the first-run welcome (sharing choice) has been completed.
+    var onboarded = UserDefaults.standard.bool(forKey: "ui.onboarded") {
+        didSet { UserDefaults.standard.set(onboarded, forKey: "ui.onboarded") }
+    }
     var visibleScreens: [Screen] { researchTools ? Screen.allCases : [.train, .devices] }
     let sentenceTraining: SentenceTrainingWorkflow
     var screen: Screen = .train {

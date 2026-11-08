@@ -4,6 +4,10 @@ struct ContentView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
+        if model.onboarded { main } else { WelcomeView() }
+    }
+
+    private var main: some View {
         NavigationSplitView {
             List(model.visibleScreens, selection: screenSelection) { screen in
                 Label(screen.rawValue, systemImage: screen.symbol).tag(screen)

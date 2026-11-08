@@ -188,6 +188,10 @@ final class LoopbackRedirect: @unchecked Sendable {
     enum State: Equatable { case signedOut, signingIn, signedIn(String) }
     private(set) var state: State = .signedOut
     private(set) var error: String?
+    /// The authorize link for the sign-in in progress, so it can be reopened or copied if the
+    /// browser didn't land on it (for example, a browser showing its own update page).
+    private(set) var pendingURL: URL?
+    @ObservationIgnored private var activeRedirect: LoopbackRedirect?
     @ObservationIgnored private let store: TokenStore
     @ObservationIgnored private let session: URLSession
     @ObservationIgnored private let open: (URL) -> Void
@@ -206,19 +210,28 @@ final class LoopbackRedirect: @unchecked Sendable {
         state = .signingIn; error = nil
         do {
             let redirect = try LoopbackRedirect()
+            activeRedirect = redirect
+            defer { activeRedirect = nil; pendingURL = nil }
             let uri = try await redirect.start()
             let verifier = HuggingFaceOAuth.randomToken(bytes: 48), expected = HuggingFaceOAuth.randomToken()
-            open(HuggingFaceOAuth.authorization(redirect: uri, state: expected, challenge: HuggingFaceOAuth.challenge(for: verifier)))
+            let link = HuggingFaceOAuth.authorization(redirect: uri, state: expected, challenge: HuggingFaceOAuth.challenge(for: verifier))
+            pendingURL = link
+            open(link)
             let code = try HuggingFaceOAuth.code(fromRequestLine: try await redirect.requestLine(), expectedState: expected)
             var token = try HuggingFaceOAuth.token(from: try await send(HuggingFaceOAuth.exchange(code: code, verifier: verifier, redirect: uri)))
             token.username = try await username(token.accessToken)
             try store.save(try JSONEncoder().encode(token))
             state = .signedIn(token.username ?? "Hugging Face user")
+        } catch is CancellationError {
+            state = stored()?.username.map { .signedIn($0) } ?? .signedOut
         } catch {
             self.error = error.localizedDescription
             state = stored()?.username.map { .signedIn($0) } ?? .signedOut
         }
     }
+
+    func reopenSignIn() { if let pendingURL { open(pendingURL) } }
+    func cancelSignIn() { activeRedirect?.stop() }
 
     func signOut() { store.delete(); state = .signedOut; error = nil }
 

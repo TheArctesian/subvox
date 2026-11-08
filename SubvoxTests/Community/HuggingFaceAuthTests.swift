@@ -94,6 +94,22 @@ final class HuggingFaceAuthTests: XCTestCase {
         XCTAssertNil(store.data)
     }
 
+    @MainActor func testPendingLinkCanBeReopenedAndCancelled() async throws {
+        var opened: [URL] = []
+        let account = HuggingFaceAccount(store: MemoryStore(), open: { opened.append($0) })
+        let task = Task { await account.signIn() }
+        for _ in 0..<100 where account.pendingURL == nil { try await Task.sleep(for: .milliseconds(20)) }
+        let link = try XCTUnwrap(account.pendingURL)
+        XCTAssertEqual(account.state, .signingIn)
+        account.reopenSignIn()
+        XCTAssertEqual(opened, [link, link], "Open again uses the same link (same state and PKCE challenge)")
+        account.cancelSignIn()
+        await task.value
+        XCTAssertEqual(account.state, .signedOut)
+        XCTAssertNil(account.pendingURL)
+        XCTAssertNil(account.error, "Cancelling isn't an error")
+    }
+
     func testLoopbackRedirectReceivesTheBrowserRequest() async throws {
         let redirect = try LoopbackRedirect()
         let uri = try await redirect.start()
