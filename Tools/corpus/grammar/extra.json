@@ -130,15 +130,15 @@
    "level": "A1",
    "topic": "Everyday life",
    "title": "En famille à Lyon",
-   "note": "Greetings and family phrases for a visit, informal tu with children.",
+   "note": "Greetings and family phrases for a visit: tu with family and children, vous in shops and cafés.",
    "phrases": [
     {
      "text": "Bonjour, je m'appelle Tom.",
      "gloss": "Hello, my name is Tom."
     },
     {
-     "text": "Comment vas-tu ?",
-     "gloss": "How are you? (to a child or friend)"
+     "text": "Tu vas bien ?",
+     "gloss": "Are you well? (to family)"
     },
     {
      "text": "Tu as passé une bonne journée à l'école ?",

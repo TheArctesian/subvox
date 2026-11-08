@@ -347,27 +347,28 @@ struct SpeechPracticeView: View {
         PracticePage(title: "Speech & Poetry", subtitle: "Read a public-domain speech or poem at your own pace. The words highlight as you go.",
                      startTitle: "Start Reading",
                      groups: piece.map { p in PracticeCorpus.takes(p.lines, language: language).map { $0.map { SentencePrompt($0, kind: .speech, language: language) } } } ?? [],
-                     mode: .speech, unit: "parts") {
+                     mode: .speech, unit: "parts", scrolls: false) {
             IPAToggle(isOn: $showIPA)
         } content: {
             if pieces.isEmpty {
                 ContentUnavailableView("No pieces in \(language.localizedName) yet", systemImage: "text.quote", description: Text("Choose another language from the toolbar."))
             } else {
                 HStack(alignment: .top, spacing: 20) {
-                    VStack(spacing: 4) {
+                    ScrollView { VStack(spacing: 4) {
                         ForEach(pieces) { p in
                             Button { selection = p.id } label: { pieceRow(p, selected: p.id == piece?.id) }.buttonStyle(.plain)
                                 .accessibilityLabel("\(p.title(language)), \(p.author(language)), \(p.when)")
                                 .accessibilityAddTraits(p.id == piece?.id ? .isSelected : [])
                         }
-                    }.frame(width: 270)
+                    } }.frame(width: 280)
                     if let piece {
-                        VStack(alignment: .leading, spacing: 12) {
+                        ScrollView { VStack(alignment: .leading, spacing: 12) {
+                            Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
                             ForEach(piece.lines, id: \.self) { PracticeLineView(line: $0, language: language, showIPA: showIPA) }
                             Text("\(piece.author(language)) · \(piece.when). Public domain in the UK and US.").font(.caption).foregroundStyle(.secondary)
                             Text("Read it aloud, then mouth it, a few lines at a time. Speech recognition on this Mac checks how much it understood.")
-                                .font(.caption).foregroundStyle(.secondary)
-                        }.frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.callout).foregroundStyle(.secondary)
+                        }.frame(maxWidth: .infinity, alignment: .leading) }
                     }
                 }
             }
@@ -521,6 +522,16 @@ struct FreePracticeView: View {
     @AppStorage("practice.showIPA") private var showIPA = true
     @State private var readings: [String: PracticeChecker.Reading] = [:]
 
+    static func example(_ language: AppLanguage) -> String {
+        switch language {
+        case .fr: "Bonjour, je m’appelle Claire. J’habite à Lyon depuis dix ans."
+        case .es, .esMX: "Hola, me llamo Ana. Vivo en la ciudad desde hace diez años."
+        case .zhHans: "你好，我叫小林。我在这个城市住了十年。"
+        case .zhHant: "你好，我叫小林。我在這個城市住了十年。"
+        case .en: "Hello, my name is Sam. I have lived in this city for ten years."
+        }
+    }
+
     /// One take per sentence, so a long passage is broken into speakable pieces.
     static func sentences(_ text: String) -> [String] {
         var out: [String] = []
@@ -540,6 +551,11 @@ struct FreePracticeView: View {
             IPAToggle(isOn: $showIPA)
         } content: {
             VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Button("Paste", systemImage: "doc.on.clipboard") { text = NSPasteboard.general.string(forType: .string) ?? text }
+                    Button("Try an Example", systemImage: "text.badge.plus") { text = Self.example(language) }
+                    if !text.isEmpty { Button("Clear", systemImage: "xmark.circle") { text = "" } }
+                }
                 TextEditor(text: $text)
                     .font(.title2).frame(minHeight: 140).scrollContentBackground(.hidden).padding(6)
                     .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))

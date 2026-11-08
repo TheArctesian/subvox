@@ -8,6 +8,7 @@ same phones the trainer uses.
     cd ml && uv run python ../Tools/corpus/practice.py
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -120,6 +121,9 @@ def entry(text, language, sandhi=False, accent=None):
     if isinstance(text, tuple):
         text, hant = text
     item = dict(text=text, ipa=["".join(word) for word in ipa.phonemize(text, language, accent)])
+    if language == "fr":
+        # French typography: a narrow no-break space before ? ! ; : so the mark never wraps alone.
+        item["text"] = re.sub(r"\s+([?!;:])", "\u202f\\1", text)
     if language == "es" and accent is None:
         # Shared Spanish lines carry Mexican phones too (seseo, yeísmo); the app shows them in Español (México).
         mx = ["".join(word) for word in ipa.phonemize(text, language, "MX")]

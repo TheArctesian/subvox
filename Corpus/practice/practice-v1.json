@@ -344,7 +344,7 @@
      ]
     },
     {
-     "text": "Lui tint à peu près ce langage :",
+     "text": "Lui tint à peu près ce langage :",
      "ipa": [
       "lɥi",
       "tɛ̃",
@@ -1597,7 +1597,7 @@
    "date": "30 July 1903",
    "lines": [
     {
-     "text": "Le courage, c’est d’aimer la vie et de regarder la mort d’un regard tranquille ;",
+     "text": "Le courage, c’est d’aimer la vie et de regarder la mort d’un regard tranquille ;",
      "ipa": [
       "lə",
       "kuʁaʒ",
@@ -1616,7 +1616,7 @@
      ]
     },
     {
-     "text": "c’est d’aller à l’idéal et de comprendre le réel ;",
+     "text": "c’est d’aller à l’idéal et de comprendre le réel ;",
      "ipa": [
       "sɛ",
       "dale",
@@ -1665,7 +1665,7 @@
      ]
     },
     {
-     "text": "Le courage c’est de chercher la vérité et de la dire ;",
+     "text": "Le courage c’est de chercher la vérité et de la dire ;",
      "ipa": [
       "lə",
       "kuʁaʒ",
@@ -1711,7 +1711,7 @@
    "date": "21 August 1849",
    "lines": [
     {
-     "text": "Un jour viendra où les armes vous tomberont des mains, à vous aussi !",
+     "text": "Un jour viendra où les armes vous tomberont des mains, à vous aussi !",
      "ipa": [
       "œ̃",
       "ʒuʁ",
@@ -1790,8 +1790,8 @@
    "id": "danton-de-laudace",
    "language": "fr",
    "kind": "speech",
-   "title": "Discours sur les mesures révolutionnaires",
-   "title_hant": "Discours sur les mesures révolutionnaires",
+   "title": "De l'audace, encore de l'audace",
+   "title_hant": "De l'audace, encore de l'audace",
    "author": "Georges Danton",
    "author_hant": "Georges Danton",
    "year": 1792,
@@ -1861,8 +1861,8 @@
    "id": "zola-declaration-jury",
    "language": "fr",
    "kind": "speech",
-   "title": "Déclaration au Jury",
-   "title_hant": "Déclaration au Jury",
+   "title": "Déclaration au jury",
+   "title_hant": "Déclaration au jury",
    "author": "Émile Zola",
    "author_hant": "Émile Zola",
    "year": 1898,
@@ -2150,7 +2150,7 @@
      ]
     },
     {
-     "text": "Je me souviens des jours anciens et je pleure ;",
+     "text": "Je me souviens des jours anciens et je pleure ;",
      "ipa": [
       "ʒə",
       "mə",
@@ -2329,7 +2329,7 @@
    "date": null,
    "lines": [
     {
-     "text": "J’ai voulu, ce matin, te rapporter des roses ;",
+     "text": "J’ai voulu, ce matin, te rapporter des roses ;",
      "ipa": [
       "ʒe",
       "vuly",
@@ -6112,7 +6112,7 @@
    ],
    "level": "A1",
    "topic": "Questions & negation",
-   "note": "ne goes before the verb, the second word after it; ne becomes n' before a vowel.",
+   "note": "ne goes before the verb, the second word after it; ne becomes n' before a vowel. In speech, ne is usually dropped (je sais pas); write it.",
    "source": "https://www.digischool.fr/articles/fle/grammaire-delf-a1-a2-b1-b2/",
    "region": null
   },
@@ -17464,7 +17464,7 @@
      "gloss": "I'll take two croissants."
     },
     {
-     "text": "Vous avez des pains au chocolat ?",
+     "text": "Vous avez des pains au chocolat ?",
      "ipa": [
       "vuz",
       "ave",
@@ -17498,7 +17498,7 @@
      "gloss": "It's to take away."
     },
     {
-     "text": "Ça fait combien ?",
+     "text": "Ça fait combien ?",
      "ipa": [
       "sa",
       "fɛ",
@@ -17507,7 +17507,7 @@
      "gloss": "How much is that?"
     },
     {
-     "text": "Je peux payer par carte ?",
+     "text": "Je peux payer par carte ?",
      "ipa": [
       "ʒə",
       "pø",
@@ -17518,7 +17518,7 @@
      "gloss": "Can I pay by card?"
     },
     {
-     "text": "Bonne journée !",
+     "text": "Bonne journée !",
      "ipa": [
       "bɔn",
       "ʒuʁne"
@@ -17562,7 +17562,7 @@
      "gloss": "I'd like a large white coffee."
     },
     {
-     "text": "On peut s'asseoir en terrasse ?",
+     "text": "On peut s'asseoir en terrasse ?",
      "ipa": [
       "ɔ̃",
       "pø",
@@ -17573,7 +17573,7 @@
      "gloss": "Can we sit on the terrace?"
     },
     {
-     "text": "Vous avez la carte ?",
+     "text": "Vous avez la carte ?",
      "ipa": [
       "vuz",
       "ave",
@@ -17614,7 +17614,7 @@
      "gloss": "That's all, thanks."
     },
     {
-     "text": "Où sont les toilettes ?",
+     "text": "Où sont les toilettes ?",
      "ipa": [
       "u",
       "sɔ̃",
@@ -17649,7 +17649,7 @@
      "gloss": "A ticket, please."
     },
     {
-     "text": "Où est la station de RER ?",
+     "text": "Où est la station de RER ?",
      "ipa": [
       "u",
       "ɛ",
@@ -17672,7 +17672,7 @@
      "gloss": "I need to top up my Navigo."
     },
     {
-     "text": "Quelle ligne pour la gare de Lyon ?",
+     "text": "Quelle ligne pour la gare de Lyon ?",
      "ipa": [
       "kɛl",
       "liɲ",
@@ -17685,7 +17685,7 @@
      "gloss": "Which line for Gare de Lyon?"
     },
     {
-     "text": "C'est direct ?",
+     "text": "C'est direct ?",
      "ipa": [
       "sɛ",
       "diʁɛkt"
@@ -17693,7 +17693,7 @@
      "gloss": "Is it direct?"
     },
     {
-     "text": "Le prochain train part à quelle heure ?",
+     "text": "Le prochain train part à quelle heure ?",
      "ipa": [
       "lə",
       "pʁoʃɛ̃",
@@ -17706,7 +17706,7 @@
      "gloss": "What time does the next train leave?"
     },
     {
-     "text": "Il y a une grève aujourd'hui ?",
+     "text": "Il y a une grève aujourd'hui ?",
      "ipa": [
       "il",
       "i",
@@ -17798,7 +17798,7 @@
      "gloss": "I don't have a fever."
     },
     {
-     "text": "Vous avez la carte Vitale ?",
+     "text": "Vous avez la carte Vitale ?",
      "ipa": [
       "vuz",
       "ave",
@@ -17821,7 +17821,7 @@
      "gloss": "I'm allergic to penicillin."
     },
     {
-     "text": "Je dois le prendre deux fois par jour ?",
+     "text": "Je dois le prendre deux fois par jour ?",
      "ipa": [
       "ʒə",
       "dwa",
@@ -17849,7 +17849,7 @@
    "note_hant": null,
    "phrases": [
     {
-     "text": "Bonjour à tous !",
+     "text": "Bonjour à tous !",
      "ipa": [
       "bɔ̃ʒuʁ",
       "a",
@@ -17858,7 +17858,7 @@
      "gloss": "Hello everyone!"
     },
     {
-     "text": "Tu as cinq minutes ?",
+     "text": "Tu as cinq minutes ?",
      "ipa": [
       "ty",
       "a",
@@ -17868,7 +17868,7 @@
      "gloss": "Have you got five minutes?"
     },
     {
-     "text": "On fait un point demain ?",
+     "text": "On fait un point demain ?",
      "ipa": [
       "ɔ̃",
       "fɛ",
@@ -17900,7 +17900,7 @@
      "gloss": "I'll send it to you by message."
     },
     {
-     "text": "On déjeune ensemble ?",
+     "text": "On déjeune ensemble ?",
      "ipa": [
       "ɔ̃",
       "deʒøn",
@@ -17920,7 +17920,7 @@
      "gloss": "I'm working from home tomorrow."
     },
     {
-     "text": "Bon courage !",
+     "text": "Bon courage !",
      "ipa": [
       "bɔ̃",
       "kuʁaʒ"
@@ -17942,7 +17942,7 @@
    "note_hant": null,
    "phrases": [
     {
-     "text": "Ça va ?",
+     "text": "Ça va ?",
      "ipa": [
       "sa",
       "va"
@@ -17950,7 +17950,7 @@
      "gloss": "How's it going?"
     },
     {
-     "text": "Quoi de neuf ?",
+     "text": "Quoi de neuf ?",
      "ipa": [
       "kwa",
       "də",
@@ -17959,7 +17959,7 @@
      "gloss": "What's new?"
     },
     {
-     "text": "Il fait beau aujourd'hui, non ?",
+     "text": "Il fait beau aujourd'hui, non ?",
      "ipa": [
       "il",
       "fɛ",
@@ -17970,7 +17970,7 @@
      "gloss": "Nice weather today, isn't it?"
     },
     {
-     "text": "Tu as passé un bon week-end ?",
+     "text": "Tu as passé un bon week-end ?",
      "ipa": [
       "ty",
       "a",
@@ -17982,7 +17982,7 @@
      "gloss": "Did you have a good weekend?"
     },
     {
-     "text": "Tu habites dans le coin ?",
+     "text": "Tu habites dans le coin ?",
      "ipa": [
       "ty",
       "abit",
@@ -17993,14 +17993,14 @@
      "gloss": "Do you live around here?"
     },
     {
-     "text": "Enchanté !",
+     "text": "Enchanté !",
      "ipa": [
       "ɑ̃ʃɑ̃te"
      ],
      "gloss": "Nice to meet you!"
     },
     {
-     "text": "À bientôt !",
+     "text": "À bientôt !",
      "ipa": [
       "a",
       "bjɛ̃to"
@@ -18008,7 +18008,7 @@
      "gloss": "See you soon!"
     },
     {
-     "text": "Bonne soirée !",
+     "text": "Bonne soirée !",
      "ipa": [
       "bɔn",
       "swaʁe"
@@ -18061,7 +18061,7 @@
      "gloss": "Please hold."
     },
     {
-     "text": "Vous pouvez répéter, s'il vous plaît ?",
+     "text": "Vous pouvez répéter, s'il vous plaît ?",
      "ipa": [
       "vu",
       "puve",
@@ -18085,7 +18085,7 @@
      "gloss": "I'm calling about my file."
     },
     {
-     "text": "Quel est le numéro de dossier ?",
+     "text": "Quel est le numéro de dossier ?",
      "ipa": [
       "kɛl",
       "ɛ",
@@ -18136,7 +18136,7 @@
    "note_hant": null,
    "phrases": [
     {
-     "text": "Bonjour, madame !",
+     "text": "Bonjour, madame !",
      "ipa": [
       "bɔ̃ʒuʁ",
       "madam"
@@ -18157,7 +18157,7 @@
      "gloss": "A kilo of apples, please."
     },
     {
-     "text": "C'est combien le kilo ?",
+     "text": "C'est combien le kilo ?",
      "ipa": [
       "sɛ",
       "kɔ̃bjɛ̃",
@@ -18167,7 +18167,7 @@
      "gloss": "How much is a kilo?"
     },
     {
-     "text": "Vous en avez des plus mûres ?",
+     "text": "Vous en avez des plus mûres ?",
      "ipa": [
       "vuz",
       "ɑ̃n",
@@ -18199,7 +18199,7 @@
      "gloss": "I'll take that."
     },
     {
-     "text": "Vous pouvez le couper en deux ?",
+     "text": "Vous pouvez le couper en deux ?",
      "ipa": [
       "vu",
       "puve",
@@ -18211,7 +18211,7 @@
      "gloss": "Can you cut it in half?"
     },
     {
-     "text": "Ce sera tout ?",
+     "text": "Ce sera tout ?",
      "ipa": [
       "sə",
       "səʁa",
@@ -20414,15 +20414,16 @@
      "gloss": "Hello, my name is Tom."
     },
     {
-     "text": "Comment vas-tu ?",
+     "text": "Tu vas bien ?",
      "ipa": [
-      "kɔmɑ̃",
-      "vaty"
+      "ty",
+      "va",
+      "bjɛ̃"
      ],
-     "gloss": "How are you? (to a child or friend)"
+     "gloss": "Are you well? (to family)"
     },
     {
-     "text": "Tu as passé une bonne journée à l'école ?",
+     "text": "Tu as passé une bonne journée à l'école ?",
      "ipa": [
       "ty",
       "a",
@@ -20436,7 +20437,7 @@
      "gloss": "Did you have a good day at school?"
     },
     {
-     "text": "On va au parc cet après-midi ?",
+     "text": "On va au parc cet après-midi ?",
      "ipa": [
       "ɔ̃",
       "va",
@@ -20461,7 +20462,7 @@
      "gloss": "I'd like a coffee, please."
     },
     {
-     "text": "Où est la gare Part-Dieu ?",
+     "text": "Où est la gare Part-Dieu ?",
      "ipa": [
       "u",
       "ɛ",
@@ -20472,7 +20473,7 @@
      "gloss": "Where is Part-Dieu station?"
     },
     {
-     "text": "À tout à l'heure !",
+     "text": "À tout à l'heure !",
      "ipa": [
       "a",
       "tut",
@@ -20494,7 +20495,7 @@
    ],
    "level": "A1",
    "topic": "Everyday life",
-   "note": "Greetings and family phrases for a visit, informal tu with children.",
+   "note": "Greetings and family phrases for a visit: tu with family and children, vous in shops and cafés.",
    "source": null,
    "region": null
   },

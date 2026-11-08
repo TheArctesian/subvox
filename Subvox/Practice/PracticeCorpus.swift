@@ -35,7 +35,7 @@ enum AppLanguage: String, CaseIterable, Identifiable, Codable {
     case en, fr, es, esMX = "es-MX", zhHans = "zh-Hans", zhHant = "zh-Hant"
     var id: String { rawValue }
     var name: String {
-        switch self { case .en: "English"; case .fr: "Français"; case .es: "Español (España)"; case .esMX: "Español (México)"; case .zhHans: "简体中文"; case .zhHant: "繁體中文" }
+        switch self { case .en: "English"; case .fr: "Français (France)"; case .es: "Español (España)"; case .esMX: "Español (México)"; case .zhHans: "简体中文"; case .zhHant: "繁體中文" }
     }
     var short: String {
         switch self { case .en: "EN"; case .fr: "FR"; case .es: "ES"; case .esMX: "MX"; case .zhHans: "简"; case .zhHant: "繁" }
