@@ -125,11 +125,30 @@ PIECE_FILES = sorted((ROOT / "Tools" / "corpus" / "pieces").glob("*.json"))
 SOUNDS = ROOT / "Tools" / "corpus" / "sounds.json"
 
 
+def readable(line, limit=18):
+    """Splits a long prose sentence at commas, semicolons and colons into chunks of at most about
+    `limit` words, so each take is one breath. The words are unchanged, only re-broken."""
+    import re as _re
+    if len(line.split()) <= limit + 4:
+        return [line]
+    parts = _re.split(r"(?<=[,;:])\s+", line)
+    chunks, current = [], ""
+    for part in parts:
+        candidate = f"{current} {part}".strip()
+        if current and len(candidate.split()) > limit:
+            chunks.append(current)
+            current = part
+        else:
+            current = candidate
+    return chunks + ([current] if current else [])
+
+
 def load_pieces():
     extra = []
     for path in PIECE_FILES:
         for p in json.loads(path.read_text())["pieces"]:
-            lines = [(l["hans"], l["hant"]) if isinstance(l, dict) else l for l in p["lines"]]
+            lines = [(l["hans"], l["hant"]) if isinstance(l, dict) else chunk for l in p["lines"]
+                     for chunk in ([l] if isinstance(l, dict) else readable(l))]
             title = (p["title"], p.get("title_hant") or p["title"]) if p["language"] == "zh" else p["title"]
             author = (p["author"], p.get("author_hant") or p["author"]) if p["language"] == "zh" else p["author"]
             extra.append((p["id"], p["language"], p["kind"], title, author, p["year"], p["died"], lines, p.get("date")))

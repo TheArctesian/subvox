@@ -104,6 +104,20 @@ struct PracticeCorpus: Decodable {
 }
 
 extension PracticeCorpus {
+    /// A piece split into takes of whole lines, each short enough to read on the recording screen
+    /// in one go (about 30 words, or 40 characters of Chinese).
+    static func takes(_ lines: [Line], language: AppLanguage, limit: Int = 30) -> [[Line]] {
+        func size(_ line: Line) -> Int {
+            language.isChinese ? line.text(language).count * 3 / 4 : line.text(language).split(whereSeparator: \.isWhitespace).count
+        }
+        var takes: [[Line]] = [], current: [Line] = [], words = 0
+        for line in lines {
+            if !current.isEmpty && words + size(line) > limit { takes.append(current); current = []; words = 0 }
+            current.append(line); words += size(line)
+        }
+        return current.isEmpty ? takes : takes + [current]
+    }
+
     /// A round of minimal pairs: every word of `count` sets, shuffled within the round so the
     /// next word can't be guessed from the previous one.
     static func round<G: RandomNumberGenerator>(_ pairs: MinimalPairs, count: Int, using generator: inout G) -> [Line] {

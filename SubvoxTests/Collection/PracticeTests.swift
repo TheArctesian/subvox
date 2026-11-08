@@ -54,6 +54,16 @@ final class PracticeTests: XCTestCase {
         XCTAssertTrue([["rue", "roue"], ["tu", "tout"], ["vu", "vous"]].filter { texts.isSuperset(of: $0) }.count == 2, "Both members of each set")
     }
 
+    func testLongPiecesAreSplitIntoReadableTakes() {
+        let corpus = PracticeCorpus.bundled
+        for piece in corpus.pieces {
+            let language: AppLanguage = piece.language == "zh" ? .zhHans : AppLanguage(rawValue: piece.language) ?? .en
+            let takes = PracticeCorpus.takes(piece.lines, language: language)
+            XCTAssertEqual(takes.flatMap { $0 }, piece.lines, "\(piece.id): every line once, in order")
+            XCTAssertTrue(takes.allSatisfy { $0.count == 1 || $0.map { $0.text.split(separator: " ").count }.reduce(0, +) <= 30 }, piece.id)
+        }
+    }
+
     func testPhoneCheckDecodesThePythonOutput() throws {
         let json = #"{"language": "fr", "expected_phones": ["t", "y"], "produced_phones": ["t", "u"], "source": "whisper-words", "alignment": [{"op": "match", "expected": "t", "produced": "t"}, {"op": "sub", "expected": "y", "produced": "u"}], "word_agreement": 0.0, "phone_error_rate": 0.5, "trainable": false, "timing": null}"#
         let result = try JSONDecoder().decode(PhoneCheckResult.self, from: Data(json.utf8))

@@ -1,0 +1,402 @@
+{
+ "pieces": [
+  {
+   "id": "douglass-fourth-of-july",
+   "language": "en",
+   "kind": "speech",
+   "title": "What to the Slave Is the Fourth of July?",
+   "author": "Frederick Douglass",
+   "year": 1852,
+   "died": 1895,
+   "date": "5 July 1852",
+   "lines": [
+    "What, to the American slave, is your 4th of July?",
+    "I answer: a day that reveals to him, more than all other days in the year,",
+    "the gross injustice and cruelty to which he is the constant victim.",
+    "To him, your celebration is a sham; your boasted liberty, an unholy license;",
+    "your national greatness, swelling vanity; your sounds of rejoicing are empty and heartless;"
+   ],
+   "source_url": "https://en.wikisource.org/wiki/What_to_the_Slave_Is_the_Fourth_of_July%3F",
+   "portrait": "File:Frederick Douglass (circa 1879).jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "henry-liberty-or-death",
+   "language": "en",
+   "kind": "speech",
+   "title": "Give Me Liberty, or Give Me Death",
+   "author": "Patrick Henry",
+   "year": 1775,
+   "died": 1799,
+   "date": "23 March 1775",
+   "lines": [
+    "Gentlemen may cry, peace, peace—but there is no peace. The war is actually begun!",
+    "Why stand we here idle? What is it that gentlemen wish? What would they have?",
+    "Is life so dear, or peace so sweet, as to be purchased at the price of chains, and slavery?",
+    "Forbid it, Almighty God!—I know not what course others may take; but as for me,",
+    "give me liberty, or give me death!"
+   ],
+   "source_url": "https://en.wikisource.org/wiki/Sketches_of_the_Life_and_Character_of_Patrick_Henry/Chapter_4",
+   "portrait": "File:Patrick henry.JPG",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "joseph-surrender",
+   "language": "en",
+   "kind": "speech",
+   "title": "Surrender Speech (\"I will fight no more forever\")",
+   "author": "Chief Joseph",
+   "year": 1877,
+   "died": 1904,
+   "date": "5 October 1877",
+   "lines": [
+    "Tell General Howard I know his heart. What he told me before I have in my heart.",
+    "I am tired of fighting. Our chiefs are killed. Looking Glass is dead.",
+    "It is cold, and we have no blankets. The little children are freezing to death.",
+    "Hear me, my chiefs. I am tired; my heart is sick and sad.",
+    "From where the sun now stands I will fight no more forever."
+   ],
+   "source_url": "https://en.wikisource.org/wiki/The_Indian_Dispossessed/The_Nez_Perces",
+   "portrait": "File:Chief Joseph by Edward Sheriff Curtis.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "anthony-women-vote",
+   "language": "en",
+   "kind": "speech",
+   "title": "On Women's Right to Vote",
+   "author": "Susan B. Anthony",
+   "year": 1873,
+   "died": 1906,
+   "date": "1873",
+   "lines": [
+    "It was we, the people; not we, the white male citizens; nor yet we, the male citizens;",
+    "but we, the whole people, who formed the Union.",
+    "And we formed it, not to give the blessings of liberty, but to secure them;",
+    "not to the half of ourselves and the half of our posterity,",
+    "but to the whole people - women as well as men."
+   ],
+   "source_url": "https://en.wikisource.org/wiki/On_Women%27s_Rights_to_Vote",
+   "portrait": "File:Susan B Anthony portrait, circa 1898.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "lincoln-second-inaugural",
+   "language": "en",
+   "kind": "speech",
+   "title": "Second Inaugural Address",
+   "author": "Abraham Lincoln",
+   "year": 1865,
+   "died": 1865,
+   "date": "4 March 1865",
+   "lines": [
+    "With malice toward none; with charity for all; with firmness in the right, as God gives us to see the right,",
+    "let us strive on to finish the work we are in; to bind up the nation's wounds;",
+    "to care for him who shall have borne the battle, and for his widow, and his orphan—",
+    "to do all which may achieve and cherish a just and lasting peace among ourselves, and with all nations."
+   ],
+   "source_url": "https://en.wikisource.org/wiki/Abraham_Lincoln%27s_Second_Inaugural_Address",
+   "portrait": "File:Abraham Lincoln O-74 by Gardner, 1863.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "dickinson-hope",
+   "language": "en",
+   "kind": "poem",
+   "title": "\"Hope\" is the thing with feathers",
+   "author": "Emily Dickinson",
+   "year": 1891,
+   "died": 1886,
+   "date": null,
+   "lines": [
+    "Hope is the thing with feathers",
+    "That perches in the soul,",
+    "And sings the tune without the words,",
+    "And never stops at all,",
+    "And sweetest in the gale is heard;"
+   ],
+   "source_url": "https://en.wikisource.org/wiki/Poems:_Second_Series_(Dickinson)/Hope",
+   "portrait": "File:Emily Dickinson daguerreotype (cropped).jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "wordsworth-daffodils",
+   "language": "en",
+   "kind": "poem",
+   "title": "I wandered lonely as a Cloud",
+   "author": "William Wordsworth",
+   "year": 1807,
+   "died": 1850,
+   "date": null,
+   "lines": [
+    "I wandered lonely as a Cloud",
+    "That floats on high o'er Vales and Hills,",
+    "When all at once I saw a crowd,",
+    "A host of golden Daffodils;",
+    "Beside the Lake, beneath the trees,",
+    "Fluttering and dancing in the breeze."
+   ],
+   "source_url": "https://en.wikisource.org/wiki/Poems_Volume_I_(1815)/I_wandered_lonely",
+   "portrait": "File:William Wordsworth Portrait by H. W. Pickersgill.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "keats-nightingale",
+   "language": "en",
+   "kind": "poem",
+   "title": "Ode to a Nightingale",
+   "author": "John Keats",
+   "year": 1819,
+   "died": 1821,
+   "date": null,
+   "lines": [
+    "My heart aches, and a drowsy numbness pains",
+    "My sense, as though of hemlock I had drunk,",
+    "Or emptied some dull opiate to the drains",
+    "One minute past, and Lethe-wards had sunk:"
+   ],
+   "source_url": "https://en.wikisource.org/wiki/Keats;_poems_published_in_1820/Ode_to_a_Nightingale",
+   "portrait": "File:John Keats by William Hilton circa 1822.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "rossetti-remember",
+   "language": "en",
+   "kind": "poem",
+   "title": "Remember",
+   "author": "Christina Rossetti",
+   "year": 1862,
+   "died": 1894,
+   "date": null,
+   "lines": [
+    "Remember me when I am gone away,",
+    "Gone far away into the silent land;",
+    "When you can no more hold me by the hand,",
+    "Nor I half turn to go yet turning stay.",
+    "Remember me when no more day by day",
+    "You tell me of our future that you planned:"
+   ],
+   "source_url": "https://en.wikisource.org/wiki/Goblin_Market_and_Other_Poems_(1862)/Remember",
+   "portrait": "File:Dante Gabriel Rossetti - Christina Rossetti (1848).jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "dunbar-we-wear-the-mask",
+   "language": "en",
+   "kind": "poem",
+   "title": "We Wear the Mask",
+   "author": "Paul Laurence Dunbar",
+   "year": 1896,
+   "died": 1906,
+   "date": null,
+   "lines": [
+    "We wear the mask that grins and lies,",
+    "It hides our cheeks and shades our eyes,—",
+    "This debt we pay to human guile;",
+    "With torn and bleeding hearts we smile,",
+    "And mouth with myriad subtleties."
+   ],
+   "source_url": "https://en.wikisource.org/wiki/Lyrics_of_Lowly_Life/We_wear_the_Mask",
+   "portrait": "File:Paul Laurence Dunbar portrait.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "jaures-discours-jeunesse",
+   "language": "fr",
+   "kind": "speech",
+   "title": "Discours à la jeunesse",
+   "author": "Jean Jaurès",
+   "year": 1903,
+   "died": 1914,
+   "date": "30 July 1903",
+   "lines": [
+    "Le courage, c’est d’aimer la vie et de regarder la mort d’un regard tranquille ;",
+    "c’est d’aller à l’idéal et de comprendre le réel ;",
+    "c’est d’agir et de se donner aux grandes causes sans savoir quelle récompense réserve à notre effort l’univers profond,",
+    "ni s’il lui réserve une récompense.",
+    "Le courage c’est de chercher la vérité et de la dire ;",
+    "c’est de ne pas subir la loi du mensonge triomphant qui passe,"
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/Discours_%C3%A0_la_jeunesse_(1903)",
+   "portrait": "File:Jean Jaurès, par Nadar, 1898.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "hugo-congres-paix",
+   "language": "fr",
+   "kind": "speech",
+   "title": "Discours d’ouverture du Congrès de la paix",
+   "author": "Victor Hugo",
+   "year": 1849,
+   "died": 1885,
+   "date": "21 August 1849",
+   "lines": [
+    "Un jour viendra où les armes vous tomberont des mains, à vous aussi !",
+    "Un jour viendra où la guerre paraîtra aussi absurde et sera aussi impossible entre Paris et Londres,",
+    "entre Pétersbourg et Berlin, entre Vienne et Turin, qu’elle serait impossible et qu’elle paraîtrait absurde",
+    "aujourd’hui entre Rouen et Amiens, entre Boston et Philadelphie."
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/Congr%C3%A8s_de_la_Paix_1849_DISCOURS_D%27OUVERTURE",
+   "portrait": "File:Victor Hugo by Étienne Carjat 1876 - full.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "danton-de-laudace",
+   "language": "fr",
+   "kind": "speech",
+   "title": "Discours sur les mesures révolutionnaires",
+   "author": "Georges Danton",
+   "year": 1792,
+   "died": 1794,
+   "date": "2 September 1792",
+   "lines": [
+    "Le tocsin qu’on va sonner n’est point un signal d’alarme, c’est la charge sur les ennemis de la patrie.",
+    "Pour les vaincre, il nous faut de l’audace,",
+    "encore de l’audace, toujours de l’audace,",
+    "et la France est sauvée."
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/La_Patrie_en_danger_(Danton)/Mesures_r%C3%A9volutionnaires_(II)",
+   "portrait": "File:Georges Danton Carnavalet.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "zola-declaration-jury",
+   "language": "fr",
+   "kind": "speech",
+   "title": "Déclaration au Jury",
+   "author": "Émile Zola",
+   "year": 1898,
+   "died": 1902,
+   "date": "21 February 1898",
+   "lines": [
+    "Dreyfus est innocent, je le jure. J’y engage ma vie, j’y engage mon honneur.",
+    "À cette heure solennelle, devant ce tribunal qui représente la justice humaine,",
+    "devant vous, messieurs les jurés, qui êtes l’émanation même de la nation, devant toute la France, devant le monde entier,",
+    "je jure que Dreyfus est innocent."
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/%C5%92uvres_critiques/La_V%C3%A9rit%C3%A9_en_marche/D%C3%A9claration_au_Jury",
+   "portrait": "File:Émile Zola 1895.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "robespierre-morale-politique",
+   "language": "fr",
+   "kind": "speech",
+   "title": "Sur les principes de morale politique",
+   "author": "Maximilien Robespierre",
+   "year": 1794,
+   "died": 1794,
+   "date": "5 February 1794",
+   "lines": [
+    "Nous voulons, en un mot, remplir les vœux de la nature, accomplir les destins de l’humanité, tenir les promesses de la philosophie,",
+    "absoudre la Providence du long règne du crime et de la tyrannie.",
+    "Que la France, jadis illustre parmi les pays esclaves, éclipsant la gloire de tous les peuples libres qui ont existé,",
+    "devienne le modèle des nations, l’effroi des oppresseurs, la consolation des opprimés, l’ornement de l’univers,"
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/%C5%92uvres_de_Robespierre/Sur_les_principes_de_morale_politique",
+   "portrait": "File:Louis Boilly Robespierre.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "baudelaire-albatros",
+   "language": "fr",
+   "kind": "poem",
+   "title": "L’Albatros",
+   "author": "Charles Baudelaire",
+   "year": 1857,
+   "died": 1867,
+   "date": null,
+   "lines": [
+    "Souvent, pour s’amuser, les hommes d’équipage",
+    "Prennent des albatros, vastes oiseaux des mers,",
+    "Qui suivent, indolents compagnons de voyage,",
+    "Le navire glissant sur les gouffres amers."
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/Les_Fleurs_du_mal_(1861)/L%E2%80%99Albatros",
+   "portrait": "File:Étienne Carjat, Portrait of Charles Baudelaire, circa 1862.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "verlaine-chanson-automne",
+   "language": "fr",
+   "kind": "poem",
+   "title": "Chanson d’automne",
+   "author": "Paul Verlaine",
+   "year": 1866,
+   "died": 1896,
+   "date": null,
+   "lines": [
+    "Les sanglots longs des violons de l’automne",
+    "Blessent mon cœur d’une langueur monotone.",
+    "Tout suffocant et blême, quand sonne l’heure,",
+    "Je me souviens des jours anciens et je pleure ;"
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/Po%C3%A8mes_saturniens_(1866)/Chanson_d%E2%80%99automne",
+   "portrait": "File:Profile portrait of Paul Verlaine by Otto Wegener.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "ronsard-mignonne",
+   "language": "fr",
+   "kind": "poem",
+   "title": "Mignonne, allons voir si la rose",
+   "author": "Pierre de Ronsard",
+   "year": 1552,
+   "died": 1585,
+   "date": null,
+   "lines": [
+    "Mignonne, allons voir si la rose",
+    "Qui ce matin avoit desclose",
+    "Sa robe de pourpre au Soleil,",
+    "A point perdu ceste vesprée",
+    "Les plis de sa robe pourprée,",
+    "Et son teint au vostre pareil."
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/Les_Odes_(Ronsard)/%C2%AB_Mignonne,_allons_voir_si_la_rose_%C2%BB",
+   "portrait": "File:Pierre de Ronsard.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "apollinaire-pont-mirabeau",
+   "language": "fr",
+   "kind": "poem",
+   "title": "Le Pont Mirabeau",
+   "author": "Guillaume Apollinaire",
+   "year": 1913,
+   "died": 1918,
+   "date": null,
+   "lines": [
+    "Sous le pont Mirabeau coule la Seine",
+    "Et nos amours",
+    "Faut-il qu’il m’en souvienne",
+    "La joie venait toujours après la peine",
+    "Vienne la nuit sonne l’heure",
+    "Les jours s’en vont je demeure"
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/Alcools/Le_Pont_Mirabeau",
+   "portrait": "File:Guillaume Apollinaire, c. 1916.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "desbordes-roses-saadi",
+   "language": "fr",
+   "kind": "poem",
+   "title": "Les Roses de Saadi",
+   "author": "Marceline Desbordes-Valmore",
+   "year": 1860,
+   "died": 1859,
+   "date": null,
+   "lines": [
+    "J’ai voulu, ce matin, te rapporter des roses ;",
+    "Mais j’en avais tant pris dans mes ceintures closes",
+    "Que les nœuds trop serrés n’ont pu les contenir.",
+    "Les nœuds ont éclaté. Les roses envolées",
+    "Dans le vent, à la mer s’en sont toutes allées.",
+    "Elles ont suivi l’eau pour ne plus revenir."
+   ],
+   "source_url": "https://fr.wikisource.org/wiki/Po%C3%A9sies_in%C3%A9dites_(Marceline_Desbordes-Valmore)/Les_Roses_de_Saadi",
+   "portrait": "File:Marceline Desbordes-Valmore.jpg",
+   "portrait_license": "Public domain"
+  }
+ ]
+}

@@ -1,0 +1,611 @@
+{
+ "pieces": [
+  {
+   "id": "bolivar-angostura",
+   "language": "es",
+   "kind": "speech",
+   "title": "Discurso de Angostura",
+   "author": "Simón Bolívar",
+   "year": 1819,
+   "died": 1830,
+   "date": "15 February 1819",
+   "lines": [
+    "Yo, pues, me cuento entre los seres más favorecidos de la Divina Providencia, ya que he tenido el honor de reunir a los representantes del pueblo de Venezuela en este augusto Congreso, fuente de la autoridad legítima, depósito de la voluntad soberana y árbitro del destino de la Nación.",
+    "Al transmitir a los representantes del pueblo el Poder Supremo que se me había confiado, colmo los votos de mi corazón, los de mis conciudadanos y los de nuestras futuras generaciones, que todo lo esperan de vuestra sabiduría, rectitud y prudencia.",
+    "Cuando cumplo con este dulce deber, me liberto de la inmensa autoridad que me agobia, como de la responsabilidad ilimitada que pesaba sobre mis débiles fuerzas.",
+    "Solamente una necesidad forzosa, unida a la voluntad imperiosa del pueblo, me habría sometido al terrible y peligroso cargo de Dictador Jefe Supremo de la República.",
+    "¡Pero ya respiro devolviéndoos esta autoridad, que con tanto riesgo, dificultad y pena he logrado mantener en medio de las tribulaciones más horrorosas que pueden afligir a un cuerpo social!"
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Discurso_de_Simón_Bolívar_ante_el_Congreso_de_Angostura",
+   "portrait": "File:Simón Bolívar by José Gil de Castro.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "bolivar-jamaica",
+   "language": "es",
+   "kind": "letter",
+   "title": "Carta de Jamaica",
+   "author": "Simón Bolívar",
+   "year": 1815,
+   "died": 1830,
+   "date": "6 September 1815",
+   "lines": [
+    "Yo deseo más que otro alguno ver formar en América la más grande nación del mundo, menos por su extensión y riquezas que por su libertad y gloria.",
+    "Aunque aspiro a la perfección del gobierno de mi patria, no puedo persuadirme que el Nuevo Mundo sea por el momento regido por una gran república; como es imposible, no me atrevo a desearlo, y menos deseo una monarquía universal en América, porque este proyecto, sin ser útil, es también imposible.",
+    "Los abusos que actualmente existen no se reformarían y nuestra regeneración sería infructuosa.",
+    "Los estados americanos han menester de los cuidados de gobiernos paternales que curen las llagas y las heridas del despotismo y la guerra."
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Carta_de_Jamaica",
+   "portrait": "File:Simón Bolívar by José Gil de Castro.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "juarez-maximiliano",
+   "language": "es",
+   "kind": "letter",
+   "title": "Carta a Maximiliano",
+   "author": "Benito Juárez",
+   "year": 1864,
+   "died": 1872,
+   "date": "28 May 1864",
+   "lines": [
+    "Tengo necesidad de concluir por falta de tiempo, y agregaré sólo una observación.",
+    "Es dado al hombre, señor, atacar los derechos ajenos, apoderarse de sus bienes, atentar contra la vida de los que defienden su nacionalidad, hacer de sus virtudes un crimen y de los vicios propios una virtud;",
+    "pero hay una cosa que está fuera del alcance de la perversidad y es el fallo tremendo de la historia.",
+    "Ella nos juzgará."
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Carta_del_Ciudadano_Benito_Juárez_al_Archiduque_Maximiliano",
+   "portrait": "File:Photograph of Benito Juarez.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "zapata-manifiesto-1912",
+   "language": "es",
+   "kind": "manifesto",
+   "title": "Manifiesto a la nación",
+   "author": "Emiliano Zapata",
+   "year": 1912,
+   "died": 1919,
+   "date": "20 October 1912",
+   "lines": [
+    "La victoria se acerca, la lucha toca a su fin.",
+    "Se libran ya los últimos combates y en estos instantes solemnes, de pie y respetuosamente descubiertos ante la nación, aguardamos la hora decisiva, el momento preciso en que los pueblos se hunden o se salvan, según el uso que hacen de la soberanía conquistada, esa soberanía por tanto tiempo arrebatada a nuestro pueblo, y la que con el triunfo de la revolución volverá ilesa, tal como se ha conservado y la hemos defendido aquí, en las montañas que han sido su solio y nuestro baluarte.",
+    "Volverá dignificada y fortalecida para nunca más ser mancillada por la impostura ni encadenada por la tiranía.",
+    "Sin embargo, los hechos hablan muy alto de la fuerza y el origen de este movimiento."
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Manifiesto_de_Zapata_a_la_Nación_(1912-10-20)",
+   "portrait": "File:Emiliano Zapata4.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "sorjuana-hombres-necios",
+   "language": "es",
+   "kind": "poem",
+   "title": "Hombres necios (Redondillas)",
+   "author": "Sor Juana Inés de la Cruz",
+   "year": 1689,
+   "died": 1695,
+   "date": null,
+   "lines": [
+    "Hombres necios que acusáis",
+    "a la mujer, sin razón,",
+    "sin ver que sois la ocasión",
+    "de lo mismo que culpáis;",
+    "si con ansia sin igual",
+    "solicitáis su desdén,",
+    "por qué queréis que obren bien",
+    "si las incitáis al mal?"
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Redondillas",
+   "portrait": "File:Sor Juana by Miguel Cabrera (cropped).jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "quevedo-amor-constante",
+   "language": "es",
+   "kind": "poem",
+   "title": "Amor constante más allá de la muerte",
+   "author": "Francisco de Quevedo",
+   "year": 1648,
+   "died": 1645,
+   "date": null,
+   "lines": [
+    "Cerrar podrá mis ojos la postrera",
+    "sombra que me llevare el blanco día,",
+    "y podrá desatar esta alma mía",
+    "hora a su afán ansioso lisonjera;",
+    "mas no, de esotra parte, en la ribera,",
+    "dejará la memoria, en donde ardía:",
+    "nadar sabe mi llama la agua fría,",
+    "y perder el respeto a ley severa."
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Amor_constante_más_allá_de_la_muerte",
+   "portrait": "File:Quevedo (copia de Velázquez).jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "espronceda-pirata",
+   "language": "es",
+   "kind": "poem",
+   "title": "Canción del pirata",
+   "author": "José de Espronceda",
+   "year": 1835,
+   "died": 1842,
+   "date": null,
+   "lines": [
+    "Con diez cañones por banda,",
+    "Viento en popa á toda vela",
+    "No corta el mar, sino vuela",
+    "Mi velero bergantin:",
+    "Bajel pirata que llaman",
+    "Por su bravura el Temido,",
+    "En todo mar conocido",
+    "Del uno al otro confin."
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Canción_del_pirata",
+   "portrait": "File:José de Espronceda (detalle).jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "marti-versos-sencillos-1",
+   "language": "es",
+   "kind": "poem",
+   "title": "Versos sencillos I",
+   "author": "José Martí",
+   "year": 1891,
+   "died": 1895,
+   "date": null,
+   "lines": [
+    "Yo soy un hombre sincero",
+    "De donde crece la palma.",
+    "Y antes de morirme quiero",
+    "Echar mis versos del alma.",
+    "Yo vengo de todas partes,",
+    "Y hacia todas partes voy:",
+    "Arte soy entre las artes,",
+    "En los montes, monte soy."
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Versos_sencillos/I",
+   "portrait": "File:José Martí retrato hecho en México 1875.jpg",
+   "portrait_license": "CC0"
+  },
+  {
+   "id": "dario-sonatina",
+   "language": "es",
+   "kind": "poem",
+   "title": "Sonatina",
+   "author": "Rubén Darío",
+   "year": 1896,
+   "died": 1916,
+   "date": null,
+   "lines": [
+    "La princesa está triste... ¿qué tendrá la princesa?",
+    "Los suspiros se escapan de su boca de fresa,",
+    "Que ha perdido la risa, que ha perdido el color.",
+    "La princesa está pálida en su silla de oro,",
+    "Está mudo el teclado de su clave sonoro;",
+    "Y en un vaso olvidada se desmaya una flor."
+   ],
+   "source_url": "https://es.wikisource.org/wiki/Sonatina",
+   "portrait": "File:Rubén Darío.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "garcilaso-soneto-23",
+   "language": "es",
+   "kind": "poem",
+   "title": "Soneto XXIII",
+   "author": "Garcilaso de la Vega",
+   "year": 1543,
+   "died": 1536,
+   "date": null,
+   "lines": [
+    "En tanto que de rosa y azucena",
+    "se muestra la color en vuestro gesto,",
+    "y que vuestro mirar ardiente, honesto,",
+    "enciende el corazón y lo refrena,",
+    "y en tanto que el cabello, que en la vena",
+    "del oro se escogió, con vuelo presto,",
+    "por el hermoso cuello blanco, enhiesto,",
+    "el viento mueve, esparce y desordena;"
+   ],
+   "source_url": "https://es.wikisource.org/wiki/En_tanto_que_de_rosa_y_azucena",
+   "portrait": "File:Retrato de hombre con la cruz de caballero de Alcántara.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "dufu-chunwang",
+   "language": "zh",
+   "kind": "poem",
+   "title": "春望",
+   "title_hant": "春望",
+   "author": "杜甫",
+   "author_hant": "杜甫",
+   "year": 757,
+   "died": 770,
+   "date": null,
+   "lines": [
+    {
+     "hans": "国破山河在，",
+     "hant": "國破山河在，"
+    },
+    {
+     "hans": "城春草木深。",
+     "hant": "城春草木深。"
+    },
+    {
+     "hans": "感时花溅泪，",
+     "hant": "感時花濺淚，"
+    },
+    {
+     "hans": "恨别鸟惊心。",
+     "hant": "恨別鳥驚心。"
+    },
+    {
+     "hans": "烽火连三月，",
+     "hant": "烽火連三月，"
+    },
+    {
+     "hans": "家书抵万金。",
+     "hant": "家書抵萬金。"
+    },
+    {
+     "hans": "白头搔更短，",
+     "hant": "白頭搔更短，"
+    },
+    {
+     "hans": "浑欲不胜簪。",
+     "hant": "渾欲不勝簪。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/春望",
+   "portrait": "File:Dufu.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "wangwei-luzhai",
+   "language": "zh",
+   "kind": "poem",
+   "title": "鹿柴",
+   "title_hant": "鹿柴",
+   "author": "王维",
+   "author_hant": "王維",
+   "year": 750,
+   "died": 761,
+   "date": null,
+   "lines": [
+    {
+     "hans": "空山不见人，",
+     "hant": "空山不見人，"
+    },
+    {
+     "hans": "但闻人语响。",
+     "hant": "但聞人語響。"
+    },
+    {
+     "hans": "返景入深林，",
+     "hant": "返景入深林，"
+    },
+    {
+     "hans": "复照青苔上。",
+     "hant": "復照青苔上。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/鹿柴_(王維)",
+   "portrait": "File:Wang Wei.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "baijuyi-guyuancao",
+   "language": "zh",
+   "kind": "poem",
+   "title": "赋得古原草送别",
+   "title_hant": "賦得古原草送別",
+   "author": "白居易",
+   "author_hant": "白居易",
+   "year": 788,
+   "died": 846,
+   "date": null,
+   "lines": [
+    {
+     "hans": "离离原上草，",
+     "hant": "離離原上草，"
+    },
+    {
+     "hans": "一岁一枯荣。",
+     "hant": "一歲一枯榮。"
+    },
+    {
+     "hans": "野火烧不尽，",
+     "hant": "野火燒不盡，"
+    },
+    {
+     "hans": "春风吹又生。",
+     "hant": "春風吹又生。"
+    },
+    {
+     "hans": "远芳侵古道，",
+     "hant": "遠芳侵古道，"
+    },
+    {
+     "hans": "晴翠接荒城。",
+     "hant": "晴翠接荒城。"
+    },
+    {
+     "hans": "又送王孙去，",
+     "hant": "又送王孫去，"
+    },
+    {
+     "hans": "萋萋满别情。",
+     "hant": "萋萋滿別情。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/賦得古原草送別",
+   "portrait": "File:唐名臣像-21-白樂天.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "luobinwang-yonge",
+   "language": "zh",
+   "kind": "poem",
+   "title": "咏鹅",
+   "title_hant": "詠鵝",
+   "author": "骆宾王",
+   "author_hant": "駱賓王",
+   "year": 680,
+   "died": 684,
+   "date": null,
+   "lines": [
+    {
+     "hans": "鹅，鹅，鹅，",
+     "hant": "鵝，鵝，鵝，"
+    },
+    {
+     "hans": "曲项向天歌。",
+     "hant": "曲項向天歌。"
+    },
+    {
+     "hans": "白毛浮绿水，",
+     "hant": "白毛浮綠水，"
+    },
+    {
+     "hans": "红掌拨清波。",
+     "hant": "紅掌撥清波。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/詠鵝",
+   "portrait": "File:Luo Binwang.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "sushi-shuidiaogetou",
+   "language": "zh",
+   "kind": "poem",
+   "title": "水调歌头",
+   "title_hant": "水調歌頭",
+   "author": "苏轼",
+   "author_hant": "蘇軾",
+   "year": 1076,
+   "died": 1101,
+   "date": null,
+   "lines": [
+    {
+     "hans": "明月几时有，",
+     "hant": "明月幾時有，"
+    },
+    {
+     "hans": "把酒问青天。",
+     "hant": "把酒問青天。"
+    },
+    {
+     "hans": "不知天上宫阙，",
+     "hant": "不知天上宮闕，"
+    },
+    {
+     "hans": "今夕是何年。",
+     "hant": "今夕是何年。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/水調歌頭_(明月幾時有)",
+   "portrait": "File:Su shi.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "liqingzhao-rumengling",
+   "language": "zh",
+   "kind": "poem",
+   "title": "如梦令",
+   "title_hant": "如夢令",
+   "author": "李清照",
+   "author_hant": "李清照",
+   "year": 1100,
+   "died": 1155,
+   "date": null,
+   "lines": [
+    {
+     "hans": "昨夜雨疏风骤，",
+     "hant": "昨夜雨疏風驟，"
+    },
+    {
+     "hans": "浓睡不消残酒。",
+     "hant": "濃睡不消殘酒。"
+    },
+    {
+     "hans": "试问卷帘人，",
+     "hant": "試問卷簾人，"
+    },
+    {
+     "hans": "却道海棠依旧。",
+     "hant": "卻道海棠依舊。"
+    },
+    {
+     "hans": "知否，知否，",
+     "hant": "知否，知否，"
+    },
+    {
+     "hans": "应是绿肥红瘦。",
+     "hant": "應是綠肥紅瘦。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/如夢令_(李清照)/如夢令_(昨夜雨疏風驟)",
+   "portrait": "File:李清照畫像.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "liangqichao-shaonian",
+   "language": "zh",
+   "kind": "poem",
+   "title": "少年中国说（节选）",
+   "title_hant": "少年中國說（節選）",
+   "author": "梁启超",
+   "author_hant": "梁啟超",
+   "year": 1900,
+   "died": 1929,
+   "date": null,
+   "lines": [
+    {
+     "hans": "红日初升，其道大光。",
+     "hant": "紅日初升，其道大光。"
+    },
+    {
+     "hans": "河出伏流，一泻汪洋。",
+     "hant": "河出伏流，一瀉汪洋。"
+    },
+    {
+     "hans": "潜龙腾渊，鳞爪飞扬。",
+     "hant": "潜龍騰淵，鱗爪飛揚。"
+    },
+    {
+     "hans": "乳虎啸谷，百兽震惶。",
+     "hant": "乳虎嘯谷，百獸震惶。"
+    },
+    {
+     "hans": "鹰隼试翼，风尘翕张。",
+     "hant": "鷹隼試翼，風塵翕張。"
+    },
+    {
+     "hans": "奇花初胎，矞矞皇皇。",
+     "hant": "奇花初胎，矞矞皇皇。"
+    },
+    {
+     "hans": "干将发硎，有作其芒。",
+     "hant": "干將發硎，有作其芒。"
+    },
+    {
+     "hans": "天戴其苍，地履其黄。",
+     "hant": "天戴其蒼，地履其黃。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/少年中國說_(附中國少年論)",
+   "portrait": "File:Liang Qichao portrait.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "luxun-kuangren-riji",
+   "language": "zh",
+   "kind": "prose",
+   "title": "狂人日记（结尾）",
+   "title_hant": "狂人日記（結尾）",
+   "author": "鲁迅",
+   "author_hant": "魯迅",
+   "year": 1918,
+   "died": 1936,
+   "date": null,
+   "lines": [
+    {
+     "hans": "有了四千年吃人履历的我，",
+     "hant": "有了四千年喫人履歷的我，"
+    },
+    {
+     "hans": "当初虽然不知道，现在明白，",
+     "hant": "當初雖然不知道，現在明白，"
+    },
+    {
+     "hans": "难见真的人！",
+     "hant": "難見眞的人！"
+    },
+    {
+     "hans": "没有吃过人的孩子，",
+     "hant": "沒有喫過人的孩子，"
+    },
+    {
+     "hans": "或者还有？",
+     "hant": "或者還有？"
+    },
+    {
+     "hans": "救救孩子……",
+     "hant": "救救孩子……"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/狂人日記",
+   "portrait": "File:LuXun1930.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "libai-zaofa-baidicheng",
+   "language": "zh",
+   "kind": "poem",
+   "title": "早发白帝城",
+   "title_hant": "早發白帝城",
+   "author": "李白",
+   "author_hant": "李白",
+   "year": 759,
+   "died": 762,
+   "date": null,
+   "lines": [
+    {
+     "hans": "朝辞白帝彩云间，",
+     "hant": "朝辭白帝彩雲間，"
+    },
+    {
+     "hans": "千里江陵一日还。",
+     "hant": "千里江陵一日還。"
+    },
+    {
+     "hans": "两岸猿声啼不尽，",
+     "hant": "兩岸猿聲啼不盡，"
+    },
+    {
+     "hans": "轻舟已过万重山。",
+     "hant": "輕舟已過萬重山。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/早發白帝城",
+   "portrait": "File:LiBai.jpg",
+   "portrait_license": "Public domain"
+  },
+  {
+   "id": "libai-lushan-pubu",
+   "language": "zh",
+   "kind": "poem",
+   "title": "望庐山瀑布（其二）",
+   "title_hant": "望廬山瀑布（其二）",
+   "author": "李白",
+   "author_hant": "李白",
+   "year": 725,
+   "died": 762,
+   "date": null,
+   "lines": [
+    {
+     "hans": "日照香炉生紫烟，",
+     "hant": "日照香爐生紫煙，"
+    },
+    {
+     "hans": "遥看瀑布挂前川。",
+     "hant": "遙看瀑布掛前川。"
+    },
+    {
+     "hans": "飞流直下三千尺，",
+     "hant": "飛流直下三千尺，"
+    },
+    {
+     "hans": "疑是银河落九天。",
+     "hant": "疑是銀河落九天。"
+    }
+   ],
+   "source_url": "https://zh.wikisource.org/wiki/望廬山瀑布",
+   "portrait": "File:LiBai.jpg",
+   "portrait_license": "Public domain"
+  }
+ ]
+}

@@ -249,7 +249,7 @@ struct SpeechPracticeView: View {
         let language = model.language
         PracticePage(title: "Speech & Poetry", subtitle: "Read a public-domain speech or poem at your own pace. The words highlight as you go.",
                      startTitle: "Read This Piece",
-                     groups: piece.map { p in [p.lines.map { SentencePrompt($0, kind: .speech, language: language) }] } ?? [],
+                     groups: piece.map { p in PracticeCorpus.takes(p.lines, language: language).map { $0.map { SentencePrompt($0, kind: .speech, language: language) } } } ?? [],
                      mode: .speech) {
             Toggle("Show IPA", isOn: $showIPA)
         } content: {
