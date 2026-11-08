@@ -459,6 +459,7 @@ def main():
     p=sub.add_parser("closed-set");p.add_argument("--dataset",required=True);p.add_argument("--output",required=True);p.add_argument("--permutations",type=int,default=1000)
     p=sub.add_parser("export-community");p.add_argument("--root",required=True);p.add_argument("--output",required=True)
     p.add_argument("--contributor",required=True);p.add_argument("--consent-version",required=True);p.add_argument("--prompts-dir");p.add_argument("--app-version",default="0.1.0")
+    p.add_argument("--skip",default="",help="comma-separated session IDs already shared")
     p=sub.add_parser("upload-community");p.add_argument("--session",required=True);p.add_argument("--repo",required=True);p.add_argument("--output",required=True)
     p.add_argument("--drop",default="");p.add_argument("--pr",type=int);p.add_argument("--prompts-dir")
     p=sub.add_parser("validate-community");p.add_argument("--session",required=True);p.add_argument("--prompts-dir")
@@ -479,7 +480,8 @@ def main():
         atomic_json(output,result)
     elif args.command=="export-community":
         from .community_export import export_sessions
-        result=[str(p) for p in export_sessions(args.root,args.output,args.contributor,args.consent_version,args.prompts_dir,args.app_version)]
+        result=[str(p) for p in export_sessions(args.root,args.output,args.contributor,args.consent_version,args.prompts_dir,args.app_version,
+                                                skip={s for s in args.skip.split(",") if s})]
     elif args.command=="upload-community":
         import os
         from .community_export import upload_session

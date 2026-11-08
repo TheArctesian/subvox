@@ -91,6 +91,13 @@ class CommunityExportTests(Fixture):
         self.assertEqual(again, folder)
         self.assertEqual((again / "takes.jsonl").read_text(), first)
 
+    def test_already_shared_sessions_are_skipped(self):
+        [folder] = self.export()
+        import shutil
+        shutil.rmtree(self.out)
+        self.assertEqual(export_sessions(self.root, self.out, "anon-7f3a", "consent-v1", self.prompts, skip={folder.name}), [])
+        self.assertFalse((self.out / "data" / "anon-7f3a" / folder.name).exists())
+
     def test_validator_rejects_extra_fields_heldout_prompts_and_bad_contributors(self):
         [folder] = self.export()
         index, heldout = load_prompt_index(self.prompts)

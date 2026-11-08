@@ -107,7 +107,7 @@ def take_rows(recording, origin, take_id, readings):
     return motion, camera_table, coverage, reason
 
 
-def export_sessions(root, output, contributor, consent_version, prompts_dir=None, app_version="0.1.0", prompts_version=1):
+def export_sessions(root, output, contributor, consent_version, prompts_dir=None, app_version="0.1.0", prompts_version=1, skip=()):
     """Writes one folder per recording session that has community takes; returns their paths."""
     import pyarrow as pa
     import pyarrow.parquet as pq
@@ -128,6 +128,8 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
     written = []
     for local_session, pairs in sorted(sessions.items()):
         session_id = opaque("session", local_session)
+        if session_id in skip:
+            continue  # already shared; never re-exported or offered again
         origin = min(p.get("sessionStartUptime") or min(r["samples"][0]["t"] for r in (p.get("spoken"), p.get("silent")) if r and r["samples"])
                      for p in pairs)
         takes, motion, cameras, all_samples, readings_all = [], [], [], [], []

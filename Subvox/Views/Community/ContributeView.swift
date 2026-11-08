@@ -28,17 +28,50 @@ struct ContributeView: View {
 
     private var queueSection: some View {
         @Bindable var settings = settings
+        let pending = uploader.pending
         return VStack(alignment: .leading, spacing: 12) {
-            Text("Your sessions").font(.title3.weight(.semibold))
             HStack {
-                TextField("Dataset", text: $settings.repo).textFieldStyle(.roundedBorder).frame(maxWidth: 360)
-                Button("Find community sessions") { if let name = account.username { Task { await uploader.prepare(contributor: name) } } }
-                    .disabled(uploader.busy)
+                Text("Ready to send").font(.title3.weight(.semibold))
+                Spacer()
+                Button { refresh() } label: { Label("Check again", systemImage: "arrow.clockwise") }.buttonStyle(.borderless).disabled(uploader.busy)
+                Button("Send all (\(pending.count))") { sendAll() }.buttonStyle(.borderedProminent).disabled(uploader.busy || pending.isEmpty)
             }
-            if uploader.busy { HStack { ProgressView().controlSize(.small); Text(uploader.status).font(.callout.monospaced()).lineLimit(1) } }
-            else if !uploader.status.isEmpty { Text(uploader.status).font(.callout).foregroundStyle(.secondary) }
+            if !uploader.status.isEmpty { Text(uploader.status).font(.callout).foregroundStyle(.secondary) }
             if let error = uploader.error { Text(error).font(.callout).foregroundStyle(.orange).textSelection(.enabled) }
-            ForEach(uploader.items) { item in sessionRow(item) }
+            if pending.isEmpty && !uploader.busy && uploader.status.isEmpty {
+                Text("Nothing new to send. Record more community passages and they'll appear here.").font(.callout).foregroundStyle(.secondary)
+            }
+            ForEach(pending) { item in sessionRow(item) }
+            if !uploader.shared.isEmpty {
+                DisclosureGroup("Already shared (\(uploader.shared.count))") {
+                    VStack(alignment: .leading, spacing: 6) {
+                        ForEach(uploader.shared) { item in
+                            HStack {
+                                Label("Session \(item.id.prefix(8)) · \(item.month) · \(item.takes - item.dropped.count) takes", systemImage: "checkmark.circle.fill")
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                if let url = item.prURL.flatMap(URL.init(string:)) { Link("Pull request #\(item.prNumber ?? 0)", destination: url) }
+                            }.font(.callout)
+                        }
+                    }.padding(.top, 6)
+                }
+            }
+            DisclosureGroup("Dataset") {
+                TextField("Dataset", text: $settings.repo).textFieldStyle(.roundedBorder).frame(maxWidth: 360).padding(.top, 4)
+            }.font(.callout)
+        }
+        .task(id: "\(account.username ?? "")|\(settings.hasConsent)") { refresh() }
+    }
+
+    private func refresh() {
+        guard let name = account.username, settings.hasConsent, !uploader.busy else { return }
+        Task { await uploader.prepare(contributor: name) }
+    }
+
+    private func sendAll() {
+        Task {
+            do { await uploader.sendAll(repo: settings.repo, token: try await account.accessToken()) }
+            catch { model.huggingFace.signOut() }
         }
     }
 
@@ -172,7 +205,7 @@ struct SharingSetupView: View {
                     Spacer()
                     Button("Withdraw agreement", action: settings.withdrawConsent).disabled(uploader.busy)
                 }
-                Text("Withdrawing stops future uploads. To remove data already shared, ask for its removal on the dataset; copies others downloaded can't be recalled.")
+                Text("Withdrawing stops future uploads. To remove data you've already shared, email \(ContributionSettings.removalContact). Copies others have downloaded can't be recalled.")
                     .font(.caption).foregroundStyle(.secondary)
             } else {
                 Text("What is shared: AirPods head-motion, numeric lip and jaw points from the camera, which sentence you read, your AirPods model and firmware, and the month. Never video, images, audio, file names, device names or exact times.")

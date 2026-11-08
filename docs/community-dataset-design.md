@@ -217,7 +217,8 @@ Steps 1–3 are fully local and useful for your own recordings before anyone els
     - Send, which creates one PR per session through `subvox-ml upload-community`; the token is passed in an environment variable, a retry adds to the same `refs/pr/N`, and the queue persists
   - **AirPods metadata:** each visit records vendor/product ID, model and firmware, and each take records its native rate. Ingestion accepts 20 Hz and up, interpolated onto the 50 Hz grid and flagged.
   - **Test dataset:** `stephenokita/subvox-community-test` (public, CC BY 4.0).
-  - **Not done:** an end-to-end live sign-in and PR, which also settles the `write-discussions` question (section 1); the first-launch contribution prompt; and anonymous mode with the relay (step 5).
+  - **Live test (7 Nov 2026):** signed in through the app; two sessions (52 and 3 takes) became PRs #1 and #2 on `stephenokita/subvox-community-test`, authored by `stephenokita`, with the Parquet files stored as large files. A token with only `write-discussions` (plus openid/profile) opened PRs carrying large files, on a dataset the contributor owns; a non-owner account is still untested. Data removal requests go to me@stephenokita.com.
+- **Not done:** a non-owner PR test, which also settles the `write-discussions` question (section 1); the first-launch contribution prompt; and anonymous mode with the relay (step 5).
 
 ## Open questions
 

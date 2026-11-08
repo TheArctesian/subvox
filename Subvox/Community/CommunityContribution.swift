@@ -10,6 +10,8 @@ import Foundation
     /// Bump when the consent text changes; contributors then confirm again before uploading.
     static let consentVersion = "consent-v1-draft"
     static let defaultRepo = "stephenokita/subvox-community-test"
+    /// Where contributors ask for their shared data to be removed.
+    static let removalContact = "me@stephenokita.com"
 
     @ObservationIgnored private let defaults: UserDefaults
     var mode: Mode { didSet { defaults.set(mode.rawValue, forKey: "contribution.mode") } }
@@ -91,13 +93,15 @@ struct CommunityTake: Identifiable, Sendable {
     /// sessions keep their status: session IDs are stable hashes.
     func prepare(contributor: String) async {
         guard !busy else { return }
-        busy = true; error = nil; status = "Preparing your community sessions…"
+        busy = true; error = nil; status = "Looking for new sessions…"
         defer { busy = false }
         do {
             var arguments = ["export-community", "--root", SentenceStore.directory.path, "--output", exportRoot.path,
                              "--contributor", contributor, "--consent-version", ContributionSettings.consentVersion]
             if let prompts = Self.promptsDirectory { arguments += ["--prompts-dir", prompts.path] }
-            try await runtime.run(arguments) { self.status = $0 }
+            let shared = items.filter { $0.status == .uploaded }.map(\.id)
+            if !shared.isEmpty { arguments += ["--skip", shared.joined(separator: ",")] }
+            try await runtime.run(arguments) { _ in }
             merge(scan(contributor: contributor))
             status = items.isEmpty ? "No community recordings yet. Record community passages first." : ""
         } catch { self.error = error.localizedDescription; status = "" }
@@ -117,7 +121,7 @@ struct CommunityTake: Identifiable, Sendable {
     func merge(_ found: [CommunityUpload]) {
         for item in found {
             if let i = items.firstIndex(where: { $0.id == item.id }) {
-                if items[i].status == .review { items[i].takes = item.takes; items[i].folder = item.folder }
+                if items[i].status != .uploaded && items[i].status != .uploading { items[i].takes = item.takes; items[i].folder = item.folder }
             } else { items.append(item) }
         }
         save()
@@ -153,7 +157,8 @@ struct CommunityTake: Identifiable, Sendable {
         if let pr = item.prNumber { arguments += ["--pr", String(pr)] }
         if let prompts = Self.promptsDirectory { arguments += ["--prompts-dir", prompts.path] }
         do {
-            try await runtime.run(arguments, environment: ["SUBVOX_HF_TOKEN": token]) { self.status = $0 }
+            status = "Sending session \(id.prefix(8))…"
+            try await runtime.run(arguments, environment: ["SUBVOX_HF_TOKEN": token]) { _ in }
             let result = try JSONSerialization.jsonObject(with: Data(contentsOf: output)) as? [String: Any]
             try? FileManager.default.removeItem(at: output)
             guard let j = items.firstIndex(where: { $0.id == id }) else { return }
@@ -166,6 +171,17 @@ struct CommunityTake: Identifiable, Sendable {
             self.error = error.localizedDescription; status = ""
         }
         save()
+    }
+
+    var pending: [CommunityUpload] { items.filter { $0.status != .uploaded && $0.takes > $0.dropped.count } }
+    var shared: [CommunityUpload] { items.filter { $0.status == .uploaded } }
+
+    /// Sends every reviewed session that isn't shared yet, one PR each, in order.
+    func sendAll(repo: String, token: String) async {
+        for item in pending where item.status != .uploading {
+            await send(item.id, repo: repo, token: token)
+        }
+        if error == nil { status = shared.isEmpty ? "" : "All sessions sent." }
     }
 
     func stop() { runtime.terminate() }
