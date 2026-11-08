@@ -311,6 +311,12 @@ def restore_tones(toneless, max_phrase=4):
     return out
 
 
+def accent_of(tag):
+    """'es-MX' -> 'MX' (a regional accent the converter knows), else None."""
+    region = str(tag).split("-")[-1] if "-" in str(tag) else None
+    return region if (str(tag)[:2], region) in ACCENTS else None
+
+
 def validate_language_tag(tag):
     """'en', 'fr', 'es', 'zh', optionally with a region ('fr-CA') or, for Chinese, a script
     ('zh-Hans', 'zh-Hant'); returns the base language."""

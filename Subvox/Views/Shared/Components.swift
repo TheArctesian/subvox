@@ -6,7 +6,7 @@ struct AppPageHeading: View {
     var subtitle: String
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(title).font(.largeTitle.weight(.semibold))
+            Text(title).font(.largeTitle.weight(.semibold)).accessibilityAddTraits(.isHeader)
             Text(subtitle).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         }
     }

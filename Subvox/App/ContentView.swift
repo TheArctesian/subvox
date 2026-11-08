@@ -39,6 +39,8 @@ struct ContentView: View {
                     MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate, text: model.motion.statusText)
                 }
                 .buttonStyle(.plain).help("AirPods and microphone: open Devices")
+                .accessibilityLabel(model.motion.status == .streaming ? "AirPods connected" : "AirPods: " + model.motion.statusText)
+                .accessibilityHint("Opens Devices")
             }
             ToolbarItem(placement: .primaryAction) { LanguageMenu() }
         }

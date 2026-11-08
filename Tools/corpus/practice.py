@@ -86,6 +86,9 @@ MINIMAL_PAIRS = [
     ("en", "ɪ ɛ", [["bit", "bet"], ["sit", "set"], ["pin", "pen"]]),
     ("en", "p b", [["cap", "cab"], ["rope", "robe"], ["tap", "tab"]], "word endings p b"),
     ("en", "t d", [["bat", "bad"], ["seat", "seed"], ["cart", "card"]], "word endings t d"),
+    ("en", "s ʃ", [["sea", "she"], ["sip", "ship"], ["sell", "shell"]]),
+    ("en", "j dʒ", [["yes", "Jess"], ["yellow", "jello"], ["year", "jeer"]]),
+    ("en", "æ ʌ ɑ", [["cat", "cut", "cot"], ["cap", "cup", "cop"], ["hat", "hut", "hot"]]),
     ("fr", "y u", [["rue", "roue"], ["tu", "tout"], ["vu", "vous"], ["dessus", "dessous"]]),
     ("fr", "p b m", [["pain", "bain", "main"], ["pas", "bas", "mas"]]),
     ("fr", "f v", [["fin", "vin"], ["faux", "veau"]]),
@@ -101,6 +104,11 @@ MINIMAL_PAIRS = [
 SPOKEN = {"gettysburg": "19 November 1863", "tilbury": "9 August 1588", "aint-i-a-woman": "29 May 1851"}
 
 
+# Vosotros forms are Spain-only; Español (México) leaves those phrases out.
+import re as _re
+VOSOTROS = _re.compile(r"\b(vosotr[oa]s|os|sois|tenéis|estáis|vais|habéis|sabéis|podéis|queréis|hacéis|decís|venís|divertís|"
+                       r"coméis|habláis|vivís|seáis|tengáis|perdonad|sabéis|tenéis|levantaos|sentaos)\b", _re.IGNORECASE)
+
 # Tone-change drills show the spoken tones of 一 and 不; everything else shows dictionary tones.
 SANDHI_DRILLS = {"zh-yi-tone-change", "zh-bu-tone-change"}
 
@@ -112,6 +120,13 @@ def entry(text, language, sandhi=False, accent=None):
     if isinstance(text, tuple):
         text, hant = text
     item = dict(text=text, ipa=["".join(word) for word in ipa.phonemize(text, language, accent)])
+    if language == "es" and accent is None:
+        # Shared Spanish lines carry Mexican phones too (seseo, yeísmo); the app shows them in Español (México).
+        mx = ["".join(word) for word in ipa.phonemize(text, language, "MX")]
+        if mx != item["ipa"]:
+            item["ipa_mx"] = mx
+        if VOSOTROS.search(text):
+            item["region"] = "ES"
     if language == "zh":
         item["hant"] = hant or text
         item["pinyin"] = ipa.pinyin_marks(text, sandhi)

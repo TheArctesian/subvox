@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import Observation
 
@@ -11,7 +12,21 @@ final class SentenceTrainingWorkflow {
     }
     private(set) var data = SentenceTrainingData()
     private(set) var pairUses: [UUID: SentencePairUse] = [:]
-    private(set) var phase: Phase = .setup
+    private(set) var phase: Phase = .setup { didSet { if phase != oldValue { announce(phase) } } }
+
+    /// VoiceOver cues, only at moments outside the recorded cue window: before a take starts
+    /// (ready), after it is saved (ended), and when the round has been processed (finished).
+    private func announce(_ phase: Phase) {
+        let text: String? = switch phase {
+        case .ready: "Take \(min(index + 1, total)) of \(total). \(currentCondition == .normal ? "Say it aloud" : "Mouth it silently, lips only"): \(currentText). Press Space to start."
+        case .ended: "Take saved. Space for the next one, left arrow to redo."
+        case .finished: lastPracticePairIDs.isEmpty ? "Recording finished." : "Round finished. Your results are at the top of the page."
+        default: nil
+        }
+        guard let text, let window = NSApp?.mainWindow ?? NSApp?.windows.first else { return }
+        NSAccessibility.post(element: window, notification: .announcementRequested,
+                             userInfo: [.announcement: text, .priority: NSAccessibilityPriorityLevel.high.rawValue])
+    }
     private(set) var error: String?
     private(set) var storageReady = true
     private(set) var currentText = ""

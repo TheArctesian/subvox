@@ -52,7 +52,12 @@ struct PracticeCorpus: Decodable {
         var hant: String? = nil
         /// English meaning (minimal pairs, everyday phrases).
         var gloss: String? = nil
+        /// Mexican phones where they differ (seseo, yeísmo), and "ES" for Spain-only phrases (vosotros).
+        var ipaMx: [String]? = nil
+        var region: String? = nil
+        enum CodingKeys: String, CodingKey { case text, ipa, pinyin, hant, gloss, region, ipaMx = "ipa_mx" }
         func text(_ language: AppLanguage) -> String { language == .zhHant ? (hant ?? text) : text }
+        func ipa(_ language: AppLanguage) -> [String] { language == .esMX ? (ipaMx ?? ipa) : ipa }
     }
     struct Piece: Decodable, Identifiable, Hashable {
         var id: String; var language: String; var kind: String
@@ -203,7 +208,7 @@ enum TrickySounds {
     static let table: [String: [String: [String]]] = [
         "en": ["es": ["ɪ", "i", "v", "b", "ʃ", "z", "h", "θ", "ð", "ʌ", "æ", "ʊ"],
                "fr": ["θ", "ð", "h", "ɪ", "ʊ", "ɹ", "ŋ", "æ", "ʌ", "oʊ"],
-               "zh": ["θ", "ð", "v", "ɹ", "l", "n", "ɪ", "æ", "ɛ", "z", "dʒ"]],
+               "zh": ["θ", "ð", "v", "ɹ", "l", "n", "ʃ", "ʒ", "ŋ", "w", "ɪ", "æ", "ɛ", "z", "dʒ"]],
         "fr": ["en": ["y", "u", "ʁ", "ɑ̃", "ɔ̃", "ɛ̃", "œ̃", "ø", "œ", "ɥ"],
                "es": ["y", "ø", "œ", "ə", "ʁ", "ʒ", "z", "v", "ɑ̃", "ɔ̃", "ɛ̃"],
                "zh": ["y", "ʁ", "ʒ", "v", "ɑ̃", "ɔ̃", "ɛ̃", "b", "d", "ɡ"]],

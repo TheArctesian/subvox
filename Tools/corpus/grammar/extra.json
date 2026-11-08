@@ -1,76 +1,586 @@
 {
  "en": [
-  {"id": "healthcare", "level": "B1", "topic": "Everyday life", "title": "At work: healthcare",
+  {
+   "id": "healthcare",
+   "level": "B1",
+   "topic": "Everyday life",
+   "title": "At work: healthcare",
    "note": "What a nurse or carer says to patients, including numbers that are easy to confuse.",
    "phrases": [
-    {"text": "What's your date of birth?", "gloss": "Checking identity"},
-    {"text": "Can you spell your surname for me?", "gloss": "Spelling names on the phone or ward"},
-    {"text": "Are you allergic to anything?", "gloss": "Before giving medication"},
-    {"text": "I'm going to take your blood pressure.", "gloss": "Explaining what you'll do"},
-    {"text": "How bad is the pain, from one to ten?", "gloss": "Pain score"},
-    {"text": "Have you had anything to eat today?", "gloss": "Before a procedure"},
-    {"text": "Fifteen milligrams, not fifty.", "gloss": "Stress the second syllable: fifTEEN vs FIFty"},
-    {"text": "I'll be back in five minutes.", "gloss": "Reassuring a patient"}]}
+    {
+     "text": "What's your date of birth?",
+     "gloss": "Checking identity"
+    },
+    {
+     "text": "Can you spell your surname for me?",
+     "gloss": "Spelling names on the phone or ward"
+    },
+    {
+     "text": "Are you allergic to anything?",
+     "gloss": "Before giving medication"
+    },
+    {
+     "text": "I'm going to take your blood pressure.",
+     "gloss": "Explaining what you'll do"
+    },
+    {
+     "text": "How bad is the pain, from one to ten?",
+     "gloss": "Pain score"
+    },
+    {
+     "text": "Have you had anything to eat today?",
+     "gloss": "Before a procedure"
+    },
+    {
+     "text": "Fifteen milligrams, not fifty.",
+     "gloss": "Stress the second syllable: fifTEEN vs FIFty"
+    },
+    {
+     "text": "I'll be back in five minutes.",
+     "gloss": "Reassuring a patient"
+    }
+   ]
+  },
+  {
+   "id": "family-calls",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Family calls: grandparent to grandchildren",
+   "note": "A grandparent chatting with grandchildren by phone or video.",
+   "phrases": [
+    {
+     "text": "How was school today?",
+     "gloss": "Warm opener; stress \"school\""
+    },
+    {
+     "text": "I miss you so much.",
+     "gloss": "Stress \"miss\" and \"much\""
+    },
+    {
+     "text": "What did you have for lunch?",
+     "gloss": "Easy small talk with children"
+    },
+    {
+     "text": "Can you show me your drawing?",
+     "gloss": "Hold it up to the camera"
+    },
+    {
+     "text": "Happy birthday, sweetheart!",
+     "gloss": "Warm, rising tone on \"sweetheart\""
+    },
+    {
+     "text": "See you in the summer.",
+     "gloss": "Friendly goodbye"
+    },
+    {
+     "text": "Are you being good for Mum and Dad?",
+     "gloss": "Playful; \"Mum\" in British English"
+    },
+    {
+     "text": "Send me a photo!",
+     "gloss": "Casual request"
+    }
+   ]
+  },
+  {
+   "id": "classroom",
+   "level": "B1",
+   "topic": "Everyday life",
+   "title": "Classroom: a teacher's English",
+   "note": "Instructions and routines a teacher says aloud.",
+   "phrases": [
+    {
+     "text": "Please open your books to page ten.",
+     "gloss": "Clear instruction; \"ten\" stressed"
+    },
+    {
+     "text": "Hand in your homework.",
+     "gloss": "Collecting work; \"in\" is stressed"
+    },
+    {
+     "text": "Any questions?",
+     "gloss": "Short, rising tone"
+    },
+    {
+     "text": "Let's take the register.",
+     "gloss": "British; \"roll\" in American English"
+    },
+    {
+     "text": "Well done, everyone.",
+     "gloss": "Praise; falling tone"
+    },
+    {
+     "text": "Parents' evening is on Thursday.",
+     "gloss": "British; \"parent-teacher conference\" in US"
+    },
+    {
+     "text": "Quiet, please.",
+     "gloss": "Firm but polite"
+    },
+    {
+     "text": "Work in pairs.",
+     "gloss": "Stress \"pairs\""
+    }
+   ]
+  }
  ],
  "fr": [
-  {"id": "famille-lyon", "level": "A1", "topic": "Everyday life", "title": "En famille à Lyon",
+  {
+   "id": "famille-lyon",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "En famille à Lyon",
    "note": "Greetings and family phrases for a visit, informal tu with children.",
    "phrases": [
-    {"text": "Bonjour, je m'appelle Tom.", "gloss": "Hello, my name is Tom."},
-    {"text": "Comment vas-tu ?", "gloss": "How are you? (to a child or friend)"},
-    {"text": "Tu as passé une bonne journée à l'école ?", "gloss": "Did you have a good day at school?"},
-    {"text": "On va au parc cet après-midi ?", "gloss": "Shall we go to the park this afternoon?"},
-    {"text": "Je voudrais un café, s'il vous plaît.", "gloss": "I'd like a coffee, please."},
-    {"text": "Où est la gare Part-Dieu ?", "gloss": "Where is Part-Dieu station?"},
-    {"text": "À tout à l'heure !", "gloss": "See you later!"},
-    {"text": "Bonne nuit, mon chéri.", "gloss": "Good night, darling."}]}
+    {
+     "text": "Bonjour, je m'appelle Tom.",
+     "gloss": "Hello, my name is Tom."
+    },
+    {
+     "text": "Comment vas-tu ?",
+     "gloss": "How are you? (to a child or friend)"
+    },
+    {
+     "text": "Tu as passé une bonne journée à l'école ?",
+     "gloss": "Did you have a good day at school?"
+    },
+    {
+     "text": "On va au parc cet après-midi ?",
+     "gloss": "Shall we go to the park this afternoon?"
+    },
+    {
+     "text": "Je voudrais un café, s'il vous plaît.",
+     "gloss": "I'd like a coffee, please."
+    },
+    {
+     "text": "Où est la gare Part-Dieu ?",
+     "gloss": "Where is Part-Dieu station?"
+    },
+    {
+     "text": "À tout à l'heure !",
+     "gloss": "See you later!"
+    },
+    {
+     "text": "Bonne nuit, mon chéri.",
+     "gloss": "Good night, darling."
+    }
+   ]
+  }
  ],
  "es": [
-  {"id": "tacos-mx", "region": "MX", "level": "A1", "topic": "Everyday life", "title": "Tacos y fondas (México)",
+  {
+   "id": "tacos-mx",
+   "region": "MX",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Tacos y fondas (México)",
    "note": "Ordering food in Mexico City; usted with staff.",
    "phrases": [
-    {"text": "¿Me da tres tacos al pastor, por favor?", "gloss": "Can I have three al pastor tacos, please?"},
-    {"text": "¿Con todo?", "gloss": "With everything (onion, coriander)?"},
-    {"text": "Sin cebolla, por favor.", "gloss": "No onion, please."},
-    {"text": "Para llevar, por favor.", "gloss": "To take away, please."},
-    {"text": "¿Me trae la cuenta?", "gloss": "Could you bring the bill?"},
-    {"text": "Está muy rico.", "gloss": "It's delicious."}]},
-  {"id": "metro-mx", "region": "MX", "level": "A1", "topic": "Everyday life", "title": "Metro y camión (CDMX)",
+    {
+     "text": "¿Me da tres tacos al pastor, por favor?",
+     "gloss": "Can I have three al pastor tacos, please?"
+    },
+    {
+     "text": "¿Con todo?",
+     "gloss": "With everything (onion, coriander)?"
+    },
+    {
+     "text": "Sin cebolla, por favor.",
+     "gloss": "No onion, please."
+    },
+    {
+     "text": "Para llevar, por favor.",
+     "gloss": "To take away, please."
+    },
+    {
+     "text": "¿Me trae la cuenta?",
+     "gloss": "Could you bring the bill?"
+    },
+    {
+     "text": "Está muy rico.",
+     "gloss": "It's delicious."
+    },
+    {
+     "text": "¿Me cobra, por favor?",
+     "gloss": "Could I pay, please?"
+    }
+   ]
+  },
+  {
+   "id": "metro-mx",
+   "region": "MX",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Metro y camión (CDMX)",
    "note": "Getting around Mexico City.",
    "phrases": [
-    {"text": "¿Qué línea va a Coyoacán?", "gloss": "Which line goes to Coyoacán?"},
-    {"text": "Necesito recargar mi tarjeta.", "gloss": "I need to top up my card."},
-    {"text": "¿Dónde me bajo para el Zócalo?", "gloss": "Where do I get off for the Zócalo?"},
-    {"text": "¿Este camión pasa por Reforma?", "gloss": "Does this bus go along Reforma?"},
-    {"text": "¿A cuántas estaciones está?", "gloss": "How many stops away is it?"},
-    {"text": "Voy a pedir un taxi.", "gloss": "I'm going to order a taxi."}]},
-  {"id": "depa-mx", "region": "MX", "level": "A2", "topic": "Everyday life", "title": "Rentar un departamento (México)",
+    {
+     "text": "¿Qué línea va a Coyoacán?",
+     "gloss": "Which line goes to Coyoacán?"
+    },
+    {
+     "text": "Necesito recargar mi tarjeta.",
+     "gloss": "I need to top up my card."
+    },
+    {
+     "text": "¿Dónde me bajo para el Zócalo?",
+     "gloss": "Where do I get off for the Zócalo?"
+    },
+    {
+     "text": "¿Este camión pasa por Reforma?",
+     "gloss": "Does this bus go along Reforma?"
+    },
+    {
+     "text": "¿Cuántas estaciones faltan?",
+     "gloss": "How many stops are left?"
+    },
+    {
+     "text": "Voy a pedir un Uber.",
+     "gloss": "I'm going to order an Uber."
+    },
+    {
+     "text": "Aquí me bajo, por favor.",
+     "gloss": "I'll get off here, please."
+    },
+    {
+     "text": "En la esquina, por favor.",
+     "gloss": "At the corner, please."
+    }
+   ]
+  },
+  {
+   "id": "depa-mx",
+   "region": "MX",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Rentar un departamento (México)",
    "note": "Renting a flat: departamento, renta, depósito.",
    "phrases": [
-    {"text": "Busco un departamento en renta.", "gloss": "I'm looking for a flat to rent."},
-    {"text": "¿Cuánto es la renta al mes?", "gloss": "How much is the monthly rent?"},
-    {"text": "¿Se pide depósito?", "gloss": "Is a deposit required?"},
-    {"text": "¿Incluye mantenimiento?", "gloss": "Does it include the building fee?"},
-    {"text": "¿Aceptan mascotas?", "gloss": "Are pets allowed?"},
-    {"text": "¿Cuándo lo puedo ver?", "gloss": "When can I see it?"}]},
-  {"id": "platica-mx", "region": "MX", "level": "A1", "topic": "Everyday life", "title": "Plática con vecinos (México)",
+    {
+     "text": "Busco un departamento en renta.",
+     "gloss": "I'm looking for a flat to rent."
+    },
+    {
+     "text": "¿Cuánto es la renta al mes?",
+     "gloss": "How much is the monthly rent?"
+    },
+    {
+     "text": "¿Cuánto piden de depósito?",
+     "gloss": "How much deposit do they ask for?"
+    },
+    {
+     "text": "¿Incluye mantenimiento?",
+     "gloss": "Does it include the building fee?"
+    },
+    {
+     "text": "¿Aceptan mascotas?",
+     "gloss": "Are pets allowed?"
+    },
+    {
+     "text": "¿Cuándo lo puedo ver?",
+     "gloss": "When can I see it?"
+    },
+    {
+     "text": "¿Piden aval?",
+     "gloss": "Do you require a guarantor?"
+    },
+    {
+     "text": "¿Cuándo firmamos el contrato?",
+     "gloss": "When do we sign the contract?"
+    }
+   ]
+  },
+  {
+   "id": "platica-mx",
+   "region": "MX",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Plática con vecinos (México)",
    "note": "Everyday Mexican expressions: mande, ahorita, qué padre.",
    "phrases": [
-    {"text": "¿Qué onda? ¿Cómo estás?", "gloss": "Hey, how are you?"},
-    {"text": "¿Mande?", "gloss": "Sorry? (polite 'pardon?')"},
-    {"text": "Ahorita vengo.", "gloss": "I'll be right back."},
-    {"text": "¡Qué padre!", "gloss": "How cool!"},
-    {"text": "Mucho gusto.", "gloss": "Nice to meet you."},
-    {"text": "Nos vemos al rato.", "gloss": "See you later."},
-    {"text": "Que te vaya bien.", "gloss": "Take care."}]},
-  {"id": "tramites-mx", "region": "MX", "level": "A2", "topic": "Everyday life", "title": "Trámites (México)",
-   "note": "Paperwork: CURP, SAT, IMSS.",
+    {
+     "text": "¿Mande?",
+     "gloss": "Sorry? (polite 'pardon?')"
+    },
+    {
+     "text": "Ahorita vengo.",
+     "gloss": "I'll be right back."
+    },
+    {
+     "text": "¡Qué padre!",
+     "gloss": "How cool!"
+    },
+    {
+     "text": "Mucho gusto.",
+     "gloss": "Nice to meet you."
+    },
+    {
+     "text": "Nos vemos al rato.",
+     "gloss": "See you later."
+    },
+    {
+     "text": "Que te vaya bien.",
+     "gloss": "Take care."
+    },
+    {
+     "text": "Buenos días, vecina.",
+     "gloss": "Good morning, neighbour."
+    },
+    {
+     "text": "¿Cómo amaneció?",
+     "gloss": "How are you this morning? (polite)"
+    },
+    {
+     "text": "Hasta luego, cuídese.",
+     "gloss": "See you later, take care. (polite)"
+    }
+   ]
+  },
+  {
+   "id": "tramites-mx",
+   "region": "MX",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Trámites (México)",
+   "note": "Paperwork: CURP, SAT, the Seguro (social security).",
    "phrases": [
-    {"text": "Vengo a tramitar mi CURP.", "gloss": "I've come to get my CURP (population ID)."},
-    {"text": "Necesito darme de alta en el SAT.", "gloss": "I need to register with the tax office."},
-    {"text": "¿Dónde está la clínica del IMSS?", "gloss": "Where is the IMSS clinic?"},
-    {"text": "¿Qué documentos necesito?", "gloss": "What documents do I need?"},
-    {"text": "Traigo mi pasaporte y mi comprobante de domicilio.", "gloss": "I have my passport and proof of address."},
-    {"text": "¿Cuánto tarda el trámite?", "gloss": "How long does it take?"}]}
+    {
+     "text": "Vengo a tramitar mi CURP.",
+     "gloss": "I've come to get my CURP (population ID)."
+    },
+    {
+     "text": "Necesito darme de alta en el SAT.",
+     "gloss": "I need to register with the tax office."
+    },
+    {
+     "text": "¿Dónde me toca en el Seguro?",
+     "gloss": "Where do I go at the social security clinic?"
+    },
+    {
+     "text": "¿Qué documentos necesito?",
+     "gloss": "What documents do I need?"
+    },
+    {
+     "text": "Traigo mi pasaporte y mi comprobante de domicilio.",
+     "gloss": "I have my passport and proof of address."
+    },
+    {
+     "text": "¿Cuánto tarda el trámite?",
+     "gloss": "How long does it take?"
+    }
+   ]
+  },
+  {
+   "id": "tianguis-mx",
+   "region": "MX",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Tianguis y mercado (México)",
+   "note": "Shopping at a street market; usted with vendors.",
+   "phrases": [
+    {
+     "text": "¿Cuánto cuesta el kilo?",
+     "gloss": "How much is a kilo?"
+    },
+    {
+     "text": "¿Me da una bolsa?",
+     "gloss": "Could I have a bag?"
+    },
+    {
+     "text": "¿Tiene cambio?",
+     "gloss": "Do you have change?"
+    },
+    {
+     "text": "¿Aceptan tarjeta?",
+     "gloss": "Do you take cards?"
+    },
+    {
+     "text": "Me lleva dos kilos, por favor.",
+     "gloss": "I'll take two kilos, please."
+    },
+    {
+     "text": "¿Me lo deja en cuarenta?",
+     "gloss": "Can you do it for forty?"
+    }
+   ]
+  },
+  {
+   "id": "salud-mx",
+   "region": "MX",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "En el doctor (México)",
+   "note": "Describing symptoms to a doctor or pharmacist.",
+   "phrases": [
+    {
+     "text": "Me duele la panza.",
+     "gloss": "My stomach hurts."
+    },
+    {
+     "text": "Traigo fiebre.",
+     "gloss": "I have a fever."
+    },
+    {
+     "text": "Soy alérgico a la penicilina.",
+     "gloss": "I'm allergic to penicillin."
+    },
+    {
+     "text": "Me duele la cabeza.",
+     "gloss": "I have a headache."
+    },
+    {
+     "text": "¿Tiene algo para la tos?",
+     "gloss": "Do you have something for a cough?"
+    },
+    {
+     "text": "Me siento muy mal.",
+     "gloss": "I feel really unwell."
+    }
+   ]
+  },
+  {
+   "id": "emergencias-mx",
+   "region": "MX",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Emergencias (México)",
+   "note": "Asking for help in an emergency.",
+   "phrases": [
+    {
+     "text": "Llame al nueve uno uno.",
+     "gloss": "Call 911."
+    },
+    {
+     "text": "Necesito una ambulancia.",
+     "gloss": "I need an ambulance."
+    },
+    {
+     "text": "Hubo un accidente.",
+     "gloss": "There has been an accident."
+    },
+    {
+     "text": "Hay un herido.",
+     "gloss": "Someone is injured."
+    },
+    {
+     "text": "Hay un incendio.",
+     "gloss": "There is a fire."
+    },
+    {
+     "text": "Necesito ayuda, por favor.",
+     "gloss": "I need help, please."
+    }
+   ]
+  },
+  {
+   "id": "cortesia-mx",
+   "region": "MX",
+   "level": "A1",
+   "topic": "Everyday life",
+   "title": "Cortesía diaria (México)",
+   "note": "Everyday polite formulas a chilango uses constantly.",
+   "phrases": [
+    {
+     "text": "Con permiso.",
+     "gloss": "Excuse me (passing by, entering)."
+    },
+    {
+     "text": "Provecho.",
+     "gloss": "Enjoy your meal."
+    },
+    {
+     "text": "Salud.",
+     "gloss": "Bless you (after a sneeze) / cheers."
+    },
+    {
+     "text": "De nada.",
+     "gloss": "You're welcome."
+    },
+    {
+     "text": "No pasa nada.",
+     "gloss": "It's no problem."
+    },
+    {
+     "text": "Mande usted.",
+     "gloss": "Pardon? (polite)"
+    },
+    {
+     "text": "Pásele, por favor.",
+     "gloss": "Come in, please."
+    }
+   ]
+  },
+  {
+   "id": "escuela-mx",
+   "region": "MX",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "La escuela (México)",
+   "note": "School talk for a teacher: roll call, homework, report cards.",
+   "phrases": [
+    {
+     "text": "Voy a pasar lista.",
+     "gloss": "I'm going to take the register."
+    },
+    {
+     "text": "Saquen su tarea.",
+     "gloss": "Take out your homework."
+    },
+    {
+     "text": "¿Hicieron la tarea?",
+     "gloss": "Did you do the homework?"
+    },
+    {
+     "text": "Hay junta de padres el jueves.",
+     "gloss": "There is a parents meeting on Thursday."
+    },
+    {
+     "text": "Ya salieron las boletas.",
+     "gloss": "The report cards are out."
+    },
+    {
+     "text": "Guarden silencio, por favor.",
+     "gloss": "Quiet, please."
+    }
+   ]
+  },
+  {
+   "id": "telefono-mx",
+   "region": "MX",
+   "level": "A2",
+   "topic": "Everyday life",
+   "title": "Teléfono y WhatsApp (México)",
+   "note": "Phone and WhatsApp talk, informal tú.",
+   "phrases": [
+    {
+     "text": "Te mando un WhatsApp.",
+     "gloss": "I'll send you a WhatsApp."
+    },
+    {
+     "text": "¿Me pasas tu número?",
+     "gloss": "Can you give me your number?"
+    },
+    {
+     "text": "Mándame tu ubicación.",
+     "gloss": "Send me your location."
+    },
+    {
+     "text": "Te marco al rato.",
+     "gloss": "I'll call you later."
+    },
+    {
+     "text": "No te oigo bien.",
+     "gloss": "I can't hear you well."
+    },
+    {
+     "text": "Mándame una nota de voz.",
+     "gloss": "Send me a voice note."
+    },
+    {
+     "text": "Se me acabó el saldo.",
+     "gloss": "I've run out of credit."
+    }
+   ]
+  }
  ]
 }

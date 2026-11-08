@@ -85,12 +85,9 @@ struct PracticePage<Controls: View, Content: View>: View {
                             }
                         }
                         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
-                        ProgressStrip()
                         PracticeFeedback(mode: mode, again: { model.startPractice(groups) })
-                        HStack(spacing: 16) { controls() }
+                        HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
                         content()
-        Text("Keyboard: ⌘↩ start · ⌘I IPA · ⌘1–6 pages · ⌥⌘1–6 language · while recording, Space next and ← redo")
-            .font(.callout).foregroundStyle(.secondary)
     }
 
     var body: some View {
@@ -103,9 +100,10 @@ struct PracticePage<Controls: View, Content: View>: View {
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .disabled(!canStart)
                         .help(blocker ?? "Shows each one; you say it aloud, then mouth it. ⌘↩")
-                        .accessibilityHint(blocker ?? "Command Return")
+                        .accessibilityHint(blocker ?? "Shows each one; you say it aloud, then mouth it silently. Command Return.")
                     if let blocker, !motionReady {
                         Button(blocker + " ›") { model.screen = .devices }.buttonStyle(.link).font(.callout)
+                            .accessibilityLabel(blocker + ". Opens Devices.")
                     } else if !groups.isEmpty {
                         Text(cost + "  ·  ⌘↩").font(.callout).foregroundStyle(.secondary)
                     }
@@ -143,10 +141,13 @@ struct ProgressStrip: View {
     @Environment(AppModel.self) private var model
     var body: some View {
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
-        HStack(spacing: 18) {
-            Label(progress.today == 1 ? "1 take today" : "\(progress.today) takes today", systemImage: "checkmark.circle")
-            Label(progress.streak == 1 ? "1-day streak" : "\(progress.streak)-day streak", systemImage: "flame")
-                .foregroundStyle(progress.streak > 0 ? AnyShapeStyle(.orange) : AnyShapeStyle(.secondary))
+        HStack(spacing: 14) {
+            if progress.today > 0 {
+                Label(progress.today == 1 ? "1 try today" : "\(progress.today) tries today", systemImage: "checkmark.circle")
+            }
+            if progress.streak > 0 {
+                Label(progress.streak == 1 ? "1 day in a row" : "\(progress.streak) days in a row", systemImage: "flame").foregroundStyle(.orange)
+            }
         }
         .font(.callout)
         .accessibilityElement(children: .combine)
@@ -220,7 +221,7 @@ struct PracticeFeedback: View {
         if !pairs.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("Last round: " + summary).font(.title3.weight(.semibold))
+                    Text("Last round: " + summary).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
                     Spacer()
                     Button("Done") { model.sentenceTraining.clearPracticeResults() }
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
@@ -229,9 +230,7 @@ struct PracticeFeedback: View {
             }
             .padding(16)
             .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 10))
-            .onChange(of: model.sentenceTraining.lastPracticePairIDs) {
-                AccessibilityNotification.Announcement("Last round: " + summary).post()
-            }
+
         }
     }
 
@@ -274,17 +273,24 @@ struct PracticeLineView: View {
     var showIPA: Bool
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(line.text(language)).font(.title2)
+            Text(Self.spoken(line.text(language), language)).font(.title2)
             if let gloss = line.gloss { Text(gloss).font(.callout).foregroundStyle(.secondary) }
             if let pinyin = line.pinyin { Text(pinyin).font(.title3).foregroundStyle(.secondary) }
             if showIPA {
                 // Large enough that look-alike symbols (ɾ / r, ɡ / g) are told apart; VoiceOver skips it.
-                Text("/" + line.ipa.joined(separator: " ") + "/").font(.ipa(18, relativeTo: .title3)).foregroundStyle(.secondary)
+                Text("/" + line.ipa(language).joined(separator: " ") + "/").font(.ipa(18, relativeTo: .title3)).foregroundStyle(.secondary)
                     .textSelection(.enabled).accessibilityHidden(true)
             }
         }
         .fixedSize(horizontal: false, vertical: true)
         .accessibilityElement(children: .combine)
+    }
+
+    /// Text tagged with its language, so VoiceOver reads French as French, not with an English voice.
+    static func spoken(_ text: String, _ language: AppLanguage) -> AttributedString {
+        var string = AttributedString(text)
+        string.languageIdentifier = language.tag
+        return string
     }
 }
 
@@ -390,13 +396,15 @@ struct LanguagePracticeView: View {
 
     private var drills: [PracticeCorpus.Drill] { model.practice.drills.filter { $0.language == model.language.corpus && model.language.shows(region: $0.region) } }
     private var drill: PracticeCorpus.Drill? { drills.first { $0.id == selection } ?? drills.first }
+    /// Spain-only phrases (vosotros) are left out of Español (México).
+    private var phrases: [PracticeCorpus.Line] { (drill?.phrases ?? []).filter { model.language.shows(region: $0.region) } }
     private var topics: [String] { drills.compactMap(\.topic).reduce(into: []) { if !$0.contains($1) { $0.append($1) } } }
 
     var body: some View {
         let language = model.language
-        PracticePage(title: "Language", subtitle: "Shadowing: see the phrase, hear it, say it aloud, then mouth it.",
+        PracticePage(title: "Language", subtitle: "Listen, say it aloud, then say it again silently, with your lips only.",
                      startTitle: "Start Drill",
-                     groups: drill.map { d in d.phrases.map { [SentencePrompt($0, kind: .drill, language: language)] } } ?? [],
+                     groups: phrases.map { [SentencePrompt($0, kind: .drill, language: language)] },
                      mode: .drill, unit: "phrases") {
             Picker("Drill", selection: Binding(get: { drill?.id }, set: { selection = $0 })) {
                 if topics.isEmpty {
@@ -416,7 +424,7 @@ struct LanguagePracticeView: View {
             if let drill {
                 VStack(alignment: .leading, spacing: 12) {
                     if let note = drill.note(language) { Text(note).foregroundStyle(.secondary) }
-                    ForEach(drill.phrases, id: \.self) { line in
+                    ForEach(phrases, id: \.self) { line in
                         HStack(alignment: .firstTextBaseline) {
                             PracticeLineView(line: line, language: language, showIPA: showIPA)
                             Spacer()
@@ -486,8 +494,7 @@ struct MinimalPairsView: View {
                             }
                         }
                     }
-                    Text("In the round the words come in a shuffled order, so you can't predict the next one. Recorded as targeted data for these sounds.")
-                        .font(.callout).foregroundStyle(.secondary)
+                    Text("The round plays these words in a shuffled order.").font(.callout).foregroundStyle(.secondary)
                 }
             }
         }
@@ -583,7 +590,7 @@ struct SoundsView: View {
     var body: some View {
         let language = model.language
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
-        PracticePage(title: "Sounds", subtitle: "Learn each sound: hear it, see how it's made, then say the example words.",
+        PracticePage(title: "Sounds", subtitle: "Hear each sound, read how the lips and jaw make it, then say the example words.",
                      startTitle: "Start Sounds",
                      groups: sound.map { s in s.examples.map { [SentencePrompt($0, kind: .sound, language: language)] } } ?? [],
                      mode: .sound, unit: "words", scrolls: false) {
@@ -599,10 +606,11 @@ struct SoundsView: View {
                         let tricky = TrickySounds.ipa(practising: language.corpus, speaker: model.nativeLanguage).compactMap { ipa in sounds.first { $0.ipa == ipa } }
                         if !tricky.isEmpty {
                             Text("Start here: tricky for \(LanguageMenu.nativeName(model.nativeLanguage)) speakers").font(.headline).foregroundStyle(.orange)
-                            chips(tricky, progress: progress, language: language)
+                                .accessibilityAddTraits(.isHeader)
+                            chips(tricky, progress: progress, language: language, prefix: "Tricky: ")
                         }
                         ForEach(groups, id: \.self) { group in
-                            Text(group).font(.headline).foregroundStyle(.secondary)
+                            Text(group).font(.headline).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
                             chips(sounds.filter { $0.group == group }, progress: progress, language: language)
                         }
                         Text("Broad IPA. English sounds follow General American.").font(.callout).foregroundStyle(.secondary)
@@ -613,9 +621,12 @@ struct SoundsView: View {
             }
         }
         .onChange(of: model.language) { selection = nil }
+        .onChange(of: selection) {
+            if let sound { AccessibilityNotification.Announcement("Selected \(sound.name). \(sound.guide)").post() }
+        }
     }
 
-    private func chips(_ list: [PracticeCorpus.Sound], progress: PracticeProgress, language: AppLanguage) -> some View {
+    private func chips(_ list: [PracticeCorpus.Sound], progress: PracticeProgress, language: AppLanguage, prefix: String = "") -> some View {
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 76), spacing: 6)], alignment: .leading, spacing: 6) {
                                 ForEach(list) { s in
                                     Button { selection = s.id; Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
@@ -636,7 +647,7 @@ struct SoundsView: View {
                                                     in: RoundedRectangle(cornerRadius: 8))
                                     }
                                     .buttonStyle(.plain)
-                                    .accessibilityLabel("\(s.name), \(s.guide)" + (progress.practised(s, language: language) ? ", practised" : ""))
+                                    .accessibilityLabel(prefix + "\(s.name), \(s.guide)" + (progress.practised(s, language: language) ? ", practised" : ""))
                                     .accessibilityAddTraits(s.id == sound?.id ? .isSelected : [])
                                 }
                             }
@@ -647,7 +658,7 @@ struct SoundsView: View {
             HStack(alignment: .firstTextBaseline, spacing: 16) {
                 Text("/\(s.ipa)/").font(.ipa(56, relativeTo: .largeTitle)).accessibilityLabel("Sound: \(s.name)")
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(s.name).font(.title2.weight(.semibold))
+                    Text(s.name).font(.title2.weight(.semibold)).accessibilityHidden(true)
                     Text(s.guide).foregroundStyle(.secondary)
                 }
             }
@@ -656,7 +667,7 @@ struct SoundsView: View {
             }.controlSize(.large)
             if let tip = s.tip { Label(tip, systemImage: "mouth").font(.body) }
             Divider()
-            Text("Examples").font(.headline)
+            Text("Examples").font(.headline).accessibilityAddTraits(.isHeader)
             ForEach(s.examples, id: \.self) { line in
                 HStack(alignment: .firstTextBaseline) {
                     PracticeLineView(line: line, language: language, showIPA: showIPA)

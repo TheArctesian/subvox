@@ -61,15 +61,16 @@ def _characters(text):
 
 def check(text, language, whisper_text, phone_intervals=None):
     """phone_intervals: [{'phone': IPA, 'start': s, 'end': s}] from MFA or a phone recogniser, or None."""
+    accent = ipa.accent_of(language)
     language = ipa.validate_language_tag(language)
-    expected = ipa.phones(text, language)
+    expected = ipa.phones(text, language, accent)
     if phone_intervals:
         unknown = sorted({p["phone"] for p in phone_intervals} - set(ipa.INVENTORY))
         if unknown:
             raise ValueError(f"Phone intervals use symbols outside the shared inventory: {unknown}")
         produced, source = [p["phone"] for p in phone_intervals], "phone-intervals"
     else:
-        produced, source = ipa.phones(whisper_text, language), "whisper-words"
+        produced, source = ipa.phones(whisper_text, language, accent), "whisper-words"
     if language == "zh":
         e, h = _characters(text), _characters(whisper_text)
         agreement = sum(op == "match" for op, _, _ in align(e, h)) / max(len(e), len(h), 1)

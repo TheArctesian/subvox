@@ -470,7 +470,7 @@ def main():
     if args.command=="phones":
         from . import ipa
         language=ipa.validate_language_tag(args.language)
-        result=dict(language=language,words=ipa.phonemize(args.text,language))
+        result=dict(language=language,words=ipa.phonemize(args.text,language,ipa.accent_of(args.language)))
         if language=="zh":
             result["syllables"]=ipa.mandarin_syllables(args.text)
             result["pinyin"]=ipa.pinyin_marks(args.text)

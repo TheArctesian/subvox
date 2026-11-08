@@ -50,8 +50,10 @@ struct SimpleTrainingView: View {
         VStack(alignment: .leading, spacing: 10) {
             row(ok: motionReady, title: motionReady ? "AirPods motion is coming through" : model.motion.statusText,
                 hint: motionReady ? nil : airpodsHint)
-            row(ok: cameraAllowed, title: cameraAllowed ? "The camera can read lip shape" : "Camera access is needed to record",
-                hint: cameraAllowed ? nil : "macOS asks the first time you record. If you said no, allow Subvox in System Settings › Privacy & Security › Camera.")
+            if !cameraAllowed {
+                row(ok: false, title: "Camera access is needed to record",
+                    hint: "Allow Subvox in System Settings › Privacy & Security › Camera.")
+            }
             PrivacySummary()
         }
     }
@@ -98,19 +100,23 @@ struct SimpleTrainingView: View {
     }
 }
 
-/// What a recording saves, where, and what leaves the Mac, shown before the first take.
+/// What a recording saves, where, and what leaves the Mac: one line, with the details a click away.
 struct PrivacySummary: View {
+    @State private var details = false
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Label("What's saved, and where", systemImage: "lock.shield").font(.headline)
-            Text("On this Mac: your voice as audio, AirPods head motion, and numeric lip and jaw points from the camera. Never video or photos.")
-            Text("Speech recognition runs on this Mac. Nothing leaves it unless you press Send in Share Recordings, and audio is never shared.")
-            HStack {
-                Text(SentenceStore.directory.path).font(.callout.monospaced()).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
-                Button("Show in Finder") { NSWorkspace.shared.activateFileViewerSelecting([SentenceStore.directory]) }
-            }
+        HStack(spacing: 8) {
+            Label("Everything stays on this Mac. Never video or photos.", systemImage: "lock.shield").font(.callout)
+            Button("Details") { details.toggle() }.buttonStyle(.link)
+                .popover(isPresented: $details) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("What's saved, and where").font(.headline)
+                        Text("On this Mac: your voice as audio, AirPods head motion, and numeric lip and jaw points from the camera. Never video or photos.")
+                        Text("Speech recognition runs on this Mac. Nothing leaves it unless you press Send in Share Recordings, and audio is never shared.")
+                        Text(SentenceStore.directory.path).font(.callout.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
+                        Button("Show in Finder") { NSWorkspace.shared.activateFileViewerSelecting([SentenceStore.directory]) }
+                    }
+                    .padding(16).frame(width: 380).fixedSize(horizontal: false, vertical: true)
+                }
         }
-        .font(.callout).fixedSize(horizontal: false, vertical: true)
-        .padding(12).background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
     }
 }

@@ -249,7 +249,9 @@ struct SentenceTrainingView: View {
                 if workflow.captureCameraPoints {CameraPoseGuide(camera:workflow.camera,compact:true,allowsMovement:true).frame(height:70).padding(.horizontal,12)}
                 RecordingPromptPanel(color:color) {
                     VStack(spacing:18) {
+                        // The countdown changes every 50 ms; VoiceOver gets the phase, not a stream of numbers.
                         RecordingCueStatus(timer: cueTimer, title: status, color: color)
+                            .accessibilityElement(children: .ignore).accessibilityLabel(status)
                         if let passage = workflow.currentPassageLabel {
                             Text(passage).font(.callout.italic()).foregroundStyle(.secondary)
                         }
