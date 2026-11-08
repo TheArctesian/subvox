@@ -183,6 +183,8 @@ def both(value):
 # More pieces (Tools/corpus/pieces/*.json): each with source URL and a public-domain portrait.
 PIECE_FILES = sorted((ROOT / "Tools" / "corpus" / "pieces").glob("*.json"))
 SOUNDS = ROOT / "Tools" / "corpus" / "sounds.json"
+# Guides for learners whose own language isn't English: {speaker: {practised language: {ipa: {name, guide, tip}}}}.
+LOCAL_SOUNDS = sorted((ROOT / "Tools" / "corpus" / "sounds-local").glob("*.json"))
 
 
 def readable(line, limit=18):
@@ -221,6 +223,12 @@ def load_sounds():
     if not SOUNDS.exists():
         return {}, []
     out, problems = {}, []
+    local = {}
+    for path in LOCAL_SOUNDS:
+        for speaker, targets in json.loads(path.read_text()).items():
+            for target, guides in targets.items():
+                for symbol, guide in guides.items():
+                    local.setdefault((target, symbol), {})[speaker] = guide
     for language, items in json.loads(SOUNDS.read_text()).items():
         for item in items:
             examples = []
@@ -236,7 +244,8 @@ def load_sounds():
                     if item["ipa"] not in [ph for word in ipa.phonemize(ex["text"], language) for ph in word]:
                         problems.append(f"{language} {item['ipa']}: example {ex['text']!r} has /{' '.join(ex['ipa'])}/")
             out.setdefault(language, []).append(dict(ipa=item["ipa"], group=item["group"], name=item["name"], guide=item["guide"],
-                                                     tip=item.get("tip"), say=item["say"], examples=examples))
+                                                     tip=item.get("tip"), say=item["say"], examples=examples,
+                                                     local=local.get((language, item["ipa"]))))
     return out, problems
 
 

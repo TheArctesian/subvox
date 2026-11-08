@@ -21991,7 +21991,29 @@
        "izi"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "i larga",
+      "guide": "como la i española, pero más larga y tensa: 'eat' no es 'it'",
+      "tip": "labios estirados en sonrisa, mandíbula casi cerrada"
+     },
+     "fr": {
+      "name": "i long",
+      "guide": "comme le i français, mais plus long et tendu ('eat' n'est pas 'it')",
+      "tip": "lèvres étirées en sourire, mâchoire presque fermée"
+     },
+     "zh-Hans": {
+      "name": "长 i",
+      "guide": "像“衣 yī”，但更长更紧",
+      "tip": "嘴角向两侧拉开，舌尖抵下牙"
+     },
+     "zh-Hant": {
+      "name": "長 i",
+      "guide": "像“衣”，但更長更緊",
+      "tip": "嘴角向兩側拉開，舌尖抵下牙"
+     }
+    }
    },
    {
     "ipa": "ɪ",
@@ -22019,7 +22041,29 @@
        "fɪʃ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "i corta",
+      "guide": "como la i española pero más corta y relajada; no digas 'i'; nuevo para hispanohablantes",
+      "tip": "labios relajados, mandíbula algo más abierta que para la i"
+     },
+     "fr": {
+      "name": "i bref",
+      "guide": "entre i et é, bref et relâché; pas un i français; absent du français",
+      "tip": "lèvres détendues, mâchoire un peu plus ouverte que pour i"
+     },
+     "zh-Hans": {
+      "name": "短 i",
+      "guide": "比“衣 yī”短而松，近轻读的“一”",
+      "tip": "嘴角放松，下巴微开"
+     },
+     "zh-Hant": {
+      "name": "短 i",
+      "guide": "比“衣”短而鬆，近輕讀的“一”",
+      "tip": "嘴角放鬆，下巴微開"
+     }
+    }
    },
    {
     "ipa": "ɛ",
@@ -22047,7 +22091,29 @@
        "bɛd"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "e abierta",
+      "guide": "como la e española, un poco más abierta y baja ('bed')",
+      "tip": "mandíbula algo más abierta que en español, labios neutros"
+     },
+     "fr": {
+      "name": "è",
+      "guide": "comme le è de 'père', un peu plus ouvert",
+      "tip": "mâchoire mi-ouverte, lèvres neutres"
+     },
+     "zh-Hans": {
+      "name": "短 e",
+      "guide": "像“欸 ê”，短促",
+      "tip": "嘴半张，下巴略降，唇不圆"
+     },
+     "zh-Hant": {
+      "name": "短 e",
+      "guide": "像“欸”，短促",
+      "tip": "嘴半張，下巴略降，唇不圓"
+     }
+    }
    },
    {
     "ipa": "æ",
@@ -22075,7 +22141,29 @@
        "hænd"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "a-e abierta",
+      "guide": "entre a y e españolas, muy abierta; nuevo para hispanohablantes",
+      "tip": "mandíbula bien baja, labios estirados a los lados"
+     },
+     "fr": {
+      "name": "a ouvert",
+      "guide": "entre a et è, très ouvert; absent du français",
+      "tip": "mâchoire bien basse, lèvres étirées sur les côtés"
+     },
+     "zh-Hans": {
+      "name": "扁 a",
+      "guide": "介于“欸 ê”和“啊 a”之间",
+      "tip": "嘴张大，嘴角向两侧拉"
+     },
+     "zh-Hant": {
+      "name": "扁 a",
+      "guide": "介於“欸”和“啊”之間",
+      "tip": "嘴張大，嘴角向兩側拉"
+     }
+    }
    },
    {
     "ipa": "ɑ",
@@ -22103,7 +22191,29 @@
        "spɑ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "a profunda",
+      "guide": "como la a española pero más atrás y larga, como en 'ah'",
+      "tip": "boca abierta y relajada, lengua baja y atrás"
+     },
+     "fr": {
+      "name": "a profond",
+      "guide": "comme le â de 'pâte', plus long et en arrière",
+      "tip": "bouche ouverte et détendue, langue basse et reculée"
+     },
+     "zh-Hans": {
+      "name": "开 a",
+      "guide": "像“啊 a”，嘴张得更大",
+      "tip": "下巴降到最低，唇不圆"
+     },
+     "zh-Hant": {
+      "name": "開 a",
+      "guide": "像“啊”，嘴張得更大",
+      "tip": "下巴降到最低，唇不圓"
+     }
+    }
    },
    {
     "ipa": "ɔ",
@@ -22131,7 +22241,29 @@
        "tɔk"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "o abierta larga",
+      "guide": "como la o española, más abierta y larga, casi 'oa'; nuevo para hispanohablantes",
+      "tip": "mandíbula caída y labios algo redondeados"
+     },
+     "fr": {
+      "name": "o ouvert long",
+      "guide": "comme le o de 'porte', mais plus long, presque 'oa'",
+      "tip": "mâchoire tombante, lèvres peu arrondies"
+     },
+     "zh-Hans": {
+      "name": "圆 o",
+      "guide": "像“哦 ō”，但嘴张更大",
+      "tip": "下巴下降，嘴唇微圆"
+     },
+     "zh-Hant": {
+      "name": "圓 o",
+      "guide": "像“哦”，但嘴張更大",
+      "tip": "下巴下降，嘴唇微圓"
+     }
+    }
    },
    {
     "ipa": "ʌ",
@@ -22159,7 +22291,29 @@
        "lʌv"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "a neutra corta",
+      "guide": "entre a y o, corta y relajada ('cup'); nuevo para hispanohablantes",
+      "tip": "boca medio abierta, labios relajados sin redondear"
+     },
+     "fr": {
+      "name": "a neutre bref",
+      "guide": "entre a et eu, bref et détendu ('cup'); absent du français",
+      "tip": "bouche mi-ouverte, lèvres détendues et non arrondies"
+     },
+     "zh-Hans": {
+      "name": "短 a",
+      "guide": "像轻声的“啊 a”，短而放松",
+      "tip": "嘴半开，唇放松不圆"
+     },
+     "zh-Hant": {
+      "name": "短 a",
+      "guide": "像輕聲的“啊”，短而放鬆",
+      "tip": "嘴半開，唇放鬆不圓"
+     }
+    }
    },
    {
     "ipa": "ʊ",
@@ -22187,7 +22341,29 @@
        "fʊt"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "u corta",
+      "guide": "como una u española más corta y relajada; nuevo para hispanohablantes",
+      "tip": "labios apenas redondeados, sin proyectarlos hacia delante"
+     },
+     "fr": {
+      "name": "ou bref",
+      "guide": "comme un ou français plus court et relâché; absent du français",
+      "tip": "lèvres à peine arrondies, sans les avancer"
+     },
+     "zh-Hans": {
+      "name": "短 u",
+      "guide": "比“乌 wū”松而短",
+      "tip": "双唇微圆，不要用力"
+     },
+     "zh-Hant": {
+      "name": "短 u",
+      "guide": "比“烏”鬆而短",
+      "tip": "雙唇微圓，不要用力"
+     }
+    }
    },
    {
     "ipa": "u",
@@ -22215,7 +22391,29 @@
        "blu"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "u larga",
+      "guide": "como la u española pero más larga, con labios muy redondeados",
+      "tip": "labios en círculo pequeño, mandíbula casi cerrada"
+     },
+     "fr": {
+      "name": "ou long",
+      "guide": "comme le ou français, plus long, lèvres très arrondies",
+      "tip": "lèvres en petit cercle, mâchoire presque fermée"
+     },
+     "zh-Hans": {
+      "name": "长 u",
+      "guide": "像“乌 wū”，但更长",
+      "tip": "双唇收圆前突，下巴小开"
+     },
+     "zh-Hant": {
+      "name": "長 u",
+      "guide": "像“烏”，但更長",
+      "tip": "雙唇收圓前突，下巴小開"
+     }
+    }
    },
    {
     "ipa": "ə",
@@ -22243,7 +22441,29 @@
        "soʊfə"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "schwa",
+      "guide": "e muy breve y relajada, sin color; nuevo para hispanohablantes",
+      "tip": "mandíbula y labios totalmente relajados, a medio camino"
+     },
+     "fr": {
+      "name": "schwa",
+      "guide": "comme le e muet, mais sans arrondir les lèvres",
+      "tip": "mâchoire et lèvres totalement détendues"
+     },
+     "zh-Hans": {
+      "name": "轻 e",
+      "guide": "像“的 de”里的轻声 e",
+      "tip": "口腔全放松，又短又轻"
+     },
+     "zh-Hant": {
+      "name": "輕 e",
+      "guide": "像“的”裡的輕聲 e",
+      "tip": "口腔全放鬆，又短又輕"
+     }
+    }
    },
    {
     "ipa": "ɚ",
@@ -22271,7 +22491,29 @@
        "wɔtɚ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "er débil",
+      "guide": "una e átona con la r inglesa a la vez; nuevo para hispanohablantes",
+      "tip": "lengua curvada hacia atrás sin tocar, labios algo redondeados"
+     },
+     "fr": {
+      "name": "er faible",
+      "guide": "un e bref avec le r anglais en même temps; absent du français",
+      "tip": "langue recourbée sans toucher, lèvres un peu arrondies"
+     },
+     "zh-Hans": {
+      "name": "弱 er",
+      "guide": "像“儿 ér”，更轻更短",
+      "tip": "舌尖微卷不碰上颚，唇放松"
+     },
+     "zh-Hant": {
+      "name": "弱 er",
+      "guide": "像“兒”，更輕更短",
+      "tip": "舌尖微捲不碰上顎，唇放鬆"
+     }
+    }
    },
    {
     "ipa": "ɝ",
@@ -22299,7 +22541,29 @@
        "ɡɝl"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "er acentuada",
+      "guide": "vocal larga con la r inglesa incluida, no 'er' española; nuevo para hispanohablantes",
+      "tip": "lengua curvada hacia atrás sin tocar, labios algo redondeados"
+     },
+     "fr": {
+      "name": "er accentué",
+      "guide": "voyelle longue colorée par le r anglais, sans r français; absent du français",
+      "tip": "langue recourbée sans toucher, lèvres un peu arrondies"
+     },
+     "zh-Hans": {
+      "name": "重 er",
+      "guide": "像“儿 ér”，拉长并重读",
+      "tip": "舌头后缩卷起，唇微圆"
+     },
+     "zh-Hant": {
+      "name": "重 er",
+      "guide": "像“兒”，拉長並重讀",
+      "tip": "舌頭後縮捲起，唇微圓"
+     }
+    }
    },
    {
     "ipa": "aɪ",
@@ -22327,7 +22591,29 @@
        "taɪm"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ai",
+      "guide": "como 'ai' español (aire), pero con a más abierta y larga y salida relajada",
+      "tip": "mandíbula baja que sube al final, sin cerrar del todo"
+     },
+     "fr": {
+      "name": "aï",
+      "guide": "comme 'aï' de 'maïs', avec a plus ouvert et glissé vers un i relâché",
+      "tip": "mâchoire basse qui remonte à la fin, sans fermer"
+     },
+     "zh-Hans": {
+      "name": "爱",
+      "guide": "像“爱 ài”，尾音更轻",
+      "tip": "下巴由大张滑向半合"
+     },
+     "zh-Hant": {
+      "name": "愛",
+      "guide": "像“愛”，尾音更輕",
+      "tip": "下巴由大張滑向半合"
+     }
+    }
    },
    {
     "ipa": "aʊ",
@@ -22355,7 +22641,29 @@
        "haʊs"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "au",
+      "guide": "como 'au' español (causa), con a más abierta y salida a una u relajada",
+      "tip": "mandíbula baja y labios que se redondean al final"
+     },
+     "fr": {
+      "name": "aou",
+      "guide": "a ouvert qui glisse vers un ou bref; absent du français",
+      "tip": "mâchoire basse, lèvres qui s'arrondissent à la fin"
+     },
+     "zh-Hans": {
+      "name": "奥",
+      "guide": "像“奥 ào”，结尾收圆",
+      "tip": "下巴上提，双唇渐渐收圆"
+     },
+     "zh-Hant": {
+      "name": "奧",
+      "guide": "像“奧”，結尾收圓",
+      "tip": "下巴上提，雙唇漸漸收圓"
+     }
+    }
    },
    {
     "ipa": "eɪ",
@@ -22383,7 +22691,29 @@
        "meɪk"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ei",
+      "guide": "como 'ei' español (peine), pero con e larga que se desliza hacia i",
+      "tip": "mandíbula media que sube, labios se estiran al final"
+     },
+     "fr": {
+      "name": "éï",
+      "guide": "é long qui glisse vers i; en français é reste pur; absent du français",
+      "tip": "mâchoire mi-fermée qui monte, lèvres s'étirent à la fin"
+     },
+     "zh-Hans": {
+      "name": "诶",
+      "guide": "像“诶 èi”，起音更长",
+      "tip": "嘴形由半张滑向微笑状"
+     },
+     "zh-Hant": {
+      "name": "誒",
+      "guide": "像“誒”，起音更長",
+      "tip": "嘴形由半張滑向微笑狀"
+     }
+    }
    },
    {
     "ipa": "oʊ",
@@ -22411,7 +22741,29 @@
        "noʊ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ou",
+      "guide": "como la o española pero deslizando a u; no la dejes pura",
+      "tip": "labios redondeados que se cierran más al final"
+     },
+     "fr": {
+      "name": "oou",
+      "guide": "o long qui glisse vers ou; ne le garde pas pur comme en français; absent du français",
+      "tip": "lèvres arrondies qui se ferment davantage à la fin"
+     },
+     "zh-Hans": {
+      "name": "欧",
+      "guide": "像“欧 ōu”，滑动更明显",
+      "tip": "唇由半圆滑到收圆前突"
+     },
+     "zh-Hant": {
+      "name": "歐",
+      "guide": "像“歐”，滑動更明顯",
+      "tip": "唇由半圓滑到收圓前突"
+     }
+    }
    },
    {
     "ipa": "ɔɪ",
@@ -22439,7 +22791,29 @@
        "kɔɪn"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "oi",
+      "guide": "como 'oi' español (hoy), con la o más abierta y larga",
+      "tip": "labios redondeados que se estiran hacia la i"
+     },
+     "fr": {
+      "name": "oï",
+      "guide": "o ouvert qui glisse vers i, comme 'oy' de 'boycott'",
+      "tip": "lèvres arrondies qui s'étirent vers le i"
+     },
+     "zh-Hans": {
+      "name": "哦衣",
+      "guide": "像“哦 ō”加“衣 yī”连读",
+      "tip": "唇由圆滑到扁，下巴上提"
+     },
+     "zh-Hant": {
+      "name": "哦衣",
+      "guide": "像“哦”加“衣”連讀",
+      "tip": "唇由圓滑到扁，下巴上提"
+     }
+    }
    },
    {
     "ipa": "p",
@@ -22467,7 +22841,29 @@
        "peɪpɚ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "p con soplo",
+      "guide": "como la p española, pero con soplo de aire al inicio de sílaba tónica",
+      "tip": "labios cerrados y se sueltan con bocanada; prueba con un papel"
+     },
+     "fr": {
+      "name": "p aspiré",
+      "guide": "comme le p français, avec un souffle d'air en début de syllabe accentuée",
+      "tip": "lèvres closes qui s'ouvrent en jet d'air; test : feuille de papier"
+     },
+     "zh-Hans": {
+      "name": "送气 p",
+      "guide": "像“怕 pà”的 p，要送气",
+      "tip": "双唇闭合再爆开，手心感到气"
+     },
+     "zh-Hant": {
+      "name": "送氣 p",
+      "guide": "像“怕”的 p，要送氣",
+      "tip": "雙唇閉合再爆開，手心感到氣"
+     }
+    }
    },
    {
     "ipa": "b",
@@ -22495,7 +22891,29 @@
        "beɪbi"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "b",
+      "guide": "como la b española de 'bien'; entre vocales no la suavices",
+      "tip": "labios cerrados y la voz suena desde el inicio"
+     },
+     "fr": {
+      "name": "b",
+      "guide": "comme le b français; la voix démarre dès l'ouverture des lèvres",
+      "tip": "lèvres closes, voix dès le début"
+     },
+     "zh-Hans": {
+      "name": "浊 b",
+      "guide": "像“爸 bà”，但声带要振动（普通话里没有）",
+      "tip": "双唇闭合，喉咙同时发声"
+     },
+     "zh-Hant": {
+      "name": "濁 b",
+      "guide": "像“爸”，但聲帶要振動（國語裡沒有）",
+      "tip": "雙唇閉合，喉嚨同時發聲"
+     }
+    }
    },
    {
     "ipa": "t",
@@ -22523,7 +22941,29 @@
        "tu"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "t con soplo",
+      "guide": "como la t española, pero con la lengua en el alvéolo y con soplo de aire",
+      "tip": "punta de la lengua en la encía tras los dientes; suelta aire"
+     },
+     "fr": {
+      "name": "t aspiré",
+      "guide": "comme le t français, mais langue sur les alvéoles, avec souffle",
+      "tip": "pointe de la langue sur la gencive derrière les dents; souffle"
+     },
+     "zh-Hans": {
+      "name": "送气 t",
+      "guide": "像“他 tā”的 t，要送气",
+      "tip": "舌尖抵上齿龈，爆开送气"
+     },
+     "zh-Hant": {
+      "name": "送氣 t",
+      "guide": "像“他”的 t，要送氣",
+      "tip": "舌尖抵上齒齦，爆開送氣"
+     }
+    }
    },
    {
     "ipa": "d",
@@ -22551,7 +22991,29 @@
        "du"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "d",
+      "guide": "como la d española de 'donde', con la lengua en el alvéolo; no la suavices",
+      "tip": "punta de la lengua en la encía, sin hacerse fricativa"
+     },
+     "fr": {
+      "name": "d",
+      "guide": "comme le d français, mais langue sur les alvéoles, pas sur les dents",
+      "tip": "pointe de la langue sur la gencive, avec voix"
+     },
+     "zh-Hans": {
+      "name": "浊 d",
+      "guide": "像“大 dà”，但声带要振动（普通话里没有）",
+      "tip": "舌尖抵上齿龈，喉咙发声"
+     },
+     "zh-Hant": {
+      "name": "濁 d",
+      "guide": "像“大”，但聲帶要振動（國語裡沒有）",
+      "tip": "舌尖抵上齒齦，喉嚨發聲"
+     }
+    }
    },
    {
     "ipa": "k",
@@ -22579,7 +23041,29 @@
        "kɑɹ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "k con soplo",
+      "guide": "como la k/c española, pero con soplo de aire al inicio de sílaba tónica",
+      "tip": "parte trasera de la lengua toca el velo y se suelta con aire"
+     },
+     "fr": {
+      "name": "k aspiré",
+      "guide": "comme le k français, avec souffle d'air en début de syllabe accentuée",
+      "tip": "arrière de la langue contre le voile, relâché avec souffle"
+     },
+     "zh-Hans": {
+      "name": "送气 k",
+      "guide": "像“卡 kǎ”的 k，要送气",
+      "tip": "舌根抵软腭，爆开送气"
+     },
+     "zh-Hant": {
+      "name": "送氣 k",
+      "guide": "像“卡”的 k，要送氣",
+      "tip": "舌根抵軟齶，爆開送氣"
+     }
+    }
    },
    {
     "ipa": "ɡ",
@@ -22607,7 +23091,29 @@
        "ɡɪv"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "g",
+      "guide": "como la g española de 'gato', pero sin suavizarse entre vocales",
+      "tip": "parte trasera de la lengua cierra del todo; voz desde el inicio"
+     },
+     "fr": {
+      "name": "g",
+      "guide": "comme le g de 'gare'",
+      "tip": "arrière de la langue ferme le passage, avec voix"
+     },
+     "zh-Hans": {
+      "name": "浊 g",
+      "guide": "像“嘎 gā”，但声带要振动（普通话里没有）",
+      "tip": "舌根抵软腭，喉咙发声"
+     },
+     "zh-Hant": {
+      "name": "濁 g",
+      "guide": "像“嘎”，但聲帶要振動（國語裡沒有）",
+      "tip": "舌根抵軟齶，喉嚨發聲"
+     }
+    }
    },
    {
     "ipa": "f",
@@ -22635,7 +23141,29 @@
        "fud"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "f",
+      "guide": "igual que la f española",
+      "tip": "dientes superiores sobre el labio inferior"
+     },
+     "fr": {
+      "name": "f",
+      "guide": "comme le f français",
+      "tip": "dents du haut sur la lèvre du bas"
+     },
+     "zh-Hans": {
+      "name": "f",
+      "guide": "像“发 fā”的 f",
+      "tip": "上齿轻碰下唇，送气"
+     },
+     "zh-Hant": {
+      "name": "f",
+      "guide": "像“發”的 f",
+      "tip": "上齒輕碰下唇，送氣"
+     }
+    }
    },
    {
     "ipa": "v",
@@ -22663,7 +23191,29 @@
        "vɔɪs"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "v",
+      "guide": "como la f pero con voz; no es la b española; nuevo para hispanohablantes",
+      "tip": "dientes superiores tocan el labio inferior y vibra; labios no se cierran"
+     },
+     "fr": {
+      "name": "v",
+      "guide": "comme le v français",
+      "tip": "dents du haut sur la lèvre du bas, avec voix"
+     },
+     "zh-Hans": {
+      "name": "v",
+      "guide": "像 f 加声带振动，不是“屋 wū”（普通话里没有）",
+      "tip": "上齿轻碰下唇，喉咙振动"
+     },
+     "zh-Hant": {
+      "name": "v",
+      "guide": "像 f 加聲帶振動，不是“屋”（國語裡沒有）",
+      "tip": "上齒輕碰下唇，喉嚨振動"
+     }
+    }
    },
    {
     "ipa": "θ",
@@ -22691,7 +23241,29 @@
        "θæŋk"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "th sorda",
+      "guide": "como la z de España ('zapato'); nuevo para hispanohablantes de América",
+      "tip": "punta de la lengua entre los dientes, soplando aire sin voz"
+     },
+     "fr": {
+      "name": "th sourd",
+      "guide": "un f ou s avec la langue entre les dents; ni 's' ni 'f'; absent du français",
+      "tip": "pointe de la langue entre les dents, souffle sans voix"
+     },
+     "zh-Hans": {
+      "name": "咬舌清 th",
+      "guide": "舌尖轻放在上下牙之间吹气（普通话里没有）",
+      "tip": "舌尖微伸出，气流从舌缝吹出"
+     },
+     "zh-Hant": {
+      "name": "咬舌清 th",
+      "guide": "舌尖輕放在上下牙之間吹氣（國語裡沒有）",
+      "tip": "舌尖微伸出，氣流從舌縫吹出"
+     }
+    }
    },
    {
     "ipa": "ð",
@@ -22719,7 +23291,29 @@
        "ðæt"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "th sonora",
+      "guide": "como la d suave de 'nada', con la lengua más fuera y también al inicio",
+      "tip": "punta de la lengua entre los dientes y la voz vibrando"
+     },
+     "fr": {
+      "name": "th sonore",
+      "guide": "comme th sourd mais avec la voix; ni 'z' ni 'd'; absent du français",
+      "tip": "pointe de la langue entre les dents, voix qui vibre"
+     },
+     "zh-Hans": {
+      "name": "咬舌浊 th",
+      "guide": "舌位同 th，但声带振动（普通话里没有）",
+      "tip": "舌尖轻抵上齿，喉咙振动"
+     },
+     "zh-Hant": {
+      "name": "咬舌濁 th",
+      "guide": "舌位同 th，但聲帶振動（國語裡沒有）",
+      "tip": "舌尖輕抵上齒，喉嚨振動"
+     }
+    }
    },
    {
     "ipa": "s",
@@ -22747,7 +23341,29 @@
        "seɪ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "s",
+      "guide": "como la s española; no añadas una e delante en 'school' ni 'street'",
+      "tip": "dientes casi juntos, aire silbante por el centro de la lengua"
+     },
+     "fr": {
+      "name": "s",
+      "guide": "comme le s de 'sac'; reste sourd, même entre voyelles ('base')",
+      "tip": "dents presque jointes, air qui siffle au centre de la langue"
+     },
+     "zh-Hans": {
+      "name": "s",
+      "guide": "像“思 sī”的 s",
+      "tip": "舌尖靠近上齿龈，牙微合"
+     },
+     "zh-Hant": {
+      "name": "s",
+      "guide": "像“思”的 s",
+      "tip": "舌尖靠近上齒齦，牙微合"
+     }
+    }
    },
    {
     "ipa": "z",
@@ -22775,7 +23391,29 @@
        "zɪp"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "z sonora",
+      "guide": "como la s sonora de 'mismo', siempre; nuevo para hispanohablantes",
+      "tip": "igual que la s pero con la garganta vibrando; mano en el cuello"
+     },
+     "fr": {
+      "name": "z",
+      "guide": "comme le z français; en fin de mot, 'is' se dit avec z, pas s",
+      "tip": "comme s mais avec la gorge qui vibre; main sur la gorge"
+     },
+     "zh-Hans": {
+      "name": "z",
+      "guide": "像 s 加声带振动，不是“资 zī”（普通话里没有）",
+      "tip": "牙微合，舌尖近上齿龈，喉咙振动"
+     },
+     "zh-Hant": {
+      "name": "z",
+      "guide": "像 s 加聲帶振動，不是“資”（國語裡沒有）",
+      "tip": "牙微合，舌尖近上齒齦，喉嚨振動"
+     }
+    }
    },
    {
     "ipa": "ʃ",
@@ -22803,7 +23441,29 @@
        "ʃu"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "sh",
+      "guide": "como 'chsss' para pedir silencio, sin t inicial; nuevo para hispanohablantes",
+      "tip": "labios algo redondeados y adelantados, aire continuo"
+     },
+     "fr": {
+      "name": "sh",
+      "guide": "comme le ch de 'chat', lèvres un peu plus avancées",
+      "tip": "lèvres arrondies et avancées, air continu"
+     },
+     "zh-Hans": {
+      "name": "sh",
+      "guide": "像“诗 shī”，但唇更圆，舌不卷",
+      "tip": "双唇前突微圆，舌尖不卷"
+     },
+     "zh-Hant": {
+      "name": "sh",
+      "guide": "像“詩”，但唇更圓，舌不捲",
+      "tip": "雙唇前突微圓，舌尖不捲"
+     }
+    }
    },
    {
     "ipa": "ʒ",
@@ -22831,7 +23491,29 @@
        "beɪʒ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "zh",
+      "guide": "como 'sh' pero con voz; parecida a la ll rioplatense; nuevo para hispanohablantes",
+      "tip": "labios algo redondeados, garganta vibrando, aire continuo"
+     },
+     "fr": {
+      "name": "zh",
+      "guide": "comme le j français de 'je'",
+      "tip": "lèvres arrondies et avancées, voix qui vibre"
+     },
+     "zh-Hans": {
+      "name": "浊 sh",
+      "guide": "像 sh 加声带振动，舌不卷（普通话里没有）",
+      "tip": "双唇前突微圆，喉咙振动"
+     },
+     "zh-Hant": {
+      "name": "濁 sh",
+      "guide": "像 sh 加聲帶振動，舌不捲（國語裡沒有）",
+      "tip": "雙唇前突微圓，喉嚨振動"
+     }
+    }
    },
    {
     "ipa": "h",
@@ -22859,7 +23541,29 @@
        "hoʊm"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "h aspirada",
+      "guide": "como una j española muy suave, solo un soplo; nuevo para hispanohablantes",
+      "tip": "boca ya en posición de la vocal; el aire sale de la garganta"
+     },
+     "fr": {
+      "name": "h aspiré",
+      "guide": "simple souffle expiré, comme un soupir; absent du français",
+      "tip": "bouche déjà prête pour la voyelle; l'air sort de la gorge"
+     },
+     "zh-Hans": {
+      "name": "h",
+      "guide": "像“哈 hā”的 h，但更轻",
+      "tip": "嘴微张，气从喉咙轻轻呼出"
+     },
+     "zh-Hant": {
+      "name": "h",
+      "guide": "像“哈”的 h，但更輕",
+      "tip": "嘴微張，氣從喉嚨輕輕呼出"
+     }
+    }
    },
    {
     "ipa": "tʃ",
@@ -22887,7 +23591,29 @@
        "tʃiz"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ch",
+      "guide": "como la ch española, algo más fuerte",
+      "tip": "punta de la lengua toca la encía y se suelta en 'sh'; labios adelantados"
+     },
+     "fr": {
+      "name": "ch",
+      "guide": "comme le 'tch' de 'tchao', t et ch soudés",
+      "tip": "pointe de la langue touche la gencive, se relâche en 'ch'"
+     },
+     "zh-Hans": {
+      "name": "ch",
+      "guide": "像“吃 chī”，但舌不卷，唇微圆",
+      "tip": "双唇微圆，舌尖不卷，爆开送气"
+     },
+     "zh-Hant": {
+      "name": "ch",
+      "guide": "像“吃”，但舌不捲，唇微圓",
+      "tip": "雙唇微圓，舌尖不捲，爆開送氣"
+     }
+    }
    },
    {
     "ipa": "dʒ",
@@ -22915,7 +23641,29 @@
        "dʒɛntəl"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "j inglesa",
+      "guide": "como ch pero con voz; parecida a la y rioplatense fuerte; nuevo para hispanohablantes",
+      "tip": "lengua toca la encía y se suelta en 'zh'; labios algo redondeados"
+     },
+     "fr": {
+      "name": "j anglais",
+      "guide": "d et j français soudés, comme 'dj' de 'djembé'",
+      "tip": "langue touche la gencive, se relâche en 'j'; lèvres arrondies"
+     },
+     "zh-Hans": {
+      "name": "j",
+      "guide": "像 ch 加声带振动，舌不卷（普通话里没有）",
+      "tip": "双唇微圆，舌不卷，喉咙发声"
+     },
+     "zh-Hant": {
+      "name": "j",
+      "guide": "像 ch 加聲帶振動，舌不捲（國語裡沒有）",
+      "tip": "雙唇微圓，舌不捲，喉嚨發聲"
+     }
+    }
    },
    {
     "ipa": "m",
@@ -22943,7 +23691,29 @@
        "mɑm"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "m",
+      "guide": "igual que la m española; al final de palabra cierra bien los labios",
+      "tip": "labios cerrados y el aire sale por la nariz"
+     },
+     "fr": {
+      "name": "m",
+      "guide": "comme le m français; en fin de mot, ferme bien les lèvres",
+      "tip": "lèvres closes, air par le nez"
+     },
+     "zh-Hans": {
+      "name": "m",
+      "guide": "像“妈 mā”的 m；词尾也要闭唇",
+      "tip": "双唇闭合，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "m",
+      "guide": "像“媽”的 m；詞尾也要閉唇",
+      "tip": "雙唇閉合，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "n",
@@ -22971,7 +23741,29 @@
        "naɪt"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "n",
+      "guide": "como la n española, con la lengua en el alvéolo; al final no se vuelve ng",
+      "tip": "punta de la lengua en la encía tras los dientes"
+     },
+     "fr": {
+      "name": "n",
+      "guide": "comme le n français, langue sur la gencive; en fin de mot, pas de voyelle",
+      "tip": "pointe de la langue sur la gencive derrière les dents"
+     },
+     "zh-Hans": {
+      "name": "n",
+      "guide": "像“那 nà”；词尾 n 舌尖要抵上齿龈",
+      "tip": "舌尖抵上齿龈，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "n",
+      "guide": "像“那”；詞尾 n 舌尖要抵上齒齦",
+      "tip": "舌尖抵上齒齦，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "ŋ",
@@ -22999,7 +23791,29 @@
        "θɪŋ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ng",
+      "guide": "como la n de 'banco', pero sola y sin g al final de 'sing'",
+      "tip": "parte trasera de la lengua sube al velo; nada de g después"
+     },
+     "fr": {
+      "name": "ng",
+      "guide": "comme 'ng' de 'camping', sans g final; absent du français",
+      "tip": "arrière de la langue monte au voile; pas de g ensuite"
+     },
+     "zh-Hans": {
+      "name": "ng",
+      "guide": "像“昂 áng”的尾音，后面不带 g",
+      "tip": "舌根抵软腭，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "ng",
+      "guide": "像“昂”的尾音，後面不帶 g",
+      "tip": "舌根抵軟齶，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "l",
@@ -23027,7 +23841,29 @@
        "laɪt"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "l",
+      "guide": "más oscura que la l española, sobre todo al final ('full')",
+      "tip": "punta en la encía; al final la parte trasera se retrae"
+     },
+     "fr": {
+      "name": "l",
+      "guide": "plus sombre qu'en français, surtout en fin de mot ('full')",
+      "tip": "pointe sur la gencive; en fin de mot, l'arrière se recule"
+     },
+     "zh-Hans": {
+      "name": "l",
+      "guide": "像“拉 lā”；词尾 l 也要抵住",
+      "tip": "舌尖抵上齿龈，气从舌两侧过"
+     },
+     "zh-Hant": {
+      "name": "l",
+      "guide": "像“拉”；詞尾 l 也要抵住",
+      "tip": "舌尖抵上齒齦，氣從舌兩側過"
+     }
+    }
    },
    {
     "ipa": "ɹ",
@@ -23055,7 +23891,29 @@
        "ɹʌn"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "r inglesa",
+      "guide": "no es la r española: la lengua no toca ni vibra; nuevo para hispanohablantes",
+      "tip": "punta de la lengua curvada hacia atrás sin tocar, labios algo redondeados"
+     },
+     "fr": {
+      "name": "r anglais",
+      "guide": "pas le r français: pointe de langue recourbée sans toucher; absent du français",
+      "tip": "pointe recourbée vers l'arrière sans toucher, lèvres arrondies"
+     },
+     "zh-Hans": {
+      "name": "r",
+      "guide": "像“如 rú”的 r，唇圆，舌尖不碰上颚",
+      "tip": "舌尖上卷但不碰，双唇微圆"
+     },
+     "zh-Hant": {
+      "name": "r",
+      "guide": "像“如”的 r，唇圓，舌尖不碰上顎",
+      "tip": "舌尖上捲但不碰，雙唇微圓"
+     }
+    }
    },
    {
     "ipa": "j",
@@ -23083,7 +23941,29 @@
        "jɛloʊ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "y",
+      "guide": "como la i de 'hielo' (deslizante), no como la y de 'yo' fuerte",
+      "tip": "lengua alta y adelantada, desliza rápido hacia la vocal"
+     },
+     "fr": {
+      "name": "y",
+      "guide": "comme le y de 'yeux'",
+      "tip": "langue haute et avancée, glisse vite vers la voyelle"
+     },
+     "zh-Hans": {
+      "name": "y",
+      "guide": "像“耶 yē”开头的 y",
+      "tip": "舌面贴近上颚，嘴角微拉"
+     },
+     "zh-Hant": {
+      "name": "y",
+      "guide": "像“耶”開頭的 y",
+      "tip": "舌面貼近上顎，嘴角微拉"
+     }
+    }
    },
    {
     "ipa": "w",
@@ -23111,7 +23991,29 @@
        "wɔnt"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "w",
+      "guide": "como la u de 'huevo'; 'wine' no es 'guine'",
+      "tip": "labios muy redondeados que se abren rápido hacia la vocal"
+     },
+     "fr": {
+      "name": "w",
+      "guide": "comme 'ou' de 'oui', lèvres arrondies",
+      "tip": "lèvres très arrondies qui s'ouvrent vite vers la voyelle"
+     },
+     "zh-Hans": {
+      "name": "w",
+      "guide": "像“屋 wū”开头的 w，不是 v",
+      "tip": "双唇收圆前突，再放开"
+     },
+     "zh-Hant": {
+      "name": "w",
+      "guide": "像“屋”開頭的 w，不是 v",
+      "tip": "雙唇收圓前突，再放開"
+     }
+    }
    }
   ],
   "fr": [
@@ -23141,7 +24043,24 @@
        "papa"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "a",
+      "guide": "como la a española, algo más adelantada",
+      "tip": "boca abierta, labios neutros, lengua baja y adelante"
+     },
+     "zh-Hans": {
+      "name": "前 a",
+      "guide": "像“啊 a”，舌位更靠前",
+      "tip": "下巴张开，唇放松不圆"
+     },
+     "zh-Hant": {
+      "name": "前 a",
+      "guide": "像“啊”，舌位更靠前",
+      "tip": "下巴張開，唇放鬆不圓"
+     }
+    }
    },
    {
     "ipa": "e",
@@ -23169,7 +24088,24 @@
        "bebe"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "é",
+      "guide": "como la e española de 'mesa', más cerrada y tensa",
+      "tip": "labios estirados y mandíbula casi cerrada; sin deslizar a i"
+     },
+     "zh-Hans": {
+      "name": "é",
+      "guide": "像“诶 ê”，但保持不滑动",
+      "tip": "下巴半合，嘴角微拉"
+     },
+     "zh-Hant": {
+      "name": "é",
+      "guide": "像“誒”，但保持不滑動",
+      "tip": "下巴半合，嘴角微拉"
+     }
+    }
    },
    {
     "ipa": "ɛ",
@@ -23197,7 +24133,24 @@
        "pɛʁ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "è",
+      "guide": "como la e española de 'perro', más abierta",
+      "tip": "mandíbula más abierta que en é, labios neutros"
+     },
+     "zh-Hans": {
+      "name": "è",
+      "guide": "像“欸 ê”",
+      "tip": "下巴半张，唇不圆"
+     },
+     "zh-Hant": {
+      "name": "è",
+      "guide": "像“欸”",
+      "tip": "下巴半張，唇不圓"
+     }
+    }
    },
    {
     "ipa": "i",
@@ -23225,7 +24178,24 @@
        "vi"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "i",
+      "guide": "como la i española, algo más tensa",
+      "tip": "labios estirados en sonrisa, lengua alta y adelante"
+     },
+     "zh-Hans": {
+      "name": "i",
+      "guide": "像“衣 yī”，更紧",
+      "tip": "嘴角用力拉开，舌尖抵下牙"
+     },
+     "zh-Hant": {
+      "name": "i",
+      "guide": "像“衣”，更緊",
+      "tip": "嘴角用力拉開，舌尖抵下牙"
+     }
+    }
    },
    {
     "ipa": "y",
@@ -23253,7 +24223,24 @@
        "saly"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "u francesa",
+      "guide": "di i y redondea los labios como para u; nuevo para hispanohablantes",
+      "tip": "labios en círculo pequeño y la lengua queda adelante, como en i"
+     },
+     "zh-Hans": {
+      "name": "法语 u",
+      "guide": "像“迂 yū”（ü）",
+      "tip": "舌位同“衣”，唇收圆前突"
+     },
+     "zh-Hant": {
+      "name": "法語 u",
+      "guide": "像“迂”（ü）",
+      "tip": "舌位同“衣”，唇收圓前突"
+     }
+    }
    },
    {
     "ipa": "u",
@@ -23281,7 +24268,24 @@
        "tu"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ou",
+      "guide": "como la u española, con labios más redondeados y adelantados",
+      "tip": "labios en círculo pequeño y hacia delante, lengua atrás"
+     },
+     "zh-Hans": {
+      "name": "ou",
+      "guide": "像“乌 wū”",
+      "tip": "双唇收圆前突，舌向后缩"
+     },
+     "zh-Hant": {
+      "name": "ou",
+      "guide": "像“烏”",
+      "tip": "雙唇收圓前突，舌向後縮"
+     }
+    }
    },
    {
     "ipa": "o",
@@ -23309,7 +24313,24 @@
        "bato"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "o cerrada",
+      "guide": "como la o española de 'ojo', más cerrada y sin deslizar a u",
+      "tip": "labios redondeados y tensos, mandíbula casi cerrada"
+     },
+     "zh-Hans": {
+      "name": "闭 o",
+      "guide": "像“哦 ō”，唇更圆，不滑动",
+      "tip": "唇收圆前突，下巴半合"
+     },
+     "zh-Hant": {
+      "name": "閉 o",
+      "guide": "像“哦”，唇更圓，不滑動",
+      "tip": "唇收圓前突，下巴半合"
+     }
+    }
    },
    {
     "ipa": "ɔ",
@@ -23337,7 +24358,24 @@
        "pɔʁt"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "o abierta",
+      "guide": "como la o española de 'sol', algo más abierta",
+      "tip": "mandíbula más abierta y labios redondeados con menos tensión"
+     },
+     "zh-Hans": {
+      "name": "开 o",
+      "guide": "像“喔 ò”，嘴更开",
+      "tip": "唇半圆，下巴张开"
+     },
+     "zh-Hant": {
+      "name": "開 o",
+      "guide": "像“喔”，嘴更開",
+      "tip": "唇半圓，下巴張開"
+     }
+    }
    },
    {
     "ipa": "ø",
@@ -23365,7 +24403,24 @@
        "blø"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "eu cerrada",
+      "guide": "di é y redondea los labios como para o; nuevo para hispanohablantes",
+      "tip": "labios redondeados, mandíbula casi cerrada, lengua adelante"
+     },
+     "zh-Hans": {
+      "name": "闭 eu",
+      "guide": "舌位像“诶 ê”，嘴唇却收圆（普通话里没有）",
+      "tip": "说“诶”，同时双唇收圆前突"
+     },
+     "zh-Hant": {
+      "name": "閉 eu",
+      "guide": "舌位像“誒”，嘴唇卻收圓（國語裡沒有）",
+      "tip": "說“誒”，同時雙唇收圓前突"
+     }
+    }
    },
    {
     "ipa": "œ",
@@ -23393,7 +24448,24 @@
        "sœʁ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "eu abierta",
+      "guide": "di è y redondea los labios como para o abierta; nuevo para hispanohablantes",
+      "tip": "labios redondeados, mandíbula media, lengua adelante"
+     },
+     "zh-Hans": {
+      "name": "开 eu",
+      "guide": "舌位像“欸 ê”，嘴唇半圆（普通话里没有）",
+      "tip": "说“欸”，同时双唇半圆"
+     },
+     "zh-Hant": {
+      "name": "開 eu",
+      "guide": "舌位像“欸”，嘴唇半圓（國語裡沒有）",
+      "tip": "說“欸”，同時雙唇半圓"
+     }
+    }
    },
    {
     "ipa": "ə",
@@ -23421,7 +24493,24 @@
        "pəti"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "e muda",
+      "guide": "vocal breve con labios algo redondeados, a menudo cae; nuevo para hispanohablantes",
+      "tip": "labios algo redondeados y relajados; casi no se oye"
+     },
+     "zh-Hans": {
+      "name": "轻 e",
+      "guide": "像轻声“的 de”的 e，唇微圆",
+      "tip": "唇微圆，又短又轻"
+     },
+     "zh-Hant": {
+      "name": "輕 e",
+      "guide": "像輕聲“的”的 e，唇微圓",
+      "tip": "唇微圓，又短又輕"
+     }
+    }
    },
    {
     "ipa": "ɑ̃",
@@ -23449,7 +24538,24 @@
        "dɑ̃"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "an nasal",
+      "guide": "a atrasada con el aire también por la nariz, sin n final; nuevo para hispanohablantes",
+      "tip": "boca abierta, lengua baja y atrás, velo del paladar bajado"
+     },
+     "zh-Hans": {
+      "name": "an 鼻音",
+      "guide": "近“昂 áng”，但不读出 ng（普通话里没有）",
+      "tip": "口张开，气同时走口和鼻"
+     },
+     "zh-Hant": {
+      "name": "an 鼻音",
+      "guide": "近“昂”，但不讀出 ng（國語裡沒有）",
+      "tip": "口張開，氣同時走口和鼻"
+     }
+    }
    },
    {
     "ipa": "ɔ̃",
@@ -23477,7 +24583,24 @@
        "nɔ̃"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "on nasal",
+      "guide": "o con el aire por la nariz, sin n final; nuevo para hispanohablantes",
+      "tip": "labios redondeados, mandíbula media, velo del paladar bajado"
+     },
+     "zh-Hans": {
+      "name": "on 鼻音",
+      "guide": "近“翁 wēng”，不读出 ng（普通话里没有）",
+      "tip": "唇收圆，气同时走口和鼻"
+     },
+     "zh-Hant": {
+      "name": "on 鼻音",
+      "guide": "近“翁”，不讀出 ng（國語裡沒有）",
+      "tip": "唇收圓，氣同時走口和鼻"
+     }
+    }
    },
    {
     "ipa": "ɛ̃",
@@ -23505,7 +24628,24 @@
        "sɛ̃k"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "in nasal",
+      "guide": "è con el aire por la nariz, sin n final; nuevo para hispanohablantes",
+      "tip": "labios estirados, mandíbula media, velo del paladar bajado"
+     },
+     "zh-Hans": {
+      "name": "in 鼻音",
+      "guide": "近“欸 ê”带鼻音，不是“因 yīn”（普通话里没有）",
+      "tip": "嘴半张，气同时走口和鼻"
+     },
+     "zh-Hant": {
+      "name": "in 鼻音",
+      "guide": "近“欸”帶鼻音，不是“因”（國語裡沒有）",
+      "tip": "嘴半張，氣同時走口和鼻"
+     }
+    }
    },
    {
     "ipa": "œ̃",
@@ -23533,7 +24673,24 @@
        "lœ̃di"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "un nasal",
+      "guide": "como in nasal pero con labios redondeados; hoy muchos la igualan; nuevo para hispanohablantes",
+      "tip": "labios algo redondeados, mandíbula media, velo del paladar bajado"
+     },
+     "zh-Hans": {
+      "name": "un 鼻音",
+      "guide": "像 in，但嘴唇要圆（普通话里没有）",
+      "tip": "嘴半张唇圆，气同时走口和鼻"
+     },
+     "zh-Hant": {
+      "name": "un 鼻音",
+      "guide": "像 in，但嘴唇要圓（國語裡沒有）",
+      "tip": "嘴半張唇圓，氣同時走口和鼻"
+     }
+    }
    },
    {
     "ipa": "p",
@@ -23561,7 +24718,24 @@
        "puʁ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "p",
+      "guide": "igual que la p española, sin soplo de aire",
+      "tip": "labios cerrados que se abren sin bocanada"
+     },
+     "zh-Hans": {
+      "name": "p",
+      "guide": "像“爸 bà”的 b，不送气",
+      "tip": "双唇闭合再放开，不吹气"
+     },
+     "zh-Hant": {
+      "name": "p",
+      "guide": "像“爸”的 b，不送氣",
+      "tip": "雙唇閉合再放開，不吹氣"
+     }
+    }
    },
    {
     "ipa": "b",
@@ -23589,7 +24763,24 @@
        "bo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "b",
+      "guide": "como la b española de 'bien'; siempre fuerte, sin suavizarse entre vocales",
+      "tip": "labios cerrados del todo y voz desde el inicio"
+     },
+     "zh-Hans": {
+      "name": "b",
+      "guide": "像“爸 bà”，但声带要振动（普通话里没有）",
+      "tip": "双唇闭合，喉咙同时发声"
+     },
+     "zh-Hant": {
+      "name": "b",
+      "guide": "像“爸”，但聲帶要振動（國語裡沒有）",
+      "tip": "雙唇閉合，喉嚨同時發聲"
+     }
+    }
    },
    {
     "ipa": "t",
@@ -23617,7 +24808,24 @@
        "tu"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "t",
+      "guide": "igual que la t española, con la lengua contra los dientes",
+      "tip": "punta de la lengua contra los dientes superiores"
+     },
+     "zh-Hans": {
+      "name": "t",
+      "guide": "像“大 dà”的 d，不送气",
+      "tip": "舌尖抵上齿背，不吹气"
+     },
+     "zh-Hant": {
+      "name": "t",
+      "guide": "像“大”的 d，不送氣",
+      "tip": "舌尖抵上齒背，不吹氣"
+     }
+    }
    },
    {
     "ipa": "d",
@@ -23645,7 +24853,24 @@
        "dø"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "d",
+      "guide": "como la d española de 'donde'; sin suavizarse entre vocales",
+      "tip": "punta de la lengua contra los dientes superiores, con voz"
+     },
+     "zh-Hans": {
+      "name": "d",
+      "guide": "像“大 dà”，但声带要振动（普通话里没有）",
+      "tip": "舌尖抵上齿背，喉咙发声"
+     },
+     "zh-Hant": {
+      "name": "d",
+      "guide": "像“大”，但聲帶要振動（國語裡沒有）",
+      "tip": "舌尖抵上齒背，喉嚨發聲"
+     }
+    }
    },
    {
     "ipa": "k",
@@ -23673,7 +24898,24 @@
        "kɔm"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "k",
+      "guide": "igual que la k/c española, sin soplo de aire",
+      "tip": "parte trasera de la lengua toca el velo y se suelta"
+     },
+     "zh-Hans": {
+      "name": "k",
+      "guide": "像“嘎 gā”的 g，不送气",
+      "tip": "舌根抵软腭，不吹气"
+     },
+     "zh-Hant": {
+      "name": "k",
+      "guide": "像“嘎”的 g，不送氣",
+      "tip": "舌根抵軟齶，不吹氣"
+     }
+    }
    },
    {
     "ipa": "ɡ",
@@ -23701,7 +24943,24 @@
        "ɡʁo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "g",
+      "guide": "como la g española de 'gato'; sin suavizarse entre vocales",
+      "tip": "parte trasera de la lengua cierra del todo, con voz"
+     },
+     "zh-Hans": {
+      "name": "g",
+      "guide": "像“嘎 gā”，但声带要振动（普通话里没有）",
+      "tip": "舌根抵软腭，喉咙发声"
+     },
+     "zh-Hant": {
+      "name": "g",
+      "guide": "像“嘎”，但聲帶要振動（國語裡沒有）",
+      "tip": "舌根抵軟齶，喉嚨發聲"
+     }
+    }
    },
    {
     "ipa": "f",
@@ -23729,7 +24988,24 @@
        "flœʁ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "f",
+      "guide": "igual que la f española",
+      "tip": "dientes superiores sobre el labio inferior"
+     },
+     "zh-Hans": {
+      "name": "f",
+      "guide": "像“发 fā”的 f",
+      "tip": "上齿轻碰下唇，送气"
+     },
+     "zh-Hant": {
+      "name": "f",
+      "guide": "像“發”的 f",
+      "tip": "上齒輕碰下唇，送氣"
+     }
+    }
    },
    {
     "ipa": "v",
@@ -23757,7 +25033,24 @@
        "vil"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "v",
+      "guide": "como la f pero con voz; no es la b española; nuevo para hispanohablantes",
+      "tip": "dientes superiores tocan el labio inferior y vibra; labios no se cierran"
+     },
+     "zh-Hans": {
+      "name": "v",
+      "guide": "像 f 加声带振动（普通话里没有）",
+      "tip": "上齿轻碰下唇，喉咙振动"
+     },
+     "zh-Hant": {
+      "name": "v",
+      "guide": "像 f 加聲帶振動（國語裡沒有）",
+      "tip": "上齒輕碰下唇，喉嚨振動"
+     }
+    }
    },
    {
     "ipa": "s",
@@ -23785,7 +25078,24 @@
        "swaʁ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "s",
+      "guide": "igual que la s española; entre vocales sigue siendo s sorda ('dessert')",
+      "tip": "dientes casi juntos, aire silbante por el centro de la lengua"
+     },
+     "zh-Hans": {
+      "name": "s",
+      "guide": "像“思 sī”的 s",
+      "tip": "舌尖近上齿龈，牙微合"
+     },
+     "zh-Hant": {
+      "name": "s",
+      "guide": "像“思”的 s",
+      "tip": "舌尖近上齒齦，牙微合"
+     }
+    }
    },
    {
     "ipa": "z",
@@ -23813,7 +25123,24 @@
        "mɛzɔ̃"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "z sonora",
+      "guide": "como la s sonora de 'mismo', siempre ('maison'); nuevo para hispanohablantes",
+      "tip": "igual que la s pero con la garganta vibrando"
+     },
+     "zh-Hans": {
+      "name": "z",
+      "guide": "像 s 加声带振动，不是“资 zī”（普通话里没有）",
+      "tip": "牙微合，喉咙振动"
+     },
+     "zh-Hant": {
+      "name": "z",
+      "guide": "像 s 加聲帶振動，不是“資”（國語裡沒有）",
+      "tip": "牙微合，喉嚨振動"
+     }
+    }
    },
    {
     "ipa": "ʃ",
@@ -23841,7 +25168,24 @@
        "ʃɔz"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ch",
+      "guide": "como 'chsss' para pedir silencio, sin t inicial; nuevo para hispanohablantes",
+      "tip": "labios algo redondeados y adelantados, aire continuo"
+     },
+     "zh-Hans": {
+      "name": "ch",
+      "guide": "像“诗 shī”，但唇更圆，舌不卷",
+      "tip": "双唇前突微圆，舌不卷"
+     },
+     "zh-Hant": {
+      "name": "ch",
+      "guide": "像“詩”，但唇更圓，舌不捲",
+      "tip": "雙唇前突微圓，舌不捲"
+     }
+    }
    },
    {
     "ipa": "ʒ",
@@ -23869,7 +25213,24 @@
        "ʁuʒ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "j francesa",
+      "guide": "como 'ch' francesa pero con voz; parecida a la ll rioplatense; nuevo para hispanohablantes",
+      "tip": "labios algo redondeados, garganta vibrando, aire continuo"
+     },
+     "zh-Hans": {
+      "name": "j",
+      "guide": "像 ch 加声带振动，舌不卷（普通话里没有）",
+      "tip": "双唇前突微圆，喉咙振动"
+     },
+     "zh-Hant": {
+      "name": "j",
+      "guide": "像 ch 加聲帶振動，舌不捲（國語裡沒有）",
+      "tip": "雙唇前突微圓，喉嚨振動"
+     }
+    }
    },
    {
     "ipa": "ʁ",
@@ -23897,7 +25258,24 @@
        "ʁiʁ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "r francesa",
+      "guide": "no es la r española: raspa suave de garganta, como j sonora; nuevo para hispanohablantes",
+      "tip": "parte trasera de la lengua cerca de la úvula; la punta queda abajo"
+     },
+     "zh-Hans": {
+      "name": "法语 r",
+      "guide": "喉咙后部摩擦，近“喝 hē”加振动（普通话里没有）",
+      "tip": "舌尖抵下牙，舌根靠近喉咙"
+     },
+     "zh-Hant": {
+      "name": "法語 r",
+      "guide": "喉嚨後部摩擦，近“喝”加振動（國語裡沒有）",
+      "tip": "舌尖抵下牙，舌根靠近喉嚨"
+     }
+    }
    },
    {
     "ipa": "m",
@@ -23925,7 +25303,24 @@
        "midi"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "m",
+      "guide": "igual que la m española",
+      "tip": "labios cerrados y el aire sale por la nariz"
+     },
+     "zh-Hans": {
+      "name": "m",
+      "guide": "像“妈 mā”的 m",
+      "tip": "双唇闭合，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "m",
+      "guide": "像“媽”的 m",
+      "tip": "雙唇閉合，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "n",
@@ -23953,7 +25348,24 @@
        "nɥi"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "n",
+      "guide": "igual que la n española, con la lengua contra los dientes",
+      "tip": "punta de la lengua contra los dientes superiores"
+     },
+     "zh-Hans": {
+      "name": "n",
+      "guide": "像“那 nà”的 n",
+      "tip": "舌尖抵上齿，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "n",
+      "guide": "像“那”的 n",
+      "tip": "舌尖抵上齒，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "ɲ",
@@ -23981,7 +25393,24 @@
        "ɡaɲe"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "gn",
+      "guide": "igual que la ñ española ('montagne')",
+      "tip": "medio de la lengua contra el paladar, aire por la nariz"
+     },
+     "zh-Hans": {
+      "name": "gn",
+      "guide": "像“你 nǐ”的 n 与 i 之间",
+      "tip": "舌面贴上颚，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "gn",
+      "guide": "像“你”的 n 與 i 之間",
+      "tip": "舌面貼上顎，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "l",
@@ -24009,7 +25438,24 @@
        "li"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "l",
+      "guide": "como la l española, clara",
+      "tip": "punta de la lengua contra los dientes superiores"
+     },
+     "zh-Hans": {
+      "name": "l",
+      "guide": "像“拉 lā”，词尾也要清楚",
+      "tip": "舌尖抵上齿，气从两侧过"
+     },
+     "zh-Hant": {
+      "name": "l",
+      "guide": "像“拉”，詞尾也要清楚",
+      "tip": "舌尖抵上齒，氣從兩側過"
+     }
+    }
    },
    {
     "ipa": "j",
@@ -24037,7 +25483,24 @@
        "jɛʁ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "y",
+      "guide": "como la i de 'hielo'; también al final de palabra ('travail')",
+      "tip": "lengua alta y adelantada, desliza rápido"
+     },
+     "zh-Hans": {
+      "name": "y",
+      "guide": "像“耶 yē”开头的 y",
+      "tip": "舌面贴近上颚，嘴角微拉"
+     },
+     "zh-Hant": {
+      "name": "y",
+      "guide": "像“耶”開頭的 y",
+      "tip": "舌面貼近上顎，嘴角微拉"
+     }
+    }
    },
    {
     "ipa": "w",
@@ -24065,7 +25528,24 @@
        "kwa"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "w",
+      "guide": "como la u de 'huevo'; 'oui' suena casi 'uí'",
+      "tip": "labios redondeados que se abren rápido hacia la vocal"
+     },
+     "zh-Hans": {
+      "name": "w",
+      "guide": "像“屋 wū”开头的 w",
+      "tip": "双唇收圆，快速放开"
+     },
+     "zh-Hant": {
+      "name": "w",
+      "guide": "像“屋”開頭的 w",
+      "tip": "雙唇收圓，快速放開"
+     }
+    }
    },
    {
     "ipa": "ɥ",
@@ -24093,7 +25573,24 @@
        "lɥi"
       ]
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "u deslizante",
+      "guide": "la u francesa deslizándose a la vocal ('huit'); nuevo para hispanohablantes",
+      "tip": "labios en círculo pequeño que se abren rápido; lengua adelante"
+     },
+     "zh-Hans": {
+      "name": "wu",
+      "guide": "像“月 yuè”开头的 yu",
+      "tip": "双唇收圆，舌位同“衣”"
+     },
+     "zh-Hant": {
+      "name": "wu",
+      "guide": "像“月”開頭的 yu",
+      "tip": "雙唇收圓，舌位同“衣”"
+     }
+    }
    }
   ],
   "es": [
@@ -24123,7 +25620,24 @@
        "kasa"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "a",
+      "guide": "comme le a français, bref et net",
+      "tip": "bouche ouverte, lèvres neutres, langue basse"
+     },
+     "zh-Hans": {
+      "name": "a",
+      "guide": "像“啊 a”，短而稳",
+      "tip": "下巴张开，唇放松"
+     },
+     "zh-Hant": {
+      "name": "a",
+      "guide": "像“啊”，短而穩",
+      "tip": "下巴張開，唇放鬆"
+     }
+    }
    },
    {
     "ipa": "e",
@@ -24151,7 +25665,24 @@
        "mesa"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "e",
+      "guide": "comme le é français, mais plus bref et sans glisser vers i",
+      "tip": "lèvres étirées, mâchoire presque fermée"
+     },
+     "zh-Hans": {
+      "name": "e",
+      "guide": "像“诶 ê”，纯净不滑动",
+      "tip": "下巴半开，嘴角略拉"
+     },
+     "zh-Hant": {
+      "name": "e",
+      "guide": "像“誒”，純淨不滑動",
+      "tip": "下巴半開，嘴角略拉"
+     }
+    }
    },
    {
     "ipa": "i",
@@ -24179,7 +25710,24 @@
        "bino"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "i",
+      "guide": "comme le i français, un peu plus bref",
+      "tip": "lèvres étirées, langue haute et avancée"
+     },
+     "zh-Hans": {
+      "name": "i",
+      "guide": "像“衣 yī”，短而清",
+      "tip": "嘴角向两侧拉，舌尖抵下牙"
+     },
+     "zh-Hant": {
+      "name": "i",
+      "guide": "像“衣”，短而清",
+      "tip": "嘴角向兩側拉，舌尖抵下牙"
+     }
+    }
    },
    {
     "ipa": "o",
@@ -24207,7 +25755,24 @@
        "ola"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "o",
+      "guide": "comme le o fermé de 'eau', plus bref, sans glisser vers ou",
+      "tip": "lèvres arrondies, mâchoire presque fermée"
+     },
+     "zh-Hans": {
+      "name": "o",
+      "guide": "像“哦 ō”，不滑向 u",
+      "tip": "双唇半圆，下巴半合"
+     },
+     "zh-Hant": {
+      "name": "o",
+      "guide": "像“哦”，不滑向 u",
+      "tip": "雙唇半圓，下巴半合"
+     }
+    }
    },
    {
     "ipa": "u",
@@ -24238,7 +25803,24 @@
        "tu"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "u",
+      "guide": "comme le ou français, un peu plus bref",
+      "tip": "lèvres en petit cercle, langue reculée"
+     },
+     "zh-Hans": {
+      "name": "u",
+      "guide": "像“乌 wū”，短而清",
+      "tip": "双唇收圆前突"
+     },
+     "zh-Hant": {
+      "name": "u",
+      "guide": "像“烏”，短而清",
+      "tip": "雙唇收圓前突"
+     }
+    }
    },
    {
     "ipa": "p",
@@ -24266,7 +25848,24 @@
        "peɾo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "p",
+      "guide": "comme le p français, sans souffle",
+      "tip": "lèvres closes qui s'ouvrent sans jet d'air"
+     },
+     "zh-Hans": {
+      "name": "p",
+      "guide": "像“爸 bà”的 b，不送气",
+      "tip": "双唇闭合再放开，不吹气"
+     },
+     "zh-Hant": {
+      "name": "p",
+      "guide": "像“爸”的 b，不送氣",
+      "tip": "雙唇閉合再放開，不吹氣"
+     }
+    }
    },
    {
     "ipa": "b",
@@ -24294,7 +25893,24 @@
        "bamos"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "b",
+      "guide": "comme le b français; reste fort en début de mot",
+      "tip": "lèvres closes, voix dès le début"
+     },
+     "zh-Hans": {
+      "name": "b",
+      "guide": "像“爸 bà”，但声带要振动（普通话里没有）",
+      "tip": "双唇闭合，喉咙同时发声"
+     },
+     "zh-Hant": {
+      "name": "b",
+      "guide": "像“爸”，但聲帶要振動（國語裡沒有）",
+      "tip": "雙唇閉合，喉嚨同時發聲"
+     }
+    }
    },
    {
     "ipa": "β",
@@ -24325,7 +25941,24 @@
        "kaβesa"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "b doux",
+      "guide": "entre b et v: lèvres qui se frôlent sans se fermer; absent du français",
+      "tip": "lèvres presque jointes sans se fermer, voix qui vibre"
+     },
+     "zh-Hans": {
+      "name": "软 b",
+      "guide": "介于“屋 wū”的 w 和 b 之间（普通话里没有）",
+      "tip": "双唇相近不闭紧，轻轻出气"
+     },
+     "zh-Hant": {
+      "name": "軟 b",
+      "guide": "介於“屋”的 w 和 b 之間（國語裡沒有）",
+      "tip": "雙唇相近不閉緊，輕輕出氣"
+     }
+    }
    },
    {
     "ipa": "t",
@@ -24353,7 +25986,24 @@
        "toðo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "t",
+      "guide": "comme le t français, langue contre les dents",
+      "tip": "pointe de la langue contre les dents du haut"
+     },
+     "zh-Hans": {
+      "name": "t",
+      "guide": "像“大 dà”的 d，不送气",
+      "tip": "舌尖抵上齿背，不吹气"
+     },
+     "zh-Hant": {
+      "name": "t",
+      "guide": "像“大”的 d，不送氣",
+      "tip": "舌尖抵上齒背，不吹氣"
+     }
+    }
    },
    {
     "ipa": "d",
@@ -24381,7 +26031,24 @@
        "daɾ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "d",
+      "guide": "comme le d français, langue contre les dents",
+      "tip": "pointe de la langue contre les dents du haut, avec voix"
+     },
+     "zh-Hans": {
+      "name": "d",
+      "guide": "像“大 dà”，但声带要振动（普通话里没有）",
+      "tip": "舌尖抵上齿背，喉咙发声"
+     },
+     "zh-Hant": {
+      "name": "d",
+      "guide": "像“大”，但聲帶要振動（國語裡沒有）",
+      "tip": "舌尖抵上齒背，喉嚨發聲"
+     }
+    }
    },
    {
     "ipa": "ð",
@@ -24409,7 +26076,24 @@
        "deðo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "d doux",
+      "guide": "comme th anglais sonore doux: langue sur les dents sans fermer; absent du français",
+      "tip": "pointe de la langue contre les dents sans fermer, voix"
+     },
+     "zh-Hans": {
+      "name": "软 d",
+      "guide": "像轻柔的英语 th（this）（普通话里没有）",
+      "tip": "舌尖轻碰上齿背，不闭紧"
+     },
+     "zh-Hant": {
+      "name": "軟 d",
+      "guide": "像輕柔的英語 th（this）（國語裡沒有）",
+      "tip": "舌尖輕碰上齒背，不閉緊"
+     }
+    }
    },
    {
     "ipa": "k",
@@ -24440,7 +26124,24 @@
        "sinko"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "k",
+      "guide": "comme le k français, sans souffle",
+      "tip": "arrière de la langue contre le voile, relâché"
+     },
+     "zh-Hans": {
+      "name": "k",
+      "guide": "像“嘎 gā”的 g，不送气",
+      "tip": "舌根抵软腭，不吹气"
+     },
+     "zh-Hant": {
+      "name": "k",
+      "guide": "像“嘎”的 g，不送氣",
+      "tip": "舌根抵軟齶，不吹氣"
+     }
+    }
    },
    {
     "ipa": "ɡ",
@@ -24471,7 +26172,24 @@
        "teŋɡo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "g",
+      "guide": "comme le g de 'gare'; reste fort en début de mot",
+      "tip": "arrière de la langue ferme le passage, avec voix"
+     },
+     "zh-Hans": {
+      "name": "g",
+      "guide": "像“嘎 gā”，但声带要振动（普通话里没有）",
+      "tip": "舌根抵软腭，喉咙发声"
+     },
+     "zh-Hant": {
+      "name": "g",
+      "guide": "像“嘎”，但聲帶要振動（國語裡沒有）",
+      "tip": "舌根抵軟齶，喉嚨發聲"
+     }
+    }
    },
    {
     "ipa": "ɣ",
@@ -24499,7 +26217,24 @@
        "lueɣo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "g doux",
+      "guide": "un g sans fermeture, proche d'un r français léger, plus avancé; absent du français",
+      "tip": "arrière de la langue près du voile sans le toucher, voix"
+     },
+     "zh-Hans": {
+      "name": "软 g",
+      "guide": "像“喝 hē”的浊音，轻轻摩擦（普通话里没有）",
+      "tip": "舌根靠近软腭，不闭紧"
+     },
+     "zh-Hant": {
+      "name": "軟 g",
+      "guide": "像“喝”的濁音，輕輕摩擦（國語裡沒有）",
+      "tip": "舌根靠近軟齶，不閉緊"
+     }
+    }
    },
    {
     "ipa": "f",
@@ -24527,7 +26262,24 @@
        "familja"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "f",
+      "guide": "comme le f français",
+      "tip": "dents du haut sur la lèvre du bas"
+     },
+     "zh-Hans": {
+      "name": "f",
+      "guide": "像“发 fā”的 f",
+      "tip": "上齿轻碰下唇，送气"
+     },
+     "zh-Hant": {
+      "name": "f",
+      "guide": "像“發”的 f",
+      "tip": "上齒輕碰下唇，送氣"
+     }
+    }
    },
    {
     "ipa": "s",
@@ -24555,7 +26307,24 @@
        "seɲoɾ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "s",
+      "guide": "comme le s français, toujours sourd",
+      "tip": "dents presque jointes, air qui siffle"
+     },
+     "zh-Hans": {
+      "name": "s",
+      "guide": "像“思 sī”的 s",
+      "tip": "舌尖近上齿龈，牙微合"
+     },
+     "zh-Hant": {
+      "name": "s",
+      "guide": "像“思”的 s",
+      "tip": "舌尖近上齒齦，牙微合"
+     }
+    }
    },
    {
     "ipa": "θ",
@@ -24592,7 +26361,24 @@
        "ɡɾasjas"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "z d'Espagne",
+      "guide": "comme th anglais sourd ('think'), langue entre les dents; absent du français",
+      "tip": "pointe de la langue entre les dents, souffle sans voix"
+     },
+     "zh-Hans": {
+      "name": "西班牙 th",
+      "guide": "舌尖轻放在上下牙之间吹气（普通话里没有）",
+      "tip": "舌尖微伸出，气从舌缝吹出"
+     },
+     "zh-Hant": {
+      "name": "西班牙 th",
+      "guide": "舌尖輕放在上下牙之間吹氣（國語裡沒有）",
+      "tip": "舌尖微伸出，氣從舌縫吹出"
+     }
+    }
    },
    {
     "ipa": "x",
@@ -24620,7 +26406,24 @@
        "muxeɾ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "j espagnol",
+      "guide": "un h fortement soufflé, raclement de gorge léger; absent du français",
+      "tip": "arrière de la langue près du voile, air qui frotte, sans voix"
+     },
+     "zh-Hans": {
+      "name": "j",
+      "guide": "像“喝 hē”的 h，摩擦更重",
+      "tip": "舌根靠近软腭，用力出气"
+     },
+     "zh-Hant": {
+      "name": "j",
+      "guide": "像“喝”的 h，摩擦更重",
+      "tip": "舌根靠近軟齶，用力出氣"
+     }
+    }
    },
    {
     "ipa": "tʃ",
@@ -24648,7 +26451,24 @@
        "notʃe"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "ch",
+      "guide": "comme 'tch' de 'tchèque', un seul son; absent du français",
+      "tip": "pointe de la langue touche la gencive, se relâche en 'ch'"
+     },
+     "zh-Hans": {
+      "name": "ch",
+      "guide": "像“吃 chī”，但舌不卷",
+      "tip": "双唇微圆，舌不卷，爆开送气"
+     },
+     "zh-Hant": {
+      "name": "ch",
+      "guide": "像“吃”，但舌不捲",
+      "tip": "雙唇微圓，舌不捲，爆開送氣"
+     }
+    }
    },
    {
     "ipa": "ʝ",
@@ -24676,7 +26496,24 @@
        "aʝeɾ"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "y (yo)",
+      "guide": "comme le y de 'yeux' mais avec friction, parfois proche de 'dj'; absent du français",
+      "tip": "milieu de la langue près du palais, avec voix"
+     },
+     "zh-Hans": {
+      "name": "y（yo）",
+      "guide": "像“耶 yē”开头，但更紧",
+      "tip": "舌面贴近上颚，摩擦出气"
+     },
+     "zh-Hant": {
+      "name": "y（yo）",
+      "guide": "像“耶”開頭，但更緊",
+      "tip": "舌面貼近上顎，摩擦出氣"
+     }
+    }
    },
    {
     "ipa": "ʎ",
@@ -24713,7 +26550,24 @@
        "ʝuβja"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "ll (calle)",
+      "guide": "comme 'li' de 'milieu' en un seul son; souvent dit comme y; absent du français",
+      "tip": "milieu de la langue contre le palais, avec voix"
+     },
+     "zh-Hans": {
+      "name": "ll",
+      "guide": "近“里 lǐ”加“耶 yē”连读（普通话里没有）",
+      "tip": "舌面贴上颚，气从两侧过"
+     },
+     "zh-Hant": {
+      "name": "ll",
+      "guide": "近“裡”加“耶”連讀（國語裡沒有）",
+      "tip": "舌面貼上顎，氣從兩側過"
+     }
+    }
    },
    {
     "ipa": "m",
@@ -24741,7 +26595,24 @@
        "mutʃo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "m",
+      "guide": "comme le m français",
+      "tip": "lèvres closes, air par le nez"
+     },
+     "zh-Hans": {
+      "name": "m",
+      "guide": "像“妈 mā”的 m",
+      "tip": "双唇闭合，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "m",
+      "guide": "像“媽”的 m",
+      "tip": "雙唇閉合，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "n",
@@ -24769,7 +26640,24 @@
        "notʃe"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "n",
+      "guide": "comme le n français",
+      "tip": "pointe de la langue contre les dents du haut"
+     },
+     "zh-Hans": {
+      "name": "n",
+      "guide": "像“那 nà”的 n",
+      "tip": "舌尖抵上齿，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "n",
+      "guide": "像“那”的 n",
+      "tip": "舌尖抵上齒，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "ɲ",
@@ -24797,7 +26685,24 @@
        "niɲo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "ñ",
+      "guide": "comme gn de 'montagne'",
+      "tip": "milieu de la langue contre le palais, air par le nez"
+     },
+     "zh-Hans": {
+      "name": "ñ",
+      "guide": "像“你 nǐ”的 n 与 i 之间",
+      "tip": "舌面贴上颚，气走鼻腔"
+     },
+     "zh-Hant": {
+      "name": "ñ",
+      "guide": "像“你”的 n 與 i 之間",
+      "tip": "舌面貼上顎，氣走鼻腔"
+     }
+    }
    },
    {
     "ipa": "l",
@@ -24828,7 +26733,24 @@
        "laðo"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "l",
+      "guide": "comme le l français, clair",
+      "tip": "pointe de la langue contre les dents du haut"
+     },
+     "zh-Hans": {
+      "name": "l",
+      "guide": "像“拉 lā”的 l",
+      "tip": "舌尖抵上齿，气从两侧过"
+     },
+     "zh-Hant": {
+      "name": "l",
+      "guide": "像“拉”的 l",
+      "tip": "舌尖抵上齒，氣從兩側過"
+     }
+    }
    },
    {
     "ipa": "ɾ",
@@ -24856,7 +26778,24 @@
        "tɾes"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "r battu",
+      "guide": "un seul battement de la pointe de la langue sur la gencive; absent du français",
+      "tip": "pointe de la langue frappe la gencive une fois, comme un d rapide"
+     },
+     "zh-Hans": {
+      "name": "单弹 r",
+      "guide": "像快说“嗒 da”的 d；不是“日 rì”（普通话里没有）",
+      "tip": "舌尖轻弹上齿龈一次"
+     },
+     "zh-Hant": {
+      "name": "單彈 r",
+      "guide": "像快說“嗒”的 d；不是“日”（國語裡沒有）",
+      "tip": "舌尖輕彈上齒齦一次"
+     }
+    }
    },
    {
     "ipa": "r",
@@ -24884,7 +26823,24 @@
        "rio"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "r roulé",
+      "guide": "plusieurs vibrations de la pointe de la langue; pas le r français; absent du français",
+      "tip": "pointe de la langue vibre sur la gencive, mâchoire détendue"
+     },
+     "zh-Hans": {
+      "name": "颤音 rr",
+      "guide": "舌尖连弹 2-3 下；不是“日 rì”（普通话里没有）",
+      "tip": "舌尖放松抵上齿龈，气流冲抖"
+     },
+     "zh-Hant": {
+      "name": "顫音 rr",
+      "guide": "舌尖連彈 2-3 下；不是“日”（國語裡沒有）",
+      "tip": "舌尖放鬆抵上齒齦，氣流衝抖"
+     }
+    }
    },
    {
     "ipa": "j",
@@ -24912,7 +26868,24 @@
        "ajɾe"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "y",
+      "guide": "comme le y de 'yeux'",
+      "tip": "langue haute et avancée, glisse vite vers la voyelle"
+     },
+     "zh-Hans": {
+      "name": "y 半元音",
+      "guide": "像“衣 yī”快速滑入下一音",
+      "tip": "舌面贴近上颚，快速滑过"
+     },
+     "zh-Hant": {
+      "name": "y 半元音",
+      "guide": "像“衣”快速滑入下一音",
+      "tip": "舌面貼近上顎，快速滑過"
+     }
+    }
    },
    {
     "ipa": "w",
@@ -24940,7 +26913,24 @@
        "aɣwa"
       ]
      }
-    ]
+    ],
+    "local": {
+     "fr": {
+      "name": "w",
+      "guide": "comme 'ou' de 'oui'",
+      "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
+     },
+     "zh-Hans": {
+      "name": "w 半元音",
+      "guide": "像“屋 wū”快速滑入下一音",
+      "tip": "双唇收圆，快速放开"
+     },
+     "zh-Hant": {
+      "name": "w 半元音",
+      "guide": "像“屋”快速滑入下一音",
+      "tip": "雙唇收圓，快速放開"
+     }
+    }
    }
   ],
   "zh": [
@@ -24977,7 +26967,19 @@
       "hant": "她",
       "pinyin": "tā"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "a",
+      "guide": "como la a española, abierta y adelantada",
+      "tip": "boca abierta y relajada, lengua baja"
+     },
+     "fr": {
+      "name": "a",
+      "guide": "comme le a français, ouvert et avancé",
+      "tip": "bouche ouverte et détendue, langue basse"
+     }
+    }
    },
    {
     "ipa": "o",
@@ -25011,7 +27013,19 @@
       "hant": "波",
       "pinyin": "bō"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "o",
+      "guide": "como la o española, con un leve deslizamiento desde u ('wo')",
+      "tip": "labios redondeados, mandíbula media"
+     },
+     "fr": {
+      "name": "o",
+      "guide": "comme le o de 'mot', avec léger glissement depuis ou ('wo')",
+      "tip": "lèvres arrondies, mâchoire mi-ouverte"
+     }
+    }
    },
    {
     "ipa": "e",
@@ -25047,7 +27061,19 @@
       "hant": "飛",
       "pinyin": "fēi"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "e (ei, ie)",
+      "guide": "como la e española; aparece en 'ei' y 'ie'",
+      "tip": "labios estirados, mandíbula media"
+     },
+     "fr": {
+      "name": "e (ei, ie)",
+      "guide": "comme le é français; apparaît dans 'ei' et 'ie'",
+      "tip": "lèvres étirées, mâchoire mi-fermée"
+     }
+    }
    },
    {
     "ipa": "ɛ",
@@ -25081,7 +27107,19 @@
       "hant": "見",
       "pinyin": "jiàn"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "e (ian)",
+      "guide": "como la e abierta de 'perro'; aparece en 'ian' y 'yue'",
+      "tip": "mandíbula algo más abierta, labios estirados"
+     },
+     "fr": {
+      "name": "e (ian)",
+      "guide": "comme le è de 'père'; apparaît dans 'ian' et 'yue'",
+      "tip": "mâchoire mi-ouverte, lèvres étirées"
+     }
+    }
    },
    {
     "ipa": "ɤ",
@@ -25115,7 +27153,19 @@
       "hant": "喝",
       "pinyin": "hē"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "e (atrás)",
+      "guide": "como una o española con labios estirados, no redondos; nuevo para hispanohablantes",
+      "tip": "mandíbula media, lengua atrás; di 'o' sonriendo"
+     },
+     "fr": {
+      "name": "e (arrière)",
+      "guide": "comme un o avec les lèvres étirées, non arrondies; absent du français",
+      "tip": "mâchoire mi-fermée, langue reculée; dis 'o' en souriant"
+     }
+    }
    },
    {
     "ipa": "ə",
@@ -25149,7 +27199,19 @@
       "hant": "很",
       "pinyin": "hěn"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "e débil",
+      "guide": "vocal neutra y breve, como una e átona relajada; nuevo para hispanohablantes",
+      "tip": "boca relajada, labios neutros, lengua en el centro"
+     },
+     "fr": {
+      "name": "e faible",
+      "guide": "comme le e muet, mais sans arrondir les lèvres",
+      "tip": "bouche détendue, lèvres neutres, langue au centre"
+     }
+    }
    },
    {
     "ipa": "i",
@@ -25183,7 +27245,19 @@
       "hant": "米",
       "pinyin": "mǐ"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "i",
+      "guide": "como la i española",
+      "tip": "labios estirados, lengua alta y adelante"
+     },
+     "fr": {
+      "name": "i",
+      "guide": "comme le i français",
+      "tip": "lèvres étirées, langue haute et avancée"
+     }
+    }
    },
    {
     "ipa": "u",
@@ -25217,7 +27291,19 @@
       "hant": "路",
       "pinyin": "lù"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "u",
+      "guide": "como la u española, con labios muy redondeados",
+      "tip": "labios en círculo pequeño, lengua atrás"
+     },
+     "fr": {
+      "name": "ou",
+      "guide": "comme le ou français, lèvres très arrondies",
+      "tip": "lèvres en petit cercle, langue reculée"
+     }
+    }
    },
    {
     "ipa": "y",
@@ -25251,7 +27337,19 @@
       "hant": "雨",
       "pinyin": "yǔ"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ü",
+      "guide": "di i y redondea los labios como para u; nuevo para hispanohablantes",
+      "tip": "labios en círculo pequeño, lengua adelantada como en i"
+     },
+     "fr": {
+      "name": "ü",
+      "guide": "comme le u français de 'tu'",
+      "tip": "lèvres en petit cercle, langue avancée comme pour i"
+     }
+    }
    },
    {
     "ipa": "ɚ",
@@ -25285,7 +27383,19 @@
       "hant": "耳",
       "pinyin": "ěr"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "er",
+      "guide": "e débil con la punta de la lengua curvada hacia atrás; nuevo para hispanohablantes",
+      "tip": "lengua curvada hacia atrás sin tocar, labios neutros"
+     },
+     "fr": {
+      "name": "er",
+      "guide": "e faible avec la pointe de la langue recourbée; absent du français",
+      "tip": "langue recourbée vers l'arrière sans toucher, lèvres neutres"
+     }
+    }
    },
    {
     "ipa": "ɹ̩",
@@ -25319,7 +27429,19 @@
       "hant": "次",
       "pinyin": "cì"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "vocal de zi",
+      "guide": "zumbido de s prolongado con voz, sin vocal; nuevo para hispanohablantes",
+      "tip": "dientes casi juntos, lengua plana, labios estirados"
+     },
+     "fr": {
+      "name": "voyelle de zi",
+      "guide": "bourdonnement de s prolongé, avec voix, sans voyelle; absent du français",
+      "tip": "dents presque jointes, langue plate, lèvres étirées"
+     }
+    }
    },
    {
     "ipa": "ɻ̩",
@@ -25353,7 +27475,19 @@
       "hant": "日",
       "pinyin": "rì"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "vocal de zhi",
+      "guide": "zumbido con voz tras zh, ch, sh, r, lengua curvada; nuevo para hispanohablantes",
+      "tip": "punta de la lengua curvada hacia atrás sin tocar, labios neutros"
+     },
+     "fr": {
+      "name": "voyelle de zhi",
+      "guide": "bourdonnement avec voix après zh, ch, sh, r, langue recourbée; absent du français",
+      "tip": "pointe de la langue recourbée vers l'arrière sans toucher"
+     }
+    }
    },
    {
     "ipa": "ʊ",
@@ -25387,7 +27521,19 @@
       "hant": "工",
       "pinyin": "gōng"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ong",
+      "guide": "entre o y u españolas, seguida de ng; nuevo para hispanohablantes",
+      "tip": "labios algo redondeados, lengua atrás, termina nasal en ng"
+     },
+     "fr": {
+      "name": "ong",
+      "guide": "entre o et ou fermés, suivi de ng; absent du français",
+      "tip": "lèvres un peu arrondies, langue reculée, finit nasal en ng"
+     }
+    }
    },
    {
     "ipa": "j",
@@ -25421,7 +27567,19 @@
       "hant": "有",
       "pinyin": "yǒu"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "y",
+      "guide": "como la i de 'hielo' (deslizante)",
+      "tip": "lengua alta y adelantada, desliza rápido hacia la vocal"
+     },
+     "fr": {
+      "name": "y",
+      "guide": "comme le y de 'yeux'",
+      "tip": "langue haute et avancée, glisse vite vers la voyelle"
+     }
+    }
    },
    {
     "ipa": "w",
@@ -25455,7 +27613,19 @@
       "hant": "問",
       "pinyin": "wèn"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "w",
+      "guide": "como la u de 'huevo' (deslizante)",
+      "tip": "labios redondeados que se abren rápido hacia la vocal"
+     },
+     "fr": {
+      "name": "w",
+      "guide": "comme 'ou' de 'oui'",
+      "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
+     }
+    }
    },
    {
     "ipa": "ɥ",
@@ -25489,7 +27659,19 @@
       "hant": "遠",
       "pinyin": "yuǎn"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ü deslizante",
+      "guide": "la ü rápida antes de vocal, como en 'yue'; nuevo para hispanohablantes",
+      "tip": "labios en círculo pequeño y lengua adelante, abre rápido"
+     },
+     "fr": {
+      "name": "ü glissé",
+      "guide": "comme 'ui' de 'huit' avant voyelle ('yue')",
+      "tip": "lèvres en petit cercle, langue avancée, s'ouvrent vite"
+     }
+    }
    },
    {
     "ipa": "p",
@@ -25523,7 +27705,19 @@
       "hant": "北",
       "pinyin": "běi"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "b · sin soplo",
+      "guide": "como la p española, sin soplo; en pinyin se escribe b, no la b española",
+      "tip": "labios cerrados que se abren sin expulsar aire"
+     },
+     "fr": {
+      "name": "b · sans souffle",
+      "guide": "comme le p français, sans souffle; en pinyin écrit b, pas le b français",
+      "tip": "lèvres closes qui s'ouvrent sans expulser d'air"
+     }
+    }
    },
    {
     "ipa": "pʰ",
@@ -25558,7 +27752,19 @@
       "hant": "平",
       "pinyin": "píng"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "p · con soplo",
+      "guide": "como la p española con una bocanada fuerte de aire; nuevo para hispanohablantes",
+      "tip": "labios cerrados que se sueltan con soplo; prueba con un papel"
+     },
+     "fr": {
+      "name": "p · soufflé",
+      "guide": "p français suivi d'un fort jet d'air; absent du français",
+      "tip": "lèvres closes relâchées avec souffle; test : feuille de papier"
+     }
+    }
    },
    {
     "ipa": "m",
@@ -25592,7 +27798,19 @@
       "hant": "買",
       "pinyin": "mǎi"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "m",
+      "guide": "igual que la m española",
+      "tip": "labios cerrados, aire por la nariz"
+     },
+     "fr": {
+      "name": "m",
+      "guide": "comme le m français",
+      "tip": "lèvres closes, air par le nez"
+     }
+    }
    },
    {
     "ipa": "f",
@@ -25626,7 +27844,19 @@
       "hant": "方",
       "pinyin": "fāng"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "f",
+      "guide": "igual que la f española",
+      "tip": "dientes superiores sobre el labio inferior"
+     },
+     "fr": {
+      "name": "f",
+      "guide": "comme le f français",
+      "tip": "dents du haut sur la lèvre du bas"
+     }
+    }
    },
    {
     "ipa": "t",
@@ -25660,7 +27890,19 @@
       "hant": "對",
       "pinyin": "duì"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "d · sin soplo",
+      "guide": "como la t española, sin soplo; en pinyin se escribe d, no la d española",
+      "tip": "punta de la lengua tras los dientes, se suelta sin aire"
+     },
+     "fr": {
+      "name": "d · sans souffle",
+      "guide": "comme le t français, sans souffle; en pinyin écrit d, pas le d français",
+      "tip": "pointe de la langue derrière les dents, relâchée sans air"
+     }
+    }
    },
    {
     "ipa": "tʰ",
@@ -25694,7 +27936,19 @@
       "hant": "太",
       "pinyin": "tài"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "t · con soplo",
+      "guide": "como la t española con una bocanada fuerte de aire; nuevo para hispanohablantes",
+      "tip": "punta de la lengua tras los dientes, se suelta con soplo"
+     },
+     "fr": {
+      "name": "t · soufflé",
+      "guide": "t français suivi d'un fort jet d'air; absent du français",
+      "tip": "pointe de la langue derrière les dents, relâchée avec souffle"
+     }
+    }
    },
    {
     "ipa": "n",
@@ -25728,7 +27982,19 @@
       "hant": "難",
       "pinyin": "nán"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "n",
+      "guide": "igual que la n española",
+      "tip": "punta de la lengua tras los dientes superiores"
+     },
+     "fr": {
+      "name": "n",
+      "guide": "comme le n français",
+      "tip": "pointe de la langue derrière les dents du haut"
+     }
+    }
    },
    {
     "ipa": "l",
@@ -25762,7 +28028,19 @@
       "hant": "六",
       "pinyin": "liù"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "l",
+      "guide": "como la l española, clara",
+      "tip": "punta de la lengua tras los dientes superiores"
+     },
+     "fr": {
+      "name": "l",
+      "guide": "comme le l français, clair",
+      "tip": "pointe de la langue derrière les dents du haut"
+     }
+    }
    },
    {
     "ipa": "k",
@@ -25796,7 +28074,19 @@
       "hant": "高",
       "pinyin": "gāo"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "g · sin soplo",
+      "guide": "como la k/c española, sin soplo; en pinyin se escribe g, no la g suave",
+      "tip": "parte trasera de la lengua toca el velo, se suelta sin aire"
+     },
+     "fr": {
+      "name": "g · sans souffle",
+      "guide": "comme le k français, sans souffle; en pinyin écrit g, pas le g français",
+      "tip": "arrière de la langue contre le voile, relâché sans air"
+     }
+    }
    },
    {
     "ipa": "kʰ",
@@ -25830,7 +28120,19 @@
       "hant": "開",
       "pinyin": "kāi"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "k · con soplo",
+      "guide": "como la k española con una bocanada fuerte de aire; nuevo para hispanohablantes",
+      "tip": "parte trasera de la lengua toca el velo, se suelta con soplo"
+     },
+     "fr": {
+      "name": "k · soufflé",
+      "guide": "k français suivi d'un fort jet d'air; absent du français",
+      "tip": "arrière de la langue contre le voile, relâché avec souffle"
+     }
+    }
    },
    {
     "ipa": "x",
@@ -25864,7 +28166,19 @@
       "hant": "回",
       "pinyin": "huí"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "h",
+      "guide": "como la j española de 'jamón'",
+      "tip": "parte trasera de la lengua cerca del velo, aire rozando"
+     },
+     "fr": {
+      "name": "h",
+      "guide": "raclement léger de gorge, proche d'un r français sourd, plus en avant; absent du français",
+      "tip": "arrière de la langue près du voile, l'air frotte"
+     }
+    }
    },
    {
     "ipa": "ŋ",
@@ -25898,7 +28212,19 @@
       "hant": "行",
       "pinyin": "xíng"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ng",
+      "guide": "como la n de 'banco'; también al final de sílaba, sin g",
+      "tip": "parte trasera de la lengua sube al velo; nada de g después"
+     },
+     "fr": {
+      "name": "ng",
+      "guide": "comme 'ng' de 'camping', aussi en fin de syllabe, sans g; absent du français",
+      "tip": "arrière de la langue monte au voile; pas de g ensuite"
+     }
+    }
    },
    {
     "ipa": "tɕ",
@@ -25932,7 +28258,19 @@
       "hant": "幾",
       "pinyin": "jǐ"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "j",
+      "guide": "como la ch española pero con lengua plana y sin soplo; nuevo para hispanohablantes",
+      "tip": "punta de la lengua abajo, labios estirados en sonrisa"
+     },
+     "fr": {
+      "name": "j",
+      "guide": "comme 'tch' de 'tchao' mais langue plate, sans souffle; absent du français",
+      "tip": "pointe de la langue en bas, lèvres étirées en sourire"
+     }
+    }
    },
    {
     "ipa": "tɕʰ",
@@ -25966,7 +28304,19 @@
       "hant": "錢",
       "pinyin": "qián"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "q",
+      "guide": "como j pero con una bocanada de aire; nuevo para hispanohablantes",
+      "tip": "punta de la lengua abajo, labios estirados, suelta con soplo"
+     },
+     "fr": {
+      "name": "q",
+      "guide": "comme j mais avec un jet d'air; absent du français",
+      "tip": "pointe de la langue en bas, lèvres étirées, relâche avec souffle"
+     }
+    }
    },
    {
     "ipa": "ɕ",
@@ -26000,7 +28350,19 @@
       "hant": "學",
       "pinyin": "xué"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "x",
+      "guide": "como 'sh' suave con la lengua plana y labios estirados; nuevo para hispanohablantes",
+      "tip": "punta de la lengua abajo, labios estirados en sonrisa"
+     },
+     "fr": {
+      "name": "x",
+      "guide": "comme 'ch' de 'chat' mais langue plate et lèvres étirées; absent du français",
+      "tip": "pointe de la langue en bas, lèvres étirées en sourire"
+     }
+    }
    },
    {
     "ipa": "ts",
@@ -26034,7 +28396,19 @@
       "hant": "走",
       "pinyin": "zǒu"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "z",
+      "guide": "como 'ts' de 'tsetsé', un solo sonido sin soplo; nuevo para hispanohablantes",
+      "tip": "dientes casi juntos, lengua plana, se suelta sin aire"
+     },
+     "fr": {
+      "name": "z",
+      "guide": "comme 'ts' de 'tsé-tsé', un seul son, sans souffle; absent du français",
+      "tip": "dents presque jointes, langue plate, relâché sans air"
+     }
+    }
    },
    {
     "ipa": "tsʰ",
@@ -26068,7 +28442,19 @@
       "hant": "才",
       "pinyin": "cái"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "c",
+      "guide": "como 'ts' con una bocanada de aire; no es la c española; nuevo para hispanohablantes",
+      "tip": "dientes casi juntos, lengua plana, se suelta con soplo"
+     },
+     "fr": {
+      "name": "c",
+      "guide": "comme 'ts' avec un jet d'air; absent du français",
+      "tip": "dents presque jointes, langue plate, relâché avec souffle"
+     }
+    }
    },
    {
     "ipa": "s",
@@ -26102,7 +28488,19 @@
       "hant": "歲",
       "pinyin": "suì"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "s",
+      "guide": "igual que la s española",
+      "tip": "dientes casi juntos, aire silbante"
+     },
+     "fr": {
+      "name": "s",
+      "guide": "comme le s français",
+      "tip": "dents presque jointes, air qui siffle"
+     }
+    }
    },
    {
     "ipa": "ʈʂ",
@@ -26136,7 +28534,19 @@
       "hant": "照",
       "pinyin": "zhào"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "zh",
+      "guide": "como 'ch' con la punta de la lengua curvada hacia atrás, sin soplo; nuevo para hispanohablantes",
+      "tip": "punta de la lengua curvada hacia el paladar, labios neutros"
+     },
+     "fr": {
+      "name": "zh",
+      "guide": "comme 'tch' avec la pointe de la langue recourbée, sans souffle; absent du français",
+      "tip": "pointe de la langue recourbée vers le palais, lèvres neutres"
+     }
+    }
    },
    {
     "ipa": "ʈʂʰ",
@@ -26170,7 +28580,19 @@
       "hant": "茶",
       "pinyin": "chá"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "ch",
+      "guide": "como zh pero con una bocanada de aire; nuevo para hispanohablantes",
+      "tip": "punta de la lengua curvada hacia el paladar, suelta con soplo"
+     },
+     "fr": {
+      "name": "ch",
+      "guide": "comme zh mais avec un jet d'air; absent du français",
+      "tip": "pointe de la langue recourbée vers le palais, relâche avec souffle"
+     }
+    }
    },
    {
     "ipa": "ʂ",
@@ -26204,7 +28626,19 @@
       "hant": "書",
       "pinyin": "shū"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "sh",
+      "guide": "como 'sh' con la punta de la lengua curvada hacia atrás; nuevo para hispanohablantes",
+      "tip": "punta de la lengua curvada hacia atrás sin tocar, labios neutros"
+     },
+     "fr": {
+      "name": "sh",
+      "guide": "comme 'ch' de 'chat' avec la pointe de la langue recourbée; absent du français",
+      "tip": "pointe de la langue recourbée vers l'arrière sans toucher, lèvres neutres"
+     }
+    }
    },
    {
     "ipa": "ʐ",
@@ -26238,7 +28672,19 @@
       "hant": "熱",
       "pinyin": "rè"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "r",
+      "guide": "como sh pero con voz y lengua curvada; no es la r española; nuevo para hispanohablantes",
+      "tip": "punta de la lengua curvada hacia atrás, garganta vibrando"
+     },
+     "fr": {
+      "name": "r",
+      "guide": "comme j français, avec la langue recourbée; pas le r français; absent du français",
+      "tip": "pointe de la langue recourbée vers l'arrière, voix qui vibre"
+     }
+    }
    },
    {
     "ipa": "˥",
@@ -26272,7 +28718,19 @@
       "hant": "高",
       "pinyin": "gāo"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "tono 1 (alto)",
+      "guide": "nota aguda y plana, como sostener una nota; nuevo para hispanohablantes",
+      "tip": "mandíbula relajada; voz alta y constante, sin subir ni bajar"
+     },
+     "fr": {
+      "name": "ton 1 (haut)",
+      "guide": "note aiguë et plate, tenue; absent du français",
+      "tip": "mâchoire détendue; voix haute et constante, sans monter ni descendre"
+     }
+    }
    },
    {
     "ipa": "˧˥",
@@ -26306,7 +28764,19 @@
       "hant": "人",
       "pinyin": "rén"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "tono 2 (ascendente)",
+      "guide": "sube como al preguntar '¿sí?'; nuevo para hispanohablantes",
+      "tip": "mandíbula relajada; la voz sube de media a alta"
+     },
+     "fr": {
+      "name": "ton 2 (montant)",
+      "guide": "monte comme en posant une question: 'vraiment ?'; absent du français",
+      "tip": "mâchoire détendue; la voix monte du moyen vers l'aigu"
+     }
+    }
    },
    {
     "ipa": "˨˩˦",
@@ -26340,7 +28810,19 @@
       "hant": "水",
       "pinyin": "shuǐ"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "tono 3 (descendente-ascendente)",
+      "guide": "baja bajo y sube un poco; en habla normal solo baja; nuevo para hispanohablantes",
+      "tip": "mandíbula relajada; voz baja y grave, sin tensión"
+     },
+     "fr": {
+      "name": "ton 3 (descendant-montant)",
+      "guide": "descend bas puis remonte un peu; en parole normale, il descend seulement; absent du français",
+      "tip": "mâchoire détendue; voix basse et grave, sans tension"
+     }
+    }
    },
    {
     "ipa": "˥˩",
@@ -26374,7 +28856,19 @@
       "hant": "看",
       "pinyin": "kàn"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "tono 4 (descendente)",
+      "guide": "cae de alto a bajo, seco, como una orden '¡ya!'; nuevo para hispanohablantes",
+      "tip": "mandíbula se suelta rápido; voz cae con decisión"
+     },
+     "fr": {
+      "name": "ton 4 (descendant)",
+      "guide": "tombe de haut en bas, sec, comme un ordre: 'stop !'; absent du français",
+      "tip": "mâchoire qui se relâche vite; la voix chute avec fermeté"
+     }
+    }
    },
    {
     "ipa": "·",
@@ -26408,7 +28902,19 @@
       "hant": "了",
       "pinyin": "le"
      }
-    ]
+    ],
+    "local": {
+     "es": {
+      "name": "tono neutro",
+      "guide": "sílaba ligera y corta, sin acento, tono según la sílaba anterior; nuevo para hispanohablantes",
+      "tip": "mandíbula y labios relajados, sílaba muy breve"
+     },
+     "fr": {
+      "name": "ton neutre",
+      "guide": "syllabe légère et brève, sans accent, hauteur selon la syllabe précédente; absent du français",
+      "tip": "mâchoire et lèvres détendues, syllabe très brève"
+     }
+    }
    }
   ]
  }

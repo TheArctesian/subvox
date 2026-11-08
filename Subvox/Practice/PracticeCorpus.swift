@@ -96,7 +96,16 @@ struct PracticeCorpus: Decodable {
     struct Sound: Decodable, Identifiable, Hashable {
         var ipa: String; var group: String; var name: String; var guide: String
         var tip: String? = nil; var say: String; var examples: [Line]
+        /// The same guide written for speakers of another language ("es", "fr", "zh-Hans", "zh-Hant").
+        struct Local: Decodable, Hashable { var name: String; var guide: String; var tip: String? }
+        var local: [String: Local]? = nil
         var id: String { ipa }
+
+        /// Name, guide and tip for someone whose own language is `speaker` ("en", "fr", "es", "zh").
+        func text(for speaker: String) -> Local {
+            let key = speaker == "zh" ? (Locale.preferredLanguages.first?.hasPrefix("zh-Hant") == true ? "zh-Hant" : "zh-Hans") : speaker
+            return local?[key] ?? Local(name: name, guide: guide, tip: tip)
+        }
     }
     struct MinimalPairs: Decodable, Identifiable, Hashable {
         var language: String; var contrast: String; var sets: [[Line]]

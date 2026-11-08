@@ -624,7 +624,7 @@ struct SoundsView: View {
         }
         .onChange(of: model.language) { selection = nil }
         .onChange(of: selection) {
-            if let sound { AccessibilityNotification.Announcement(String(localized: "Selected \(sound.name). \(sound.guide)")).post() }
+            if let sound { AccessibilityNotification.Announcement(String(localized: "Selected \(sound.text(for: model.nativeLanguage).name). \(sound.text(for: model.nativeLanguage).guide)")).post() }
         }
     }
 
@@ -640,8 +640,8 @@ struct SoundsView: View {
                                                             .offset(x: 14, y: -6).accessibilityHidden(true)
                                                     }
                                                 }
-                                            if s.name != s.ipa {
-                                                Text(s.name).font(.caption).foregroundStyle(.secondary).lineLimit(2).multilineTextAlignment(.center)
+                                            if s.text(for: model.nativeLanguage).name != s.ipa {
+                                                Text(s.text(for: model.nativeLanguage).name).font(.caption).foregroundStyle(.secondary).lineLimit(2).multilineTextAlignment(.center)
                                             }
                                         }
                                         .frame(width: 72, height: 62).padding(.horizontal, 2)
@@ -649,25 +649,26 @@ struct SoundsView: View {
                                                     in: RoundedRectangle(cornerRadius: 8))
                                     }
                                     .buttonStyle(.plain)
-                                    .accessibilityLabel(prefix + "\(s.name), \(s.guide)" + (progress.practised(s, language: language) ? String(localized: ", practised") : ""))
+                                    .accessibilityLabel(prefix + "\(s.text(for: model.nativeLanguage).name), \(s.text(for: model.nativeLanguage).guide)" + (progress.practised(s, language: language) ? String(localized: ", practised") : ""))
                                     .accessibilityAddTraits(s.id == sound?.id ? .isSelected : [])
                                 }
                             }
     }
 
     private func detail(_ s: PracticeCorpus.Sound, language: AppLanguage) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
+        let local = s.text(for: model.nativeLanguage)
+        return VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .firstTextBaseline, spacing: 16) {
-                Text("/\(s.ipa)/").font(.ipa(56, relativeTo: .largeTitle)).accessibilityLabel("Sound: \(s.name)")
+                Text("/\(s.ipa)/").font(.ipa(56, relativeTo: .largeTitle)).accessibilityLabel("Sound: \(local.name)")
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(s.name).font(.title2.weight(.semibold)).accessibilityHidden(true)
-                    Text(s.guide).foregroundStyle(.secondary)
+                    Text(local.name).font(.title2.weight(.semibold)).accessibilityHidden(true)
+                    Text(local.guide).foregroundStyle(.secondary)
                 }
             }
             Button { Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
                 Label("Hear the Sound", systemImage: "speaker.wave.2.fill")
             }.controlSize(.large)
-            if let tip = s.tip { Label(tip, systemImage: "mouth").font(.body) }
+            if let tip = local.tip { Label(tip, systemImage: "mouth").font(.body) }
             Divider()
             Text("Examples").font(.headline).accessibilityAddTraits(.isHeader)
             ForEach(s.examples, id: \.self) { line in
