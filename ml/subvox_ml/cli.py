@@ -457,6 +457,9 @@ def main():
     p=sub.add_parser("evaluate-fresh");p.add_argument("--session",required=True)
     p=sub.add_parser("rank");p.add_argument("--run",required=True);p.add_argument("--output",required=True)
     p=sub.add_parser("closed-set");p.add_argument("--dataset",required=True);p.add_argument("--output",required=True);p.add_argument("--permutations",type=int,default=1000)
+    p=sub.add_parser("export-community");p.add_argument("--root",required=True);p.add_argument("--output",required=True)
+    p.add_argument("--contributor",required=True);p.add_argument("--consent-version",required=True);p.add_argument("--prompts-dir");p.add_argument("--app-version",default="0.1.0")
+    p=sub.add_parser("validate-community");p.add_argument("--session",required=True);p.add_argument("--prompts-dir")
     p=sub.add_parser("prepare-teachers");p.add_argument("--dataset",required=True);p.add_argument("--base-run",required=True);p.add_argument("--output",required=True)
     args=parser.parse_args()
     if args.command=="prepare":
@@ -472,6 +475,13 @@ def main():
         examples,_,manifest=load_dataset(args.dataset)
         result=dict(closed_set(examples,permutations=args.permutations),dataset=str(args.dataset),examples_hash=manifest["examples_hash"])
         atomic_json(output,result)
+    elif args.command=="export-community":
+        from .community_export import export_sessions
+        result=[str(p) for p in export_sessions(args.root,args.output,args.contributor,args.consent_version,args.prompts_dir,args.app_version)]
+    elif args.command=="validate-community":
+        from .community_export import validate_session,load_prompt_index,find_prompts_dir
+        index,heldout=load_prompt_index(args.prompts_dir or find_prompts_dir())
+        result=dict(session=args.session,problems=validate_session(args.session,index,heldout))
     elif args.command=="prepare-teachers":
         from .teachers import enrich
         result=enrich(args.dataset,args.base_run,args.output)

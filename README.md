@@ -165,6 +165,13 @@ With a single example, only the camera identifies sentences, and equal-weight fu
 
 Each row shows AirPods, camera and fused results with chance, length-only and p-value controls. Record sessions on different days, ideally reseating the AirPods, before trusting the other-session row.
 
+### Community reading corpus and export
+
+`docs/community-dataset-design.md` is the plan for a shared, opt-in dataset. Steps 1–3 are local:
+- **Corpus build:** `python3 Tools/corpus/community.py build` turns the public-domain texts in `Corpus/community/sources.tsv` into easy-to-say prompts in passages, plus a 40-sentence calibration set and a held-out set. `python3 Tools/corpus/community.py assign --counts counts.json` picks the passages that best fill diphone gaps.
+- **Recording:** Train → **Read from: Community passages** records the calibration set, then the assigned passages, spoken then mouthed or mouthed only.
+- **Export:** `subvox-ml export-community --root "$HOME/Library/Application Support/Subvox" --output out --contributor local-test --consent-version draft` writes the dataset layout. `subvox-ml validate-community --session out/data/local-test/<id>` checks it. Nothing is uploaded.
+
 ### Reproduce locally
 
 Artifacts live under `~/Library/Application Support/Subvox/SequenceLearning/`: dataset snapshots, model weights, pronunciation snapshots, feature schema, training/development identities, source hashes, coverage, training curves, seeds, dependency versions, source-code snapshots and reports. `initial-dataset`, `initial-neural-run`, `initial-teacher-dataset` and `initial-teacher-run` contain the measured runs above. The app exports a fresh `language.json` from the production Swift graph when preparing a dataset; an earlier snapshot can be reused for a repeat with identical pronunciation proposals.

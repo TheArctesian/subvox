@@ -1,6 +1,6 @@
 # Community dataset and phoneme model: design
 
-Status: draft for review. Nothing here is built yet.
+Status: build steps 1–3 are implemented (see "Build status" at the end). Steps 4–7 are not built yet.
 
 ## Goal
 
@@ -28,7 +28,13 @@ The mode can be changed at any time in Settings. Changing it doesn't move data t
 ### Hugging Face mode
 - OAuth with PKCE through the system browser (`ASWebAuthenticationSession`), using a registered Hugging Face OAuth app. The token is stored in the Keychain and refreshed when it expires.
 - Each session is uploaded as one commit with `create_pr=true` on the dataset. Large files go through Hugging Face's large-file storage.
-- **To verify before building:** the minimum OAuth scope that lets someone open a PR on a dataset they don't own. The hope is a discussions-write scope rather than full repo write.
+- **OAuth scope: still to verify with a live test.** Checked against the Hugging Face docs on 7 Nov 2026 (`docs/hub/oauth`, `repositories-pull-requests-discussions`, `huggingface_hub` upload guide, `security-tokens`):
+  - `write-discussions` is the only scope documented for opening PRs ("Open discussions and Pull Requests on behalf of the user"). Opening a PR on a *private* repo also needs `read-repos`.
+  - The docs do **not** say whether `write-discussions` alone allows a PR that carries commits or large (LFS/Xet) files.
+  - `write-repos` covers writing only to "the user's personal repos", so it may not apply to a dataset someone else owns.
+  - Nothing says whether a contributor must accept a gated dataset's terms before opening a PR.
+  - **Test before building step 4:** with a token that has only `write-discussions`, call `create_commit(create_pr=True)` on a public test dataset you don't own, with one small file and one LFS-tracked file. Then repeat on a gated test dataset with an account that hasn't accepted the gate. If either fails with 403, add `write-repos` and test again.
+  - Resuming an upload: re-running `create_pr=True` opens a *second* PR. Resume with `revision="refs/pr/N"`.
 
 ### Anonymous mode
 - The app sends the session to a **relay** (a Hugging Face Space). The relay holds a bot token and opens the PR under the bot account.
@@ -181,9 +187,27 @@ Decision rules:
 
 Steps 1–3 are fully local and useful for your own recordings before anyone else installs the app.
 
+## Build status
+
+- **Step 1 (done):**
+  - `Corpus/community/sources.tsv` lists 29 sources. The build refuses any source that isn't public domain in both the UK and US for the current year.
+  - `Tools/corpus/community.py` builds `prompts-v1.jsonl` (7,395 prompts in 3,289 passages), `heldout-v1.jsonl` (863 prompts in 390 passages), `calibration-v1.jsonl` (40 sentences) and `build-report-v1.json`.
+  - Tests: `Tools/corpus/test_community.py`.
+  - Not done: a human read-through of the calibration set and a sample of passages before launch.
+- **Step 2 (done, in local paired collection):**
+  - Train → **Read from: Community passages** records the calibration set first, then passages chosen by `CommunityCorpus.assign`, using the same rule as the Python pipeline. The chosen passages are checked against the Python output in `CommunityReadingTests`.
+  - Pairs are spoken then mouthed, or mouthed only. Mouthed-only takes skip local Whisper, so they never enter the personal neural datasets' Whisper-based admission. They do export to the community layout.
+  - Local diphone counts come from this user's own mouthed takes. The validator-published counts arrive with step 5.
+- **Step 3 (done):**
+  - `subvox-ml export-community --root … --output … --contributor … --consent-version …` writes the dataset layout from section 4.
+  - `subvox-ml validate-community --session …` runs the schema and privacy check that the validator Space should reuse. It rejects unexpected keys, paths, held-out prompts, unknown prompts and non-increasing times.
+  - Session and take IDs are one-way hashes, so re-exporting gives the same IDs.
+  - Not exported yet: audio, `alignment.jsonl` and device models (left `null` until the app records them).
+  - When step 4 calls the exporter from the app, it must pass `--prompts-dir` pointing at the bundled `Corpus/community`, because the runtime copy holds only the distractor bank.
+
 ## Open questions
 
-- The minimum Hugging Face OAuth scope for PR-based contribution (step 4).
+- The minimum Hugging Face OAuth scope for PR-based contribution (step 4); docs checked, live test pending (section 1).
 - Where to host the relay, and its abuse controls (step 5).
 - Whether audio is uploaded or aligned elsewhere (5.4).
 - When to add mouth crops (5.3), decided from the scaling check.
