@@ -241,7 +241,7 @@ struct SentenceTrainingView: View {
         let status=workflow.phase == .ready ? "Ready":resting ? "Relax":workflow.phase == .ended ? "Saved":"Recording"
         return RecordingViewport {
             VStack(spacing:8) {
-                HStack {Text("Sentence recording").font(.headline);Spacer();Text("\(min(workflow.index+1,workflow.total)) of \(workflow.total)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)}
+                HStack {Text(recordingTitle).font(.headline);Spacer();Text("\(min(workflow.index+1,workflow.total)) of \(workflow.total)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)}
                 ProgressView(value:Double(workflow.index),total:Double(max(1,workflow.total))).tint(color)
             }
         } prompt: {
@@ -253,8 +253,10 @@ struct SentenceTrainingView: View {
                         if let passage = workflow.currentPassageLabel {
                             Text(passage).font(.callout.italic()).foregroundStyle(.secondary)
                         }
-                        Label(workflow.currentCondition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.currentCondition == .normal ? "speaker.wave.2":"mouth")
-                            .font(.title3.weight(.medium)).foregroundStyle(color)
+                        // Words and a distinct symbol for each phase, so it never depends on colour or sound.
+                        Label(resting ? "REST" : workflow.currentCondition == .normal ? "SPEAK ALOUD" : "MOUTH SILENTLY",
+                              systemImage: resting ? "pause.circle" : workflow.currentCondition == .normal ? "speaker.wave.2.fill" : "mouth.fill")
+                            .font(.title2.weight(.bold)).foregroundStyle(color)
                         WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
                         Text(resting ? "Relax your mouth. Wait for the recording cue.":workflow.phase == .ended ? "Take saved. Press Space for the next one, or redo any mistake.":workflow.guideSecondsRemaining == nil ? "Finished? Press Space." : "Follow the highlighted words.")
                             .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
@@ -270,11 +272,22 @@ struct SentenceTrainingView: View {
                     }.buttonStyle(.borderedProminent).disabled(!workflow.canAdvance)
                 }.controlSize(.large).frame(maxWidth:.infinity)
                 HStack(spacing:16) {
-                    Text("Space or → start, finish or next  ·  ← redo").font(.caption).foregroundStyle(.tertiary)
+                    Text("Space or → start, finish or next  ·  ← redo").font(.callout).foregroundStyle(.secondary)
                     Button("Stop and save",action:workflow.stop).buttonStyle(.borderless).font(.caption).foregroundStyle(.secondary)
                 }
             }.frame(maxWidth:.infinity)
         } motion: {LiveMotionPanel(plotHeight:44)}
+    }
+
+    private var recordingTitle: String {
+        switch model.sentenceTraining.currentKind {
+        case .sound: "Sounds"
+        case .speech: "Speech & Poetry"
+        case .drill: "Language drill"
+        case .minimalPair: "Minimal Pairs"
+        case .freeText: "Free Practice"
+        default: "Reading"
+        }
     }
 
     /// The countdown follows the word highlighting; after the last word the take waits for Space,

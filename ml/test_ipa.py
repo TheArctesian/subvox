@@ -64,6 +64,21 @@ class Mandarin(unittest.TestCase):
         self.assertEqual([s["pinyin"] for s in ipa.mandarin_syllables("銀行")], ["yin2", "hang2"])
         self.assertEqual(ipa.pinyin_marks("我們去銀行。"), "wǒ men qù yín háng")
 
+    def test_everyday_readings_pypinyin_gets_wrong(self):
+        self.assertEqual(ipa.pinyin_marks("两只狗"), "liǎng zhī gǒu")      # measure word, not "only"
+        self.assertEqual(ipa.pinyin_marks("只要"), "zhǐ yào")
+        self.assertEqual(ipa.pinyin_marks("他跑得很快"), "tā pǎo de hěn kuài")
+        self.assertEqual(ipa.pinyin_marks("我得走了"), "wǒ děi zǒu le")
+        self.assertEqual(ipa.pinyin_marks("拿着手机"), "ná zhe shǒu jī")
+        self.assertEqual(ipa.pinyin_marks("我睡着了"), "wǒ shuì zháo le")
+        self.assertEqual(ipa.pinyin_marks("一本书"), "yī běn shū")        # citation tones by default
+
+    def test_tone_change_drills_show_spoken_tones(self):
+        self.assertEqual(ipa.pinyin_marks("一天", sandhi=True), "yì tiān")
+        self.assertEqual(ipa.pinyin_marks("一个", sandhi=True), "yí gè")
+        self.assertEqual(ipa.pinyin_marks("十一点", sandhi=True), "shí yī diǎn")
+        self.assertEqual(ipa.pinyin_marks("不对", sandhi=True), "bú duì")
+
     def test_tone_restoration_uses_phrase_context(self):
         # Citation tones (no third-tone sandhi), as in the labels. Homophones such as yinhang
         # (银行 / 引航) are ambiguous without characters; the dictionary placeholder can't settle those.

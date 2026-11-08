@@ -93,7 +93,11 @@ MINIMAL_PAIRS = [
 SPOKEN = {"gettysburg": "19 November 1863", "tilbury": "9 August 1588", "aint-i-a-woman": "29 May 1851"}
 
 
-def entry(text, language):
+# Tone-change drills show the spoken tones of 一 and 不; everything else shows dictionary tones.
+SANDHI_DRILLS = {"zh-yi-tone-change", "zh-bu-tone-change"}
+
+
+def entry(text, language, sandhi=False):
     """A line or phrase. Mandarin text is a (simplified, traditional) pair; IPA and pinyin come
     from the simplified form, which pypinyin reads with the most reliable phrase context."""
     hant = None
@@ -101,9 +105,8 @@ def entry(text, language):
         text, hant = text
     item = dict(text=text, ipa=["".join(word) for word in ipa.phonemize(text, language)])
     if language == "zh":
-        from pypinyin import Style, pinyin
         item["hant"] = hant or text
-        item["pinyin"] = " ".join(p[0] for p in pinyin("".join(c for c in text if "\u4e00" <= c <= "\u9fff"), style=Style.TONE))
+        item["pinyin"] = ipa.pinyin_marks(text, sandhi)
     return item
 
 
@@ -140,11 +143,11 @@ def glossed(word, language):
     return item
 
 
-def phrase(p, language):
+def phrase(p, language, sandhi=False):
     """A drill phrase: a string, or {"hans", "hant"} / {"text"} with an optional English gloss."""
     if isinstance(p, str):
-        return entry(p, language)
-    item = entry((p["hans"], p["hant"]) if "hans" in p else p["text"], language)
+        return entry(p, language, sandhi)
+    item = entry((p["hans"], p["hant"]) if "hans" in p else p["text"], language, sandhi)
     if p.get("gloss"):
         item["gloss"] = p["gloss"]
     return item
@@ -226,7 +229,7 @@ def build(year=2026):
                            lines=[entry(line, language) for line in lines]))
     drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
                    note_hant=traditional_title(meta.get("note") or "", meta) if language == "zh" and meta.get("note") else None,
-                   phrases=[phrase(p, language) for p in phrases], **meta)
+                   phrases=[phrase(p, language, did in SANDHI_DRILLS) for p in phrases], **meta)
               for did, language, title, phrases, meta in load_drills()]
     pairs = [dict(language=language, contrast=contrast, sets=[[glossed(w, language) for w in group] for group in groups])
              for language, contrast, groups in MINIMAL_PAIRS]

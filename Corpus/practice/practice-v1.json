@@ -3801,7 +3801,7 @@
       "ʐən"
      ],
      "hant": "空山不見人，",
-     "pinyin": "kōng shān bú jiàn rén"
+     "pinyin": "kōng shān bù jiàn rén"
     },
     {
      "text": "但闻人语响。",
@@ -7878,7 +7878,7 @@
       "ʂəŋ"
      ],
      "hant": "她不是醫生",
-     "pinyin": "tā bú shì yī shēng"
+     "pinyin": "tā bù shì yī shēng"
     },
     {
      "text": "这是茶",
@@ -7951,7 +7951,7 @@
       "kɤ"
      ],
      "hant": "我有一個哥哥",
-     "pinyin": "wǒ yǒu yí gè gē gē"
+     "pinyin": "wǒ yǒu yī gè gē gē"
     },
     {
      "text": "我没有姐姐",
@@ -8599,7 +8599,7 @@
       "mei"
      ],
      "hant": "我有一個妹妹",
-     "pinyin": "wǒ yǒu yí gè mèi mèi"
+     "pinyin": "wǒ yǒu yī gè mèi mèi"
     },
     {
      "text": "她是我妈妈",
@@ -8845,7 +8845,7 @@
       "ʐən"
      ],
      "hant": "一個人",
-     "pinyin": "yí gè rén"
+     "pinyin": "yī gè rén"
     },
     {
      "text": "三个学生",
@@ -8951,7 +8951,7 @@
       "kou"
      ],
      "hant": "兩隻狗",
-     "pinyin": "liǎng zhǐ gǒu"
+     "pinyin": "liǎng zhī gǒu"
     },
     {
      "text": "一件衣服",
@@ -9078,7 +9078,7 @@
       "njau"
      ],
      "hant": "那隻鳥",
-     "pinyin": "nà zhǐ niǎo"
+     "pinyin": "nà zhī niǎo"
     },
     {
      "text": "那件事",
@@ -9132,7 +9132,7 @@
       "ɚ"
      ],
      "hant": "一點兒",
-     "pinyin": "yì diǎn ér"
+     "pinyin": "yī diǎn ér"
     },
     {
      "text": "一些书",
@@ -9732,12 +9732,12 @@
       "ʂou",
       "li",
       "na",
-      "ʈʂwo",
+      "ʈʂɤ",
       "ʂou",
       "tɕi"
      ],
      "hant": "手裡拿著手機",
-     "pinyin": "shǒu lǐ ná zhuó shǒu jī"
+     "pinyin": "shǒu lǐ ná zhe shǒu jī"
     }
    ],
    "level": "HSK3",
@@ -9885,7 +9885,7 @@
       "ʂəŋ"
      ],
      "hant": "我不是學生",
-     "pinyin": "wǒ bú shì xué shēng"
+     "pinyin": "wǒ bù shì xué shēng"
     },
     {
      "text": "我没有钱",
@@ -9906,7 +9906,7 @@
       "xwei"
      ],
      "hant": "我不會",
-     "pinyin": "wǒ bú huì"
+     "pinyin": "wǒ bù huì"
     },
     {
      "text": "我没看见",
@@ -10047,7 +10047,7 @@
       "ʂəŋ"
      ],
      "hant": "你是不是學生",
-     "pinyin": "nǐ shì bú shì xué shēng"
+     "pinyin": "nǐ shì bù shì xué shēng"
     },
     {
      "text": "你去不去",
@@ -10091,7 +10091,7 @@
       "twei"
      ],
      "hant": "對不對",
-     "pinyin": "duì bú duì"
+     "pinyin": "duì bù duì"
     },
     {
      "text": "你喜欢不喜欢中文",
@@ -10158,10 +10158,10 @@
      "ipa": [
       "tʰa",
       "ʂɻ̩",
-      "ʂwei"
+      "ʂei"
      ],
      "hant": "他是誰",
-     "pinyin": "tā shì shuí"
+     "pinyin": "tā shì shéi"
     },
     {
      "text": "你去哪儿",
@@ -10287,12 +10287,12 @@
     {
      "text": "谁来了",
      "ipa": [
-      "ʂwei",
+      "ʂei",
       "lai",
       "lɤ"
      ],
      "hant": "誰來了",
-     "pinyin": "shuí lái le"
+     "pinyin": "shéi lái le"
     },
     {
      "text": "你想喝什么",
@@ -10472,7 +10472,7 @@
       "tɕi"
      ],
      "hant": "不要忘記",
-     "pinyin": "bú yào wàng jì"
+     "pinyin": "bù yào wàng jì"
     },
     {
      "text": "请不要抽烟",
@@ -10484,7 +10484,7 @@
       "jɛn"
      ],
      "hant": "請不要抽煙",
-     "pinyin": "qǐng bú yào chōu yān"
+     "pinyin": "qǐng bù yào chōu yān"
     },
     {
      "text": "别客气",
@@ -10870,7 +10870,7 @@
       "tɕjɛn"
      ],
      "hant": "看得見",
-     "pinyin": "kàn dé jiàn"
+     "pinyin": "kàn de jiàn"
     },
     {
      "text": "看不见",
@@ -10880,7 +10880,7 @@
       "tɕjɛn"
      ],
      "hant": "看不見",
-     "pinyin": "kàn bú jiàn"
+     "pinyin": "kàn bù jiàn"
     },
     {
      "text": "我买不起",
@@ -10925,7 +10925,7 @@
       "ma"
      ],
      "hant": "你做得完嗎",
-     "pinyin": "nǐ zuò dé wán ma"
+     "pinyin": "nǐ zuò de wán ma"
     }
    ],
    "level": "HSK4",
@@ -10950,7 +10950,7 @@
       "kʰwai"
      ],
      "hant": "他跑得很快",
-     "pinyin": "tā pǎo dé hěn kuài"
+     "pinyin": "tā pǎo de hěn kuài"
     },
     {
      "text": "她说得很好",
@@ -10962,7 +10962,7 @@
       "xau"
      ],
      "hant": "她說得很好",
-     "pinyin": "tā shuō dé hěn hǎo"
+     "pinyin": "tā shuō de hěn hǎo"
     },
     {
      "text": "你写得真好",
@@ -10974,7 +10974,7 @@
       "xau"
      ],
      "hant": "你寫得真好",
-     "pinyin": "nǐ xiě dé zhēn hǎo"
+     "pinyin": "nǐ xiě de zhēn hǎo"
     },
     {
      "text": "我做得不好",
@@ -10986,7 +10986,7 @@
       "xau"
      ],
      "hant": "我做得不好",
-     "pinyin": "wǒ zuò dé bù hǎo"
+     "pinyin": "wǒ zuò de bù hǎo"
     },
     {
      "text": "他说中文说得很流利",
@@ -11002,7 +11002,7 @@
       "li"
      ],
      "hant": "他說中文說得很流利",
-     "pinyin": "tā shuō zhōng wén shuō dé hěn liú lì"
+     "pinyin": "tā shuō zhōng wén shuō de hěn liú lì"
     },
     {
      "text": "她唱歌唱得好听",
@@ -11016,7 +11016,7 @@
       "tʰiŋ"
      ],
      "hant": "她唱歌唱得好聽",
-     "pinyin": "tā chàng gē chàng dé hǎo tīng"
+     "pinyin": "tā chàng gē chàng de hǎo tīng"
     },
     {
      "text": "你来得太早了",
@@ -11041,7 +11041,7 @@
       "wan"
      ],
      "hant": "我睡得很晚",
-     "pinyin": "wǒ shuì dé hěn wǎn"
+     "pinyin": "wǒ shuì de hěn wǎn"
     }
    ],
    "level": "HSK3",
@@ -11083,7 +11083,7 @@
       "ʂɻ̩"
      ],
      "hant": "我等了你一個小時",
-     "pinyin": "wǒ děng le nǐ yí gè xiǎo shí"
+     "pinyin": "wǒ děng le nǐ yī gè xiǎo shí"
     },
     {
      "text": "他睡了八个小时",
@@ -11139,7 +11139,7 @@
       "ɕja"
      ],
      "hant": "請等一下",
-     "pinyin": "qǐng děng yí xià"
+     "pinyin": "qǐng děng yī xià"
     },
     {
      "text": "我去过两次",
@@ -11490,7 +11490,7 @@
       "kʰwai"
      ],
      "hant": "我跑得比他快",
-     "pinyin": "wǒ pǎo dé bǐ tā kuài"
+     "pinyin": "wǒ pǎo de bǐ tā kuài"
     },
     {
      "text": "她比我忙",
@@ -11600,7 +11600,7 @@
       "kʰwai"
      ],
      "hant": "他沒有我跑得快",
-     "pinyin": "tā méi yǒu wǒ pǎo dé kuài"
+     "pinyin": "tā méi yǒu wǒ pǎo de kuài"
     },
     {
      "text": "北京没有上海大",
@@ -11716,7 +11716,7 @@
       "jaŋ"
      ],
      "hant": "我的手機跟你的不一樣",
-     "pinyin": "wǒ de shǒu jī gēn nǐ de bù yí yàng"
+     "pinyin": "wǒ de shǒu jī gēn nǐ de bù yī yàng"
     },
     {
      "text": "她和妈妈一样漂亮",
@@ -11822,12 +11822,12 @@
      "ipa": [
       "ʈʂɤ",
       "ʂɻ̩",
-      "ʂwei",
+      "ʂei",
       "tswo",
       "tɤ"
      ],
      "hant": "這是誰做的",
-     "pinyin": "zhè shì shuí zuò de"
+     "pinyin": "zhè shì shéi zuò de"
     },
     {
      "text": "我不是一个人来的",
@@ -11842,7 +11842,7 @@
       "tɤ"
      ],
      "hant": "我不是一個人來的",
-     "pinyin": "wǒ bú shì yí gè rén lái de"
+     "pinyin": "wǒ bù shì yī gè rén lái de"
     },
     {
      "text": "她是跟朋友一起去的",
@@ -11858,7 +11858,7 @@
       "tɤ"
      ],
      "hant": "她是跟朋友一起去的",
-     "pinyin": "tā shì gēn péng yǒu yì qǐ qù de"
+     "pinyin": "tā shì gēn péng yǒu yī qǐ qù de"
     }
    ],
    "level": "HSK3",
@@ -11895,7 +11895,7 @@
       "jʊŋ"
      ],
      "hant": "我不會游泳",
-     "pinyin": "wǒ bú huì yóu yǒng"
+     "pinyin": "wǒ bù huì yóu yǒng"
     },
     {
      "text": "你能来吗",
@@ -12001,12 +12001,12 @@
      "text": "我得走了",
      "ipa": [
       "wo",
-      "tɤ",
+      "tei",
       "tsou",
       "lɤ"
      ],
      "hant": "我得走了",
-     "pinyin": "wǒ dé zǒu le"
+     "pinyin": "wǒ děi zǒu le"
     },
     {
      "text": "我们必须早点儿走",
@@ -12039,13 +12039,13 @@
      "text": "我得去医院",
      "ipa": [
       "wo",
-      "tɤ",
+      "tei",
       "tɕʰy",
       "i",
       "ɥɛn"
      ],
      "hant": "我得去醫院",
-     "pinyin": "wǒ dé qù yī yuàn"
+     "pinyin": "wǒ děi qù yī yuàn"
     },
     {
      "text": "你不应该这样说",
@@ -12182,7 +12182,7 @@
       "tɕʰy"
      ],
      "hant": "我們週末一起去",
-     "pinyin": "wǒ men zhōu mò yì qǐ qù"
+     "pinyin": "wǒ men zhōu mò yī qǐ qù"
     }
    ],
    "level": "HSK1",
@@ -12478,7 +12478,7 @@
       "ɚ"
      ],
      "hant": "便宜一點兒",
-     "pinyin": "pián yi yì diǎn ér"
+     "pinyin": "pián yi yī diǎn ér"
     },
     {
      "text": "请说慢一点儿",
@@ -12491,7 +12491,7 @@
       "ɚ"
      ],
      "hant": "請說慢一點兒",
-     "pinyin": "qǐng shuō màn yì diǎn ér"
+     "pinyin": "qǐng shuō màn yī diǎn ér"
     },
     {
      "text": "我有点儿累",
@@ -12529,7 +12529,7 @@
       "ɚ"
      ],
      "hant": "再來一點兒",
-     "pinyin": "zài lái yì diǎn ér"
+     "pinyin": "zài lái yī diǎn ér"
     }
    ],
    "level": "HSK2",
@@ -12602,7 +12602,7 @@
       "kɤ"
      ],
      "hant": "我還有一個",
-     "pinyin": "wǒ hái yǒu yí gè"
+     "pinyin": "wǒ hái yǒu yī gè"
     },
     {
      "text": "她也有两个姐姐",
@@ -12743,7 +12743,7 @@
       "tsou"
      ],
      "hant": "一直走",
-     "pinyin": "yì zhí zǒu"
+     "pinyin": "yī zhí zǒu"
     },
     {
      "text": "往右拐",
@@ -12850,7 +12850,7 @@
       "pai"
      ],
      "hant": "一百",
-     "pinyin": "yì bǎi"
+     "pinyin": "yī bǎi"
     }
    ],
    "level": "HSK1",
@@ -12874,7 +12874,7 @@
       "u"
      ],
      "hant": "一百零五",
-     "pinyin": "yì bǎi líng wǔ"
+     "pinyin": "yī bǎi líng wǔ"
     },
     {
      "text": "一百二十",
@@ -12885,7 +12885,7 @@
       "ʂɻ̩"
      ],
      "hant": "一百二十",
-     "pinyin": "yì bǎi èr shí"
+     "pinyin": "yī bǎi èr shí"
     },
     {
      "text": "一千五百",
@@ -13101,7 +13101,7 @@
       "xau"
      ],
      "hant": "一月一號",
-     "pinyin": "yí yuè yī hào"
+     "pinyin": "yī yuè yī hào"
     },
     {
      "text": "十二月二十五号",
@@ -13261,7 +13261,7 @@
       "tɕjau"
      ],
      "hant": "他晚上十一點睡覺",
-     "pinyin": "tā wǎn shàng shí yì diǎn shuì jiào"
+     "pinyin": "tā wǎn shàng shí yī diǎn shuì jiào"
     }
    ],
    "level": "HSK1",
@@ -13680,7 +13680,7 @@
       "tʰjɛn"
      ],
      "hant": "一天",
-     "pinyin": "yī tiān"
+     "pinyin": "yì tiān"
     },
     {
      "text": "一年",
@@ -13689,7 +13689,7 @@
       "njɛn"
      ],
      "hant": "一年",
-     "pinyin": "yī nián"
+     "pinyin": "yì nián"
     },
     {
      "text": "一起",
@@ -13716,7 +13716,7 @@
       "jaŋ"
      ],
      "hant": "一樣",
-     "pinyin": "yī yàng"
+     "pinyin": "yí yàng"
     },
     {
      "text": "一半",
@@ -13801,7 +13801,7 @@
       "tɕʰy"
      ],
      "hant": "不去",
-     "pinyin": "bù qù"
+     "pinyin": "bú qù"
     },
     {
      "text": "不要",
@@ -16870,7 +16870,7 @@
       "ɕje"
      ],
      "hant": "不要辣，謝謝。",
-     "pinyin": "bú yào là xiè xiè",
+     "pinyin": "bù yào là xiè xiè",
      "gloss": "No spice, thanks."
     },
     {
@@ -17097,7 +17097,7 @@
       "ma"
      ],
      "hant": "能再便宜一點嗎？",
-     "pinyin": "néng zài pián yi yì diǎn ma",
+     "pinyin": "néng zài pián yi yī diǎn ma",
      "gloss": "Can it be a bit cheaper?"
     },
     {
@@ -17220,7 +17220,7 @@
       "tsou"
      ],
      "hant": "一直往前走。",
-     "pinyin": "yì zhí wǎng qián zǒu",
+     "pinyin": "yī zhí wǎng qián zǒu",
      "gloss": "Keep going straight."
     },
     {
@@ -17567,7 +17567,7 @@
       "tɕjɛn"
      ],
      "hant": "好久不見！",
-     "pinyin": "hǎo jiǔ bú jiàn",
+     "pinyin": "hǎo jiǔ bù jiàn",
      "gloss": "Long time no see!"
     },
     {
@@ -17693,7 +17693,7 @@
       "ʂau"
      ],
      "hant": "房租一個月多少？",
-     "pinyin": "fáng zū yí gè yuè duō shǎo",
+     "pinyin": "fáng zū yī gè yuè duō shǎo",
      "gloss": "How much is the rent a month?"
     },
     {

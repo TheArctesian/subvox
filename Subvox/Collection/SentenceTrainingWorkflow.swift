@@ -16,6 +16,8 @@ final class SentenceTrainingWorkflow {
     private(set) var storageReady = true
     private(set) var currentText = ""
     private(set) var currentCondition: SpeechCondition = .normal
+    /// The practice mode of the take being recorded (nil for Reading), for the recording screen's title.
+    private(set) var currentKind: SentencePromptKind?
     private(set) var index = 0
     private(set) var total = 0
     private(set) var secondsRemaining = 0.0
@@ -462,8 +464,8 @@ final class SentenceTrainingWorkflow {
                     if practiceMode { lastPracticePairIDs.append(pair.id) }
                     for condition in conditions {
                         try Task.checkCancellation()
-                        currentText = pair.text; currentCondition = condition
-                        if condition == .normal, let first = group.first, first.kind == .drill || first.kind == .sound, let playReference {
+                        currentText = pair.text; currentCondition = condition; currentKind = group.first.flatMap { $0.kind.isPractice ? $0.kind : nil }
+                        if condition == .normal, let first = group.first, [.drill, .sound, .minimalPair].contains(first.kind), let playReference {
                             await playReference(pair.text, first.language ?? "en")
                         }
                         try await collectTake(condition: condition, maximumDuration: cueTimes[groupIndex],

@@ -183,30 +183,66 @@ def _to_simplified(text):
     return _converter().convert(text) if text else text
 
 
-def mandarin_syllables(text):
+NUMERALS = set("〇零一二三四五六七八九十百千万两几第")
+PRONOUNS_BEFORE_DEI = set("我你他她它们咱还也就都先")
+DEI_VERBS = set("走去来回做学买吃喝跑看上下写说找交给办")
+
+
+def _corrected(hanzi, tone3, sandhi):
+    """Fixes the readings pypinyin's dictionary gets wrong in everyday text.
+
+    Labels and pinyin use citation tones (一 yī, 不 bù) unless `sandhi` asks for the spoken tone
+    changes, which only the tone-change drills do: 一/不 become 2nd tone before a 4th tone, and
+    一 becomes 4th tone before tones 1-3 (but stays yī in numbers such as 十一 and 第一)."""
+    out = list(tone3)
+    for i, ch in enumerate(hanzi):
+        prev, nxt = (hanzi[i - 1] if i else ""), (hanzi[i + 1] if i + 1 < len(hanzi) else "")
+        if ch == "只" and prev in NUMERALS | set("这那哪"):
+            out[i] = "zhi1"  # measure word, not "only"
+        elif ch == "得" and i:
+            out[i] = "dei3" if prev in PRONOUNS_BEFORE_DEI and nxt in DEI_VERBS else "de5"
+        elif ch == "着" and not (nxt == "急" or prev in "睡找" or nxt == "火"):
+            out[i] = "zhe5"
+        elif ch == "谁":
+            out[i] = "shei2"
+        elif ch in "一不":
+            out[i] = "yi1" if ch == "一" else "bu4"
+    if sandhi:
+        for i, ch in enumerate(hanzi):
+            nxt_tone = int(out[i + 1][-1]) if i + 1 < len(out) and out[i + 1][-1].isdigit() else None
+            in_number = (i and hanzi[i - 1] in NUMERALS) or (i + 1 < len(hanzi) and hanzi[i + 1] in NUMERALS - {"两", "几"})
+            if ch == "一" and nxt_tone and not in_number:
+                out[i] = "yi2" if nxt_tone == 4 else "yi4"
+            elif ch == "不" and nxt_tone == 4:
+                out[i] = "bu2"
+    return out
+
+
+def mandarin_syllables(text, sandhi=False):
     """Characters -> [{'pinyin': 'hang2', 'toneless': 'hang', 'tone': 2, 'phones': [...]}]; non-Han text is skipped."""
     from pypinyin import Style, pinyin
-    hanzi = "".join(ch for ch in text if "一" <= ch <= "鿿" or "㐀" <= ch <= "䶿")
+    from pypinyin.style._utils import get_finals, get_initials
+    hanzi = "".join(ch for ch in text if "\u4e00" <= ch <= "\u9fff" or "\u3400" <= ch <= "\u4dbf")
     # pypinyin's phrase dictionary is keyed on Simplified characters, so Traditional text is
     # converted first; otherwise 銀行 loses its context and reads yín xíng.
     hanzi = _to_simplified(hanzi)
     if not hanzi:
         return []
-    tone3 = [p[0] for p in pinyin(hanzi, style=Style.TONE3, neutral_tone_with_five=True)]
-    initials = [p[0] for p in pinyin(hanzi, style=Style.INITIALS, strict=True)]
-    finals = [re.sub(r"\d", "", p[0]) for p in pinyin(hanzi, style=Style.FINALS_TONE3, strict=True, neutral_tone_with_five=True)]
+    tone3 = _corrected(hanzi, [p[0] for p in pinyin(hanzi, style=Style.TONE3, neutral_tone_with_five=True)], sandhi)
     out = []
-    for syllable, initial, final in zip(tone3, initials, finals):
+    for syllable in tone3:
         tone = int(syllable[-1]) if syllable[-1].isdigit() else 5
-        out.append(dict(pinyin=syllable, toneless=re.sub(r"\d", "", syllable), tone=tone, phones=_syllable_ipa(initial, final)))
+        bare = re.sub(r"\d", "", syllable)
+        spelled = bare.replace("v", "ü")
+        initial, final = get_initials(spelled, strict=True), get_finals(spelled, strict=True).replace("ü", "v")
+        out.append(dict(pinyin=syllable, toneless=bare, tone=tone, phones=_syllable_ipa(initial, final)))
     return out
 
 
-def pinyin_marks(text):
-    """Tone-marked pinyin for display ("yín háng"), read from the Simplified form for context."""
-    from pypinyin import Style, pinyin
-    hanzi = _to_simplified("".join(ch for ch in text if "\u4e00" <= ch <= "\u9fff" or "\u3400" <= ch <= "\u4dbf"))
-    return " ".join(p[0] for p in pinyin(hanzi, style=Style.TONE)) if hanzi else ""
+def pinyin_marks(text, sandhi=False):
+    """Tone-marked pinyin for display ("yín háng"), from the same corrected readings as the labels."""
+    from pypinyin.contrib.tone_convert import to_tone
+    return " ".join(to_tone(s["pinyin"]).replace("v", "ü") for s in mandarin_syllables(text, sandhi))
 
 
 def strip_tones(syllables):
