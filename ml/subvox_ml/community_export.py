@@ -252,3 +252,57 @@ def validate_session(folder, index, heldout):
     elif set(camera_table.column("take_id").to_pylist()) - ids:
         problems.append("camera rows for unknown takes")
     return problems
+
+
+def without_takes(folder, drop, destination):
+    """A copy of a session with the user's dropped takes removed from every file."""
+    import pyarrow.parquet as pq
+    import pyarrow.compute as pc
+    import pyarrow as pa
+    folder, destination = Path(folder), Path(destination)
+    destination.mkdir(parents=True, exist_ok=True)
+    drop = set(drop)
+    takes = [json.loads(line) for line in (folder / "takes.jsonl").read_text().splitlines()]
+    kept = [t for t in takes if t["take_id"] not in drop]
+    if not kept:
+        raise ValueError("Every take was dropped; nothing to upload")
+    (destination / "takes.jsonl").write_text("".join(json.dumps(t, sort_keys=True) + "\n" for t in kept))
+    session = json.loads((folder / "session.json").read_text())
+    session["takes"] = len(kept)
+    (destination / "session.json").write_text(json.dumps(session, indent=2, sort_keys=True) + "\n")
+    keep = pa.array(sorted({t["take_id"] for t in kept}))
+    for name in ("motion.parquet", "camera.parquet"):
+        table = pq.read_table(folder / name)
+        pq.write_table(table.filter(pc.is_in(table.column("take_id"), value_set=keep)), destination / name)
+    return destination
+
+
+def upload_session(folder, repo, token, drop=(), pr=None, prompts_dir=None, api=None):
+    """One commit per session, opened as a pull request on `repo` (a dataset). Re-uploading with
+    `pr` adds to that PR's `refs/pr/N` branch instead of opening a duplicate. The files are checked
+    against the schema again right before sending."""
+    import tempfile
+    from huggingface_hub import HfApi, CommitOperationAdd
+    folder = Path(folder)
+    index, heldout = load_prompt_index(prompts_dir or find_prompts_dir())
+    with tempfile.TemporaryDirectory() as tmp:
+        source = without_takes(folder, drop, Path(tmp) / folder.parent.name / folder.name) if drop else folder
+        problems = validate_session(source, index, heldout)
+        if problems:
+            raise ValueError(f"Session failed validation; not uploaded: {problems}")
+        session = json.loads((source / "session.json").read_text())
+        prefix = f"data/{session['contributor']}/{session['session_id']}"
+        operations = [CommitOperationAdd(path_in_repo=f"{prefix}/{p.name}", path_or_fileobj=str(p))
+                      for p in sorted(source.iterdir()) if p.is_file()]
+        api = api or HfApi(token=token)
+        message = f"Add Subvox session {session['session_id'][:8]} ({session['takes']} takes)"
+        description = (f"Contributed with Subvox {session['app_version']}. Schema v{session['schema_version']}, "
+                       f"{session['airpods_model'] or 'unknown headphones'}, consent {session['consent_version']}.")
+        if pr is not None:
+            info = api.create_commit(repo_id=repo, repo_type="dataset", operations=operations, commit_message=message,
+                                     revision=f"refs/pr/{int(pr)}")
+        else:
+            info = api.create_commit(repo_id=repo, repo_type="dataset", operations=operations, commit_message=message,
+                                     commit_description=description, create_pr=True)
+        return dict(session_id=session["session_id"], takes=session["takes"], pr_url=getattr(info, "pr_url", None),
+                    pr_num=getattr(info, "pr_num", pr), commit=getattr(info, "oid", None))

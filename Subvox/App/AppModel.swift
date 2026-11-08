@@ -35,6 +35,10 @@ final class AppModel {
     var showNonSpeechCollection = false
     let observability = ObservabilityWorkflow()
     var showObservability = false
+    let huggingFace = HuggingFaceAccount()
+    let contribution = ContributionSettings()
+    let uploader = CommunityUploader()
+    var showContribute = false
     let sentenceTraining: SentenceTrainingWorkflow
     var screen: Screen = .train {
         didSet {
@@ -117,6 +121,7 @@ final class AppModel {
     }
 
     func prepareForTermination() {
+        uploader.stop()
         observability.stop()
         sequenceLearning.stop()
         representation.stop()

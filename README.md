@@ -170,6 +170,7 @@ Each row shows AirPods, camera and fused results with chance, length-only and p-
 `docs/community-dataset-design.md` is the plan for a shared, opt-in dataset. Steps 1–3 are local:
 - **Corpus build:** `python3 Tools/corpus/community.py build` turns the public-domain texts in `Corpus/community/sources.tsv` into easy-to-say prompts in passages, plus a 40-sentence calibration set and a held-out set. `python3 Tools/corpus/community.py assign --counts counts.json` picks the passages that best fill diphone gaps.
 - **Recording:** Train → **Read from: Community passages** records the calibration set, then the assigned passages, spoken then mouthed or mouthed only.
+- **Share:** Train → Community passages → **Share recordings…**. You sign in with Hugging Face in your browser, agree to the consent points, review each session (untick takes to leave them out), and press Send. Each session becomes a pull request on the dataset (default `stephenokita/subvox-community-test`). The token stays in the Keychain.
 - **Export:** `subvox-ml export-community --root "$HOME/Library/Application Support/Subvox" --output out --contributor local-test --consent-version draft` writes the dataset layout. `subvox-ml validate-community --session out/data/local-test/<id>` checks it. Nothing is uploaded.
 
 ### Reproduce locally

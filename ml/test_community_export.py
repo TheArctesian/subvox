@@ -28,7 +28,7 @@ def pair(text, session, start, role="Training", camera_on=True):
                 review="Needs review", cameraReadings=readings)
 
 
-class CommunityExportTests(unittest.TestCase):
+class Fixture(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         root = Path(self.tmp.name)
@@ -51,6 +51,9 @@ class CommunityExportTests(unittest.TestCase):
 
     def export(self):
         return export_sessions(self.root, self.out, "anon-7f3a", "consent-v1", self.prompts)
+
+
+class CommunityExportTests(Fixture):
 
     def test_exports_only_community_and_calibration_takes_in_the_dataset_layout(self):
         [folder] = self.export()
@@ -101,6 +104,58 @@ class CommunityExportTests(unittest.TestCase):
         self.assertIn("held-out prompt recorded", validate_session(folder, index, heldout))
         with self.assertRaisesRegex(ValueError, "Contributor ID"):
             export_sessions(self.root, self.out, "../escape", "consent-v1", self.prompts)
+
+
+class FakeHub:
+    def __init__(self):
+        self.calls = []
+
+    def create_commit(self, **kwargs):
+        self.calls.append(dict(kwargs, files={op.path_in_repo: Path(op.path_or_fileobj).read_bytes() for op in kwargs["operations"]}))
+        class Info:
+            pr_url, pr_num, oid = "https://huggingface.co/datasets/x/y/discussions/7", 7, "abc"
+        return Info()
+
+
+class UploadTests(Fixture):
+    def test_opens_one_pr_per_session_with_every_file_under_the_contributor(self):
+        from subvox_ml.community_export import upload_session
+        [folder] = self.export()
+        hub = FakeHub()
+        result = upload_session(folder, "stephenokita/subvox-community-test", "token", prompts_dir=self.prompts, api=hub)
+        [call] = hub.calls
+        self.assertTrue(call["create_pr"])
+        self.assertEqual(call["repo_type"], "dataset")
+        self.assertEqual(sorted(call["files"]), sorted(f"data/anon-7f3a/{folder.name}/{n}" for n in ("camera.parquet", "motion.parquet", "session.json", "takes.jsonl")))
+        self.assertEqual((result["pr_num"], result["takes"]), (7, 4))
+
+    def test_resume_adds_to_the_existing_pr_instead_of_opening_another(self):
+        from subvox_ml.community_export import upload_session
+        [folder] = self.export()
+        hub = FakeHub()
+        upload_session(folder, "stephenokita/subvox-community-test", "token", pr=7, prompts_dir=self.prompts, api=hub)
+        self.assertEqual(hub.calls[0]["revision"], "refs/pr/7")
+        self.assertNotIn("create_pr", hub.calls[0])
+
+    def test_dropped_takes_vanish_from_every_file_and_invalid_sessions_never_upload(self):
+        import io
+        from subvox_ml.community_export import upload_session
+        [folder] = self.export()
+        takes = [json.loads(l) for l in (folder / "takes.jsonl").read_text().splitlines()]
+        dropped = takes[0]["take_id"]
+        hub = FakeHub()
+        result = upload_session(folder, "r/d", "token", drop=[dropped], prompts_dir=self.prompts, api=hub)
+        self.assertEqual(result["takes"], 3)
+        files = hub.calls[0]["files"]
+        prefix = f"data/anon-7f3a/{folder.name}/"
+        self.assertNotIn(dropped, files[prefix + "takes.jsonl"].decode())
+        self.assertNotIn(dropped, pq.read_table(io.BytesIO(files[prefix + "motion.parquet"])).column("take_id").to_pylist())
+        self.assertEqual(json.loads(files[prefix + "session.json"])["takes"], 3)
+        self.assertEqual(len(takes), 4, "The local export itself is unchanged")
+        session = json.loads((folder / "session.json").read_text())
+        (folder / "session.json").write_text(json.dumps(dict(session, extra="x")))
+        with self.assertRaisesRegex(ValueError, "failed validation"):
+            upload_session(folder, "r/d", "token", prompts_dir=self.prompts, api=FakeHub())
 
 
 if __name__ == "__main__":

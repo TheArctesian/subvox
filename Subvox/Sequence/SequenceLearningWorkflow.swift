@@ -111,7 +111,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     private var capturingCamera=false
     private let root:URL
     private var task:Task<Void,Never>?
-    private var process:Process?
+    @ObservationIgnored private let runner:SequenceRuntime
     private var recorder:SessionRecorder?
     private var buffer:[MotionSample]=[]
     private var latest:MotionSample?
@@ -136,6 +136,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     var hasModel:Bool {modelURL(condition:.silent) != nil && modelURL(condition:.normal) != nil}
     init(root:URL?=nil,clock:@escaping ()->Double={ProcessInfo.processInfo.systemUptime}) {
         self.root=root ?? SentenceStore.directory.appending(path:"SequenceLearning")
+        self.runner=SequenceRuntime(root:self.root)
         self.clock=clock
         do {
             let state=self.root.appending(path:"latest-ui.json")
@@ -328,47 +329,10 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         } catch {self.error=error.localizedDescription}
     }
 
-    private func runtime() throws -> URL {
-        let bundled=Bundle.main.resourceURL!.appending(path:"SequenceRuntime")
-        let development=URL(fileURLWithPath:#filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appending(path:"ml")
-        let isBundled=FileManager.default.fileExists(atPath:bundled.appending(path:"uv.lock").path)
-        let source=isBundled ? bundled:development
-        // evaluation.py reads the distractor bank from <runtime>/Corpus, so it travels with the runtime.
-        let corpus=isBundled ? Bundle.main.resourceURL!.appending(path:"Corpus"):development.deletingLastPathComponent().appending(path:"Corpus")
-        let python=["pyproject.toml","uv.lock"]+(try FileManager.default.contentsOfDirectory(atPath:source.appending(path:"subvox_ml").path)).filter {$0.hasSuffix(".py")}.sorted().map {"subvox_ml/"+$0}
-        let files=python.map {($0,source.appending(path:$0))}+[("Corpus/diphones.txt",corpus.appending(path:"diphones.txt"))]
-        var hash=SHA256()
-        for (file,url) in files {hash.update(data:Data(file.utf8));hash.update(data:try Data(contentsOf:url))}
-        let identity=hash.finalize().map {String(format:"%02x",$0)}.joined()
-        let destination=root.appending(path:"Runtime/\(identity)")
-        if !FileManager.default.fileExists(atPath:destination.path) {
-            for directory in ["subvox_ml","Corpus"] {try FileManager.default.createDirectory(at:destination.appending(path:directory),withIntermediateDirectories:true)}
-            for (file,url) in files {try FileManager.default.copyItem(at:url,to:destination.appending(path:file))}
-        }
-        return destination
-    }
     private func execute(_ arguments:[String]) async throws {
-        let uv=["/opt/homebrew/bin/uv","/usr/local/bin/uv"].first {FileManager.default.isExecutableFile(atPath:$0)}
-        guard let uv else {throw Failure.runtime}
-        let project=try runtime(),child=Process(),log=root.appending(path:"process-\(UUID()).log")
-        FileManager.default.createFile(atPath:log.path,contents:nil)
-        let handle=try FileHandle(forWritingTo:log);defer {try? handle.close()}
-        child.executableURL=URL(fileURLWithPath:uv);child.arguments=["run","--frozen","--project",project.path,"subvox-ml"]+arguments
-        child.standardOutput=handle;child.standardError=handle
-        try child.run();process=child
-        defer {if child.isRunning {child.terminate()};process=nil}
-        while child.isRunning {
-            try Task.checkCancellation()
-            if let data=try? Data(contentsOf:log),let line=String(data:data,encoding:.utf8)?.split(separator:"\n").last {
-                status=line.hasPrefix("{") ? "Finishing local operation…":String(line.prefix(200))
-            }
-            try await Task.sleep(for:.milliseconds(300))
-        }
-        try Task.checkCancellation()
-        guard child.terminationStatus==0 else {
-            let detail=(try? String(contentsOf:log,encoding:.utf8)).map {String($0.suffix(1600))} ?? "See \(log.path)"
-            throw Failure.backend(detail)
-        }
+        do {try await runner.run(arguments) {self.status=$0}}
+        catch SequenceRuntime.Failure.runtime {throw Failure.runtime}
+        catch SequenceRuntime.Failure.backend(let detail) {throw Failure.backend(detail)}
     }
 
     func ingest(_ sample:MotionSample) {
@@ -581,7 +545,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         } catch {self.error=error.localizedDescription}
     }
     func stop() {
-        task?.cancel();if let process,process.isRunning {process.terminate()}
+        task?.cancel();runner.terminate()
         if phase == .recording {finishTake(reason:"Stopped during capture")}
         if isAcquiring {endVisit(evaluate:false)}
         camera.stop();capturingCamera=false;faceTracked=false

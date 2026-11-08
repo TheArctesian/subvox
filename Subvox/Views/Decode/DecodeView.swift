@@ -11,6 +11,7 @@ struct DecodeView: View {
                 Button("Sentence models", systemImage: "text.bubble") {
                     model.showNonSpeechCollection = false
                     model.showObservability = false
+                    model.showContribute = false
                     model.showRepresentation = false
                     model.showSignalCheck = false
                     model.showSequenceLearning = true
@@ -28,6 +29,7 @@ struct DecodeView: View {
                     Button("Record sentences") {
                         model.showNonSpeechCollection = false
                         model.showObservability = false
+                    model.showContribute = false
                         model.showRepresentation = false
                         model.showSignalCheck = false
                         model.showSequenceLearning = false

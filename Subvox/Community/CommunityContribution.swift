@@ -1,0 +1,172 @@
+import Foundation
+
+/// How (and whether) this Mac shares community recordings. Local only is the default; nothing is
+/// ever uploaded without the user reviewing a session and choosing Send.
+@MainActor @Observable final class ContributionSettings {
+    enum Mode: String, CaseIterable, Identifiable {
+        case local = "Local only", anonymous = "Anonymous", huggingFace = "Hugging Face"
+        var id: String { rawValue }
+    }
+    /// Bump when the consent text changes; contributors then confirm again before uploading.
+    static let consentVersion = "consent-v1-draft"
+    static let defaultRepo = "stephenokita/subvox-community-test"
+
+    @ObservationIgnored private let defaults: UserDefaults
+    var mode: Mode { didSet { defaults.set(mode.rawValue, forKey: "contribution.mode") } }
+    var repo: String { didSet { defaults.set(repo, forKey: "contribution.repo") } }
+    private(set) var consentedVersion: String?
+
+    var hasConsent: Bool { consentedVersion == Self.consentVersion }
+
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        mode = Mode(rawValue: defaults.string(forKey: "contribution.mode") ?? "") ?? .local
+        repo = defaults.string(forKey: "contribution.repo") ?? Self.defaultRepo
+        consentedVersion = defaults.string(forKey: "contribution.consent")
+    }
+
+    func giveConsent() { consentedVersion = Self.consentVersion; defaults.set(Self.consentVersion, forKey: "contribution.consent") }
+    func withdrawConsent() { consentedVersion = nil; defaults.removeObject(forKey: "contribution.consent") }
+}
+
+/// One exported session waiting for review, or already sent as a pull request.
+struct CommunityUpload: Codable, Identifiable, Equatable, Sendable {
+    enum Status: String, Codable, Sendable { case review, uploading, uploaded, failed }
+    var id: String            // dataset session ID (a hash; not the local session UUID)
+    var folder: String
+    var takes: Int
+    var month: String
+    var status: Status = .review
+    var dropped: [String] = []
+    var prNumber: Int?
+    var prURL: String?
+    var error: String?
+}
+
+struct CommunityTake: Identifiable, Sendable {
+    var id: String
+    var promptID: String
+    var mode: String
+    var eligible: Bool
+    var cameraEligible: Bool
+    var text: String
+    var source: String?
+}
+
+/// Review queue and pull-request uploads. Exports and the queue live under
+/// Application Support/Subvox/Community; the queue survives restarts and failed sends can be retried.
+@MainActor @Observable final class CommunityUploader {
+    private(set) var items: [CommunityUpload] = []
+    private(set) var busy = false
+    private(set) var status = ""
+    private(set) var error: String?
+    let root: URL
+    @ObservationIgnored private let runtime: SequenceRuntime
+    @ObservationIgnored private let corpus: CommunityCorpus
+
+    init(root: URL? = nil, runtimeRoot: URL? = nil, corpus: CommunityCorpus = .bundled) {
+        self.root = root ?? SentenceStore.directory.appending(path: "Community")
+        // Shares the neural runtime's installed copy, so uploading doesn't set up Python twice.
+        runtime = SequenceRuntime(root: runtimeRoot ?? SentenceStore.directory.appending(path: "SequenceLearning"))
+        self.corpus = corpus
+        load()
+    }
+
+    private var queueURL: URL { root.appending(path: "queue.json") }
+    private var exportRoot: URL { root.appending(path: "export") }
+
+    func load() {
+        items = (try? JSONDecoder().decode([CommunityUpload].self, from: Data(contentsOf: queueURL))) ?? []
+    }
+    private func save() {
+        do {
+            try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+            try JSONEncoder().encode(items).write(to: queueURL, options: .atomic)
+        } catch { self.error = error.localizedDescription }
+    }
+
+    static var promptsDirectory: URL? { Bundle.main.resourceURL?.appending(path: "Corpus/community") }
+
+    /// Re-exports every community session and adds new ones to the review queue. Already-sent
+    /// sessions keep their status: session IDs are stable hashes.
+    func prepare(contributor: String) async {
+        guard !busy else { return }
+        busy = true; error = nil; status = "Preparing your community sessions…"
+        defer { busy = false }
+        do {
+            var arguments = ["export-community", "--root", SentenceStore.directory.path, "--output", exportRoot.path,
+                             "--contributor", contributor, "--consent-version", ContributionSettings.consentVersion]
+            if let prompts = Self.promptsDirectory { arguments += ["--prompts-dir", prompts.path] }
+            try await runtime.run(arguments) { self.status = $0 }
+            merge(scan(contributor: contributor))
+            status = items.isEmpty ? "No community recordings yet. Record community passages first." : ""
+        } catch { self.error = error.localizedDescription; status = "" }
+    }
+
+    func scan(contributor: String) -> [CommunityUpload] {
+        let folder = exportRoot.appending(path: "data/\(contributor)")
+        let sessions = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)) ?? []
+        return sessions.compactMap { url in
+            guard let data = try? Data(contentsOf: url.appending(path: "session.json")),
+                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let id = json["session_id"] as? String else { return nil }
+            return CommunityUpload(id: id, folder: url.path, takes: json["takes"] as? Int ?? 0, month: json["month"] as? String ?? "")
+        }.sorted { $0.id < $1.id }
+    }
+
+    func merge(_ found: [CommunityUpload]) {
+        for item in found {
+            if let i = items.firstIndex(where: { $0.id == item.id }) {
+                if items[i].status == .review { items[i].takes = item.takes; items[i].folder = item.folder }
+            } else { items.append(item) }
+        }
+        save()
+    }
+
+    func takes(_ item: CommunityUpload) -> [CommunityTake] {
+        guard let text = try? String(contentsOf: URL(fileURLWithPath: item.folder).appending(path: "takes.jsonl"), encoding: .utf8) else { return [] }
+        return text.split(separator: "\n").compactMap { line in
+            guard let row = try? JSONSerialization.jsonObject(with: Data(line.utf8)) as? [String: Any],
+                  let id = row["take_id"] as? String, let prompt = row["prompt_id"] as? String else { return nil }
+            let entry = corpus.prompt(prompt)
+            return CommunityTake(id: id, promptID: prompt, mode: row["mode"] as? String ?? "", eligible: row["eligible"] as? Bool ?? false,
+                                 cameraEligible: row["camera_eligible"] as? Bool ?? false, text: entry?.text ?? "Unknown prompt",
+                                 source: entry.map { $0.passageID == nil ? "Calibration" : "\($0.title) — \($0.author)" })
+        }
+    }
+
+    func toggleDrop(_ take: String, in id: String) {
+        guard let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded, items[i].status != .uploading else { return }
+        if items[i].dropped.contains(take) { items[i].dropped.removeAll { $0 == take } } else { items[i].dropped.append(take) }
+        save()
+    }
+
+    /// Sends one reviewed session as a pull request. A retry after a failure adds to the same PR.
+    func send(_ id: String, repo: String, token: String) async {
+        guard !busy, let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded else { return }
+        busy = true; error = nil; items[i].status = .uploading; items[i].error = nil; save()
+        defer { busy = false }
+        let item = items[i]
+        let output = root.appending(path: "upload-\(UUID()).json")
+        var arguments = ["upload-community", "--session", item.folder, "--repo", repo, "--output", output.path]
+        if !item.dropped.isEmpty { arguments += ["--drop", item.dropped.joined(separator: ",")] }
+        if let pr = item.prNumber { arguments += ["--pr", String(pr)] }
+        if let prompts = Self.promptsDirectory { arguments += ["--prompts-dir", prompts.path] }
+        do {
+            try await runtime.run(arguments, environment: ["SUBVOX_HF_TOKEN": token]) { self.status = $0 }
+            let result = try JSONSerialization.jsonObject(with: Data(contentsOf: output)) as? [String: Any]
+            try? FileManager.default.removeItem(at: output)
+            guard let j = items.firstIndex(where: { $0.id == id }) else { return }
+            items[j].status = .uploaded
+            items[j].prNumber = (result?["pr_num"] as? Int) ?? items[j].prNumber
+            items[j].prURL = (result?["pr_url"] as? String) ?? items[j].prURL
+            status = "Sent as a pull request."
+        } catch {
+            if let j = items.firstIndex(where: { $0.id == id }) { items[j].status = .failed; items[j].error = error.localizedDescription }
+            self.error = error.localizedDescription; status = ""
+        }
+        save()
+    }
+
+    func stop() { runtime.terminate() }
+}

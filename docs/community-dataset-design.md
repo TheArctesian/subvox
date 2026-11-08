@@ -207,6 +207,18 @@ Steps 1–3 are fully local and useful for your own recordings before anyone els
   - Not exported yet: audio, `alignment.jsonl` and device models (left `null` until the app records them).
   - When step 4 calls the exporter from the app, it must pass `--prompts-dir` pointing at the bundled `Corpus/community`, because the runtime copy holds only the distractor bank.
 
+- **Step 4 (Hugging Face mode built, not yet live-tested):**
+  - **OAuth app** "Subvox" on `stephenokita`: public, no secret, PKCE, scopes `openid profile write-discussions`, redirect URIs `http://127.0.0.1/oauth/callback` and `http://localhost/oauth/callback`, 8-hour tokens. Client ID `ae146936-11cf-4196-a5ac-7288fafbf4ba`.
+  - **Sign-in** (`Subvox/Community/HuggingFaceAuth.swift`): a loopback listener on a free port, the authorize page opened in the default browser, `state` checked, the code exchanged without a secret, and the token stored in the Keychain (this device only). A refresh is used if Hugging Face returns one; otherwise the user signs in again after expiry.
+  - **Share recordings** (Train → Community passages → Share recordings…):
+    - modes: Local only (default), Anonymous (disabled until the relay exists), Hugging Face
+    - a versioned three-point consent: 18+, public CC BY 4.0, linked to username
+    - a review queue with per-take untick
+    - Send, which creates one PR per session through `subvox-ml upload-community`; the token is passed in an environment variable, a retry adds to the same `refs/pr/N`, and the queue persists
+  - **AirPods metadata:** each visit records vendor/product ID, model and firmware, and each take records its native rate. Ingestion accepts 20 Hz and up, interpolated onto the 50 Hz grid and flagged.
+  - **Test dataset:** `stephenokita/subvox-community-test` (public, CC BY 4.0).
+  - **Not done:** an end-to-end live sign-in and PR, which also settles the `write-discussions` question (section 1); the first-launch contribution prompt; and anonymous mode with the relay (step 5).
+
 ## Open questions
 
 - The minimum Hugging Face OAuth scope for PR-based contribution (step 4); docs checked, live test pending (section 1).
