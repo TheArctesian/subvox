@@ -276,10 +276,36 @@ def build(year=2026):
     return dict(version=1, pieces=pieces, drills=drills, minimal_pairs=pairs, sounds=sounds), problems
 
 
+CONTENT_L10N = ROOT / "Tools" / "l10n" / "content.json"
+
+
+def add_translations(corpus):
+    """Drill titles, notes and glosses in each interface language (Tools/l10n/content.json:
+    {"titles": {lang: {english: text}}, "glosses": {...}}), stored per item as *_l10n."""
+    if not CONTENT_L10N.exists():
+        return
+    tables = json.loads(CONTENT_L10N.read_text())
+    def l10n(kind, english):
+        out = {lang: table[english] for lang, table in tables.get(kind, {}).items() if english in table}
+        return out or None
+    for drill in corpus["drills"]:
+        drill["title_l10n"] = l10n("titles", drill["title"])
+        drill["note_l10n"] = l10n("titles", drill["note"]) if drill.get("note") else None
+        for p in drill["phrases"]:
+            if p.get("gloss"):
+                p["gloss_l10n"] = l10n("glosses", p["gloss"])
+    for pairs in corpus["minimal_pairs"]:
+        for group in pairs["sets"]:
+            for w in group:
+                if w.get("gloss"):
+                    w["gloss_l10n"] = l10n("glosses", w["gloss"])
+
+
 if __name__ == "__main__":
     out = ROOT / "Corpus" / "practice" / "practice-v1.json"
     out.parent.mkdir(exist_ok=True)
     corpus, problems = build()
+    add_translations(corpus)
     out.write_text(json.dumps(corpus, ensure_ascii=False, indent=1) + "\n")
     print(out)
     for problem in problems:

@@ -70,7 +70,10 @@ struct PracticeCorpus: Decodable {
         var region: String? = nil
         /// 注音 (Bopomofo), shown instead of pinyin when practising Traditional Chinese.
         var zhuyin: String? = nil
-        enum CodingKeys: String, CodingKey { case text, ipa, pinyin, hant, gloss, region, zhuyin, ipaMx = "ipa_mx" }
+        var glossL10n: [String: String]? = nil
+        enum CodingKeys: String, CodingKey { case text, ipa, pinyin, hant, gloss, region, zhuyin, ipaMx = "ipa_mx", glossL10n = "gloss_l10n" }
+        /// The meaning in the interface language (English when there's no translation).
+        var localizedGloss: String? { gloss.map { Interface.pick(glossL10n) ?? $0 } }
         func reading(_ language: AppLanguage) -> String? { language == .zhHant ? (zhuyin ?? pinyin) : pinyin }
         func text(_ language: AppLanguage) -> String { language == .zhHant ? (hant ?? text) : text }
         func ipa(_ language: AppLanguage) -> [String] { language == .esMX ? (ipaMx ?? ipa) : ipa }
@@ -112,9 +115,12 @@ struct PracticeCorpus: Decodable {
         var titleHant: String? = nil
         var level: String? = nil; var topic: String? = nil; var note: String? = nil; var noteHant: String? = nil
         var region: String? = nil
-        enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, region, titleHant = "title_hant", noteHant = "note_hant" }
-        func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
-        func note(_ language: AppLanguage) -> String? { language == .zhHant ? (noteHant ?? note) : note }
+        var titleL10n: [String: String]? = nil; var noteL10n: [String: String]? = nil
+        enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, region, titleHant = "title_hant", noteHant = "note_hant",
+                                             titleL10n = "title_l10n", noteL10n = "note_l10n" }
+        /// In the interface language when it isn't English; otherwise in the practised script.
+        func title(_ language: AppLanguage) -> String { Interface.pick(titleL10n) ?? (language == .zhHant ? (titleHant ?? title) : title) }
+        func note(_ language: AppLanguage) -> String? { note.map { Interface.pick(noteL10n) ?? (language == .zhHant ? (noteHant ?? $0) : $0) } }
     }
     /// One sound of a language: hear it, read how to make it, then say example words.
     struct Sound: Decodable, Identifiable, Hashable {
@@ -266,4 +272,14 @@ enum TrickySounds {
     static func ipa(practising: String, speaker: String) -> [String] {
         practising == speaker ? [] : table[practising]?[speaker] ?? []
     }
+}
+
+/// The app's interface language, as macOS resolved it from the bundle's localizations.
+enum Interface {
+    static let code: String = {
+        let first = Bundle.main.preferredLocalizations.first ?? "en"
+        return first == "es-419" ? "es" : first
+    }()
+    static var isEnglish: Bool { code.hasPrefix("en") }
+    static func pick(_ table: [String: String]?) -> String? { isEnglish ? nil : table?[code] }
 }

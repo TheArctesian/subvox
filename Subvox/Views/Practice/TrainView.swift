@@ -274,8 +274,8 @@ struct PracticeLineView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(Self.spoken(line.text(language), language)).font(.title2)
-            // Glosses are English, so they show only to learners who speak English.
-            if let gloss = line.gloss, UserDefaults.standard.string(forKey: "ui.nativeLanguage") ?? "en" == "en" {
+            // The meaning, in the interface language; not shown when it would just repeat the practised language.
+            if let gloss = line.localizedGloss, !Interface.code.hasPrefix(language.corpus) {
                 Text(gloss).font(.callout).foregroundStyle(.secondary)
             }
             if let reading = line.reading(language) { Text(reading).font(.title3).foregroundStyle(.secondary) }
