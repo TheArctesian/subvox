@@ -34,8 +34,8 @@ enum SentenceReference {
 enum SentencePromptKind: String, Codable, Sendable {
     case sentence, wordRepair, community, calibration
     /// Train tabs: public-domain speeches and poems, shadowing drills, minimal pairs, the user's own text.
-    case speech, drill, minimalPair, freeText
-    var isPractice: Bool { [.speech, .drill, .minimalPair, .freeText].contains(self) }
+    case speech, drill, minimalPair, freeText, sound
+    var isPractice: Bool { [.speech, .drill, .minimalPair, .freeText, .sound].contains(self) }
 }
 
 struct SentencePrompt: Codable, Identifiable, Hashable, Sendable {

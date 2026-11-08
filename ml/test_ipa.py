@@ -12,6 +12,11 @@ class EspeakLanguages(unittest.TestCase):
         self.assertEqual(ipa.phones("vous êtes", "fr"), ["v", "u", "z", "ɛ", "t"])  # liaison z
         self.assertEqual(ipa.phones("ils ont", "fr"), ["i", "l", "z", "ɔ̃"])
 
+    def test_french_gn_is_palatal_but_ni_stays_n_j(self):
+        self.assertEqual(ipa.phones("agneau", "fr"), ["a", "ɲ", "o"])
+        self.assertEqual(ipa.phones("champignon", "fr"), ["ʃ", "ɑ̃", "p", "i", "ɲ", "ɔ̃"])
+        self.assertEqual(ipa.phones("panier", "fr"), ["p", "a", "n", "j", "e"])
+
     def test_french_nasal_vowels_and_rounded_front_vowels(self):
         self.assertEqual(ipa.phones("un bon vin blanc", "fr"), ["œ̃", "b", "ɔ̃", "v", "ɛ̃", "b", "l", "ɑ̃"])
         self.assertEqual(ipa.phones("la rue", "fr"), ["l", "a", "ʁ", "y"])

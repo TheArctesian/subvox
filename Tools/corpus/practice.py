@@ -120,25 +120,71 @@ def both(value):
     return value if isinstance(value, tuple) else (value, value)
 
 
+# More pieces (Tools/corpus/pieces/*.json): each with source URL and a public-domain portrait.
+PIECE_FILES = sorted((ROOT / "Tools" / "corpus" / "pieces").glob("*.json"))
+SOUNDS = ROOT / "Tools" / "corpus" / "sounds.json"
+
+
+def load_pieces():
+    extra = []
+    for path in PIECE_FILES:
+        for p in json.loads(path.read_text())["pieces"]:
+            lines = [(l["hans"], l["hant"]) if isinstance(l, dict) else l for l in p["lines"]]
+            title = (p["title"], p.get("title_hant") or p["title"]) if p["language"] == "zh" else p["title"]
+            author = (p["author"], p.get("author_hant") or p["author"]) if p["language"] == "zh" else p["author"]
+            extra.append((p["id"], p["language"], p["kind"], title, author, p["year"], p["died"], lines, p.get("date")))
+    return extra
+
+
+def load_sounds():
+    """Per language: each sound with a guide, a mouth tip, an IPA string to synthesise, and
+    example words whose phones are checked to contain the sound."""
+    if not SOUNDS.exists():
+        return {}, []
+    out, problems = {}, []
+    for language, items in json.loads(SOUNDS.read_text()).items():
+        for item in items:
+            examples = []
+            for e in item["examples"]:
+                try:
+                    examples.append(entry((e["hans"], e["hant"]) if isinstance(e, dict) else e, language))
+                except ValueError as error:
+                    problems.append(f"{language} {item['ipa']}: example {e!r} dropped ({error})")
+            if item["group"] != "Tones":
+                if item["ipa"] not in ipa.INVENTORY or language not in ipa.INVENTORY[item["ipa"]]:
+                    problems.append(f"{language} {item['ipa']}: not in the shared inventory")
+                for ex in examples:
+                    if item["ipa"] not in [ph for word in ipa.phonemize(ex["text"], language) for ph in word]:
+                        problems.append(f"{language} {item['ipa']}: example {ex['text']!r} has /{' '.join(ex['ipa'])}/")
+            out.setdefault(language, []).append(dict(ipa=item["ipa"], group=item["group"], name=item["name"], guide=item["guide"],
+                                                     tip=item.get("tip"), say=item["say"], examples=examples))
+    return out, problems
+
+
 def build(year=2026):
     pieces = []
-    for pid, language, kind, title, author, published, died, lines in PIECES:
+    for pid, language, kind, title, author, published, died, lines, *rest in PIECES + load_pieces():
+        date = rest[0] if rest else SPOKEN.get(pid)
         if not (died + 70 < year and published < 1930):
             raise ValueError(f"{title} is not public domain in both the UK and US")
         (title, title_hant), (author, author_hant) = both(title), both(author)
         pieces.append(dict(id=pid, language=language, kind=kind, title=title, title_hant=title_hant, author=author,
-                           author_hant=author_hant, year=published, date=SPOKEN.get(pid) or (f"c. {published}" if published < 1000 else None),
+                           author_hant=author_hant, year=published, date=date or (f"c. {published}" if published < 1000 else None),
                            lines=[entry(line, language) for line in lines]))
     drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
                    phrases=[entry(p, language) for p in phrases], **meta)
               for did, language, title, phrases, meta in load_drills()]
     pairs = [dict(language=language, contrast=contrast, sets=[[entry(w, language) for w in group] for group in groups])
              for language, contrast, groups in MINIMAL_PAIRS]
-    return dict(version=1, pieces=pieces, drills=drills, minimal_pairs=pairs)
+    sounds, problems = load_sounds()
+    return dict(version=1, pieces=pieces, drills=drills, minimal_pairs=pairs, sounds=sounds), problems
 
 
 if __name__ == "__main__":
     out = ROOT / "Corpus" / "practice" / "practice-v1.json"
     out.parent.mkdir(exist_ok=True)
-    out.write_text(json.dumps(build(), ensure_ascii=False, indent=1) + "\n")
+    corpus, problems = build()
+    out.write_text(json.dumps(corpus, ensure_ascii=False, indent=1) + "\n")
     print(out)
+    for problem in problems:
+        print("check:", problem)

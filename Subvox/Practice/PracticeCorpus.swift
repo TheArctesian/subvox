@@ -3,11 +3,12 @@ import Foundation
 /// The Train tabs (docs/next-phase-plan.md, item 3). Every tab records through the same paired
 /// interface: the text is shown first, spoken aloud, then mouthed.
 enum TrainMode: String, CaseIterable, Identifiable {
-    case reading = "Reading", speech = "Speech & Poetry", language = "Language", minimalPairs = "Minimal Pairs", free = "Free Practice"
+    case reading = "Reading", sounds = "Sounds", speech = "Speech & Poetry", language = "Language", minimalPairs = "Minimal Pairs", free = "Free Practice"
     var id: String { rawValue }
     var symbol: String {
         switch self {
         case .reading: "book"
+        case .sounds: "waveform"
         case .speech: "text.quote"
         case .language: "character.bubble"
         case .minimalPairs: "circle.grid.2x1"
@@ -64,6 +65,12 @@ struct PracticeCorpus: Decodable {
         enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, titleHant = "title_hant" }
         func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
     }
+    /// One sound of a language: hear it, read how to make it, then say example words.
+    struct Sound: Decodable, Identifiable, Hashable {
+        var ipa: String; var group: String; var name: String; var guide: String
+        var tip: String? = nil; var say: String; var examples: [Line]
+        var id: String { ipa }
+    }
     struct MinimalPairs: Decodable, Identifiable, Hashable {
         var language: String; var contrast: String; var sets: [[Line]]
         var id: String { language + ":" + contrast }
@@ -72,7 +79,20 @@ struct PracticeCorpus: Decodable {
     var pieces: [Piece]
     var drills: [Drill]
     var minimalPairs: [MinimalPairs]
-    enum CodingKeys: String, CodingKey { case version, pieces, drills, minimalPairs = "minimal_pairs" }
+    var sounds: [String: [Sound]] = [:]
+    enum CodingKeys: String, CodingKey { case version, pieces, drills, sounds, minimalPairs = "minimal_pairs" }
+
+    init(version: Int, pieces: [Piece], drills: [Drill], minimalPairs: [MinimalPairs], sounds: [String: [Sound]] = [:]) {
+        self.version = version; self.pieces = pieces; self.drills = drills; self.minimalPairs = minimalPairs; self.sounds = sounds
+    }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        version = try c.decode(Int.self, forKey: .version)
+        pieces = try c.decode([Piece].self, forKey: .pieces)
+        drills = try c.decode([Drill].self, forKey: .drills)
+        minimalPairs = try c.decode([MinimalPairs].self, forKey: .minimalPairs)
+        sounds = try c.decodeIfPresent([String: [Sound]].self, forKey: .sounds) ?? [:]
+    }
 
     static let empty = PracticeCorpus(version: 0, pieces: [], drills: [], minimalPairs: [])
 

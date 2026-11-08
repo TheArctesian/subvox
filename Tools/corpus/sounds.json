@@ -1,0 +1,2321 @@
+{
+ "en": [
+  {
+   "ipa": "i",
+   "group": "Vowels",
+   "name": "ee",
+   "guide": "ee as in 'see'",
+   "tip": "Lips spread in a smile, jaw nearly closed, tongue high and forward.",
+   "say": "iː",
+   "examples": [
+    "eat",
+    "even",
+    "easy"
+   ]
+  },
+  {
+   "ipa": "ɪ",
+   "group": "Vowels",
+   "name": "short i",
+   "guide": "i as in 'sit' - shorter and more relaxed than 'ee'",
+   "tip": "Lips slightly spread, jaw a little more open than for 'ee'.",
+   "say": "ɪ",
+   "examples": [
+    "it",
+    "in",
+    "fish"
+   ]
+  },
+  {
+   "ipa": "ɛ",
+   "group": "Vowels",
+   "name": "eh",
+   "guide": "e as in 'bed'",
+   "tip": "Jaw half open, lips relaxed and slightly spread.",
+   "say": "ɛ",
+   "examples": [
+    "egg",
+    "end",
+    "bed"
+   ]
+  },
+  {
+   "ipa": "æ",
+   "group": "Vowels",
+   "name": "short a",
+   "guide": "a as in 'cat' - open and bright, between 'eh' and 'ah'",
+   "tip": "Jaw drops wide, lips slightly spread, tongue forward.",
+   "say": "æ",
+   "examples": [
+    "apple",
+    "cat",
+    "hand"
+   ]
+  },
+  {
+   "ipa": "ɑ",
+   "group": "Vowels",
+   "name": "ah",
+   "guide": "a as in 'father'",
+   "tip": "Jaw wide open, lips relaxed and unrounded, tongue low and back.",
+   "say": "ɑː",
+   "examples": [
+    "odd",
+    "father",
+    "spa"
+   ]
+  },
+  {
+   "ipa": "ɔ",
+   "group": "Vowels",
+   "name": "aw",
+   "guide": "aw as in 'law' or 'thought'",
+   "tip": "Jaw open, lips rounded loosely.",
+   "say": "ɔː",
+   "examples": [
+    "all",
+    "off",
+    "talk"
+   ]
+  },
+  {
+   "ipa": "ʌ",
+   "group": "Vowels",
+   "name": "uh",
+   "guide": "u as in 'cup' - a short, open 'uh'",
+   "tip": "Jaw half open, lips relaxed and neutral.",
+   "say": "ʌ",
+   "examples": [
+    "up",
+    "sun",
+    "love"
+   ]
+  },
+  {
+   "ipa": "ʊ",
+   "group": "Vowels",
+   "name": "short oo",
+   "guide": "oo as in 'book' - shorter and looser than 'food'",
+   "tip": "Lips rounded but relaxed, not pushed forward.",
+   "say": "ʊ",
+   "examples": [
+    "book",
+    "good",
+    "foot"
+   ]
+  },
+  {
+   "ipa": "u",
+   "group": "Vowels",
+   "name": "oo",
+   "guide": "oo as in 'food'",
+   "tip": "Lips rounded and pushed forward, jaw nearly closed.",
+   "say": "uː",
+   "examples": [
+    "food",
+    "too",
+    "blue"
+   ]
+  },
+  {
+   "ipa": "ə",
+   "group": "Vowels",
+   "name": "schwa",
+   "guide": "the weak 'uh' in 'about' - a quick, lazy vowel",
+   "tip": "Mouth almost still, lips and jaw relaxed.",
+   "say": "ə",
+   "examples": [
+    "about",
+    "again",
+    "sofa"
+   ]
+  },
+  {
+   "ipa": "ɚ",
+   "group": "Vowels",
+   "name": "unstressed er",
+   "guide": "the weak 'er' in 'butter' - an 'uh' coloured by the r sound",
+   "tip": "Lips slightly rounded, tongue tip curled or bunched back.",
+   "say": "ɚ",
+   "examples": [
+    "butter",
+    "teacher",
+    "water"
+   ]
+  },
+  {
+   "ipa": "ɝ",
+   "group": "Vowels",
+   "name": "stressed er",
+   "guide": "'ur' as in 'bird' - a long 'er' with the tongue pulled back",
+   "tip": "Lips slightly rounded, jaw half open, tongue bunched with no touch.",
+   "say": "ɝː",
+   "examples": [
+    "bird",
+    "work",
+    "girl"
+   ]
+  },
+  {
+   "ipa": "aɪ",
+   "group": "Diphthongs",
+   "name": "eye",
+   "guide": "'eye' as in 'time' - starts open, glides to 'ee'",
+   "tip": "Jaw starts wide then closes, lips spread at the end.",
+   "say": "aɪ",
+   "examples": [
+    "eye",
+    "my",
+    "time"
+   ]
+  },
+  {
+   "ipa": "aʊ",
+   "group": "Diphthongs",
+   "name": "ow",
+   "guide": "'ow' as in 'now' - starts open, glides to 'oo'",
+   "tip": "Jaw starts wide then closes while lips round.",
+   "say": "aʊ",
+   "examples": [
+    "out",
+    "now",
+    "house"
+   ]
+  },
+  {
+   "ipa": "eɪ",
+   "group": "Diphthongs",
+   "name": "ay",
+   "guide": "'ay' as in 'say' - 'eh' gliding up to 'ee'",
+   "tip": "Jaw half open, then closing, lips spreading.",
+   "say": "eɪ",
+   "examples": [
+    "say",
+    "day",
+    "make"
+   ]
+  },
+  {
+   "ipa": "oʊ",
+   "group": "Diphthongs",
+   "name": "oh",
+   "guide": "'oh' as in 'go' - 'o' gliding to 'oo'",
+   "tip": "Lips rounded and moving to a tighter pucker.",
+   "say": "oʊ",
+   "examples": [
+    "go",
+    "home",
+    "no"
+   ]
+  },
+  {
+   "ipa": "ɔɪ",
+   "group": "Diphthongs",
+   "name": "oy",
+   "guide": "'oy' as in 'boy' - 'aw' gliding to 'ee'",
+   "tip": "Lips round, then spread while the jaw closes.",
+   "say": "ɔɪ",
+   "examples": [
+    "boy",
+    "oil",
+    "coin"
+   ]
+  },
+  {
+   "ipa": "p",
+   "group": "Consonants",
+   "name": "p",
+   "guide": "p as in 'pen' - a puff of air on release",
+   "tip": "Lips pressed together, then released with a puff.",
+   "say": "pa",
+   "examples": [
+    "pen",
+    "pie",
+    "paper"
+   ]
+  },
+  {
+   "ipa": "b",
+   "group": "Consonants",
+   "name": "b",
+   "guide": "b as in 'boy'",
+   "tip": "Lips pressed together, voice on, soft release.",
+   "say": "ba",
+   "examples": [
+    "boy",
+    "big",
+    "baby"
+   ]
+  },
+  {
+   "ipa": "t",
+   "group": "Consonants",
+   "name": "t",
+   "guide": "t as in 'top' - puff of air at word start",
+   "tip": "Tongue tip taps the ridge behind upper teeth; lips neutral.",
+   "say": "ta",
+   "examples": [
+    "top",
+    "tea",
+    "two"
+   ]
+  },
+  {
+   "ipa": "d",
+   "group": "Consonants",
+   "name": "d",
+   "guide": "d as in 'dog'",
+   "tip": "Tongue tip on the ridge behind upper teeth, voice on.",
+   "say": "da",
+   "examples": [
+    "dog",
+    "day",
+    "do"
+   ]
+  },
+  {
+   "ipa": "k",
+   "group": "Consonants",
+   "name": "k",
+   "guide": "k as in 'key' - puff of air at word start",
+   "tip": "Back of tongue lifts to the soft palate; lips take the shape of the next vowel.",
+   "say": "ka",
+   "examples": [
+    "key",
+    "cat",
+    "car"
+   ]
+  },
+  {
+   "ipa": "ɡ",
+   "group": "Consonants",
+   "name": "g",
+   "guide": "g as in 'go'",
+   "tip": "Back of tongue touches the soft palate, voice on.",
+   "say": "ɡa",
+   "examples": [
+    "go",
+    "good",
+    "give"
+   ]
+  },
+  {
+   "ipa": "f",
+   "group": "Consonants",
+   "name": "f",
+   "guide": "f as in 'fan'",
+   "tip": "Top teeth rest on the lower lip, air flows through.",
+   "say": "fa",
+   "examples": [
+    "fan",
+    "five",
+    "food"
+   ]
+  },
+  {
+   "ipa": "v",
+   "group": "Consonants",
+   "name": "v",
+   "guide": "v as in 'van'",
+   "tip": "Top teeth on the lower lip, voice buzzing.",
+   "say": "va",
+   "examples": [
+    "van",
+    "very",
+    "voice"
+   ]
+  },
+  {
+   "ipa": "θ",
+   "group": "Consonants",
+   "name": "th (thin)",
+   "guide": "th as in 'think' - air only, no voice",
+   "tip": "Tongue tip between or against the teeth, visible; blow air.",
+   "say": "θa",
+   "examples": [
+    "think",
+    "three",
+    "thank"
+   ]
+  },
+  {
+   "ipa": "ð",
+   "group": "Consonants",
+   "name": "th (this)",
+   "guide": "th as in 'this' - the same as 'think' but voiced",
+   "tip": "Tongue tip between the teeth, visible, with a buzz.",
+   "say": "ða",
+   "examples": [
+    "this",
+    "the",
+    "that"
+   ]
+  },
+  {
+   "ipa": "s",
+   "group": "Consonants",
+   "name": "s",
+   "guide": "s as in 'sun'",
+   "tip": "Teeth almost closed, lips slightly spread, hissing air.",
+   "say": "sa",
+   "examples": [
+    "sun",
+    "see",
+    "say"
+   ]
+  },
+  {
+   "ipa": "z",
+   "group": "Consonants",
+   "name": "z",
+   "guide": "z as in 'zoo' - a buzzing 's'",
+   "tip": "Teeth almost closed, lips slightly spread, voice on.",
+   "say": "za",
+   "examples": [
+    "zoo",
+    "zero",
+    "zip"
+   ]
+  },
+  {
+   "ipa": "ʃ",
+   "group": "Consonants",
+   "name": "sh",
+   "guide": "sh as in 'ship'",
+   "tip": "Lips rounded and pushed slightly forward, teeth close.",
+   "say": "ʃa",
+   "examples": [
+    "she",
+    "ship",
+    "shoe"
+   ]
+  },
+  {
+   "ipa": "ʒ",
+   "group": "Consonants",
+   "name": "zh",
+   "guide": "the middle sound in 'measure' - a buzzing 'sh'",
+   "tip": "Lips rounded and forward, voice on.",
+   "say": "ʒa",
+   "examples": [
+    "measure",
+    "vision",
+    "beige"
+   ]
+  },
+  {
+   "ipa": "h",
+   "group": "Consonants",
+   "name": "h",
+   "guide": "h as in 'hat' - a breath of air",
+   "tip": "Mouth takes the shape of the next vowel; just breathe.",
+   "say": "ha",
+   "examples": [
+    "hat",
+    "he",
+    "home"
+   ]
+  },
+  {
+   "ipa": "tʃ",
+   "group": "Consonants",
+   "name": "ch",
+   "guide": "ch as in 'chair' - 't' blended into 'sh'",
+   "tip": "Lips rounded forward, tongue stops air then releases it.",
+   "say": "tʃa",
+   "examples": [
+    "chair",
+    "child",
+    "cheese"
+   ]
+  },
+  {
+   "ipa": "dʒ",
+   "group": "Consonants",
+   "name": "j",
+   "guide": "j as in 'jump' - 'd' blended into 'zh'",
+   "tip": "Lips rounded forward, tongue stops air then releases with voice.",
+   "say": "dʒa",
+   "examples": [
+    "jump",
+    "job",
+    "gentle"
+   ]
+  },
+  {
+   "ipa": "m",
+   "group": "Consonants",
+   "name": "m",
+   "guide": "m as in 'man'",
+   "tip": "Lips closed, voice hums through the nose.",
+   "say": "ma",
+   "examples": [
+    "man",
+    "me",
+    "mom"
+   ]
+  },
+  {
+   "ipa": "n",
+   "group": "Consonants",
+   "name": "n",
+   "guide": "n as in 'no'",
+   "tip": "Tongue tip on the ridge behind upper teeth, hum through the nose.",
+   "say": "na",
+   "examples": [
+    "no",
+    "name",
+    "night"
+   ]
+  },
+  {
+   "ipa": "ŋ",
+   "group": "Consonants",
+   "name": "ng",
+   "guide": "ng as in 'sing' - never starts an English word",
+   "tip": "Lips neutral, back of tongue to the soft palate, hum through the nose.",
+   "say": "aŋ",
+   "examples": [
+    "sing",
+    "long",
+    "thing"
+   ]
+  },
+  {
+   "ipa": "l",
+   "group": "Consonants",
+   "name": "l",
+   "guide": "l as in 'let'",
+   "tip": "Tongue tip on the ridge behind upper teeth, air around the sides.",
+   "say": "la",
+   "examples": [
+    "let",
+    "love",
+    "light"
+   ]
+  },
+  {
+   "ipa": "ɹ",
+   "group": "Consonants",
+   "name": "r",
+   "guide": "r as in 'red' - tongue never touches",
+   "tip": "Lips rounded slightly, tongue pulled back or bunched.",
+   "say": "ɹa",
+   "examples": [
+    "red",
+    "right",
+    "run"
+   ]
+  },
+  {
+   "ipa": "j",
+   "group": "Glides",
+   "name": "y",
+   "guide": "y as in 'yes'",
+   "tip": "Lips spread, tongue high like 'ee', then glide quickly into the vowel.",
+   "say": "ja",
+   "examples": [
+    "yes",
+    "you",
+    "yellow"
+   ]
+  },
+  {
+   "ipa": "w",
+   "group": "Glides",
+   "name": "w",
+   "guide": "w as in 'we'",
+   "tip": "Lips tightly rounded, then open quickly into the vowel.",
+   "say": "wa",
+   "examples": [
+    "we",
+    "water",
+    "want"
+   ]
+  }
+ ],
+ "fr": [
+  {
+   "ipa": "a",
+   "group": "Vowels",
+   "name": "a",
+   "guide": "like the 'a' in 'father' but shorter and a bit more forward",
+   "tip": "Jaw open, lips relaxed, tongue low and forward.",
+   "say": "a",
+   "examples": [
+    "ami",
+    "avec",
+    "papa"
+   ]
+  },
+  {
+   "ipa": "e",
+   "group": "Vowels",
+   "name": "é",
+   "guide": "like the 'ay' in 'say' but pure, with no glide to 'ee'",
+   "tip": "Lips spread a little, jaw half closed, hold still.",
+   "say": "e",
+   "examples": [
+    "été",
+    "café",
+    "bébé"
+   ]
+  },
+  {
+   "ipa": "ɛ",
+   "group": "Vowels",
+   "name": "è",
+   "guide": "like the 'e' in 'bed' - open and clear",
+   "tip": "Jaw half open, lips relaxed, slightly spread.",
+   "say": "ɛ",
+   "examples": [
+    "elle",
+    "être",
+    "père"
+   ]
+  },
+  {
+   "ipa": "i",
+   "group": "Vowels",
+   "name": "i",
+   "guide": "like 'ee' in 'see' but tenser and shorter",
+   "tip": "Lips spread wide, jaw nearly closed.",
+   "say": "i",
+   "examples": [
+    "il",
+    "ici",
+    "vie"
+   ]
+  },
+  {
+   "ipa": "y",
+   "group": "Vowels",
+   "name": "French u",
+   "guide": "say 'ee' but round your lips as for 'oo' - no English equivalent",
+   "tip": "Lips tightly rounded and pushed forward, tongue stays high and front.",
+   "say": "y",
+   "examples": [
+    "tu",
+    "une",
+    "salut"
+   ]
+  },
+  {
+   "ipa": "u",
+   "group": "Vowels",
+   "name": "ou",
+   "guide": "like 'oo' in 'food' but tenser and shorter",
+   "tip": "Lips tightly rounded and pushed forward, tongue back.",
+   "say": "u",
+   "examples": [
+    "où",
+    "vous",
+    "tout"
+   ]
+  },
+  {
+   "ipa": "o",
+   "group": "Vowels",
+   "name": "o (closed)",
+   "guide": "like 'o' in 'go' but pure with no 'oo' glide",
+   "tip": "Lips rounded, jaw half closed, hold still.",
+   "say": "o",
+   "examples": [
+    "eau",
+    "au",
+    "bateau"
+   ]
+  },
+  {
+   "ipa": "ɔ",
+   "group": "Vowels",
+   "name": "o (open)",
+   "guide": "like the 'o' in 'off' (British) - short and open",
+   "tip": "Lips rounded loosely, jaw half open.",
+   "say": "ɔ",
+   "examples": [
+    "or",
+    "homme",
+    "porte"
+   ]
+  },
+  {
+   "ipa": "ø",
+   "group": "Vowels",
+   "name": "eu (closed)",
+   "guide": "say 'ay' with your lips rounded as for 'o' - no English equivalent",
+   "tip": "Lips rounded and forward, jaw half closed, tongue front.",
+   "say": "ø",
+   "examples": [
+    "deux",
+    "peu",
+    "bleu"
+   ]
+  },
+  {
+   "ipa": "œ",
+   "group": "Vowels",
+   "name": "eu (open)",
+   "guide": "like 'ur' in 'fur' but shorter, with rounded lips",
+   "tip": "Lips rounded, jaw half open, tongue front.",
+   "say": "œ",
+   "examples": [
+    "peur",
+    "œuf",
+    "sœur"
+   ]
+  },
+  {
+   "ipa": "ə",
+   "group": "Vowels",
+   "name": "e muet",
+   "guide": "like the weak 'uh' in 'about' but with rounded lips; often dropped",
+   "tip": "Lips slightly rounded, jaw relaxed.",
+   "say": "ə",
+   "examples": [
+    "le",
+    "de",
+    "petit"
+   ]
+  },
+  {
+   "ipa": "ɑ̃",
+   "group": "Nasal vowels",
+   "name": "an",
+   "guide": "like 'ah' with the air going through the nose; no 'n' is pronounced",
+   "tip": "Jaw open, lips relaxed and slightly rounded, soft palate lowered.",
+   "say": "ɑ̃",
+   "examples": [
+    "an",
+    "enfant",
+    "dans"
+   ]
+  },
+  {
+   "ipa": "ɔ̃",
+   "group": "Nasal vowels",
+   "name": "on",
+   "guide": "like 'oh' with the air through the nose; no 'n' is pronounced",
+   "tip": "Lips rounded, jaw half open, air through the nose.",
+   "say": "ɔ̃",
+   "examples": [
+    "on",
+    "bon",
+    "non"
+   ]
+  },
+  {
+   "ipa": "ɛ̃",
+   "group": "Nasal vowels",
+   "name": "in",
+   "guide": "like 'eh' with the air through the nose, as in 'vin'; no 'n' is pronounced",
+   "tip": "Lips spread, jaw half open, air through the nose.",
+   "say": "ɛ̃",
+   "examples": [
+    "vin",
+    "pain",
+    "cinq"
+   ]
+  },
+  {
+   "ipa": "œ̃",
+   "group": "Nasal vowels",
+   "name": "un",
+   "guide": "like 'uh' with rounded lips and air through the nose; many speakers merge it with 'in'",
+   "tip": "Lips rounded, jaw half open, air through the nose.",
+   "say": "œ̃",
+   "examples": [
+    "un",
+    "brun",
+    "lundi"
+   ]
+  },
+  {
+   "ipa": "p",
+   "group": "Consonants",
+   "name": "p",
+   "guide": "like English 'p' but with no puff of air",
+   "tip": "Lips pressed together and released gently.",
+   "say": "pa",
+   "examples": [
+    "pas",
+    "père",
+    "pour"
+   ]
+  },
+  {
+   "ipa": "b",
+   "group": "Consonants",
+   "name": "b",
+   "guide": "like English 'b'",
+   "tip": "Lips pressed together, voice on.",
+   "say": "ba",
+   "examples": [
+    "bon",
+    "bien",
+    "beau"
+   ]
+  },
+  {
+   "ipa": "t",
+   "group": "Consonants",
+   "name": "t",
+   "guide": "like English 't' but with no puff, tongue tip touching the upper teeth",
+   "tip": "Tongue touches the back of the upper teeth; lips neutral.",
+   "say": "ta",
+   "examples": [
+    "tu",
+    "table",
+    "tout"
+   ]
+  },
+  {
+   "ipa": "d",
+   "group": "Consonants",
+   "name": "d",
+   "guide": "like English 'd' but with the tongue on the upper teeth",
+   "tip": "Tongue touches the back of the upper teeth, voice on.",
+   "say": "da",
+   "examples": [
+    "de",
+    "dans",
+    "deux"
+   ]
+  },
+  {
+   "ipa": "k",
+   "group": "Consonants",
+   "name": "k",
+   "guide": "like English 'k' but with no puff of air",
+   "tip": "Back of tongue touches the soft palate.",
+   "say": "ka",
+   "examples": [
+    "café",
+    "qui",
+    "comme"
+   ]
+  },
+  {
+   "ipa": "ɡ",
+   "group": "Consonants",
+   "name": "g",
+   "guide": "like English 'g' in 'go'",
+   "tip": "Back of tongue touches the soft palate, voice on.",
+   "say": "ɡa",
+   "examples": [
+    "gare",
+    "gâteau",
+    "gros"
+   ]
+  },
+  {
+   "ipa": "f",
+   "group": "Consonants",
+   "name": "f",
+   "guide": "like English 'f'",
+   "tip": "Top teeth on the lower lip.",
+   "say": "fa",
+   "examples": [
+    "faire",
+    "fille",
+    "fleur"
+   ]
+  },
+  {
+   "ipa": "v",
+   "group": "Consonants",
+   "name": "v",
+   "guide": "like English 'v'",
+   "tip": "Top teeth on the lower lip, voice on.",
+   "say": "va",
+   "examples": [
+    "vous",
+    "vin",
+    "ville"
+   ]
+  },
+  {
+   "ipa": "s",
+   "group": "Consonants",
+   "name": "s",
+   "guide": "like English 's' in 'sun'",
+   "tip": "Teeth close, lips slightly spread.",
+   "say": "sa",
+   "examples": [
+    "si",
+    "sac",
+    "soir"
+   ]
+  },
+  {
+   "ipa": "z",
+   "group": "Consonants",
+   "name": "z",
+   "guide": "like English 'z' in 'zoo'",
+   "tip": "Teeth close, lips slightly spread, voice on.",
+   "say": "za",
+   "examples": [
+    "zéro",
+    "zone",
+    "maison"
+   ]
+  },
+  {
+   "ipa": "ʃ",
+   "group": "Consonants",
+   "name": "ch",
+   "guide": "like English 'sh' in 'ship'",
+   "tip": "Lips pushed forward and rounded.",
+   "say": "ʃa",
+   "examples": [
+    "chat",
+    "chez",
+    "chose"
+   ]
+  },
+  {
+   "ipa": "ʒ",
+   "group": "Consonants",
+   "name": "j",
+   "guide": "like the 's' in 'measure'",
+   "tip": "Lips pushed forward and rounded, voice on.",
+   "say": "ʒa",
+   "examples": [
+    "je",
+    "jour",
+    "rouge"
+   ]
+  },
+  {
+   "ipa": "ʁ",
+   "group": "Consonants",
+   "name": "French r",
+   "guide": "a soft gargle at the back of the throat, like a light 'kh' with a hum",
+   "tip": "Lips neutral, tongue tip down behind the lower teeth, back of tongue raised.",
+   "say": "ʁa",
+   "examples": [
+    "rue",
+    "rouge",
+    "rire"
+   ]
+  },
+  {
+   "ipa": "m",
+   "group": "Consonants",
+   "name": "m",
+   "guide": "like English 'm'",
+   "tip": "Lips closed, hum through the nose.",
+   "say": "ma",
+   "examples": [
+    "mon",
+    "mère",
+    "midi"
+   ]
+  },
+  {
+   "ipa": "n",
+   "group": "Consonants",
+   "name": "n",
+   "guide": "like English 'n' but with the tongue on the upper teeth",
+   "tip": "Tongue tip on the back of the upper teeth.",
+   "say": "na",
+   "examples": [
+    "non",
+    "nous",
+    "nuit"
+   ]
+  },
+  {
+   "ipa": "ɲ",
+   "group": "Consonants",
+   "name": "gn",
+   "guide": "like the 'ny' in 'canyon'",
+   "tip": "Middle of tongue pressed to the palate, lips neutral.",
+   "say": "aɲa",
+   "examples": [
+    "montagne",
+    "agneau",
+    "gagner"
+   ]
+  },
+  {
+   "ipa": "l",
+   "group": "Consonants",
+   "name": "l",
+   "guide": "like English 'l' but lighter, tongue tip on the upper teeth",
+   "tip": "Tongue tip touches the back of the upper teeth.",
+   "say": "la",
+   "examples": [
+    "la",
+    "lune",
+    "lit"
+   ]
+  },
+  {
+   "ipa": "j",
+   "group": "Glides",
+   "name": "y",
+   "guide": "like English 'y' in 'yes'",
+   "tip": "Lips spread, tongue high, then glide into the vowel.",
+   "say": "ja",
+   "examples": [
+    "yeux",
+    "bien",
+    "hier"
+   ]
+  },
+  {
+   "ipa": "w",
+   "group": "Glides",
+   "name": "w",
+   "guide": "like English 'w' in 'we'",
+   "tip": "Lips rounded, then open quickly.",
+   "say": "wa",
+   "examples": [
+    "oui",
+    "moi",
+    "quoi"
+   ]
+  },
+  {
+   "ipa": "ɥ",
+   "group": "Glides",
+   "name": "French wu",
+   "guide": "say 'ee' and round your lips for 'oo' as you glide - the glide version of French u",
+   "tip": "Lips rounded and forward with the tongue high and front, then open quickly.",
+   "say": "ɥa",
+   "examples": [
+    "huit",
+    "nuit",
+    "lui"
+   ]
+  }
+ ],
+ "es": [
+  {
+   "ipa": "a",
+   "group": "Vowels",
+   "name": "a",
+   "guide": "like 'ah' in 'father' but shorter and crisper",
+   "tip": "Jaw open, lips relaxed.",
+   "say": "a",
+   "examples": [
+    "agua",
+    "amigo",
+    "casa"
+   ]
+  },
+  {
+   "ipa": "e",
+   "group": "Vowels",
+   "name": "e",
+   "guide": "like the 'e' in 'bed' but tenser, with no 'ay' glide",
+   "tip": "Jaw half open, lips slightly spread; hold steady.",
+   "say": "e",
+   "examples": [
+    "este",
+    "en",
+    "mesa"
+   ]
+  },
+  {
+   "ipa": "i",
+   "group": "Vowels",
+   "name": "i",
+   "guide": "like 'ee' in 'see' but shorter",
+   "tip": "Lips spread, jaw nearly closed.",
+   "say": "i",
+   "examples": [
+    "isla",
+    "mi",
+    "vino"
+   ]
+  },
+  {
+   "ipa": "o",
+   "group": "Vowels",
+   "name": "o",
+   "guide": "like 'o' in 'go' but pure, with no 'oo' glide",
+   "tip": "Lips rounded, jaw half closed; hold steady.",
+   "say": "o",
+   "examples": [
+    "ojo",
+    "otro",
+    "hola"
+   ]
+  },
+  {
+   "ipa": "u",
+   "group": "Vowels",
+   "name": "u",
+   "guide": "like 'oo' in 'food' but shorter",
+   "tip": "Lips rounded and pushed forward, jaw nearly closed.",
+   "say": "u",
+   "examples": [
+    "uno",
+    "luz",
+    "tú"
+   ]
+  },
+  {
+   "ipa": "p",
+   "group": "Consonants",
+   "name": "p",
+   "guide": "like English 'p' but with no puff of air",
+   "tip": "Lips pressed together, gentle release.",
+   "say": "pa",
+   "examples": [
+    "papá",
+    "poco",
+    "pero"
+   ]
+  },
+  {
+   "ipa": "b",
+   "group": "Consonants",
+   "name": "b",
+   "guide": "like English 'b'; used at the start of a word or after m/n",
+   "tip": "Lips pressed together fully, voice on.",
+   "say": "ba",
+   "examples": [
+    "bien",
+    "burro",
+    "vamos"
+   ]
+  },
+  {
+   "ipa": "β",
+   "group": "Consonants",
+   "name": "soft b",
+   "guide": "a 'b' where the lips barely touch, between vowels; allophone of b and v",
+   "tip": "Lips come close but do not close; air keeps flowing.",
+   "say": "βa",
+   "examples": [
+    "lobo",
+    "uva",
+    "cabeza"
+   ]
+  },
+  {
+   "ipa": "t",
+   "group": "Consonants",
+   "name": "t",
+   "guide": "like English 't' but with no puff and the tongue on the teeth",
+   "tip": "Tongue tip touches the back of the upper teeth.",
+   "say": "ta",
+   "examples": [
+    "tú",
+    "tres",
+    "todo"
+   ]
+  },
+  {
+   "ipa": "d",
+   "group": "Consonants",
+   "name": "d",
+   "guide": "like English 'd' but with the tongue on the teeth; at word start or after n/l",
+   "tip": "Tongue tip on the back of the upper teeth, voice on.",
+   "say": "da",
+   "examples": [
+    "día",
+    "donde",
+    "dar"
+   ]
+  },
+  {
+   "ipa": "ð",
+   "group": "Consonants",
+   "name": "soft d",
+   "guide": "like the 'th' in 'this', but gentle; between vowels; allophone of d",
+   "tip": "Tongue tip just touches the teeth, visible; air flows.",
+   "say": "ða",
+   "examples": [
+    "nada",
+    "todo",
+    "dedo"
+   ]
+  },
+  {
+   "ipa": "k",
+   "group": "Consonants",
+   "name": "k",
+   "guide": "like English 'k' but with no puff of air",
+   "tip": "Back of tongue touches the soft palate.",
+   "say": "ka",
+   "examples": [
+    "casa",
+    "queso",
+    "cinco"
+   ]
+  },
+  {
+   "ipa": "ɡ",
+   "group": "Consonants",
+   "name": "g",
+   "guide": "like English 'g' in 'go'; used at word start or after n",
+   "tip": "Back of tongue touches the soft palate, voice on.",
+   "say": "ɡa",
+   "examples": [
+    "gato",
+    "gracias",
+    "tengo"
+   ]
+  },
+  {
+   "ipa": "ɣ",
+   "group": "Consonants",
+   "name": "soft g",
+   "guide": "a 'g' where the tongue barely touches, between vowels; like a gentle gargle; allophone of g",
+   "tip": "Back of tongue near the palate without closing; air flows.",
+   "say": "ɣa",
+   "examples": [
+    "lago",
+    "amigo",
+    "luego"
+   ]
+  },
+  {
+   "ipa": "f",
+   "group": "Consonants",
+   "name": "f",
+   "guide": "like English 'f'",
+   "tip": "Top teeth on the lower lip.",
+   "say": "fa",
+   "examples": [
+    "fuego",
+    "foto",
+    "familia"
+   ]
+  },
+  {
+   "ipa": "s",
+   "group": "Consonants",
+   "name": "s",
+   "guide": "like English 's' in 'sun'",
+   "tip": "Teeth close, lips slightly spread.",
+   "say": "sa",
+   "examples": [
+    "sí",
+    "casa",
+    "señor"
+   ]
+  },
+  {
+   "ipa": "θ",
+   "group": "Consonants",
+   "name": "th (Spain)",
+   "guide": "like 'th' in 'thin'; used in Spain for z and ce/ci",
+   "tip": "Tongue tip between the teeth, visible.",
+   "say": "θa",
+   "examples": [
+    "zapato",
+    "cielo",
+    "gracias"
+   ]
+  },
+  {
+   "ipa": "x",
+   "group": "Consonants",
+   "name": "j",
+   "guide": "like a rough 'h' - a scrape at the back of the throat, as in Scottish 'loch'",
+   "tip": "Mouth open and neutral, back of tongue near the soft palate.",
+   "say": "xa",
+   "examples": [
+    "jamón",
+    "gente",
+    "mujer"
+   ]
+  },
+  {
+   "ipa": "tʃ",
+   "group": "Consonants",
+   "name": "ch",
+   "guide": "like English 'ch' in 'chair'",
+   "tip": "Lips slightly rounded, tongue stops air then releases.",
+   "say": "tʃa",
+   "examples": [
+    "chico",
+    "mucho",
+    "noche"
+   ]
+  },
+  {
+   "ipa": "ʝ",
+   "group": "Consonants",
+   "name": "y (consonant)",
+   "guide": "like English 'y' in 'yes' but with more friction, like a soft 'j'",
+   "tip": "Tongue high against the hard palate, lips spread.",
+   "say": "ʝa",
+   "examples": [
+    "yo",
+    "ya",
+    "ayer"
+   ]
+  },
+  {
+   "ipa": "ʎ",
+   "group": "Consonants",
+   "name": "ll (traditional)",
+   "guide": "like 'lli' in 'million'; in most regions merged with y",
+   "tip": "Middle of tongue pressed up on the palate, lips spread.",
+   "say": "ʎa",
+   "examples": [
+    "calle",
+    "llamar",
+    "lluvia"
+   ]
+  },
+  {
+   "ipa": "m",
+   "group": "Consonants",
+   "name": "m",
+   "guide": "like English 'm'",
+   "tip": "Lips closed, hum through the nose.",
+   "say": "ma",
+   "examples": [
+    "mamá",
+    "mi",
+    "mucho"
+   ]
+  },
+  {
+   "ipa": "n",
+   "group": "Consonants",
+   "name": "n",
+   "guide": "like English 'n' but with the tongue on the teeth",
+   "tip": "Tongue tip on the back of the upper teeth.",
+   "say": "na",
+   "examples": [
+    "no",
+    "nada",
+    "noche"
+   ]
+  },
+  {
+   "ipa": "ɲ",
+   "group": "Consonants",
+   "name": "ñ",
+   "guide": "like the 'ny' in 'canyon'",
+   "tip": "Middle of tongue pressed on the palate, lips neutral.",
+   "say": "aɲa",
+   "examples": [
+    "año",
+    "señor",
+    "niño"
+   ]
+  },
+  {
+   "ipa": "l",
+   "group": "Consonants",
+   "name": "l",
+   "guide": "like English 'l' but lighter, tongue tip on the teeth",
+   "tip": "Tongue tip touches the back of the upper teeth.",
+   "say": "la",
+   "examples": [
+    "la",
+    "luz",
+    "lado"
+   ]
+  },
+  {
+   "ipa": "ɾ",
+   "group": "Consonants",
+   "name": "tapped r",
+   "guide": "one quick tap of the tongue, like the 'tt' in American 'butter'",
+   "tip": "Tongue tip flicks once against the ridge behind the upper teeth.",
+   "say": "ɾa",
+   "examples": [
+    "pero",
+    "cara",
+    "tres"
+   ]
+  },
+  {
+   "ipa": "r",
+   "group": "Consonants",
+   "name": "rolled r",
+   "guide": "a trill - the tongue tip vibrates several times, like a motor",
+   "tip": "Tongue tip loose near the ridge behind the teeth, lips neutral.",
+   "say": "ra",
+   "examples": [
+    "perro",
+    "rosa",
+    "río"
+   ]
+  },
+  {
+   "ipa": "j",
+   "group": "Glides",
+   "name": "y glide",
+   "guide": "like 'y' in 'yes' as the second half of a diphthong",
+   "tip": "Lips spread, tongue high, quick glide.",
+   "say": "ja",
+   "examples": [
+    "bien",
+    "hielo",
+    "aire"
+   ]
+  },
+  {
+   "ipa": "w",
+   "group": "Glides",
+   "name": "w glide",
+   "guide": "like English 'w' in 'we'",
+   "tip": "Lips rounded, then open quickly.",
+   "say": "wa",
+   "examples": [
+    "huevo",
+    "bueno",
+    "agua"
+   ]
+  }
+ ],
+ "zh": [
+  {
+   "ipa": "a",
+   "group": "Vowels",
+   "name": "a",
+   "guide": "like 'ah' in 'father'",
+   "tip": "Jaw wide open, lips relaxed.",
+   "say": "a",
+   "examples": [
+    {
+     "hans": "啊",
+     "hant": "啊"
+    },
+    {
+     "hans": "爸爸",
+     "hant": "爸爸"
+    },
+    {
+     "hans": "她",
+     "hant": "她"
+    }
+   ]
+  },
+  {
+   "ipa": "o",
+   "group": "Vowels",
+   "name": "o",
+   "guide": "like 'aw' in 'law' with rounded lips; mostly after b p m f w",
+   "tip": "Lips rounded, jaw half open.",
+   "say": "o",
+   "examples": [
+    {
+     "hans": "哦",
+     "hant": "哦"
+    },
+    {
+     "hans": "我",
+     "hant": "我"
+    },
+    {
+     "hans": "波",
+     "hant": "波"
+    }
+   ]
+  },
+  {
+   "ipa": "e",
+   "group": "Vowels",
+   "name": "e (in ie, ei)",
+   "guide": "like the 'e' in 'bed' but tenser; appears in 'ie', 'ei', 'ye'",
+   "tip": "Lips spread, jaw half open.",
+   "say": "e",
+   "examples": [
+    {
+     "hans": "谢谢",
+     "hant": "謝謝"
+    },
+    {
+     "hans": "北京",
+     "hant": "北京"
+    },
+    {
+     "hans": "飞",
+     "hant": "飛"
+    }
+   ]
+  },
+  {
+   "ipa": "ɛ",
+   "group": "Vowels",
+   "name": "e (in ian)",
+   "guide": "like the 'e' in 'bed'; appears in 'ian', 'yan', 'uan'",
+   "tip": "Lips spread, jaw half open.",
+   "say": "ɛ",
+   "examples": [
+    {
+     "hans": "天",
+     "hant": "天"
+    },
+    {
+     "hans": "年",
+     "hant": "年"
+    },
+    {
+     "hans": "见",
+     "hant": "見"
+    }
+   ]
+  },
+  {
+   "ipa": "ɤ",
+   "group": "Vowels",
+   "name": "e (back)",
+   "guide": "like 'uh' but with the tongue back and lips spread, not rounded - say 'oh' without rounding",
+   "tip": "Lips spread and relaxed, jaw half open, tongue back.",
+   "say": "ɤ",
+   "examples": [
+    {
+     "hans": "饿",
+     "hant": "餓"
+    },
+    {
+     "hans": "哥",
+     "hant": "哥"
+    },
+    {
+     "hans": "喝",
+     "hant": "喝"
+    }
+   ]
+  },
+  {
+   "ipa": "ə",
+   "group": "Vowels",
+   "name": "e (weak)",
+   "guide": "like the weak 'uh' in 'about'",
+   "tip": "Mouth relaxed and nearly still.",
+   "say": "ə",
+   "examples": [
+    {
+     "hans": "门",
+     "hant": "門"
+    },
+    {
+     "hans": "能",
+     "hant": "能"
+    },
+    {
+     "hans": "很",
+     "hant": "很"
+    }
+   ]
+  },
+  {
+   "ipa": "i",
+   "group": "Vowels",
+   "name": "i",
+   "guide": "like 'ee' in 'see'",
+   "tip": "Lips spread, jaw nearly closed.",
+   "say": "i",
+   "examples": [
+    {
+     "hans": "你",
+     "hant": "你"
+    },
+    {
+     "hans": "一",
+     "hant": "一"
+    },
+    {
+     "hans": "米",
+     "hant": "米"
+    }
+   ]
+  },
+  {
+   "ipa": "u",
+   "group": "Vowels",
+   "name": "u",
+   "guide": "like 'oo' in 'food'",
+   "tip": "Lips rounded and pushed forward, jaw nearly closed.",
+   "say": "u",
+   "examples": [
+    {
+     "hans": "五",
+     "hant": "五"
+    },
+    {
+     "hans": "不",
+     "hant": "不"
+    },
+    {
+     "hans": "路",
+     "hant": "路"
+    }
+   ]
+  },
+  {
+   "ipa": "y",
+   "group": "Vowels",
+   "name": "ü",
+   "guide": "say 'ee' with the lips rounded as for 'oo' - no English equivalent",
+   "tip": "Lips tightly rounded and pushed forward, tongue high and front.",
+   "say": "y",
+   "examples": [
+    {
+     "hans": "鱼",
+     "hant": "魚"
+    },
+    {
+     "hans": "女",
+     "hant": "女"
+    },
+    {
+     "hans": "雨",
+     "hant": "雨"
+    }
+   ]
+  },
+  {
+   "ipa": "ɚ",
+   "group": "Vowels",
+   "name": "er",
+   "guide": "like American 'er' in 'butter' as a whole syllable",
+   "tip": "Mouth half open, tongue tip curled back.",
+   "say": "ɚ",
+   "examples": [
+    {
+     "hans": "二",
+     "hant": "二"
+    },
+    {
+     "hans": "儿",
+     "hant": "兒"
+    },
+    {
+     "hans": "耳",
+     "hant": "耳"
+    }
+   ]
+  },
+  {
+   "ipa": "ɹ̩",
+   "group": "Vowels",
+   "name": "z/c/s vowel",
+   "guide": "a buzzing 'zzz' held on, the vowel in 'zi', 'ci', 'si'; tongue stays at the 'z' position",
+   "tip": "Lips spread flat, teeth almost closed, tongue still.",
+   "say": "sɹ̩",
+   "examples": [
+    {
+     "hans": "字",
+     "hant": "字"
+    },
+    {
+     "hans": "四",
+     "hant": "四"
+    },
+    {
+     "hans": "次",
+     "hant": "次"
+    }
+   ]
+  },
+  {
+   "ipa": "ɻ̩",
+   "group": "Vowels",
+   "name": "zh/ch/sh vowel",
+   "guide": "a buzzing curled-back 'r' held on, the vowel in 'zhi', 'chi', 'shi', 'ri'",
+   "tip": "Lips slightly rounded, tongue tip curled back and still.",
+   "say": "ʂɻ̩",
+   "examples": [
+    {
+     "hans": "是",
+     "hant": "是"
+    },
+    {
+     "hans": "吃",
+     "hant": "吃"
+    },
+    {
+     "hans": "日",
+     "hant": "日"
+    }
+   ]
+  },
+  {
+   "ipa": "ʊ",
+   "group": "Vowels",
+   "name": "ong",
+   "guide": "like 'oo' in 'book' as in 'ong'; sits before ng",
+   "tip": "Lips lightly rounded, jaw half closed.",
+   "say": "ʊŋ",
+   "examples": [
+    {
+     "hans": "东",
+     "hant": "東"
+    },
+    {
+     "hans": "红",
+     "hant": "紅"
+    },
+    {
+     "hans": "工",
+     "hant": "工"
+    }
+   ]
+  },
+  {
+   "ipa": "j",
+   "group": "Glides",
+   "name": "y",
+   "guide": "like English 'y' in 'yes'",
+   "tip": "Lips spread, tongue high.",
+   "say": "ja",
+   "examples": [
+    {
+     "hans": "呀",
+     "hant": "呀"
+    },
+    {
+     "hans": "要",
+     "hant": "要"
+    },
+    {
+     "hans": "有",
+     "hant": "有"
+    }
+   ]
+  },
+  {
+   "ipa": "w",
+   "group": "Glides",
+   "name": "w",
+   "guide": "like English 'w' in 'we'",
+   "tip": "Lips rounded, then open quickly.",
+   "say": "wa",
+   "examples": [
+    {
+     "hans": "为",
+     "hant": "為"
+    },
+    {
+     "hans": "玩",
+     "hant": "玩"
+    },
+    {
+     "hans": "问",
+     "hant": "問"
+    }
+   ]
+  },
+  {
+   "ipa": "ɥ",
+   "group": "Glides",
+   "name": "ü glide",
+   "guide": "the glide version of ü: round your lips as you say 'y'; 'yu' and 'yue'",
+   "tip": "Lips rounded and forward, tongue high and front, then open.",
+   "say": "ɥɛ",
+   "examples": [
+    {
+     "hans": "学",
+     "hant": "學"
+    },
+    {
+     "hans": "月",
+     "hant": "月"
+    },
+    {
+     "hans": "远",
+     "hant": "遠"
+    }
+   ]
+  },
+  {
+   "ipa": "p",
+   "group": "Consonants",
+   "name": "b (unaspirated p)",
+   "guide": "like the 'p' in 'spin' - no puff of air; pinyin writes it 'b'",
+   "tip": "Lips pressed together and released gently.",
+   "say": "pa",
+   "examples": [
+    {
+     "hans": "爸",
+     "hant": "爸"
+    },
+    {
+     "hans": "八",
+     "hant": "八"
+    },
+    {
+     "hans": "北",
+     "hant": "北"
+    }
+   ]
+  },
+  {
+   "ipa": "pʰ",
+   "group": "Consonants",
+   "name": "p (aspirated)",
+   "guide": "like English 'p' in 'pie' with a strong puff of air",
+   "tip": "Lips pressed, then released with a puff.",
+   "say": "pʰa",
+   "examples": [
+    {
+     "hans": "怕",
+     "hant": "怕"
+    },
+    {
+     "hans": "朋友",
+     "hant": "朋友"
+    },
+    {
+     "hans": "平",
+     "hant": "平"
+    }
+   ]
+  },
+  {
+   "ipa": "m",
+   "group": "Consonants",
+   "name": "m",
+   "guide": "like English 'm'",
+   "tip": "Lips closed, hum through the nose.",
+   "say": "ma",
+   "examples": [
+    {
+     "hans": "米",
+     "hant": "米"
+    },
+    {
+     "hans": "门",
+     "hant": "門"
+    },
+    {
+     "hans": "买",
+     "hant": "買"
+    }
+   ]
+  },
+  {
+   "ipa": "f",
+   "group": "Consonants",
+   "name": "f",
+   "guide": "like English 'f'",
+   "tip": "Top teeth on the lower lip.",
+   "say": "fa",
+   "examples": [
+    {
+     "hans": "飞",
+     "hant": "飛"
+    },
+    {
+     "hans": "发",
+     "hant": "發"
+    },
+    {
+     "hans": "方",
+     "hant": "方"
+    }
+   ]
+  },
+  {
+   "ipa": "t",
+   "group": "Consonants",
+   "name": "d (unaspirated t)",
+   "guide": "like the 't' in 'stop' - no puff; pinyin writes it 'd'",
+   "tip": "Tongue tip on the ridge behind the upper teeth.",
+   "say": "ta",
+   "examples": [
+    {
+     "hans": "大",
+     "hant": "大"
+    },
+    {
+     "hans": "的",
+     "hant": "的"
+    },
+    {
+     "hans": "对",
+     "hant": "對"
+    }
+   ]
+  },
+  {
+   "ipa": "tʰ",
+   "group": "Consonants",
+   "name": "t (aspirated)",
+   "guide": "like English 't' in 'top' with a strong puff of air",
+   "tip": "Tongue tip on the ridge, released with a puff.",
+   "say": "tʰa",
+   "examples": [
+    {
+     "hans": "他",
+     "hant": "他"
+    },
+    {
+     "hans": "天",
+     "hant": "天"
+    },
+    {
+     "hans": "太",
+     "hant": "太"
+    }
+   ]
+  },
+  {
+   "ipa": "n",
+   "group": "Consonants",
+   "name": "n",
+   "guide": "like English 'n'",
+   "tip": "Tongue tip on the ridge behind the upper teeth.",
+   "say": "na",
+   "examples": [
+    {
+     "hans": "你",
+     "hant": "你"
+    },
+    {
+     "hans": "那",
+     "hant": "那"
+    },
+    {
+     "hans": "难",
+     "hant": "難"
+    }
+   ]
+  },
+  {
+   "ipa": "l",
+   "group": "Consonants",
+   "name": "l",
+   "guide": "like English 'l'",
+   "tip": "Tongue tip on the ridge behind the upper teeth.",
+   "say": "la",
+   "examples": [
+    {
+     "hans": "来",
+     "hant": "來"
+    },
+    {
+     "hans": "老",
+     "hant": "老"
+    },
+    {
+     "hans": "六",
+     "hant": "六"
+    }
+   ]
+  },
+  {
+   "ipa": "k",
+   "group": "Consonants",
+   "name": "g (unaspirated k)",
+   "guide": "like the 'k' in 'sky' - no puff; pinyin writes it 'g'",
+   "tip": "Back of tongue touches the soft palate.",
+   "say": "ka",
+   "examples": [
+    {
+     "hans": "个",
+     "hant": "個"
+    },
+    {
+     "hans": "哥",
+     "hant": "哥"
+    },
+    {
+     "hans": "高",
+     "hant": "高"
+    }
+   ]
+  },
+  {
+   "ipa": "kʰ",
+   "group": "Consonants",
+   "name": "k (aspirated)",
+   "guide": "like English 'k' in 'key' with a strong puff of air",
+   "tip": "Back of tongue touches the soft palate, released with a puff.",
+   "say": "kʰa",
+   "examples": [
+    {
+     "hans": "看",
+     "hant": "看"
+    },
+    {
+     "hans": "可",
+     "hant": "可"
+    },
+    {
+     "hans": "开",
+     "hant": "開"
+    }
+   ]
+  },
+  {
+   "ipa": "x",
+   "group": "Consonants",
+   "name": "h",
+   "guide": "like a rough English 'h' with friction at the back of the mouth",
+   "tip": "Mouth open, back of tongue close to the soft palate.",
+   "say": "xa",
+   "examples": [
+    {
+     "hans": "好",
+     "hant": "好"
+    },
+    {
+     "hans": "喝",
+     "hant": "喝"
+    },
+    {
+     "hans": "回",
+     "hant": "回"
+    }
+   ]
+  },
+  {
+   "ipa": "ŋ",
+   "group": "Consonants",
+   "name": "ng",
+   "guide": "like 'ng' in 'sing'; only at the end of a syllable",
+   "tip": "Lips neutral, back of tongue to the soft palate, hum through the nose.",
+   "say": "aŋ",
+   "examples": [
+    {
+     "hans": "请",
+     "hant": "請"
+    },
+    {
+     "hans": "冷",
+     "hant": "冷"
+    },
+    {
+     "hans": "行",
+     "hant": "行"
+    }
+   ]
+  },
+  {
+   "ipa": "tɕ",
+   "group": "Consonants",
+   "name": "j",
+   "guide": "like 'j' in 'jeep' but with a flatter tongue, lips spread",
+   "tip": "Lips spread, tongue flat behind the lower teeth, front of tongue to the palate.",
+   "say": "tɕi",
+   "examples": [
+    {
+     "hans": "家",
+     "hant": "家"
+    },
+    {
+     "hans": "就",
+     "hant": "就"
+    },
+    {
+     "hans": "几",
+     "hant": "幾"
+    }
+   ]
+  },
+  {
+   "ipa": "tɕʰ",
+   "group": "Consonants",
+   "name": "q",
+   "guide": "like 'ch' in 'cheese' with a strong puff of air, lips spread",
+   "tip": "Lips spread, tongue flat on the palate, released with a puff.",
+   "say": "tɕʰi",
+   "examples": [
+    {
+     "hans": "七",
+     "hant": "七"
+    },
+    {
+     "hans": "去",
+     "hant": "去"
+    },
+    {
+     "hans": "钱",
+     "hant": "錢"
+    }
+   ]
+  },
+  {
+   "ipa": "ɕ",
+   "group": "Consonants",
+   "name": "x",
+   "guide": "like 'sh' in 'she' but with spread lips and a flat tongue",
+   "tip": "Lips spread, tongue flat and high on the palate.",
+   "say": "ɕi",
+   "examples": [
+    {
+     "hans": "小",
+     "hant": "小"
+    },
+    {
+     "hans": "想",
+     "hant": "想"
+    },
+    {
+     "hans": "学",
+     "hant": "學"
+    }
+   ]
+  },
+  {
+   "ipa": "ts",
+   "group": "Consonants",
+   "name": "z",
+   "guide": "like the 'ds' in 'adds'; no puff",
+   "tip": "Lips spread, tongue tip on the back of the teeth.",
+   "say": "tsa",
+   "examples": [
+    {
+     "hans": "在",
+     "hant": "在"
+    },
+    {
+     "hans": "做",
+     "hant": "做"
+    },
+    {
+     "hans": "走",
+     "hant": "走"
+    }
+   ]
+  },
+  {
+   "ipa": "tsʰ",
+   "group": "Consonants",
+   "name": "c",
+   "guide": "like the 'ts' in 'cats' with a strong puff of air",
+   "tip": "Lips spread, tongue tip on the teeth, released with a puff.",
+   "say": "tsʰa",
+   "examples": [
+    {
+     "hans": "菜",
+     "hant": "菜"
+    },
+    {
+     "hans": "从",
+     "hant": "從"
+    },
+    {
+     "hans": "才",
+     "hant": "才"
+    }
+   ]
+  },
+  {
+   "ipa": "s",
+   "group": "Consonants",
+   "name": "s",
+   "guide": "like English 's' in 'sun'",
+   "tip": "Lips spread, teeth almost closed.",
+   "say": "sa",
+   "examples": [
+    {
+     "hans": "三",
+     "hant": "三"
+    },
+    {
+     "hans": "送",
+     "hant": "送"
+    },
+    {
+     "hans": "岁",
+     "hant": "歲"
+    }
+   ]
+  },
+  {
+   "ipa": "ʈʂ",
+   "group": "Consonants",
+   "name": "zh",
+   "guide": "like 'j' in 'jump' with the tongue curled back; no puff",
+   "tip": "Lips slightly rounded, tongue tip curled back to the roof.",
+   "say": "ʈʂa",
+   "examples": [
+    {
+     "hans": "知",
+     "hant": "知"
+    },
+    {
+     "hans": "中",
+     "hant": "中"
+    },
+    {
+     "hans": "照",
+     "hant": "照"
+    }
+   ]
+  },
+  {
+   "ipa": "ʈʂʰ",
+   "group": "Consonants",
+   "name": "ch",
+   "guide": "like 'ch' in 'church' with the tongue curled back and a strong puff",
+   "tip": "Lips slightly rounded, tongue curled back, released with a puff.",
+   "say": "ʈʂʰa",
+   "examples": [
+    {
+     "hans": "吃",
+     "hant": "吃"
+    },
+    {
+     "hans": "车",
+     "hant": "車"
+    },
+    {
+     "hans": "茶",
+     "hant": "茶"
+    }
+   ]
+  },
+  {
+   "ipa": "ʂ",
+   "group": "Consonants",
+   "name": "sh",
+   "guide": "like English 'sh' in 'she' but with the tongue curled back",
+   "tip": "Lips slightly rounded, tongue tip curled back.",
+   "say": "ʂa",
+   "examples": [
+    {
+     "hans": "是",
+     "hant": "是"
+    },
+    {
+     "hans": "说",
+     "hant": "說"
+    },
+    {
+     "hans": "书",
+     "hant": "書"
+    }
+   ]
+  },
+  {
+   "ipa": "ʐ",
+   "group": "Consonants",
+   "name": "r",
+   "guide": "like a buzzing 'zh' with the tongue curled back; the Mandarin 'r'",
+   "tip": "Lips slightly rounded, tongue curled back, voice on.",
+   "say": "ʐa",
+   "examples": [
+    {
+     "hans": "日",
+     "hant": "日"
+    },
+    {
+     "hans": "人",
+     "hant": "人"
+    },
+    {
+     "hans": "热",
+     "hant": "熱"
+    }
+   ]
+  },
+  {
+   "ipa": "˥",
+   "group": "Tones",
+   "name": "Tone 1 (high)",
+   "guide": "high and level, like holding a sung high note",
+   "tip": "Mouth stays open and steady; no movement.",
+   "say": "ma˥",
+   "examples": [
+    {
+     "hans": "妈",
+     "hant": "媽"
+    },
+    {
+     "hans": "书",
+     "hant": "書"
+    },
+    {
+     "hans": "高",
+     "hant": "高"
+    }
+   ]
+  },
+  {
+   "ipa": "˧˥",
+   "group": "Tones",
+   "name": "Tone 2 (rising)",
+   "guide": "rising, like a surprised 'what?'",
+   "tip": "Mouth steady; a small lift of the chin as the pitch rises.",
+   "say": "ma˧˥",
+   "examples": [
+    {
+     "hans": "麻",
+     "hant": "麻"
+    },
+    {
+     "hans": "来",
+     "hant": "來"
+    },
+    {
+     "hans": "人",
+     "hant": "人"
+    }
+   ]
+  },
+  {
+   "ipa": "˨˩˦",
+   "group": "Tones",
+   "name": "Tone 3 (dipping)",
+   "guide": "falls low then rises, like a doubtful 'well...'; often just low in speech",
+   "tip": "Chin drops slightly on the low point.",
+   "say": "ma˨˩˦",
+   "examples": [
+    {
+     "hans": "马",
+     "hant": "馬"
+    },
+    {
+     "hans": "好",
+     "hant": "好"
+    },
+    {
+     "hans": "水",
+     "hant": "水"
+    }
+   ]
+  },
+  {
+   "ipa": "˥˩",
+   "group": "Tones",
+   "name": "Tone 4 (falling)",
+   "guide": "sharp fall, like a firm 'No!'",
+   "tip": "Jaw drops quickly and the sound is short and forceful.",
+   "say": "ma˥˩",
+   "examples": [
+    {
+     "hans": "骂",
+     "hant": "罵"
+    },
+    {
+     "hans": "大",
+     "hant": "大"
+    },
+    {
+     "hans": "看",
+     "hant": "看"
+    }
+   ]
+  },
+  {
+   "ipa": "·",
+   "group": "Tones",
+   "name": "Neutral tone",
+   "guide": "short, light and unstressed; pitch follows the previous tone",
+   "tip": "Small, quick, relaxed movement.",
+   "say": "ma˧",
+   "examples": [
+    {
+     "hans": "吗",
+     "hant": "嗎"
+    },
+    {
+     "hans": "的",
+     "hant": "的"
+    },
+    {
+     "hans": "了",
+     "hant": "了"
+    }
+   ]
+  }
+ ]
+}

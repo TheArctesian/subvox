@@ -463,7 +463,7 @@ final class SentenceTrainingWorkflow {
                     for condition in conditions {
                         try Task.checkCancellation()
                         currentText = pair.text; currentCondition = condition
-                        if condition == .normal, let first = group.first, first.kind == .drill, let playReference {
+                        if condition == .normal, let first = group.first, first.kind == .drill || first.kind == .sound, let playReference {
                             await playReference(pair.text, first.language ?? "en")
                         }
                         try await collectTake(condition: condition, maximumDuration: cueTimes[groupIndex],

@@ -101,6 +101,9 @@ def phonemize(text, language):
     words = [[p for token in word.split() for p in _split(token, language)] for word in raw.split("|") if word.strip()]
     if language == "fr":
         words = [_french_glides(w) for w in words]
+        spelled = re.findall(r"[\w'’-]+", text.lower())
+        if len(spelled) == len(words):  # only when espeak's words line up with the spelling
+            words = [_french_gn(s, w) for s, w in zip(spelled, words)]
     return words
 
 
@@ -111,6 +114,17 @@ def _french_glides(word):
     for k in range(len(out) - 1):
         if out[k] == "y" and out[k + 1] in vowels and (k == 0 or out[k - 1] not in vowels):
             out[k] = "ɥ"
+    return out
+
+
+def _french_gn(spelling, word):
+    # espeak writes "gn" before a vowel as n + j (agneau /anjo/); it is /ɲ/ (agneau /aɲo/).
+    out = list(word)
+    for _ in re.finditer(r"gn(?=[aeiouyéèêàâôîû])", spelling):
+        k = next((i for i in range(len(out) - 1) if out[i] == "n" and out[i + 1] == "j"), None)
+        if k is None:
+            break
+        out[k:k + 2] = ["ɲ"]
     return out
 
 

@@ -23,6 +23,20 @@ import AVFoundation
         }
     }
 
+    /// Speaks an IPA string (one sound, e.g. "uː" or "ʃa") with the language's system voice.
+    func speakIPA(_ ipa: String, language: String) async {
+        synthesizer.stopSpeaking(at: .immediate)
+        let text = NSMutableAttributedString(string: "sound")
+        text.addAttribute(NSAttributedString.Key(AVSpeechSynthesisIPANotationAttribute), value: ipa, range: NSRange(location: 0, length: text.length))
+        let utterance = AVSpeechUtterance(attributedString: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: Self.voiceLanguage(language))
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.75
+        await withCheckedContinuation { continuation in
+            finished = continuation
+            synthesizer.speak(utterance)
+        }
+    }
+
     nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         Task { @MainActor in self.finished?.resume(); self.finished = nil }
     }

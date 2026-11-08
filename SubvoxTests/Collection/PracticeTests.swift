@@ -16,6 +16,12 @@ final class PracticeTests: XCTestCase {
             XCTAssertFalse(corpus.drills.filter { $0.language == language.corpus }.isEmpty, "drills in \(language)")
             XCTAssertFalse(corpus.minimalPairs.filter { $0.language == language.corpus }.isEmpty, "minimal pairs in \(language)")
         }
+        for language in ["en", "fr", "es", "zh"] {
+            let sounds = corpus.sounds[language] ?? []
+            XCTAssertGreaterThan(sounds.count, 25, "sound guide for \(language)")
+            XCTAssertTrue(sounds.allSatisfy { !$0.examples.isEmpty && !$0.say.isEmpty }, "every sound has examples and a demo in \(language)")
+        }
+        XCTAssertEqual(corpus.sounds["zh"]?.filter { $0.group == "Tones" }.count, 5)
         let poem = corpus.pieces.first { $0.id == "jing-ye-si" }
         XCTAssertEqual(poem?.lines[2].text(.zhHant), "舉頭望明月，")
         XCTAssertEqual(poem?.lines[2].text(.zhHans), "举头望明月，")

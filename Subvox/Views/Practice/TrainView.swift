@@ -16,6 +16,7 @@ struct TrainView: View {
         if model.sentenceTraining.isAcquiring || (model.trainMode == .reading && readingOverlay) { SentenceTrainingView() } else {
             switch model.trainMode {
             case .reading: SentenceTrainingView()
+            case .sounds: SoundsView()
             case .speech: SpeechPracticeView()
             case .language: LanguagePracticeView()
             case .minimalPairs: MinimalPairsView()
@@ -454,5 +455,88 @@ struct FreePracticeView: View {
                 if let reading = await model.practiceChecker.phones(text: s, language: language.tag) { readings[language.tag + s] = reading }
             }
         }
+    }
+}
+
+// MARK: - Sounds
+
+/// Every sound of the practice language: hear it, read how to make it, then say example words
+/// aloud and mouth them. Sounds are played from IPA by the system voice for the language.
+struct SoundsView: View {
+    @Environment(AppModel.self) private var model
+    @State private var selection: String?
+    @AppStorage("practice.showIPA") private var showIPA = true
+
+    private var sounds: [PracticeCorpus.Sound] { model.practice.sounds[model.language.corpus] ?? [] }
+    private var sound: PracticeCorpus.Sound? { sounds.first { $0.id == selection } ?? sounds.first }
+    private var groups: [String] { sounds.map(\.group).reduce(into: []) { if !$0.contains($1) { $0.append($1) } } }
+
+    var body: some View {
+        let language = model.language
+        PracticePage(title: "Sounds", subtitle: "Learn each sound: hear it, see how it's made, then say the example words.",
+                     startTitle: "Say the Examples",
+                     groups: sound.map { s in s.examples.map { [SentencePrompt($0, kind: .sound, language: language)] } } ?? [],
+                     mode: .sound) {
+            Toggle("Show IPA", isOn: $showIPA)
+        } content: {
+            if sounds.isEmpty {
+                ContentUnavailableView("No sound guide for \(language.name) yet", systemImage: "waveform", description: Text("Choose another language from the toolbar."))
+            } else {
+                HStack(alignment: .top, spacing: 24) {
+                    VStack(alignment: .leading, spacing: 14) {
+                        ForEach(groups, id: \.self) { group in
+                            Text(group).font(.headline).foregroundStyle(.secondary)
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 58), spacing: 6)], alignment: .leading, spacing: 6) {
+                                ForEach(sounds.filter { $0.group == group }) { s in
+                                    Button { selection = s.id; Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
+                                        VStack(spacing: 1) {
+                                            Text(s.ipa).font(.title2)
+                                            Text(s.name).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+                                        }
+                                        .frame(width: 58, height: 52)
+                                        .background(s.id == sound?.id ? AnyShapeStyle(.tint.opacity(0.25)) : AnyShapeStyle(.quaternary.opacity(0.35)),
+                                                    in: RoundedRectangle(cornerRadius: 8))
+                                    }
+                                    .buttonStyle(.plain)
+                                    .accessibilityLabel("\(s.name), \(s.guide)")
+                                    .accessibilityAddTraits(s.id == sound?.id ? .isSelected : [])
+                                }
+                            }
+                        }
+                    }.frame(width: 330)
+                    if let sound { detail(sound, language: language) }
+                }
+            }
+        }
+        .onChange(of: model.language) { selection = nil }
+    }
+
+    private func detail(_ s: PracticeCorpus.Sound, language: AppLanguage) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .firstTextBaseline, spacing: 16) {
+                Text("/\(s.ipa)/").font(.system(size: 56, weight: .medium))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(s.name).font(.title2.weight(.semibold))
+                    Text(s.guide).foregroundStyle(.secondary)
+                }
+            }
+            Button { Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
+                Label("Hear the Sound", systemImage: "speaker.wave.2.fill")
+            }.controlSize(.large)
+            if let tip = s.tip { Label(tip, systemImage: "mouth").foregroundStyle(.secondary) }
+            Divider()
+            Text("Examples").font(.headline)
+            ForEach(s.examples, id: \.self) { line in
+                HStack(alignment: .firstTextBaseline) {
+                    PracticeLineView(line: line, language: language, showIPA: showIPA)
+                    Spacer()
+                    Button { Task { await model.referenceSpeaker.speak(line.text(language), language: language.tag) } } label: {
+                        Label("Listen", systemImage: "speaker.wave.2")
+                    }.accessibilityLabel("Listen to \(line.text(language))")
+                }
+            }
+            Text("Each word plays before you say it aloud; then mouth it.").font(.caption).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
