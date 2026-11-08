@@ -151,7 +151,7 @@ def _collapse(word, pair, into):
 # est, and a few adjectives before a noun); everywhere else the linking consonant is dropped.
 LIAISON_AFTER = set("""les des ces mes tes ses nos vos leurs aux un mon ton son en on nous vous ils elles dont quand chez dans
 sans sous très plus moins tout deux trois six dix vingt quels quelles quel aucun plusieurs certains est c'est petit petits
-grand grands bon bons gros mauvais premier dernier aux leur cent""".split())
+grand grands bon bons gros mauvais premier dernier aux leur cent cents quelques certain ancien moyen plein prochain""".split())
 DENASALISE = {"bon": ("ɔ̃", "ɔ"), "certain": ("ɛ̃", "ɛ"), "ancien": ("ɛ̃", "ɛ"), "moyen": ("ɛ̃", "ɛ"), "plein": ("ɛ̃", "ɛ"), "prochain": ("ɛ̃", "ɛ")}
 FRENCH_WORDS = {"rouen": ["ʁ", "w", "ɑ̃"], "amiens": ["a", "m", "j", "ɛ̃"], "dreyfus": ["d", "ʁ", "ɛ", "f", "y", "s"]}
 # Old spellings (Ronsard) read as their modern pronunciation.
@@ -192,12 +192,20 @@ def _french_in_context(spelled, i, word):
     nxt = spelled[i + 1] if i + 1 < len(spelled) else ""
     if spelling == "comment" and nxt.startswith(("a", "e", "i", "o", "u", "é")) and word[-1:] != ["t"]:
         return word + ["t"]
+    if spelling in DENASALISE and nxt and VOWEL_START.match(nxt) and nxt != "et" and word and word[-1] == DENASALISE[spelling][0]:
+        return word[:-1] + [DENASALISE[spelling][1], "n"]  # ancien‿ami /ɑ̃sjɛn ami/
+    if len(word) >= 2 and word[-1] == word[-2] and word[-1] in ("z", "t", "n", "p", "ʁ"):
+        word = word[:-1]  # espeak's liaison on top of a final consonant (roses‿envolées /ʁozz/)
+        if spelling not in LIAISON_AFTER:
+            return word
     if not word or not nxt or not VOWEL_START.match(nxt) or word[-1] not in ("z", "t", "n", "p", "ʁ"):
         return word
     alone = list(_french_alone(spelling))
     if alone and alone[-1] == word[-1]:
         return word  # a consonant the word always has (sept, avec), not a liaison
     trigger = re.split(r"['’]", spelling)[-1]
+    if spelling == "vingt" and nxt == "et":
+        return word  # vingt et un: the t is said
     if nxt != "et" and (spelling in LIAISON_AFTER or trigger in LIAISON_AFTER):
         if spelling in DENASALISE:
             nasal, oral = DENASALISE[spelling]
@@ -300,16 +308,17 @@ def _to_simplified(text):
 NUMERALS = set("〇零一二三四五六七八九十百千万两几第")
 PRONOUNS_BEFORE_DEI = set("我你他她它们咱还也就都先")
 DEI_VERBS = set("走去来回做学买吃喝跑看上下写说找交给办")
+DURATIVE_VERBS = set("拿看坐站躺穿戴开关等听唱笑哭写想带放挂住拉抱牵背跟陪守开着关")
 
 
 NEUTRAL_SECOND = set("""爸爸 妈妈 哥哥 姐姐 弟弟 妹妹 爷爷 奶奶 姥姥 叔叔 舅舅 宝宝 谢谢 看看 说说 试试 想想 听听 走走
 东西 时候 什么 怎么 喜欢 衣服 朋友 学生 多少 麻烦 漂亮 休息 知道 明白 先生 地方 事情 认识 意思 舒服 客气 告诉 名字
 眼睛 耳朵 头发 早上 晚上 屋子 房子 桌子 椅子 孩子 儿子 杯子 包子 饺子 筷子 本子 日子 鼻子 肚子 我们 你们 他们 她们
-咱们 人们 这么 那么 多么 关系 便宜 认得 记得 觉得 晓得 舍得 时间 部分 窗户 豆腐 萝卜 葡萄 玻璃 姑娘 丈夫 媳妇 打扮 打听
+咱们 人们 这么 那么 多么 关系 便宜 认得 记得 觉得 晓得 舍得 部分 窗户 豆腐 萝卜 葡萄 玻璃 姑娘 丈夫 媳妇 打扮 打听
 聪明 糊涂 热闹 凉快 暖和 清楚 干净 结实 商量 收拾 招呼 照顾 消息 生意 力气 价钱 规矩 道理 钥匙 太阳 月亮 尾巴""".split())
 
 
-def _corrected(hanzi, tone3, sandhi):
+def _corrected(hanzi, tone3, sandhi, neutral=True):
     """Fixes the readings pypinyin's dictionary gets wrong in everyday text.
 
     Labels and pinyin use citation tones (一 yī, 不 bù) unless `sandhi` asks for the spoken tone
@@ -320,30 +329,35 @@ def _corrected(hanzi, tone3, sandhi):
         prev, nxt = (hanzi[i - 1] if i else ""), (hanzi[i + 1] if i + 1 < len(hanzi) else "")
         if ch == "只" and prev in NUMERALS | set("这那哪"):
             out[i] = "zhi1"  # measure word, not "only"
-        elif ch == "得" and i:
+        elif ch == "得" and i and out[i] in ("de2", "de5") and nxt not in "到了意分知出" and prev not in "获取赢难不晓懂":
             out[i] = "dei3" if prev in PRONOUNS_BEFORE_DEI and nxt in DEI_VERBS else "de5"
-        elif ch == "着" and not (nxt == "急" or prev in "睡找" or nxt == "火"):
-            out[i] = "zhe5"
+        elif ch == "着" and prev in DURATIVE_VERBS and nxt not in "急火了":
+            out[i] = "zhe5"  # durative 着 after a verb (拿着, 看着); other readings left to the dictionary
         elif ch == "谁":
             out[i] = "shei2"
         elif ch in "一不":
             out[i] = "yi1" if ch == "一" else "bu4"
     # Words whose second syllable is lexically neutral (not tone sandhi, so shown in every drill).
-    for k in range(len(hanzi) - 1):
-        if hanzi[k:k + 2] in NEUTRAL_SECOND:
+    for k in range(len(hanzi) - 1) if neutral else ():
+        if hanzi[k:k + 2] in NEUTRAL_SECOND and hanzi[k:k + 4] != "东西南北":
             out[k + 1] = re.sub(r"\d$", "5", out[k + 1])
     if sandhi:
         for i, ch in enumerate(hanzi):
             nxt_tone = int(out[i + 1][-1]) if i + 1 < len(out) and out[i + 1][-1].isdigit() else None
-            in_number = (i and hanzi[i - 1] in NUMERALS) or (i + 1 < len(hanzi) and hanzi[i + 1] in NUMERALS - {"两", "几"})
-            if ch == "一" and nxt_tone and not in_number:
+            prev = hanzi[i - 1] if i else ""
+            nxt = hanzi[i + 1] if i + 1 < len(hanzi) else ""
+            in_number = prev in NUMERALS or nxt in set("〇零一二三四五六七八九十") or nxt in set("月号楼")
+            between = prev and nxt and prev == nxt  # 看一看, 去不去: neutral
+            if between:
+                out[i] = ("yi5" if ch == "一" else "bu5")
+            elif ch == "一" and nxt_tone and not in_number:
                 out[i] = "yi2" if nxt_tone == 4 else "yi4"
             elif ch == "不" and nxt_tone == 4:
                 out[i] = "bu2"
     return out
 
 
-def mandarin_syllables(text, sandhi=False):
+def mandarin_syllables(text, sandhi=False, neutral=True):
     """Characters -> [{'pinyin': 'hang2', 'toneless': 'hang', 'tone': 2, 'phones': [...]}]; non-Han text is skipped."""
     from pypinyin import Style, pinyin
     from pypinyin.style._utils import get_finals, get_initials
@@ -353,7 +367,7 @@ def mandarin_syllables(text, sandhi=False):
     hanzi = _to_simplified(hanzi)
     if not hanzi:
         return []
-    tone3 = _corrected(hanzi, [p[0] for p in pinyin(hanzi, style=Style.TONE3, neutral_tone_with_five=True)], sandhi)
+    tone3 = _corrected(hanzi, [p[0] for p in pinyin(hanzi, style=Style.TONE3, neutral_tone_with_five=True)], sandhi, neutral)
     out = []
     for syllable in tone3:
         tone = int(syllable[-1]) if syllable[-1].isdigit() else 5
@@ -364,10 +378,10 @@ def mandarin_syllables(text, sandhi=False):
     return out
 
 
-def pinyin_marks(text, sandhi=False):
+def pinyin_marks(text, sandhi=False, neutral=True):
     """Tone-marked pinyin for display ("yín háng"), from the same corrected readings as the labels."""
     from pypinyin.contrib.tone_convert import to_tone
-    return " ".join(to_tone(s["pinyin"]).replace("v", "ü") for s in mandarin_syllables(text, sandhi))
+    return " ".join(to_tone(s["pinyin"]).replace("v", "ü") for s in mandarin_syllables(text, sandhi, neutral))
 
 
 def strip_tones(syllables):

@@ -25,6 +25,9 @@ class PhoneCheck(unittest.TestCase):
         self.assertFalse(result["trainable"])
         self.assertEqual(result["source"], "whisper-words")
 
+    def test_traditional_text_matches_simplified_recognition(self):
+        self.assertTrue(check("我們去銀行", "zh-Hant", "我们去银行")["trainable"])
+
     def test_rejects_symbols_outside_the_shared_set(self):
         with self.assertRaises(ValueError):
             check("tu", "fr", "tu", [dict(phone="ʘ", start=0, end=.1)])

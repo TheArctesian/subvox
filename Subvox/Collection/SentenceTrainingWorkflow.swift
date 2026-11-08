@@ -558,17 +558,18 @@ final class SentenceTrainingWorkflow {
             let transcript = try await whisper.transcribe(audioURL: URL(fileURLWithPath: directory).appending(path: "audio.caf"),
                 outputDirectory: URL(fileURLWithPath: directory), timeRange: range, language: String((pair.language ?? "en").prefix(2)))
             pair.transcript = transcript
-            let expected = Lexicon.words(in: pair.text)
+            // Han text is compared in Simplified form: speech recognition may return either script.
+            let expected = Lexicon.words(in: pair.text).map(Lexicon.matchKey)
             // Text agreement and usable timing coverage are different checks. Untimed ASR
             // words still count in text agreement, but never become motion labels.
-            let textMatches = Alignment.commonSubsequence(expected, Lexicon.words(in: transcript.text))
+            let textMatches = Alignment.commonSubsequence(expected, Lexicon.words(in: transcript.text).map(Lexicon.matchKey))
             pair.transcriptMatchRate = Double(textMatches.count) / Double(max(1, expected.count))
             guard let silent=pair.silent else {throw Failure.missingSilent}
             // Free practice (data rule 3): the typed text is a label only when Whisper heard it.
             if pair.practiceMode == .freeText, (pair.transcriptMatchRate ?? 0) < Self.freeTextAgreement { throw Failure.practiceOnly }
             guard textMatches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.transcript }
             let heard = try SentenceReference.anchors(transcript, sessionStart: start, audioOffset: offset)
-            let matches = Alignment.commonSubsequence(expected, heard.map(\.word))
+            let matches = Alignment.commonSubsequence(expected, heard.map { Lexicon.matchKey($0.word) })
             pair.timedWordCoverage = Double(matches.count) / Double(max(1, expected.count))
             guard matches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.timing }
             let anchors = matches.map { heard[$0.1] }

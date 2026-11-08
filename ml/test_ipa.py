@@ -31,6 +31,11 @@ class EspeakLanguages(unittest.TestCase):
         self.assertEqual(say("j'en ai deux"), "ʒɑ̃n e dø")
         self.assertEqual(say("les haricots"), "le aʁiko")                      # h aspiré: no liaison
         self.assertEqual(say("les hommes"), "lez ɔm")
+        self.assertEqual(say("des roses envolées"), "de ʁoz ɑ̃vole")          # no doubled z
+        self.assertEqual(say("je suis allé"), "ʒə sɥi ale")
+        self.assertEqual(say("quelques amis"), "kɛlkəz ami")
+        self.assertEqual(say("vingt et un"), "vɛ̃t e œ̃")
+        self.assertEqual(say("mon ancien ami"), "mɔ̃n ɑ̃sjɛn ami")
 
     def test_french_gn_is_palatal_but_ni_stays_n_j(self):
         self.assertEqual(ipa.phones("agneau", "fr"), ["a", "ɲ", "o"])
@@ -103,11 +108,20 @@ class Mandarin(unittest.TestCase):
         self.assertEqual(ipa.pinyin_marks("休息"), "xiū xi")
         self.assertEqual(ipa.pinyin_marks("我有一个哥哥"), "wǒ yǒu yī gè gē ge")
 
+    def test_dictionary_readings_are_kept_where_rules_dont_apply(self):
+        self.assertEqual(ipa.pinyin_marks("获得"), "huò dé")
+        self.assertEqual(ipa.pinyin_marks("我得到了"), "wǒ dé dào le")
+        self.assertEqual(ipa.pinyin_marks("着急"), "zháo jí")
+        self.assertEqual(ipa.pinyin_marks("东西南北"), "dōng xī nán běi")
+        self.assertEqual(ipa.pinyin_marks("休息", neutral=False), "xiū xī")
+
     def test_tone_change_drills_show_spoken_tones(self):
         self.assertEqual(ipa.pinyin_marks("一天", sandhi=True), "yì tiān")
         self.assertEqual(ipa.pinyin_marks("一个", sandhi=True), "yí gè")
         self.assertEqual(ipa.pinyin_marks("十一点", sandhi=True), "shí yī diǎn")
         self.assertEqual(ipa.pinyin_marks("不对", sandhi=True), "bú duì")
+        self.assertEqual(ipa.pinyin_marks("一月", sandhi=True), "yī yuè")
+        self.assertEqual(ipa.pinyin_marks("看一看", sandhi=True), "kàn yi kàn")
 
     def test_tone_restoration_uses_phrase_context(self):
         # Citation tones (no third-tone sandhi), as in the labels. Homophones such as yinhang

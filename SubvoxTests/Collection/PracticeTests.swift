@@ -80,6 +80,20 @@ final class PracticeTests: XCTestCase {
         XCTAssertEqual(PracticeProgress(pairs: [pair(daysAgo: 1)], calendar: calendar, now: now).streak, 1, "Yesterday still counts until today ends")
     }
 
+    func testTraditionalAndSimplifiedMatchForSpeechRecognition() {
+        XCTAssertEqual(Lexicon.words(in: "我們去銀行").map(Lexicon.matchKey), Lexicon.words(in: "我们去银行").map(Lexicon.matchKey))
+        XCTAssertEqual(Lexicon.matchKey("hello"), "hello")
+    }
+
+    func testVerdictFollowsTheTrainingAdmissionRule() {
+        var pair = SentencePair(visitID: UUID(), promptIDs: [], text: "x", role: .training)
+        pair.transcript = LocalWhisperTranscript(text: "x", words: [])
+        pair.transcriptMatchRate = 0.82
+        XCTAssertFalse(PracticeFeedback.verdict(pair).kept, "82% passes processing but not admission (85%)")
+        pair.review = .excluded
+        XCTAssertFalse(PracticeFeedback.verdict(pair).kept)
+    }
+
     func testPhoneCheckDecodesThePythonOutput() throws {
         let json = #"{"language": "fr", "expected_phones": ["t", "y"], "produced_phones": ["t", "u"], "source": "whisper-words", "alignment": [{"op": "match", "expected": "t", "produced": "t"}, {"op": "sub", "expected": "y", "produced": "u"}], "word_agreement": 0.0, "phone_error_rate": 0.5, "trainable": false, "timing": null}"#
         let result = try JSONDecoder().decode(PhoneCheckResult.self, from: Data(json.utf8))

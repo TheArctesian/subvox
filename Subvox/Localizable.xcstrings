@@ -851,6 +851,40 @@
         }
       }
     },
+    "; training needs 85%": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "; el entrenamiento requiere un 85 %"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "; el entrenamiento requiere un 85 %"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " ; l’entraînement exige 85 %"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "；用于训练需达到 85%"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "；用於訓練需達到 85%"
+          }
+        }
+      }
+    },
     "; typed text needs 85%": {
       "localizations": {
         "es": {
@@ -5063,6 +5097,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "需要留意（%lld）"
+          }
+        }
+      }
+    },
+    "Needs review": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por revisar"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por revisar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À vérifier"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要复查"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要複查"
           }
         }
       }
@@ -11353,6 +11421,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "你隨時可以在「錄音 › 分享錄音」中更改。"
+          }
+        }
+      }
+    },
+    "You excluded this take": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluiste esta toma"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluiste esta toma"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez exclu cette prise"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已排除这次录音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已排除這次錄音"
           }
         }
       }

@@ -207,15 +207,20 @@ struct PracticeFeedback: View {
 
     /// The decision stored with the pair, in words: kept, practice only, or not used and why.
     static func verdict(_ pair: SentencePair) -> (symbol: String, color: Color, text: String, kept: Bool) {
-        let rate = pair.transcriptMatchRate.map { Int(($0 * 100).rounded()) }
-        let recognised = rate.map { String(localized: " · \($0)% of words recognised") } ?? ""
+        let recognised = pair.transcriptMatchRate.map { String(localized: " · \(Int(($0 * 100).rounded(.down)))% of words recognised") } ?? ""
         if pair.transcript == nil && pair.error == nil { return ("clock", .secondary, String(localized: "Waiting for speech recognition"), false) }
-        if pair.error == nil && pair.alignment != nil { return ("checkmark.circle.fill", .green, String(localized: "Kept for training") + recognised, true) }
-        if pair.practiceMode == .freeText, let rate, Double(rate) < SentenceTrainingWorkflow.freeTextAgreement * 100 {
+        // The same rule the training data uses (SentencePair.usesAlignedWords), not a guess from the view.
+        if pair.usesAlignedWords { return ("checkmark.circle.fill", .green, String(localized: "Kept for training") + recognised, true) }
+        if pair.error == SentenceTrainingWorkflow.Failure.practiceOnly.localizedDescription {
             return ("pencil.circle.fill", .orange, String(localized: "Practice only") + recognised + String(localized: "; typed text needs 85%"), false)
+        }
+        if pair.review == .excluded { return ("xmark.circle.fill", .orange, String(localized: "You excluded this take"), false) }
+        if pair.error == nil, !pair.hasReliableTranscript {
+            return ("questionmark.circle.fill", .orange, String(localized: "Needs review") + recognised + String(localized: "; training needs 85%"), false)
         }
         return ("xmark.circle.fill", .orange, String(localized: "Not used for training") + recognised + " · " + (pair.error ?? String(localized: "word timing was missing")), false)
     }
+
 
     var body: some View {
         if !pairs.isEmpty {

@@ -60,6 +60,12 @@ struct Lexicon: Sendable {
         return spaced.matches(of: /\p{L}+(?:'\p{L}+)?/).map { String($0.output) }
     }
 
+    /// A word as compared against speech recognition: Traditional Han characters folded to Simplified.
+    static func matchKey(_ word: String) -> String {
+        word.unicodeScalars.contains { $0.properties.isIdeographic }
+            ? (word.applyingTransform(StringTransform("Hant-Hans"), reverse: false) ?? word) : word
+    }
+
     static let vowels: Set<String> = ["AA", "AE", "AH", "AO", "AW", "AY", "EH", "ER", "EY", "IH", "IY", "OW", "OY", "UH", "UW"]
 
     /// Jaw opening at a vowel nucleus; diphthongs are the glide between two heights.

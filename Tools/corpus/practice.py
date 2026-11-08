@@ -114,7 +114,7 @@ VOSOTROS = _re.compile(r"\b(vosotr[oa]s|os|sois|tenéis|estáis|vais|habéis|sab
 SANDHI_DRILLS = {"zh-yi-tone-change", "zh-bu-tone-change"}
 
 
-def entry(text, language, sandhi=False, accent=None):
+def entry(text, language, sandhi=False, accent=None, neutral=True):
     """A line or phrase. Mandarin text is a (simplified, traditional) pair; IPA and pinyin come
     from the simplified form, which pypinyin reads with the most reliable phrase context."""
     hant = None
@@ -133,7 +133,7 @@ def entry(text, language, sandhi=False, accent=None):
             item["region"] = "ES"
     if language == "zh":
         item["hant"] = hant or text
-        item["pinyin"] = ipa.pinyin_marks(text, sandhi)
+        item["pinyin"] = ipa.pinyin_marks(text, sandhi, neutral)
         from pypinyin.style.bopomofo import BopomofoConverter
         item["zhuyin"] = " ".join(BopomofoConverter().to_bopomofo(p) for p in item["pinyin"].split())
     return item
@@ -172,11 +172,11 @@ def glossed(word, language):
     return item
 
 
-def phrase(p, language, sandhi=False, accent=None):
+def phrase(p, language, sandhi=False, accent=None, neutral=True):
     """A drill phrase: a string, or {"hans", "hant"} / {"text"} with an optional English gloss."""
     if isinstance(p, str):
-        return entry(p, language, sandhi, accent)
-    item = entry((p["hans"], p["hant"]) if "hans" in p else p["text"], language, sandhi, accent)
+        return entry(p, language, sandhi, accent, neutral)
+    item = entry((p["hans"], p["hant"]) if "hans" in p else p["text"], language, sandhi, accent, neutral)
     if p.get("gloss"):
         item["gloss"] = p["gloss"]
     return item
@@ -267,7 +267,8 @@ def build(year=2026):
                            lines=[entry(line, language) for line in lines]))
     drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
                    note_hant=traditional_title(meta.get("note") or "", meta) if language == "zh" and meta.get("note") else None,
-                   phrases=[phrase(p, language, did in SANDHI_DRILLS, meta.get("region")) for p in phrases], **meta)
+                   # Tone-pair drills teach the full tone of each syllable (休息 as 1+2), so no neutral tones there.
+                   phrases=[phrase(p, language, did in SANDHI_DRILLS, meta.get("region"), not did.startswith("zh-tone-pairs")) for p in phrases], **meta)
               for did, language, title, phrases, meta in load_drills()]
     pairs = [dict(language=language, contrast=contrast, label=(rest[0] if rest else None),
                   sets=[[glossed(w, language) for w in group] for group in groups])

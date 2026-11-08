@@ -72,7 +72,8 @@ def check(text, language, whisper_text, phone_intervals=None):
     else:
         produced, source = ipa.phones(whisper_text, language, accent), "whisper-words"
     if language == "zh":
-        e, h = _characters(text), _characters(whisper_text)
+        # Traditional and Simplified spellings of the same words must match (Whisper may return either).
+        e, h = _characters(ipa._to_simplified(text)), _characters(ipa._to_simplified(whisper_text))
         agreement = sum(op == "match" for op, _, _ in align(e, h)) / max(len(e), len(h), 1)
     else:
         agreement = word_agreement(text, whisper_text)

@@ -140,6 +140,7 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
         takes, motion, cameras, all_samples, readings_all = [], [], [], [], []
         for pair in sorted(pairs, key=lambda p: p["createdAt"]):
             readings = pair.get("cameraReadings") or []
+            check = pair.get("phoneCheck") or {}
             readings_all += readings
             for mode, key in (("spoken", "spoken"), ("mouthed", "silent")):
                 recording = pair.get(key)
@@ -156,7 +157,8 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
                                   language=pair.get("language") or "en", speaker_status=pair.get("speakerStatus") or speaker.get("status") or "unknown",
                                   first_language=pair.get("firstLanguage") or speaker.get("firstLanguage"),
                                   speaking_style=pair.get("speakingStyle") or "natural",
-                                  expected_phones=pair.get("expectedPhones") or expected_phones(pair.get("text", ""), pair.get("language") or "en"), produced_phones=(pair.get("phoneCheck") or {}).get("produced_phones") if mode == "spoken" else None))
+                                  expected_phones=(pair.get("phoneCheck") or {}).get("expected_phones") or expected_phones(pair.get("text", ""), pair.get("language") or "en"),
+                                  produced_phones=check.get("produced_phones") if mode == "spoken" and check.get("source") == "phone-intervals" else None))
         if not takes:
             continue
         times = sorted(r["t"] for r in readings_all)
@@ -290,10 +292,12 @@ def language_problems(take):
     return problems
 
 
-def training_phones(take):
-    """The label a take trains on (data rule 3): the phones actually produced when a phone check ran;
-    the textbook phones only for a native speaker reading known text; otherwise None (practice only)."""
-    if take.get("produced_phones"):
+def training_phones(take, produced_source=None):
+    """The label a take trains on (data rule 3): the phones actually produced when an audio phone
+    recogniser or aligner ran; the textbook phones only for a native speaker reading known text;
+    otherwise None (practice only). Phones guessed from the words Whisper heard are not 'produced':
+    a mispronounced sound inside a recognised word would become a correct-looking label."""
+    if take.get("produced_phones") and produced_source in (None, "phone-intervals"):
         return take["produced_phones"]
     if take.get("speaker_status") == "native" and take.get("speaking_style") == "natural":
         return take.get("expected_phones")
@@ -302,7 +306,8 @@ def training_phones(take):
 
 def expected_phones(text, language):
     try:
-        return ipa.phones(text, ipa.validate_language_tag(language)) if language == "zh" or ipa.espeak_available() else None
+        base = ipa.validate_language_tag(language)
+        return ipa.phones(text, base, ipa.accent_of(language)) if base == "zh" or ipa.espeak_available() else None
     except (ValueError, RuntimeError):
         return None
 
