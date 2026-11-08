@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Train: the five practice modes as tabs (docs/macos-ui-checklist.md). Recording, review overlays
+/// Train: the five practice modes, chosen from the sidebar (docs/macos-ui-checklist.md). Recording, review overlays
 /// and the shared paired recording screen take the whole page while they're active.
 struct TrainView: View {
     @Environment(AppModel.self) private var model
@@ -11,17 +11,14 @@ struct TrainView: View {
     }
 
     var body: some View {
-        @Bindable var model = model
         if fullPage { SentenceTrainingView() } else {
-            TabView(selection: $model.trainMode) {
-                SentenceTrainingView().tabItem { Label(TrainMode.reading.rawValue, systemImage: TrainMode.reading.symbol) }.tag(TrainMode.reading)
-                SpeechPracticeView().tabItem { Label(TrainMode.speech.rawValue, systemImage: TrainMode.speech.symbol) }.tag(TrainMode.speech)
-                LanguagePracticeView().tabItem { Label(TrainMode.language.rawValue, systemImage: TrainMode.language.symbol) }.tag(TrainMode.language)
-                MinimalPairsView().tabItem { Label(TrainMode.minimalPairs.rawValue, systemImage: TrainMode.minimalPairs.symbol) }.tag(TrainMode.minimalPairs)
-                FreePracticeView().tabItem { Label(TrainMode.free.rawValue, systemImage: TrainMode.free.symbol) }.tag(TrainMode.free)
+            switch model.trainMode {
+            case .reading: SentenceTrainingView()
+            case .speech: SpeechPracticeView()
+            case .language: LanguagePracticeView()
+            case .minimalPairs: MinimalPairsView()
+            case .free: FreePracticeView()
             }
-            .modifier(InPageTabs())
-            .padding(.top, 8)
         }
     }
 }
@@ -302,10 +299,3 @@ struct FreePracticeView: View {
     }
 }
 
-/// On macOS 15+ the automatic TabView style moves tabs into the window toolbar, where a narrow
-/// window hides them behind the overflow (») button. Keep them as a visible bar above the page.
-private struct InPageTabs: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(macOS 15.0, *) { content.tabViewStyle(.grouped) } else { content }
-    }
-}
