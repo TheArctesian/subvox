@@ -100,7 +100,25 @@ final class SentenceTrainingWorkflow {
         return community.assign(counts: community.counts(recordedPromptIDs: done), recordedPassages: finished, count: communityPassageCount)
             .flatMap { $0.prompts.filter { !done.contains($0.promptID) }.map { [$0.sentencePrompt] } }
     }
+    /// Set by a practice tab just before `start`; recording then uses these prompts (spoken, then mouthed).
+    var practicePlan: [[SentencePrompt]]?
+    /// Pairs recorded by the most recent practice round, for the tab's feedback view.
+    private(set) var lastPracticePairIDs: [UUID] = []
+    /// Called after a practice pair is transcribed, to run the audio phone check.
+    @ObservationIgnored var onPracticeProcessed: ((UUID) async -> Void)?
+    /// Shadowing drills: plays the phrase in its language before the spoken take (text, language).
+    @ObservationIgnored var playReference: ((String, String) async -> Void)?
+    /// Free practice trains only when Whisper agrees with this share of the typed words.
+    static let freeTextAgreement = 0.85
+
+    func setPhoneCheck(_ result: PhoneCheckResult?, for id: UUID) {
+        guard let i = data.pairs.firstIndex(where: { $0.id == id }) else { return }
+        data.pairs[i].phoneCheck = result
+        save()
+    }
+
     var plan: [[SentencePrompt]] {
+        if let practicePlan { return practicePlan }
         if readingSource == .community { return communityPlan }
         if variedSentences {
             return data.variedSentences(role:collectionRole ?? .training,limit:sentenceCount,excluding:excludedCollectionGroups).map {[$0]}
@@ -164,6 +182,8 @@ final class SentenceTrainingWorkflow {
             text: prompts.map(\.text).joined(separator: " "), role: role, directory: session.directory.path,
             sessionStartUptime: session.startUptime, audioOffset: session.audioOffset, recordingSessionID: session.id)
         data.pairs.append(pair)
+        data.pairs[data.pairs.count - 1].language = first.language
+        data.pairs[data.pairs.count - 1].practiceMode = first.kind.isPractice ? first.kind : nil
         data.pairs[data.pairs.count - 1].pronunciationProfile = try PronunciationProfile.load()
         if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].pairIDs.append(pair.id) }
         try persist()
@@ -364,14 +384,20 @@ final class SentenceTrainingWorkflow {
 
     func start(audio: AudioService, recorder: SessionRecorder, whisper: LocalWhisper,
                canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil) {
-        let communityMode = readingSource == .community && retry == nil && !repairs
+        let practiceMode = practicePlan != nil && retry == nil && !repairs
+        let communityMode = !practiceMode && readingSource == .community && retry == nil && !repairs
         guard !isBusy, storageReady, data.reservedUnlockedAt == nil, !recorder.isRecording,
               whisper.isConfigured || communityMode, canRecord() else { return }
         var planned = plan
+        if practiceMode {
+            data.addPractice(planned.flatMap { $0 })
+            guard save() else { return }
+        }
         if communityMode {
             data.addCommunity(planned.flatMap { $0 })
             guard save() else { return }
         }
+        if practiceMode { lastPracticePairIDs = [] }
         let conditions: [SpeechCondition] = communityMode && mouthedOnly ? [.silent] : [.normal, .silent]
         if let retry, let pair = data.pairs.first(where: { $0.id == retry }) {
             planned = [data.prompts.filter { pair.promptIDs.contains($0.id) }]
@@ -431,9 +457,13 @@ final class SentenceTrainingWorkflow {
                     guard canRecord() else { throw Failure.disconnected }
                     let pair = try beginPair(prompts: group, visit: visit, session: recordingSession)
                     pairIDs.append(pair.id); currentPromptIDs = pair.promptIDs
+                    if practiceMode { lastPracticePairIDs.append(pair.id) }
                     for condition in conditions {
                         try Task.checkCancellation()
                         currentText = pair.text; currentCondition = condition
+                        if condition == .normal, let first = group.first, first.kind == .drill, let playReference {
+                            await playReference(pair.text, first.language ?? "en")
+                        }
                         try await collectTake(condition: condition, maximumDuration: cueTimes[groupIndex],
                             baselineSeconds: timing.baseline, recoverySeconds: timing.recovery, canRecord: canRecord,
                             onCompleted: { recording in
@@ -464,6 +494,7 @@ final class SentenceTrainingWorkflow {
             await Task { @MainActor in
                 for id in pairIDs where whisper.isConfigured {
                     await self.process(id, whisper: whisper)
+                    if practiceMode { await self.onPracticeProcessed?(id) }
                 }
             }.value
             phase = .finished; processingText = ""; task = nil
@@ -506,7 +537,7 @@ final class SentenceTrainingWorkflow {
             let range = (spoken.cueStart - start - offset)...(spoken.cueEnd - start - offset)
             processingText = "Checking the spoken sentence locally…"
             let transcript = try await whisper.transcribe(audioURL: URL(fileURLWithPath: directory).appending(path: "audio.caf"),
-                outputDirectory: URL(fileURLWithPath: directory), timeRange: range)
+                outputDirectory: URL(fileURLWithPath: directory), timeRange: range, language: pair.language ?? "en")
             pair.transcript = transcript
             let expected = Lexicon.words(in: pair.text)
             // Text agreement and usable timing coverage are different checks. Untimed ASR
@@ -514,6 +545,8 @@ final class SentenceTrainingWorkflow {
             let textMatches = Alignment.commonSubsequence(expected, Lexicon.words(in: transcript.text))
             pair.transcriptMatchRate = Double(textMatches.count) / Double(max(1, expected.count))
             guard let silent=pair.silent else {throw Failure.missingSilent}
+            // Free practice (data rule 3): the typed text is a label only when Whisper heard it.
+            if pair.practiceMode == .freeText, (pair.transcriptMatchRate ?? 0) < Self.freeTextAgreement { throw Failure.practiceOnly }
             guard textMatches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.transcript }
             let heard = try SentenceReference.anchors(transcript, sessionStart: start, audioOffset: offset)
             let matches = Alignment.commonSubsequence(expected, heard.map(\.word))
@@ -527,7 +560,7 @@ final class SentenceTrainingWorkflow {
             }.value
             // Independent optional acoustic phone alignment. Its failure must not erase
             // a usable legacy word alignment, nor substitute duration-spread labels.
-            if phoneAligner.isConfigured {
+            if phoneAligner.isConfigured && (pair.language ?? "en") == "en" {
                 do {
                     let profile = try pair.pronunciationProfile ?? PronunciationProfile.load()
                     let config = phoneAligner.configuration
@@ -607,9 +640,11 @@ final class SentenceTrainingWorkflow {
         secondsRemaining = 0
     }
     enum Failure: LocalizedError {
+        case practiceOnly
         case noCorpus, disconnected, split, clock, transcript, timing, ownership,missingSilent
         var errorDescription: String? {
             switch self {
+            case .practiceOnly:"Practice only: Whisper agreed with less than 85% of the typed text, so this take isn't used for training."
             case .missingSilent:"Spoken transcript saved. Re-record to complete the mouthed half."
             case .noCorpus: "The paired sentence corpus is missing from the app."
             case .disconnected: "Motion stopped. Completed halves were saved; reconnect and re-record this pair."

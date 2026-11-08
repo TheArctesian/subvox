@@ -15,7 +15,7 @@ struct ContentView: View {
             .navigationSplitViewColumnWidth(min: 160, ideal: 180)
         } detail: {
             switch model.screen {
-            case .train: SentenceTrainingView()
+            case .train: TrainView()
             case .decode: DecodeView()
             case .devices: DevicesView()
             }

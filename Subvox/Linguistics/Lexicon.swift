@@ -49,8 +49,15 @@ struct Lexicon: Sendable {
     static func wordKey(_ word: String) -> String { word.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
 
     /// Lower-cased words, keeping internal apostrophes ("they're"). Matches `words_of` in the tools.
+    /// Lower-cased words. ASCII text splits exactly as before ([a-z]+ with an inner apostrophe), so
+    /// existing prompt identities are unchanged; accented letters stay inside their word (être), and
+    /// each Han character is its own word, since Chinese has no spaces.
     static func words(in text: String) -> [String] {
-        text.lowercased().matches(of: /[a-z]+(?:'[a-z]+)?/).map { String($0.output) }
+        var spaced = ""
+        for scalar in text.lowercased().unicodeScalars {
+            if scalar.properties.isIdeographic { spaced += " \(Character(scalar)) " } else { spaced.unicodeScalars.append(scalar) }
+        }
+        return spaced.matches(of: /\p{L}+(?:'\p{L}+)?/).map { String($0.output) }
     }
 
     static let vowels: Set<String> = ["AA", "AE", "AH", "AO", "AW", "AY", "EH", "ER", "EY", "IH", "IY", "OW", "OY", "UH", "UW"]

@@ -92,7 +92,7 @@ final class LocalWhisper {
         return true
     }
 
-    func transcribe(audioURL: URL, outputDirectory: URL, timeRange: ClosedRange<Double>? = nil) async throws -> LocalWhisperTranscript {
+    func transcribe(audioURL: URL, outputDirectory: URL, timeRange: ClosedRange<Double>? = nil, language: String = "en") async throws -> LocalWhisperTranscript {
         guard !isTranscribing else { throw Failure.busy }
         guard isAvailable else { error = Failure.unavailable.localizedDescription; throw Failure.unavailable }
         isTranscribing = true
@@ -135,7 +135,7 @@ final class LocalWhisper {
             logHandle = try FileHandle(forWritingTo: logURL)
             child.executableURL = URL(fileURLWithPath: executable)
             child.arguments = ["--model", model, "--host", "127.0.0.1", "--port", String(port),
-                               "--inference-path", "/inference", "--language", "en",
+                               "--inference-path", "/inference", "--language", language,
                                "--dtw", preset, "--no-flash-attn"]
             child.currentDirectoryURL = outputDirectory
             child.standardOutput = logHandle

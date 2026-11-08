@@ -156,7 +156,7 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
                                   language=pair.get("language") or "en", speaker_status=pair.get("speakerStatus") or speaker.get("status") or "unknown",
                                   first_language=pair.get("firstLanguage") or speaker.get("firstLanguage"),
                                   speaking_style=pair.get("speakingStyle") or "natural",
-                                  expected_phones=pair.get("expectedPhones") or expected_phones(pair.get("text", ""), pair.get("language") or "en"), produced_phones=(pair.get("producedPhones") or {}).get(mode)))
+                                  expected_phones=pair.get("expectedPhones") or expected_phones(pair.get("text", ""), pair.get("language") or "en"), produced_phones=(pair.get("phoneCheck") or {}).get("produced_phones") if mode == "spoken" else None))
         if not takes:
             continue
         times = sorted(r["t"] for r in readings_all)

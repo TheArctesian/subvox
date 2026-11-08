@@ -39,6 +39,10 @@ final class AppModel {
     let contribution = ContributionSettings()
     let uploader = CommunityUploader()
     var showContribute = false
+    var trainMode: TrainMode = .reading
+    let practice = PracticeCorpus.bundled
+    @ObservationIgnored private lazy var practiceChecker = PracticeChecker()
+    @ObservationIgnored let referenceSpeaker = ReferenceSpeaker()
     /// Off for new installs: the Train page shows one recording path. Research tools (sentence
     /// banks, neural training, signal checks, Try model) appear when this is on.
     var researchTools = UserDefaults.standard.bool(forKey: "ui.researchTools") {
@@ -107,6 +111,8 @@ final class AppModel {
         }
         if !researchTools { self.sentenceTraining.readingSource = .community }
         self.sentenceTraining.onTrainingChanged = { [weak self] in self?.rebuildDecoder() }
+        self.sentenceTraining.onPracticeProcessed = { [weak self] id in await self?.checkPhones(id) }
+        self.sentenceTraining.playReference = { [weak self] text, language in await self?.referenceSpeaker.speak(text, language: language) }
         rebuildDecoder()
     }
 
@@ -169,6 +175,20 @@ final class AppModel {
     private func syncCaptureMode() {
         let enabled = screen == .decode && decodeMode == .auto && decoder != nil && !sentenceTraining.isBusy && !signalCheck.isBusy && !representation.isBusy && !sequenceLearning.isBusy && !observability.isBusy
         if capture.autoEnabled != enabled { capture.autoEnabled = enabled }
+    }
+
+    /// Records a practice round through the shared paired interface: each group is spoken, then mouthed.
+    func startPractice(_ groups: [[SentencePrompt]]) {
+        guard !groups.isEmpty, localWhisper.isConfigured else { return }
+        sentenceTraining.practicePlan = groups
+        startSentenceTraining()
+        sentenceTraining.practicePlan = nil
+    }
+
+    private func checkPhones(_ id: UUID) async {
+        guard let pair = sentenceTraining.data.pairs.first(where: { $0.id == id }), let heard = pair.transcript?.text else { return }
+        let result = await practiceChecker.check(text: pair.text, language: pair.language ?? "en", heard: heard)
+        sentenceTraining.setPhoneCheck(result, for: id)
     }
 
     func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil) {

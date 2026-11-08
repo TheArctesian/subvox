@@ -31,11 +31,18 @@ enum SentenceReference {
 
 /// `community` and `calibration` prompts come from the public-domain reading corpus. Every
 /// existing scheduler filters on `.sentence`, so they never enter the personal split or its final-test quota.
-enum SentencePromptKind: String, Codable, Sendable { case sentence, wordRepair, community, calibration }
+enum SentencePromptKind: String, Codable, Sendable {
+    case sentence, wordRepair, community, calibration
+    /// Train tabs: public-domain speeches and poems, shadowing drills, minimal pairs, the user's own text.
+    case speech, drill, minimalPair, freeText
+    var isPractice: Bool { [.speech, .drill, .minimalPair, .freeText].contains(self) }
+}
 
 struct SentencePrompt: Codable, Identifiable, Hashable, Sendable {
     var text: String
     var kind: SentencePromptKind = .sentence
+    /// BCP-47 base language ("en", "fr", "es", "zh"); nil means English (older prompts).
+    var language: String? = nil
     /// Punctuation/case variants have the same persistent identity.
     var id: String { Self.identity(text) }
     static func identity(_ text: String) -> String {
@@ -96,6 +103,10 @@ struct SentencePair: Codable, Identifiable, Sendable {
     var mouthedPhones: PhoneAlignment?
     var phoneAlignmentNote: String?
     var cameraReadings: [CameraPoseReading]?
+    /// Practice tabs: the take's language, its mode, and the audio phone check (expected vs produced IPA).
+    var language: String?
+    var practiceMode: SentencePromptKind?
+    var phoneCheck: PhoneCheckResult?
     var complete: Bool { spoken != nil && silent != nil }
     var canAccept: Bool {
         guard let spoken, let silent, error == nil, alignment?.words.isEmpty == false else { return false }
@@ -289,6 +300,18 @@ struct SentenceTrainingData: Codable, Sendable {
         }
     }
 
+    /// Practice prompts are always training data: they are never reserved for the final test, and
+    /// they only train when the spoken take agrees with the text (see `SentenceTrainingWorkflow.process`).
+    mutating func addPractice(_ incoming: [SentencePrompt]) {
+        guard reservedUnlockedAt == nil else { return }
+        var known = Set(prompts.map(\.id))
+        for prompt in incoming where prompt.kind.isPractice && !known.contains(prompt.id) && !Lexicon.words(in: prompt.text).isEmpty {
+            roles[prompt.id] = .training
+            prompts.append(prompt)
+            known.insert(prompt.id)
+        }
+    }
+
     /// Prompt IDs with a saved mouthed take.
     var mouthedPromptIDs: Set<String> { Set(pairs.filter { $0.silent != nil }.flatMap(\.promptIDs)) }
 
@@ -385,4 +408,23 @@ enum SentenceStore {
         try FileManager.default.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
         try encoder.encode(data).write(to: target, options: .atomic)
     }
+}
+
+/// Output of `subvox-ml phone-check` for one spoken take.
+struct PhoneCheckResult: Codable, Sendable, Hashable {
+    struct Step: Codable, Sendable, Hashable { var op: String; var expected: String?; var produced: String? }
+    var language: String
+    var expectedPhones: [String]
+    var producedPhones: [String]
+    var source: String
+    var alignment: [Step]
+    var wordAgreement: Double
+    var phoneErrorRate: Double
+    var trainable: Bool
+    enum CodingKeys: String, CodingKey {
+        case language, source, alignment, trainable
+        case expectedPhones = "expected_phones", producedPhones = "produced_phones"
+        case wordAgreement = "word_agreement", phoneErrorRate = "phone_error_rate"
+    }
+    var mismatches: [Step] { alignment.filter { $0.op != "match" } }
 }

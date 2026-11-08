@@ -12,6 +12,7 @@ Every phone that leaves this module is in `INVENTORY`; anything else raises, so 
 symbol shows up as a test failure instead of a silent new class.
 """
 from __future__ import annotations
+import os
 import re
 import shutil
 from functools import lru_cache
@@ -71,8 +72,14 @@ def _split(token, language):
     return phones
 
 
+for _library in ("/opt/homebrew/lib/libespeak-ng.dylib", "/usr/local/lib/libespeak-ng.dylib"):
+    # Apps launched from Finder don't have Homebrew on PATH; point phonemizer at the library directly.
+    if "PHONEMIZER_ESPEAK_LIBRARY" not in os.environ and os.path.exists(_library):
+        os.environ["PHONEMIZER_ESPEAK_LIBRARY"] = _library
+
+
 def espeak_available():
-    return shutil.which("espeak-ng") is not None or shutil.which("espeak") is not None
+    return bool(shutil.which("espeak-ng") or shutil.which("espeak") or os.environ.get("PHONEMIZER_ESPEAK_LIBRARY"))
 
 
 @lru_cache(maxsize=None)

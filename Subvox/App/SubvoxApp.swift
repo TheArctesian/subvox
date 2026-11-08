@@ -15,5 +15,13 @@ struct SubvoxApp: App {
                 .task { if !Self.isTestHost { model.start() } }
         }
         .windowResizability(.contentMinSize)
+        .commands {
+            CommandMenu("Practice") {
+                ForEach(TrainMode.allCases) { mode in
+                    Button(mode.rawValue) { model.screen = .train; model.trainMode = mode }
+                        .keyboardShortcut(KeyEquivalent(mode.shortcut), modifiers: .command)
+                }
+            }
+        }
     }
 }
