@@ -59,13 +59,14 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
 @MainActor @Observable final class SequenceLearningWorkflow {
     enum Phase {case idle,working,ready,relax,recording,ended}
     enum Mode:String,CaseIterable,Identifiable {
-        case training,development,sameFit,reseated,inference,nonSpeech
+        case training,development,sameFit,reseated,inference,nonSpeech,commands
         var id:String {rawValue}
         var title:String {switch self {
         case .training:"Collect training sentences";case .development:"Collect development sentences"
         case .sameFit:"Fresh test · AirPods unchanged";case .reseated:"Fresh test · I’ve reseated"
         case .inference:"Try frozen neural model"
         case .nonSpeech:"Record non-speech motion"
+        case .commands:"Record command set"
         }}
     }
     private(set) var phase:Phase = .idle
@@ -97,6 +98,11 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     var negativeRole:DataRole = .training
     static let negativePrompts=NonSpeechMovement.allCases.map(\.instruction)
     var recordingNonSpeech:Bool {visit?.role=="negativeTraining" || visit?.role=="negativeDevelopment"}
+    var recordingCommands:Bool {visit?.role=="commands"}
+    var commandBlocks=3
+    var commandEnrolSpoken=true
+    private(set) var commandScores:[CommandScore]=[]
+    private(set) var commandScoreNote=""
     var currentMovement:NonSpeechMovement? {recordingNonSpeech ? NonSpeechMovement.allCases.first {$0.instruction==currentText}:nil}
     /// Started only for models that take camera landmarks as input (`modalities` camera/fused).
     let camera=CameraPoseService()
@@ -126,7 +132,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     var canAdvance:Bool {
         phase == .ready || phase == .recording || (phase == .ended && visit?.takes.last != nil && !requiresRedo)
     }
-    var captureDuration:Double {recordingNonSpeech ? 8:35}
+    var captureDuration:Double {recordingNonSpeech ? 8:recordingCommands ? 3.5:35}
     var hasModel:Bool {modelURL(condition:.silent) != nil && modelURL(condition:.normal) != nil}
     init(root:URL?=nil,clock:@escaping ()->Double={ProcessInfo.processInfo.systemUptime}) {
         self.root=root ?? SentenceStore.directory.appending(path:"SequenceLearning")
@@ -161,6 +167,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         switch mode {
         case .inference:modalities(condition:inferenceCondition) != "imu"
         case .sameFit,.reseated:[SpeechCondition.normal,.silent].contains {modalities(condition:$0) != "imu"}
+        case .commands:true
         default:false
         }
     }
@@ -214,22 +221,58 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         let value=["dataset":datasetURL?.path ?? "","run":runURL?.path ?? ""]
         try JSONEncoder().encode(value).write(to:root.appending(path:"latest-ui.json"),options:.atomic)
     }
+    private func prepareSnapshot() async throws {
+        try FileManager.default.createDirectory(at:root,withIntermediateDirectories:true)
+        let language=root.appending(path:"language-\(UUID()).json"),destination=root.appending(path:"datasets/\(UUID())")
+        try SequenceLanguage.export(to:language)
+        var args=["prepare","--root",SentenceStore.directory.path,"--language",language.path,"--output",destination.path]
+        let corrections=root.appending(path:"label-corrections.json")
+        if FileManager.default.fileExists(atPath:corrections.path) {args += ["--corrections",corrections.path]}
+        try await execute(args)
+        datasetURL=destination;loadDatasetSchema();try persistUI()
+    }
     func prepareDataset() {
         guard !isBusy else {return}
         phase = .working;error=nil
         task=Task {
             do {
-                try FileManager.default.createDirectory(at:root,withIntermediateDirectories:true)
-                let language=root.appending(path:"language-\(UUID()).json"),destination=root.appending(path:"datasets/\(UUID())")
-                try SequenceLanguage.export(to:language)
-                var args=["prepare","--root",SentenceStore.directory.path,"--language",language.path,"--output",destination.path]
-                let corrections=root.appending(path:"label-corrections.json")
-                if FileManager.default.fileExists(atPath:corrections.path) {args += ["--corrections",corrections.path]}
-                try await execute(args)
-                datasetURL=destination;loadDatasetSchema();try persistUI();status="Cross-validation dataset prepared with disjoint sentence groups and sessions within each fold."
+                try await prepareSnapshot()
+                status="Cross-validation dataset prepared with disjoint sentence groups and sessions within each fold."
             } catch {self.error=error.localizedDescription}
             phase = .idle
         }
+    }
+    /// Snapshot every recording, then score command-set identification per modality (no training).
+    func scoreCommands() {
+        guard !isBusy else {return}
+        phase = .working;error=nil
+        task=Task {
+            do {
+                try await prepareSnapshot()
+                guard let datasetURL else {return}
+                let output=root.appending(path:"command-scores/\(UUID()).json")
+                try FileManager.default.createDirectory(at:output.deletingLastPathComponent(),withIntermediateDirectories:true)
+                try await execute(["closed-set","--dataset",datasetURL.path,"--output",output.path])
+                try loadCommandScores(output)
+                status="Command set scored on this snapshot."
+            } catch {self.error=error.localizedDescription}
+            phase = .idle
+        }
+    }
+    func loadCommandScores(_ url:URL) throws {
+        let value=try JSONSerialization.jsonObject(with:Data(contentsOf:url)) as? [String:Any]
+        let protocols=value?["protocols"] as? [String:Any] ?? [:]
+        var rows:[CommandScore]=[]
+        for (key,title) in [("commands_within_session","Mouthed · same session, other blocks"),("commands_cross_session","Mouthed · other sessions"),("commands_enrol_spoken","Spoken once → mouthed")] {
+            guard let byModality=protocols[key] as? [String:Any] else {continue}
+            for modality in ["imu","camera","fused"] {
+                guard let r=byModality[modality] as? [String:Any],let top1=r["top1"] as? Double else {continue}
+                rows.append(.init(protocolName:title,modality:modality,queries:r["queries"] as? Int ?? 0,top1:top1,
+                                  chance:r["null_mean_top1"] as? Double ?? 0,duration:r["duration_top1"] as? Double ?? 0,pValue:r["p_value"] as? Double ?? 1))
+            }
+        }
+        commandScores=rows
+        commandScoreNote=rows.isEmpty ? "No command takes to score yet. Record a command session first; other-session scores need two sessions.":""
     }
     func train() {
         guard !isBusy,let datasetURL else {return}
@@ -376,6 +419,8 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         var prompts:[SentencePrompt]
         if role == .nonSpeech {
             prompts=Self.negativePrompts.map {SentencePrompt(text:$0)}
+        } else if role == .commands {
+            prompts=CommandSet.phrases.map {SentencePrompt(text:$0)}
         } else if role == .inference {
             guard modelURL(condition:inferenceCondition) != nil else {error="Train or load a frozen neural model first.";return}
             guard !data.prompts.contains(where:{data.roles[$0.id] == .finalTest && $0.id==SentencePrompt.identity(expectedText)}) else {error="That sentence remains reserved for the final test.";return}
@@ -424,11 +469,13 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         capturingCamera=withCamera;cameraReadings=[]
         self.recorder=recorder
         let plan: [NeuralVisit.Planned] = role == .inference ? [.init(text:expectedText,condition:inferenceCondition,repetition:0)] :
+            role == .commands ? CommandSet.plan(blocks:commandBlocks,enrolSpoken:commandEnrolSpoken,seed:UInt64.random(in:1...UInt64.max)) :
             (0..<2).flatMap {rep in prompts.flatMap {p in [SpeechCondition.normal,.silent].map {.init(text:p.text,condition:$0,repetition:rep)}}}
         let visitRole=role == .nonSpeech ? (negativeRole == .training ? "negativeTraining":"negativeDevelopment"):role.rawValue
         visit=NeuralVisit(role:visitRole,session:session,planned:plan,modelPaths:paths,modelFingerprints:fingerprints)
         if withCamera {visit?.modalities=["AirPods motion","Camera landmarks"]}
         if role == .nonSpeech {visit?.movementGuideVersion="illustrated-v1"}
+        if role == .commands {visit?.movementGuideVersion=CommandSet.version}
         index=0;error=nil;prediction=nil;phase = .ready;saveVisit()
     }
     func next() {
@@ -469,7 +516,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         // Non-speech examples have no word boundary to mark manually. Their
         // measured timer boundary is valid; sentence takes still require Done.
         guard phase == .recording else {return}
-        finishTake(reason:recordingNonSpeech ? nil:"Timed out without Done. Redo this sentence and choose Done when finished.")
+        finishTake(reason:recordingNonSpeech || recordingCommands ? nil:"Timed out without Done. Redo this sentence and choose Done when finished.")
     }
     private func finishTake(reason:String?=nil) {
         guard phase == .recording,let cueStart,let visit else {return}

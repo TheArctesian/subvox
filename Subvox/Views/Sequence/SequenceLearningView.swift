@@ -63,6 +63,7 @@ struct SequenceLearningView:View {
                         if let error=workflow.error {Text(error).foregroundStyle(.orange).textSelection(.enabled)}
                         if let comparison=workflow.comparison {results(comparison)}
                         inference
+                        commandSet
                         collection
                         teachers
                         corrections
@@ -130,6 +131,41 @@ struct SequenceLearningView:View {
                 Text("Scores and margins are uncalibrated. A plausible language-model sentence is not evidence that the motion was decoded correctly.").font(.caption).foregroundStyle(.secondary)
             }
         }.disabled(workflow.isBusy)
+    }
+    private var commandSet:some View {
+        @Bindable var workflow=workflow
+        return VStack(alignment:.leading,spacing:12) {
+            Divider();Text("Command set").font(.title2.weight(.semibold))
+            Text("Twenty short commands, mouthed in shuffled blocks with the camera on. With repeats, AirPods motion and camera points can identify which command you mouthed, without training a network. Record on different days to test whether it survives reseating.")
+                .font(.callout).foregroundStyle(.secondary)
+            Text(CommandSet.phrases.joined(separator:" · ")).font(.caption).foregroundStyle(.secondary)
+            HStack(spacing:20) {
+                Stepper("\(workflow.commandBlocks) mouthed blocks",value:$workflow.commandBlocks,in:1...6).frame(width:200)
+                Toggle("Speak each once first",isOn:$workflow.commandEnrolSpoken)
+            }
+            let takes=CommandSet.phrases.count*(workflow.commandBlocks+(workflow.commandEnrolSpoken ? 1:0))
+            Text("\(takes) takes, about \(Int(ceil(Double(takes)*7.5/60))) minutes. Each take saves automatically after 3.5 seconds; → finishes sooner, ← redoes.")
+                .font(.caption).foregroundStyle(.secondary)
+            HStack {
+                Button("Record command session") {workflow.mode = .commands;startVisit()}.buttonStyle(.borderedProminent).disabled(!canCollect)
+                Button("Score command set",action:workflow.scoreCommands).disabled(workflow.isBusy)
+            }
+            if !workflow.commandScoreNote.isEmpty {Text(workflow.commandScoreNote).font(.callout).foregroundStyle(.secondary)}
+            if !workflow.commandScores.isEmpty {
+                Grid(alignment:.leading,horizontalSpacing:18,verticalSpacing:6) {
+                    GridRow {Text("Test");Text("Input");Text("Takes");Text("Correct");Text("Chance");Text("Length alone");Text("p")}.font(.caption.weight(.semibold))
+                    ForEach(workflow.commandScores) {row in
+                        GridRow {
+                            Text(row.protocolName);Text(row.modality == "imu" ? "AirPods":row.modality == "camera" ? "Camera":"Fused")
+                            Text("\(row.queries)");Text(percent(row.top1)).fontWeight(row.pValue<0.05 ? .semibold:.regular)
+                            Text(percent(row.chance));Text(percent(row.duration));Text(String(format:"%.3f",row.pValue))
+                        }.font(.callout.monospacedDigit())
+                    }
+                }
+                Text("Correct = the right command ranked first among all twenty. Chance shuffles the labels; length alone matches by duration only. A result is only meaningful well above both.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }.disabled(workflow.isBusy && workflow.phase != .working)
     }
     private var collection:some View {
         VStack(alignment:.leading,spacing:12) {
@@ -228,10 +264,10 @@ struct SequenceLearningView:View {
     }
     private var captureHelp:String {
         switch workflow.phase {
-        case .ready:return workflow.recordingNonSpeech ? "Watch the example, then choose Start take when ready.":"Read the sentence, then choose Start take when ready."
+        case .ready:return workflow.recordingNonSpeech ? "Watch the example, then choose Start take when ready.":workflow.recordingCommands ? "Read the command, then start and mouth it once.":"Read the sentence, then choose Start take when ready."
         case .relax:return "Relax your mouth and wait for START."
         case .ended:return workflow.requiresRedo ? "This take is excluded. Choose Redo to try again.":"Take saved. Choose Continue, or Redo to repeat it."
-        default:return workflow.recordingNonSpeech ? "Follow the movement example. Saves automatically at zero; choose Done to finish sooner.":"Choose Done when finished. Redo any mistake."
+        default:return workflow.recordingNonSpeech ? "Follow the movement example. Saves automatically at zero; choose Done to finish sooner.":workflow.recordingCommands ? "Mouth the command once, silently. Saves automatically at zero.":"Choose Done when finished. Redo any mistake."
         }
     }
     private var stageName:String {

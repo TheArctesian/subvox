@@ -125,7 +125,7 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
     for path in sorted((root / "SequenceLearning" / "Collections").glob("*/session.json")):
         visit = load(path)
         # Prospective tests/inference NEVER flow back into preparation implicitly.
-        if not visit["complete"] or visit["role"] not in ("training", "development", "negativeTraining", "negativeDevelopment"):
+        if not visit["complete"] or visit["role"] not in ("training", "development", "negativeTraining", "negativeDevelopment", "commands"):
             continue
         for take in visit["takes"]:
             if take.get("discardedReason"):
@@ -134,8 +134,8 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
             if negative and words(take["text"]):
                 raise ValueError("Non-speech recordings must have empty text labels; instructions are not transcripts")
             add(take["id"], take["text"], [take["sentenceID"]], visit["session"]["id"], take["recording"],
-                dict(source=str(path),kind="non-speech motion" if negative else "motion-only neural collection",visit=visit["id"]),
-                original_role="Training" if visit["role"] in ("training","negativeTraining") else "Validation", camera=take.get("camera", []))
+                dict(source=str(path),kind="non-speech motion" if negative else "command set" if visit["role"]=="commands" else "motion-only neural collection",visit=visit["id"]),
+                original_role="Training" if visit["role"] in ("training","negativeTraining","commands") else "Validation", camera=take.get("camera", []))
     if sentence_data.exists():
         paired = load(sentence_data)
         for pair in paired["pairs"]:

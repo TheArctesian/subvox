@@ -151,6 +151,20 @@ First run, on 156 camera-covered clips across 37 sentences (top-1):
 
 With a single example, only the camera identifies sentences, and equal-weight fusion dilutes it. With many repetitions across sessions, AirPods motion carries repeatable sentence-level information, and fusion adds to the camera. Only three phrases had cross-session repeats, so that row needs a broader command set to confirm.
 
+### Command set
+
+**Train → Advanced → Sentence models → Command set** records a fixed vocabulary of 20 commands (`CommandSet.swift`):
+- Each command is spoken once first for enrolment (optional), then mouthed in shuffled blocks (3 by default).
+- Each take is a 3.5 s timed window with AirPods motion and camera points.
+- Visits are saved as `commands` collections. They join dataset snapshots as training material with kind `command set`.
+
+**Score command set** prepares a snapshot and runs `closed-set`. Its command protocols use only the commands as candidates:
+- **Same session:** mouthed takes against other blocks of the same session (repeatability before reseating; available after one session).
+- **Other sessions:** mouthed takes against other sessions only (needs two or more sessions).
+- **Spoken once → mouthed:** mouthed takes against the spoken enrolment takes.
+
+Each row shows AirPods, camera and fused results with chance, length-only and p-value controls. Record sessions on different days, ideally reseating the AirPods, before trusting the other-session row.
+
 ### Reproduce locally
 
 Artifacts live under `~/Library/Application Support/Subvox/SequenceLearning/`: dataset snapshots, model weights, pronunciation snapshots, feature schema, training/development identities, source hashes, coverage, training curves, seeds, dependency versions, source-code snapshots and reports. `initial-dataset`, `initial-neural-run`, `initial-teacher-dataset` and `initial-teacher-run` contain the measured runs above. The app exports a fresh `language.json` from the production Swift graph when preparing a dataset; an earlier snapshot can be reused for a repeat with identical pronunciation proposals.

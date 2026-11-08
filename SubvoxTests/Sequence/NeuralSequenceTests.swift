@@ -267,4 +267,46 @@ final class NeuralSequenceTests:XCTestCase {
         XCTAssertFalse(String(decoding:try JSONEncoder().encode(older),as:UTF8.self).contains("face"),"Older readings re-encode unchanged")
         XCTAssertFalse(CameraFaceLandmarks(faceContour:[point],noseCrest:[point]).valid)
     }
+    func testCommandPlanEnrolsOnceThenMouthsEveryPhrasePerBlockInShuffledOrder() {
+        let plan=CommandSet.plan(blocks:3,enrolSpoken:true,seed:5)
+        let n=CommandSet.phrases.count
+        XCTAssertEqual(plan.count,n*4)
+        XCTAssertEqual(plan.prefix(n).map(\.text),CommandSet.phrases)
+        XCTAssertTrue(plan.prefix(n).allSatisfy {$0.condition == .normal && $0.repetition==0})
+        for block in 1...3 {
+            let items=plan.filter {$0.repetition==block}
+            XCTAssertEqual(Set(items.map(\.text)),Set(CommandSet.phrases))
+            XCTAssertTrue(items.allSatisfy {$0.condition == .silent})
+        }
+        XCTAssertNotEqual(plan.filter {$0.repetition==1}.map(\.text),plan.filter {$0.repetition==2}.map(\.text))
+        XCTAssertEqual(CommandSet.plan(blocks:2,enrolSpoken:false,seed:5).count,n*2)
+        XCTAssertEqual(Set(CommandSet.phrases).count,n,"Phrases must be distinct sentence groups")
+    }
+    @MainActor func testCommandSessionsRequireTheCameraAndScoresParse() throws {
+        let root=FileManager.default.temporaryDirectory.appending(path:"neural-commands-\(UUID())")
+        defer {try? FileManager.default.removeItem(at:root)}
+        let now=100.0
+        let workflow=SequenceLearningWorkflow(root:root,clock:{now}),recorder=SessionRecorder(root:root.appending(path:"raw"))
+        defer {recorder.stop()}
+        var sample=MotionSample(t:now);sample.sensorLocation=1;workflow.ingest(sample)
+        workflow.mode = .commands
+        XCTAssertTrue(workflow.needsCamera)
+        workflow.startVisit(data:SentenceTrainingData(),audio:AudioService(),recorder:recorder)
+        XCTAssertNil(workflow.visit);XCTAssertNotNil(workflow.error);XCTAssertFalse(recorder.isRecording)
+
+        let report:[String:Any]=["protocols":["commands_within_session":["imu":["top1":0.4,"queries":40,"null_mean_top1":0.05,"duration_top1":0.1,"p_value":0.001],
+                                                                          "camera":["top1":0.7,"queries":40,"null_mean_top1":0.05,"duration_top1":0.1,"p_value":0.001]],
+                                              "commands_cross_session":["imu":NSNull()]]]
+        let url=root.appending(path:"scores.json")
+        try FileManager.default.createDirectory(at:root,withIntermediateDirectories:true)
+        try JSONSerialization.data(withJSONObject:report).write(to:url)
+        try workflow.loadCommandScores(url)
+        XCTAssertEqual(workflow.commandScores.map(\.modality),["imu","camera"])
+        XCTAssertEqual(workflow.commandScores.first?.top1,0.4)
+        XCTAssertEqual(workflow.commandScores.first?.chance,0.05)
+        XCTAssertTrue(workflow.commandScoreNote.isEmpty)
+        try JSONSerialization.data(withJSONObject:["protocols":[:]]).write(to:url)
+        try workflow.loadCommandScores(url)
+        XCTAssertTrue(workflow.commandScores.isEmpty);XCTAssertFalse(workflow.commandScoreNote.isEmpty)
+    }
 }

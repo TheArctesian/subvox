@@ -7,6 +7,8 @@ recordings can answer: which already-recorded sentence is this? Two protocols:
   among all enrolled sentences ("say it aloud once, then mouth it").
 - ``cross_session``: identify each take of a sentence recorded in several sessions among every
   sentence with a template from a *different* session of the same condition.
+- ``commands_*``: the fixed command set only (candidates are commands): mouthed takes against other
+  blocks of the same session, against other sessions, and against the spoken enrolment takes.
 
 Each result carries two controls: a duration-only matcher (sentence length alone can give the
 answer away) and a label-permutation null on the same distances.
@@ -134,7 +136,7 @@ def closed_set(examples, seed=7, permutations=1000):
         for r in cohort:
             parts = sequence(r, modality)
             items.append(dict(id=r["id"], label=group_id(r["text"]), session=r["session"], condition=r["condition"],
-                              pair=r["provenance"].get("pair"), parts=parts, frames=len(r["raw"])))
+                              pair=r["provenance"].get("pair"), kind=r["provenance"].get("kind"), parts=parts, frames=len(r["raw"])))
         scale = scales([i["parts"] for i in items])
         for i in items:
             i["x"] = flatten(i["parts"], scale)
@@ -160,6 +162,18 @@ def closed_set(examples, seed=7, permutations=1000):
             if result:
                 result["repeated_sentences"] = sum(len(s) >= 2 for s in sessions.values())
             report["protocols"].setdefault("cross_session", {}).setdefault(condition, {})[modality] = result
+        commands = [i for i in items if i["kind"] == "command set"]
+        if commands:
+            mouthed = [i for i in commands if i["condition"] == "Silent mouthing"]
+            spoken = [i for i in commands if i["condition"] == "Normal speech"]
+            # Same session, other blocks: repeatability before any reseating. Never the query itself.
+            within = [dict(i, allow=(lambda q: lambda t: t["session"] == q["session"] and t["id"] != q["id"])(i)) for i in mouthed]
+            cross = [dict(i, allow=(lambda q: lambda t: t["session"] != q["session"])(i)) for i in mouthed]
+            enrol_queries = [dict(i, allow=lambda t: True) for i in mouthed]
+            for key, queries, templates in (("commands_within_session", within, mouthed), ("commands_cross_session", cross, mouthed),
+                                            ("commands_enrol_spoken", enrol_queries, spoken)):
+                result = score(queries, templates, distance, rng, permutations) if templates else None
+                report["protocols"].setdefault(key, {})[modality] = result
     report["interpretation"] = ("Closed-set identification of already-recorded sentences. It does not show open-sentence recognition; "
                                 "a top-1 near duration_top1 means length, not articulation, carried the answer.")
     return report

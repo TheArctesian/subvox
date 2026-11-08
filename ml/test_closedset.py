@@ -70,5 +70,47 @@ class ClosedSetTests(unittest.TestCase):
         self.assertEqual(report["protocols"]["enrol_spoken"]["imu"]["queries"], report["protocols"]["enrol_spoken"]["camera"]["queries"])
 
 
+class CommandProtocolTests(unittest.TestCase):
+    def commands(self, sessions, blocks):
+        rng = np.random.default_rng(3)
+        rows = []
+        for session in sessions:
+            for text in SENTENCES:
+                rows.append(dict(clip(text, "Normal speech", session, True, rng, None), provenance=dict(kind="command set")))
+                for _ in range(blocks):
+                    rows.append(dict(clip(text, "Silent mouthing", session, True, rng, None), provenance=dict(kind="command set")))
+        # Paired sentences never become command candidates.
+        rows.append(dict(clip("blue bag", "Silent mouthing", "other", True, rng, "p"), provenance=dict(kind="reviewed sentence pair")))
+        return rows
+
+    def test_one_session_scores_within_session_only(self):
+        report = closed_set(self.commands(["s1"], 2), permutations=99)
+        within = report["protocols"]["commands_within_session"]["fused"]
+        self.assertEqual(within["queries"], 10)
+        self.assertEqual(within["mean_candidates"], 5, "Candidates are the commands, not every recorded sentence")
+        self.assertGreater(within["top1"], .8)
+        self.assertIsNone(report["protocols"]["commands_cross_session"]["fused"], "One session has no other-session templates")
+        self.assertEqual(report["protocols"]["commands_enrol_spoken"]["camera"]["queries"], 10)
+
+    def test_two_sessions_add_cross_session_scores(self):
+        report = closed_set(self.commands(["s1", "s2"], 1), permutations=99)
+        cross = report["protocols"]["commands_cross_session"]["imu"]
+        self.assertEqual(cross["queries"], 10)
+        self.assertIsNone(report["protocols"]["commands_within_session"]["imu"], "One block per session leaves no same-session template")
+
+    def test_discover_reads_command_visits_as_training_material(self):
+        import tempfile
+        from pathlib import Path
+        from subvox_ml.data import discover, atomic_json
+        from test_sequence import recording, language
+        with tempfile.TemporaryDirectory() as tmp:
+            takes = [dict(id="c1", text="pa", sentenceID="pa", recording=dict(recording(), id="c1"), camera=[])]
+            atomic_json(Path(tmp) / "SequenceLearning/Collections/c/session.json",
+                        dict(id="c", complete=True, role="commands", session=dict(id="s"), takes=takes))
+            rows, _, _ = discover(tmp, language())
+            self.assertEqual([r["provenance"]["kind"] for r in rows], ["command set"])
+            self.assertEqual(rows[0]["original_role"], "Training")
+
+
 if __name__ == "__main__":
     unittest.main()
