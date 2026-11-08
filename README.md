@@ -14,6 +14,8 @@ xcodebuild -project Subvox.xcodeproj -scheme Subvox -derivedDataPath build \
 open build/Build/Products/Release/Subvox.app
 ```
 
+If the AirPods are connected but no motion arrives, macOS has head tracking off for them: play something in Music or Safari and set **Spatial Audio → Head Tracked** in the AirPods menu. Ad-hoc builds (`CODE_SIGN_IDENTITY=-`) get a new signature each time, so macOS asks for Motion, Camera and Microphone again after every rebuild.
+
 Use Release: matching thousands of vocabulary templates is much slower in Debug. Grant Motion and Microphone access when requested. All transcription uses existing local Whisper files; no speech-recognition service is used.
 
 ## Repository layout

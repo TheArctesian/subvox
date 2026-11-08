@@ -59,9 +59,10 @@ struct SimpleTrainingView: View {
         case .denied: "Allow Subvox in System Settings › Privacy & Security › Motion & Fitness, then reopen the app."
         case .unsupported: "This Mac can't read headphone motion."
         default:
+            // macOS only streams head motion while Spatial Audio head tracking is active for the AirPods.
             model.motion.isConnected
-                ? "Put both AirPods in your ears and make them this Mac's sound output. If it stays here, play any sound for a moment."
-                : "Connect AirPods Pro, AirPods (3rd generation or later) or AirPods Max as this Mac's sound output."
+                ? "Put both AirPods in your ears. If it stays here, play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu."
+                : "Use AirPods Pro, AirPods (3rd generation or later) or AirPods Max as this Mac's sound output. Then play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar."
         }
     }
 
