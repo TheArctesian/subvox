@@ -27050,7 +27050,7 @@
      },
      "fr": {
       "name": "i long",
-      "guide": "comme le i français, mais plus long et tendu (« eat » n« est pas  »it')",
+      "guide": "comme le i français, mais plus long et tendu (« eat » n’est pas « it »)",
       "tip": "lèvres étirées en sourire, mâchoire presque fermée"
      },
      "zh-Hans": {
@@ -27170,7 +27170,7 @@
     "group": "Vowels",
     "name": "short a",
     "guide": "a as in 'cat' - open and bright, between 'eh' and 'ah'",
-    "tip": "Jaw drops wide, lips slightly spread, tongue forward.",
+    "tip": "Jaw opens a fair amount, lips relaxed and slightly spread.",
     "say": "æ",
     "examples": [
      {
@@ -27420,7 +27420,7 @@
     "group": "Vowels",
     "name": "oo",
     "guide": "oo as in 'food'",
-    "tip": "Lips rounded and pushed forward, jaw nearly closed.",
+    "tip": "Lips gently rounded, tongue high and back.",
     "say": "uː",
     "examples": [
      {
@@ -27701,7 +27701,7 @@
      "fr": {
       "name": "aou",
       "guide": "a ouvert qui glisse vers un ou bref ; absent du français",
-      "tip": "mâchoire basse, lèvres qui s'arrondissent à la fin"
+      "tip": "mâchoire basse, lèvres qui s’arrondissent à la fin"
      },
      "zh-Hans": {
       "name": "奥",
@@ -27751,7 +27751,7 @@
      "fr": {
       "name": "éï",
       "guide": "é long qui glisse vers i ; en français é reste pur ; absent du français",
-      "tip": "mâchoire mi-fermée qui monte, lèvres s'étirent à la fin"
+      "tip": "mâchoire mi-fermée qui monte, lèvres s’étirent à la fin"
      },
      "zh-Hans": {
       "name": "诶",
@@ -27851,7 +27851,7 @@
      "fr": {
       "name": "oï",
       "guide": "o ouvert qui glisse vers i, comme « oy » de « boycott »",
-      "tip": "lèvres arrondies qui s'étirent vers le i"
+      "tip": "lèvres arrondies qui s’étirent vers le i"
      },
      "zh-Hans": {
       "name": "哦衣",
@@ -27900,8 +27900,8 @@
      },
      "fr": {
       "name": "p aspiré",
-      "guide": "comme le p français, avec un souffle d'air en début de syllabe accentuée",
-      "tip": "lèvres closes qui s« ouvrent en jet d »air ; test : feuille de papier"
+      "guide": "comme le p français, avec un souffle d’air en début de syllabe accentuée",
+      "tip": "lèvres closes qui s’ouvrent en jet d’air ; test : feuille de papier"
      },
      "zh-Hans": {
       "name": "送气 p",
@@ -27950,7 +27950,7 @@
      },
      "fr": {
       "name": "b",
-      "guide": "comme le b français ; la voix démarre dès l'ouverture des lèvres",
+      "guide": "comme le b français ; la voix démarre dès l’ouverture des lèvres",
       "tip": "lèvres closes, voix dès le début"
      },
      "zh-Hans": {
@@ -28100,7 +28100,7 @@
      },
      "fr": {
       "name": "k aspiré",
-      "guide": "comme le k français, avec souffle d'air en début de syllabe accentuée",
+      "guide": "comme le k français, avec souffle d’air en début de syllabe accentuée",
       "tip": "arrière de la langue contre le voile, relâché avec souffle"
      },
      "zh-Hans": {
@@ -28270,7 +28270,7 @@
     "group": "Consonants",
     "name": "th (thin)",
     "guide": "th as in 'think' - air only, no voice",
-    "tip": "Tongue tip between or against the teeth, visible; blow air.",
+    "tip": "Tongue tip lightly between the teeth; let air flow gently over it.",
     "say": "θa",
     "examples": [
      {
@@ -28300,7 +28300,7 @@
      },
      "fr": {
       "name": "th sourd",
-      "guide": "la langue entre les dents, on souffle doucement (ni « s » ni « f ») ; absent du français",
+      "guide": "la langue entre les dents, on souffle doucement (ni « s » ni « f ») ; absent du français",
       "tip": "pointe de la langue entre les dents, souffle sans voix"
      },
      "zh-Hans": {
@@ -28601,7 +28601,7 @@
      "fr": {
       "name": "h expiré",
       "guide": "simple souffle expiré, comme un soupir ; absent du français",
-      "tip": "bouche déjà prête pour la voyelle ; l'air sort de la gorge"
+      "tip": "bouche déjà prête pour la voyelle ; l’air sort de la gorge"
      },
      "zh-Hans": {
       "name": "h",
@@ -28900,8 +28900,8 @@
      },
      "fr": {
       "name": "l",
-      "guide": "plus sombre qu« en français, surtout en fin de mot ( »full')",
-      "tip": "pointe sur la gencive ; en fin de mot, l'arrière se recule"
+      "guide": "plus sombre qu’en français, surtout en fin de mot (« full »)",
+      "tip": "pointe sur la gencive ; en fin de mot, l’arrière se recule"
      },
      "zh-Hans": {
       "name": "l",
@@ -28951,7 +28951,7 @@
      "fr": {
       "name": "r anglais",
       "guide": "pas le r français : pointe de langue recourbée sans toucher ; absent du français",
-      "tip": "pointe recourbée vers l'arrière sans toucher, lèvres arrondies"
+      "tip": "pointe recourbée vers l’arrière sans toucher, lèvres arrondies"
      },
      "zh-Hans": {
       "name": "r",
@@ -29051,7 +29051,7 @@
      "fr": {
       "name": "w",
       "guide": "comme « ou » de « oui », lèvres arrondies",
-      "tip": "lèvres très arrondies qui s'ouvrent vite vers la voyelle"
+      "tip": "lèvres très arrondies qui s’ouvrent vite vers la voyelle"
      },
      "zh-Hans": {
       "name": "w",
@@ -29272,7 +29272,7 @@
     "group": "Vowels",
     "name": "French u",
     "guide": "say 'ee' but round your lips as for 'oo' - no English equivalent",
-    "tip": "Lips tightly rounded and pushed forward, tongue stays high and front.",
+    "tip": "Lips firmly rounded as for 'ou', tongue forward as for 'i'. No strain.",
     "say": "y",
     "examples": [
      {
@@ -29322,7 +29322,7 @@
     "group": "Vowels",
     "name": "ou",
     "guide": "like 'oo' in 'food' but tenser and shorter",
-    "tip": "Lips tightly rounded and pushed forward, tongue back.",
+    "tip": "Lips firmly rounded, tongue high and back. No strain.",
     "say": "u",
     "examples": [
      {
@@ -30422,7 +30422,7 @@
     "group": "Consonants",
     "name": "French r",
     "guide": "a soft gargle at the back of the throat, like a light 'kh' with a hum",
-    "tip": "Lips neutral, tongue tip down behind the lower teeth, back of tongue raised.",
+    "tip": "Back of the tongue lifts toward the soft palate for a light, gentle friction; no scraping or effort in the throat.",
     "say": "ʁa",
     "examples": [
      {
@@ -31103,7 +31103,7 @@
      "fr": {
       "name": "p",
       "guide": "comme le p français, sans souffle",
-      "tip": "lèvres closes qui s« ouvrent sans jet d »air"
+      "tip": "lèvres closes qui s’ouvrent sans jet d’air"
      },
      "es": {
       "name": "p",
@@ -31511,7 +31511,7 @@
     "local": {
      "fr": {
       "name": "g doux",
-      "guide": "un g sans fermeture, proche d'un r français léger, plus avancé ; absent du français",
+      "guide": "un g sans fermeture, proche d’un r français léger, plus avancé ; absent du français",
       "tip": "arrière de la langue près du voile sans le toucher, voix"
      },
      "es": {
@@ -31669,7 +31669,7 @@
     ],
     "local": {
      "fr": {
-      "name": "z d'Espagne",
+      "name": "z d’Espagne",
       "guide": "comme th anglais sourd (« think »), langue entre les dents ; absent du français",
       "tip": "pointe de la langue entre les dents, souffle sans voix"
      },
@@ -31695,7 +31695,7 @@
     "group": "Consonants",
     "name": "j",
     "guide": "like a rough 'h' - a scrape at the back of the throat, as in Scottish 'loch'",
-    "tip": "Mouth open and neutral, back of tongue near the soft palate.",
+    "tip": "Light breathy friction at the back of the mouth; keep your throat relaxed, no scraping.",
     "say": "xa",
     "examples": [
      {
@@ -32283,7 +32283,7 @@
      "fr": {
       "name": "w",
       "guide": "comme « ou » de « oui »",
-      "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
+      "tip": "lèvres arrondies qui s’ouvrent vite vers la voyelle"
      },
      "es": {
       "name": "u semiconsonante",
@@ -32883,7 +32883,7 @@
      "fr": {
       "name": "er",
       "guide": "e faible avec la pointe de la langue recourbée ; absent du français",
-      "tip": "langue recourbée vers l'arrière sans toucher, lèvres neutres"
+      "tip": "langue recourbée vers l’arrière sans toucher, lèvres neutres"
      },
      "zh-Hans": {
       "name": "er 儿",
@@ -32961,7 +32961,7 @@
     "group": "Vowels",
     "name": "zhi vowel",
     "guide": "a buzzing curled-back 'r' held on, the vowel in 'zhi', 'chi', 'shi', 'ri'",
-    "tip": "Lips slightly rounded, tongue tip curled back and still.",
+    "tip": "Tongue tip lifted and drawn slightly back, not curled hard; hold the buzzy vowel.",
     "say": "ʂɻ̩",
     "examples": [
      {
@@ -33001,7 +33001,7 @@
      "fr": {
       "name": "voyelle de zhi",
       "guide": "bourdonnement avec voix après zh, ch, sh, r, langue recourbée ; absent du français",
-      "tip": "pointe de la langue recourbée vers l'arrière sans toucher"
+      "tip": "pointe de la langue recourbée vers l’arrière sans toucher"
      },
      "zh-Hans": {
       "name": "zhi 韵母",
@@ -33178,7 +33178,7 @@
      "fr": {
       "name": "w",
       "guide": "comme « ou » de « oui »",
-      "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
+      "tip": "lèvres arrondies qui s’ouvrent vite vers la voyelle"
      },
      "zh-Hans": {
       "name": "w 滑音",
@@ -33237,7 +33237,7 @@
      "fr": {
       "name": "ü glissé",
       "guide": "comme « ui » de « huit » avant voyelle (« yue »)",
-      "tip": "lèvres en petit cercle, langue avancée, s'ouvrent vite"
+      "tip": "lèvres en petit cercle, langue avancée, s’ouvrent vite"
      },
      "zh-Hans": {
       "name": "ü 滑音",
@@ -33296,7 +33296,7 @@
      "fr": {
       "name": "b · sans souffle",
       "guide": "comme le p français, sans souffle ; en pinyin écrit b, pas le b français",
-      "tip": "lèvres closes qui s« ouvrent sans expulser d »air"
+      "tip": "lèvres closes qui s’ouvrent sans expulser d’air"
      },
      "zh-Hans": {
       "name": "b 不送气",
@@ -33355,7 +33355,7 @@
      },
      "fr": {
       "name": "p · soufflé",
-      "guide": "p français suivi d« un fort jet d »air ; absent du français",
+      "guide": "p français suivi d’un fort jet d’air ; absent du français",
       "tip": "lèvres closes relâchées avec souffle ; test : feuille de papier"
      },
      "zh-Hans": {
@@ -33591,7 +33591,7 @@
      },
      "fr": {
       "name": "t · soufflé",
-      "guide": "t français suivi d« un fort jet d »air ; absent du français",
+      "guide": "t français suivi d’un fort jet d’air ; absent du français",
       "tip": "pointe de la langue derrière les dents, relâchée avec souffle"
      },
      "zh-Hans": {
@@ -33827,7 +33827,7 @@
      },
      "fr": {
       "name": "k · soufflé",
-      "guide": "k français suivi d« un fort jet d »air ; absent du français",
+      "guide": "k français suivi d’un fort jet d’air ; absent du français",
       "tip": "arrière de la langue contre le voile, relâché avec souffle"
      },
      "zh-Hans": {
@@ -33886,8 +33886,8 @@
      },
      "fr": {
       "name": "h",
-      "guide": "raclement léger de gorge, proche d'un r français sourd, plus en avant ; absent du français",
-      "tip": "arrière de la langue près du voile, l'air frotte"
+      "guide": "raclement léger de gorge, proche d’un r français sourd, plus en avant ; absent du français",
+      "tip": "arrière de la langue près du voile, l’air frotte"
      },
      "zh-Hans": {
       "name": "h",
@@ -34063,7 +34063,7 @@
      },
      "fr": {
       "name": "q",
-      "guide": "comme j mais avec un jet d'air ; absent du français",
+      "guide": "comme j mais avec un jet d’air ; absent du français",
       "tip": "pointe de la langue en bas, lèvres étirées, relâche avec souffle"
      },
      "zh-Hans": {
@@ -34240,7 +34240,7 @@
      },
      "fr": {
       "name": "c",
-      "guide": "comme « ts » avec un jet d'air ; absent du français",
+      "guide": "comme « ts » avec un jet d’air ; absent du français",
       "tip": "dents presque jointes, langue plate, relâché avec souffle"
      },
      "zh-Hans": {
@@ -34319,7 +34319,7 @@
     "group": "Consonants",
     "name": "zh",
     "guide": "like the 'ch' in 'church' with the tongue tip curled back, no puff of air and not voiced",
-    "tip": "Lips slightly rounded, tongue tip curled back to the roof.",
+    "tip": "Tongue tip lifted and drawn slightly back, not curled hard; release with no puff of air.",
     "say": "ʈʂa",
     "examples": [
      {
@@ -34417,7 +34417,7 @@
      },
      "fr": {
       "name": "ch",
-      "guide": "comme zh mais avec un jet d'air ; absent du français",
+      "guide": "comme zh mais avec un jet d’air ; absent du français",
       "tip": "pointe de la langue recourbée vers le palais, relâche avec souffle"
      },
      "zh-Hans": {
@@ -34477,7 +34477,7 @@
      "fr": {
       "name": "sh",
       "guide": "comme « ch » de « chat » avec la pointe de la langue recourbée ; absent du français",
-      "tip": "pointe de la langue recourbée vers l'arrière sans toucher, lèvres neutres"
+      "tip": "pointe de la langue recourbée vers l’arrière sans toucher, lèvres neutres"
      },
      "zh-Hans": {
       "name": "sh",
@@ -34496,7 +34496,7 @@
     "group": "Consonants",
     "name": "r",
     "guide": "like a buzzing 'zh' with the tongue curled back; the Mandarin 'r'",
-    "tip": "Lips slightly rounded, tongue curled back, voice on.",
+    "tip": "Tongue tip lifted and drawn slightly back, not curled hard; voice on, gentle friction.",
     "say": "ʐa",
     "examples": [
      {
@@ -34536,7 +34536,7 @@
      "fr": {
       "name": "r",
       "guide": "comme j français, avec la langue recourbée ; pas le r français ; absent du français",
-      "tip": "pointe de la langue recourbée vers l'arrière, voix qui vibre"
+      "tip": "pointe de la langue recourbée vers l’arrière, voix qui vibre"
      },
      "zh-Hans": {
       "name": "r",
@@ -34555,7 +34555,7 @@
     "group": "Tones",
     "name": "Tone 1 (high)",
     "guide": "high and level, like holding a sung high note",
-    "tip": "Mouth stays open and steady; no movement.",
+    "tip": "Keep the pitch high and level. Stay relaxed; don't strain upwards.",
     "say": "ma˥",
     "examples": [
      {
@@ -34600,12 +34600,12 @@
      "zh-Hans": {
       "name": "一声 高平",
       "guide": "高而平:妈、七、天",
-      "tip": "声音保持在最高音,平稳不降"
+      "tip": "音高保持高而平，放松，不要往上使劲。"
      },
      "zh-Hant": {
       "name": "第一聲 高平",
       "guide": "高而平:媽、七、天",
-      "tip": "聲音保持在最高音,平穩不降"
+      "tip": "音高保持高而平，放鬆，不要往上使勁。"
      }
     }
    },
@@ -34614,7 +34614,7 @@
     "group": "Tones",
     "name": "Tone 2 (rising)",
     "guide": "rising, like a surprised 'what?'",
-    "tip": "Mouth steady; a small lift of the chin as the pitch rises.",
+    "tip": "Pitch rises smoothly from the middle, as when you ask 'what?'. Keep your jaw and neck loose.",
     "say": "ma˧˥",
     "examples": [
      {
@@ -34654,17 +34654,17 @@
      "fr": {
       "name": "ton 2 (montant)",
       "guide": "monte comme en posant une question : « vraiment ? » ; absent du français",
-      "tip": "mâchoire détendue ; la voix monte du moyen vers l'aigu"
+      "tip": "mâchoire détendue ; la voix monte du moyen vers l’aigu"
      },
      "zh-Hans": {
       "name": "二声 上升",
       "guide": "由中升高:十、人、白",
-      "tip": "从中音升到高音,像问「什么?」"
+      "tip": "音高从中间平滑升高，像问“什么？”。下巴和脖子放松。"
      },
      "zh-Hant": {
       "name": "第二聲 上揚",
       "guide": "由中升高:十、人、白",
-      "tip": "從中音升到高音,像問「什麼?」"
+      "tip": "音高從中間平滑升高，像問「什麼？」。下巴和脖子放鬆。"
      }
     }
    },
@@ -34673,7 +34673,7 @@
     "group": "Tones",
     "name": "Tone 3 (dipping)",
     "guide": "falls low then rises, like a doubtful 'well...'; often just low in speech",
-    "tip": "Chin drops slightly on the low point.",
+    "tip": "Pitch dips low, then lifts a little; in running speech often just the low dip.",
     "say": "ma˨˩˦",
     "examples": [
      {
@@ -34718,12 +34718,12 @@
      "zh-Hans": {
       "name": "三声 降升",
       "guide": "先降后升:你、好、马",
-      "tip": "降到最低再微升,单念时才全升"
+      "tip": "先降到低处，再稍微上扬；说快时常只有低降。"
      },
      "zh-Hant": {
       "name": "第三聲 降升",
       "guide": "先降後升:你、好、馬",
-      "tip": "降到最低再微升,單念時才全升"
+      "tip": "先降到低處，再稍微上揚；說快時常只有低降。"
      }
     }
    },
@@ -34732,7 +34732,7 @@
     "group": "Tones",
     "name": "Tone 4 (falling)",
     "guide": "sharp fall, like a firm 'No!'",
-    "tip": "Jaw drops quickly and the sound is short and forceful.",
+    "tip": "Pitch falls from high to low in one smooth, firm movement. Keep your throat loose.",
     "say": "ma˥˩",
     "examples": [
      {
@@ -34777,12 +34777,12 @@
      "zh-Hans": {
       "name": "四声 下降",
       "guide": "由高快降:爸、去、是",
-      "tip": "从最高快速降到最低,短而有力"
+      "tip": "从高到低一口气平滑降下，喉咙放松。"
      },
      "zh-Hant": {
       "name": "第四聲 下降",
       "guide": "由高快降:爸、去、是",
-      "tip": "從最高快速降到最低,短而有力"
+      "tip": "從高到低一口氣平滑降下，喉嚨放鬆。"
      }
     }
    },
@@ -34791,7 +34791,7 @@
     "group": "Tones",
     "name": "Neutral tone",
     "guide": "short, light and unstressed; pitch follows the previous tone",
-    "tip": "Small, quick, relaxed movement.",
+    "tip": "Short and light, with no tone of its own; let it follow the syllable before.",
     "say": "ma˧",
     "examples": [
      {

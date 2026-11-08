@@ -105,7 +105,7 @@ struct PrivacySummary: View {
     @State private var details = false
     var body: some View {
         HStack(spacing: 8) {
-            Label("Recordings stay on this Mac until you choose to share them. The camera only reads lip points; no video or photos are saved.", systemImage: "lock.shield").font(.callout)
+            Label("Recordings stay on this Mac until you share them. No video or photos.", systemImage: "lock.shield").font(.callout)
             Button("What's saved?") { details.toggle() }.buttonStyle(.link)
                 .popover(isPresented: $details) {
                     VStack(alignment: .leading, spacing: 8) {

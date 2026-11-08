@@ -44,7 +44,7 @@
    "group": "Vowels",
    "name": "short a",
    "guide": "a as in 'cat' - open and bright, between 'eh' and 'ah'",
-   "tip": "Jaw drops wide, lips slightly spread, tongue forward.",
+   "tip": "Jaw opens a fair amount, lips relaxed and slightly spread.",
    "say": "æ",
    "examples": [
     "apple",
@@ -109,7 +109,7 @@
    "group": "Vowels",
    "name": "oo",
    "guide": "oo as in 'food'",
-   "tip": "Lips rounded and pushed forward, jaw nearly closed.",
+   "tip": "Lips gently rounded, tongue high and back.",
    "say": "uː",
    "examples": [
     "food",
@@ -330,7 +330,7 @@
    "group": "Consonants",
    "name": "th (thin)",
    "guide": "th as in 'think' - air only, no voice",
-   "tip": "Tongue tip between or against the teeth, visible; blow air.",
+   "tip": "Tongue tip lightly between the teeth; let air flow gently over it.",
    "say": "θa",
    "examples": [
     "think",
@@ -592,7 +592,7 @@
    "group": "Vowels",
    "name": "French u",
    "guide": "say 'ee' but round your lips as for 'oo' - no English equivalent",
-   "tip": "Lips tightly rounded and pushed forward, tongue stays high and front.",
+   "tip": "Lips firmly rounded as for 'ou', tongue forward as for 'i'. No strain.",
    "say": "y",
    "examples": [
     "tu",
@@ -605,7 +605,7 @@
    "group": "Vowels",
    "name": "ou",
    "guide": "like 'oo' in 'food' but tenser and shorter",
-   "tip": "Lips tightly rounded and pushed forward, tongue back.",
+   "tip": "Lips firmly rounded, tongue high and back. No strain.",
    "say": "u",
    "examples": [
     "où",
@@ -891,7 +891,7 @@
    "group": "Consonants",
    "name": "French r",
    "guide": "a soft gargle at the back of the throat, like a light 'kh' with a hum",
-   "tip": "Lips neutral, tongue tip down behind the lower teeth, back of tongue raised.",
+   "tip": "Back of the tongue lifts toward the soft palate for a light, gentle friction; no scraping or effort in the throat.",
    "say": "ʁa",
    "examples": [
     "rue",
@@ -1218,7 +1218,7 @@
    "group": "Consonants",
    "name": "j",
    "guide": "like a rough 'h' - a scrape at the back of the throat, as in Scottish 'loch'",
-   "tip": "Mouth open and neutral, back of tongue near the soft palate.",
+   "tip": "Light breathy friction at the back of the mouth; keep your throat relaxed, no scraping.",
    "say": "xa",
    "examples": [
     "jamón",
@@ -1618,7 +1618,7 @@
    "group": "Vowels",
    "name": "zhi vowel",
    "guide": "a buzzing curled-back 'r' held on, the vowel in 'zhi', 'chi', 'shi', 'ri'",
-   "tip": "Lips slightly rounded, tongue tip curled back and still.",
+   "tip": "Tongue tip lifted and drawn slightly back, not curled hard; hold the buzzy vowel.",
    "say": "ʂɻ̩",
    "examples": [
     {
@@ -2124,7 +2124,7 @@
    "group": "Consonants",
    "name": "zh",
    "guide": "like the 'ch' in 'church' with the tongue tip curled back, no puff of air and not voiced",
-   "tip": "Lips slightly rounded, tongue tip curled back to the roof.",
+   "tip": "Tongue tip lifted and drawn slightly back, not curled hard; release with no puff of air.",
    "say": "ʈʂa",
    "examples": [
     {
@@ -2190,7 +2190,7 @@
    "group": "Consonants",
    "name": "r",
    "guide": "like a buzzing 'zh' with the tongue curled back; the Mandarin 'r'",
-   "tip": "Lips slightly rounded, tongue curled back, voice on.",
+   "tip": "Tongue tip lifted and drawn slightly back, not curled hard; voice on, gentle friction.",
    "say": "ʐa",
    "examples": [
     {
@@ -2212,7 +2212,7 @@
    "group": "Tones",
    "name": "Tone 1 (high)",
    "guide": "high and level, like holding a sung high note",
-   "tip": "Mouth stays open and steady; no movement.",
+   "tip": "Keep the pitch high and level. Stay relaxed; don't strain upwards.",
    "say": "ma˥",
    "examples": [
     {
@@ -2234,7 +2234,7 @@
    "group": "Tones",
    "name": "Tone 2 (rising)",
    "guide": "rising, like a surprised 'what?'",
-   "tip": "Mouth steady; a small lift of the chin as the pitch rises.",
+   "tip": "Pitch rises smoothly from the middle, as when you ask 'what?'. Keep your jaw and neck loose.",
    "say": "ma˧˥",
    "examples": [
     {
@@ -2256,7 +2256,7 @@
    "group": "Tones",
    "name": "Tone 3 (dipping)",
    "guide": "falls low then rises, like a doubtful 'well...'; often just low in speech",
-   "tip": "Chin drops slightly on the low point.",
+   "tip": "Pitch dips low, then lifts a little; in running speech often just the low dip.",
    "say": "ma˨˩˦",
    "examples": [
     {
@@ -2278,7 +2278,7 @@
    "group": "Tones",
    "name": "Tone 4 (falling)",
    "guide": "sharp fall, like a firm 'No!'",
-   "tip": "Jaw drops quickly and the sound is short and forceful.",
+   "tip": "Pitch falls from high to low in one smooth, firm movement. Keep your throat loose.",
    "say": "ma˥˩",
    "examples": [
     {
@@ -2300,7 +2300,7 @@
    "group": "Tones",
    "name": "Neutral tone",
    "guide": "short, light and unstressed; pitch follows the previous tone",
-   "tip": "Small, quick, relaxed movement.",
+   "tip": "Short and light, with no tone of its own; let it follow the syllable before.",
    "say": "ma˧",
    "examples": [
     {

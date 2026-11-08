@@ -69,6 +69,40 @@
         }
       }
     },
+    "%@ · %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        }
+      }
+    },
     "%@ · %@. Public domain in the UK and US.": {
       "localizations": {
         "es": {
@@ -167,6 +201,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@：%2$@"
+          }
+        }
+      }
+    },
+    "%lld": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
           }
         }
       }
@@ -511,6 +579,40 @@
         }
       }
     },
+    "%lld of %lld today, %lld days in a row": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld hoy, %lld días seguidos"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld hoy, %lld días seguidos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sur %lld aujourd’hui, %lld jours de suite"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天 %lld/%lld，连续 %lld 天"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天 %lld/%lld，連續 %lld 天"
+          }
+        }
+      }
+    },
     "%lld of %lld validation words had usable boundaries and pronunciations.": {
       "localizations": {
         "es": {
@@ -711,6 +813,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "今天練了 %lld 次"
+          }
+        }
+      }
+    },
+    "%lld/%lld": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld"
           }
         }
       }
@@ -1187,6 +1323,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "研究人員專用的進階工具"
+          }
+        }
+      }
+    },
+    "AirPods Pro, AirPods (3rd generation or later) or AirPods Max": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods Pro, AirPods (3.ª generación o posterior) o AirPods Max"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods Pro, AirPods (3.ª generación o posterior) o AirPods Max"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods Pro, AirPods (3e génération ou ultérieure) ou AirPods Max"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods Pro、AirPods（第三代或更新）或 AirPods Max"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods Pro、AirPods（第三代或更新）或 AirPods Max"
           }
         }
       }
@@ -2109,6 +2279,40 @@
         }
       }
     },
+    "Checks what you said. Nothing is uploaded.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprueba lo que dijiste. No se sube nada."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprueba lo que dijiste. No se sube nada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifie ce que vous avez dit. Rien n’est envoyé."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "检查你说了什么。不会上传任何内容。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檢查你說了什麼。不會上傳任何內容。"
+          }
+        }
+      }
+    },
     "Chinese": {
       "localizations": {
         "es": {
@@ -2241,6 +2445,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "清除"
+          }
+        }
+      }
+    },
+    "Computer voice: an approximation, especially for single sounds. Listen to the example words too.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voz de computadora: una aproximación, sobre todo para sonidos sueltos. Escucha también las palabras de ejemplo."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voz de computadora: una aproximación, sobre todo para sonidos sueltos. Escucha también las palabras de ejemplo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voix de synthèse : une approximation, surtout pour un son isolé. Écoutez aussi les mots d’exemple."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "电脑合成语音只是近似，单个音尤其如此。也请听听例词。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "電腦合成語音只是近似，單個音尤其如此。也請聽聽例詞。"
           }
         }
       }
@@ -2411,6 +2649,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "繼續"
+          }
+        }
+      }
+    },
+    "Contribute recordings to research": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aportar grabaciones a la investigación"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aportar grabaciones a la investigación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contribuer des enregistrements à la recherche"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "为研究贡献录音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為研究貢獻錄音"
           }
         }
       }
@@ -3503,6 +3775,40 @@
         }
       }
     },
+    "For recording. Listening to sounds and reading guides works without them.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para grabar. Escuchar sonidos y leer las guías funciona sin ellos."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para grabar. Escuchar sonidos y leer las guías funciona sin ellos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour enregistrer. Écouter les sons et lire les guides fonctionne sans eux."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用于录音。听发音和看说明不需要它们。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用於錄音。聽發音和看說明不需要它們。"
+          }
+        }
+      }
+    },
     "Four dictionary occurrences per sound. Coverage measures collected examples, not recognition accuracy; your pronunciation may differ.": {
       "localizations": {
         "es": {
@@ -4149,6 +4455,40 @@
         }
       }
     },
+    "I want to practise": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quiero practicar"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quiero practicar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je veux pratiquer"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我想练习"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我想練習"
+          }
+        }
+      }
+    },
     "I'm practising": {
       "localizations": {
         "es": {
@@ -4349,6 +4689,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "輸入"
+          }
+        }
+      }
+    },
+    "Keep it small and relaxed: don't strain your lips, jaw, tongue or throat, and rest if anything feels tight. Most of a sound happens inside the mouth, so go by feel and sound, not a mirror. This is practice, not speech therapy.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazlo con calma y sin forzar los labios, la mandíbula, la lengua ni la garganta; descansa si algo se tensa. Casi todo el sonido ocurre dentro de la boca: guíate por la sensación y el oído, no por un espejo. Es práctica, no terapia del habla."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazlo con calma y sin forzar los labios, la mandíbula, la lengua ni la garganta; descansa si algo se tensa. Casi todo el sonido ocurre dentro de la boca: guíate por la sensación y el oído, no por un espejo. Es práctica, no terapia del habla."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restez détendu, sans forcer : ni les lèvres, ni la mâchoire, ni la langue, ni la gorge. Faites une pause si quelque chose se crispe. L’essentiel d’un son se passe dans la bouche : fiez-vous à la sensation et à l’écoute, pas au miroir. C’est de l’entraînement, pas de l’orthophonie."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "动作小一点、放松：不要用力绷紧嘴唇、下巴、舌头或喉咙，觉得紧就休息一下。发音大多在口腔里完成，靠感觉和耳朵，不要靠镜子。这是练习，不是言语治疗。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動作小一點、放鬆：不要用力繃緊嘴唇、下巴、舌頭或喉嚨，覺得緊就休息一下。發音大多在口腔裡完成，靠感覺和耳朵，不要靠鏡子。這是練習，不是語言治療。"
           }
         }
       }
@@ -5781,6 +6155,40 @@
         }
       }
     },
+    "Not set up yet": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no configurado"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no configurado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore configuré"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未设置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未設定"
+          }
+        }
+      }
+    },
     "Not used for training": {
       "localizations": {
         "es": {
@@ -6427,6 +6835,40 @@
         }
       }
     },
+    "Practise /%@/": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar /%@/"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar /%@/"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pratiquer /%@/"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "练习 /%@/"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "練習 /%@/"
+          }
+        }
+      }
+    },
     "Practise Again": {
       "localizations": {
         "es": {
@@ -6525,6 +6967,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "練習這個音"
+          }
+        }
+      }
+    },
+    "Practise my pronunciation": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar mi pronunciación"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar mi pronunciación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pratiquer ma prononciation"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "练习我的发音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "練習我的發音"
+          }
+        }
+      }
+    },
+    "Practise pronunciation in English, French, Spanish and Mandarin: hear each sound, say words and phrases, read poems and speeches. You can also help an open research project that teaches computers to understand silently mouthed words.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practica la pronunciación en inglés, francés, español y mandarín: escucha cada sonido, di palabras y frases, lee poemas y discursos. También puedes ayudar a un proyecto de investigación abierto que enseña a las computadoras a entender palabras dichas sin voz."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practica la pronunciación en inglés, francés, español y mandarín: escucha cada sonido, di palabras y frases, lee poemas y discursos. También puedes ayudar a un proyecto de investigación abierto que enseña a las computadoras a entender palabras dichas sin voz."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pratiquez la prononciation en anglais, français, espagnol et mandarin : écoutez chaque son, dites des mots et des phrases, lisez des poèmes et des discours. Vous pouvez aussi aider un projet de recherche ouvert qui apprend aux ordinateurs à comprendre les mots articulés en silence."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "练习英语、法语、西班牙语和普通话的发音：听每个音，说词语和句子，朗读诗歌和演讲。你也可以帮助一个开放的研究项目，让电脑学会理解不出声的口型。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "練習英語、法語、西班牙語和國語的發音：聽每個音，說詞語和句子，朗讀詩歌和演講。你也可以幫助一個開放的研究計畫，讓電腦學會理解不出聲的嘴型。"
           }
         }
       }
@@ -6763,6 +7273,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "散文"
+          }
+        }
+      }
+    },
+    "Public domain in the UK and US.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dominio público en el Reino Unido y EE. UU."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dominio público en el Reino Unido y EE. UU."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domaine public au Royaume-Uni et aux États-Unis."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在英国和美国属于公有领域。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在英國和美國屬於公有領域。"
           }
         }
       }
@@ -7175,6 +7719,40 @@
         }
       }
     },
+    "Reads lip points while you record. Never video or photos.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee puntos de los labios mientras grabas. Nunca video ni fotos."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee puntos de los labios mientras grabas. Nunca video ni fotos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lit des points des lèvres pendant l’enregistrement. Jamais de vidéo ni de photos."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录音时读取嘴唇关键点。绝不保存视频或照片。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "錄音時讀取嘴唇關鍵點。絕不保存影片或照片。"
+          }
+        }
+      }
+    },
     "Ready": {
       "localizations": {
         "es": {
@@ -7273,6 +7851,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "已辨識"
+          }
+        }
+      }
+    },
+    "Recognised words": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palabras reconocidas"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palabras reconocidas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mots reconnus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "识别出的词"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "辨識出的詞"
           }
         }
       }
@@ -7647,6 +8259,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "錄音、AirPods 動作和嘴部關鍵點只保存在這台 Mac 上；只有你按「傳送」才會分享。相機只用來擷取嘴部關鍵點，不保存影片或照片。"
+          }
+        }
+      }
+    },
+    "Recordings stay on this Mac until you finish setting up sharing.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac hasta que termines de configurar el envío."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac hasta que termines de configurar el envío."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les enregistrements restent sur ce Mac tant que le partage n’est pas configuré."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在完成分享设置之前，录音只保存在这台 Mac 上。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在完成分享設定之前，錄音只保存在這台 Mac 上。"
+          }
+        }
+      }
+    },
+    "Recordings stay on this Mac until you share them. No video or photos.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac hasta que las compartas. Sin video ni fotos."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac hasta que las compartas. Sin video ni fotos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les enregistrements restent sur ce Mac jusqu’à ce que vous les partagiez. Ni vidéo ni photos."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录音只保存在这台 Mac 上，直到你分享。不保存视频或照片。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "錄音只保存在這台 Mac 上，直到你分享。不保存影片或照片。"
           }
         }
       }
@@ -9045,6 +9725,40 @@
         }
       }
     },
+    "Share recordings for research (optional)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir grabaciones para la investigación (opcional)"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir grabaciones para la investigación (opcional)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager des enregistrements pour la recherche (facultatif)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "为研究分享录音（可选）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為研究分享錄音（選用）"
+          }
+        }
+      }
+    },
     "Share recordings…": {
       "localizations": {
         "es": {
@@ -9521,6 +10235,40 @@
         }
       }
     },
+    "Some words weren't recognised. Background noise or unclear speech can cause this; try once more, a little slower.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se reconocieron algunas palabras. Puede deberse a ruido o a habla poco clara; inténtalo otra vez, un poco más despacio."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se reconocieron algunas palabras. Puede deberse a ruido o a habla poco clara; inténtalo otra vez, un poco más despacio."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certains mots n’ont pas été reconnus. Le bruit ou une prononciation peu nette peuvent en être la cause ; réessayez une fois, un peu plus lentement."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有些词没有被识别。可能是背景噪音或说得不够清楚；再试一次，说慢一点。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有些詞沒有被辨識。可能是背景噪音或說得不夠清楚；再試一次，說慢一點。"
+          }
+        }
+      }
+    },
     "Sound coverage: %lld of %lld units at the collection target": {
       "localizations": {
         "es": {
@@ -9891,6 +10639,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "演講與詩歌"
+          }
+        }
+      }
+    },
+    "Speech recognition guesses what you meant, so it can accept sounds that aren't quite right. Use it to check you were understood, not to judge each sound. For a persistent difficulty, a teacher or speech and language therapist can hear what the app can't.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El reconocimiento de voz adivina lo que quisiste decir, así que puede aceptar sonidos no del todo correctos. Úsalo para comprobar que se te entiende, no para juzgar cada sonido. Ante una dificultad persistente, un profesor o un logopeda puede oír lo que la app no oye."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El reconocimiento de voz adivina lo que quisiste decir, así que puede aceptar sonidos no del todo correctos. Úsalo para comprobar que se te entiende, no para juzgar cada sonido. Ante una dificultad persistente, un profesor o un logopeda puede oír lo que la app no oye."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La reconnaissance vocale devine ce que vous vouliez dire : elle peut accepter des sons pas tout à fait justes. Servez-vous-en pour vérifier que vous êtes compris, pas pour juger chaque son. Pour une difficulté persistante, un enseignant ou un orthophoniste entend ce que l’app ne peut pas entendre."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "语音识别会猜你想说什么，所以可能接受不太准确的音。用它来确认别人能听懂你，而不是评判每个音。如果某个音一直有困难，老师或言语治疗师能听到这个应用听不到的地方。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "語音辨識會猜你想說什麼，所以可能接受不太準確的音。用它來確認別人聽得懂你，而不是評判每個音。如果某個音一直有困難，老師或語言治療師能聽到這個 App 聽不到的地方。"
+          }
+        }
+      }
+    },
+    "Speech recognition on this Mac (a local Whisper model)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconocimiento de voz en este Mac (un modelo Whisper local)"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconocimiento de voz en este Mac (un modelo Whisper local)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconnaissance vocale sur ce Mac (un modèle Whisper local)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这台 Mac 上的语音识别（本地 Whisper 模型）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這台 Mac 上的語音辨識（本機 Whisper 模型）"
           }
         }
       }
@@ -10575,6 +11391,40 @@
         }
       }
     },
+    "Target sounds": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonidos objetivo"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonidos objetivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sons visés"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目标发音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目標發音"
+          }
+        }
+      }
+    },
     "Test microphone": {
       "localizations": {
         "es": {
@@ -10605,6 +11455,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "測試麥克風"
+          }
+        }
+      }
+    },
+    "The Mac's camera": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cámara del Mac"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cámara del Mac"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La caméra du Mac"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 的摄像头"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 的相機"
           }
         }
       }
@@ -11833,6 +12717,108 @@
         }
       }
     },
+    "What would you like to do first?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué quieres hacer primero?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué quieres hacer primero?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que voulez-vous faire d’abord ?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你想先做什么？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你想先做什麼？"
+          }
+        }
+      }
+    },
+    "What you'll need": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que necesitas"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que necesitas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce qu’il vous faut"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你需要"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你需要"
+          }
+        }
+      }
+    },
+    "What's IPA?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué es el AFI?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué es el AFI?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C’est quoi l’API ?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "什么是国际音标？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "什麼是國際音標？"
+          }
+        }
+      }
+    },
     "What's saved, and where": {
       "localizations": {
         "es": {
@@ -12037,6 +13023,40 @@
         }
       }
     },
+    "Words recognised": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palabras reconocidas"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palabras reconocidas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mots reconnus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "词语已识别"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詞語已辨識"
+          }
+        }
+      }
+    },
     "Words that differ by one sound and look alike on the lips. Hear each pair, then say every word.": {
       "localizations": {
         "es": {
@@ -12135,6 +13155,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "你已於 %@ 同意分享。"
+          }
+        }
+      }
+    },
+    "You can change sharing any time with Share Recordings… on the Reading page.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiar el envío cuando quieras con «Compartir grabaciones…» en la página Lectura."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiar el envío cuando quieras con «Compartir grabaciones…» en la página Lectura."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez modifier le partage à tout moment avec « Partager les enregistrements… » sur la page Lecture."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你随时可以在“朗读”页面的“分享录音…”中更改分享方式。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你隨時可以在「朗讀」頁面的「分享錄音…」中更改分享方式。"
+          }
+        }
+      }
+    },
+    "You can change these any time from the globe menu at the top right.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiarlos cuando quieras desde el menú del globo, arriba a la derecha."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiarlos cuando quieras desde el menú del globo, arriba a la derecha."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez les changer à tout moment dans le menu du globe, en haut à droite."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你随时可以在右上角的地球菜单中更改。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你隨時可以在右上角的地球選單中更改。"
           }
         }
       }
@@ -12271,6 +13359,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "你說的"
+          }
+        }
+      }
+    },
+    "Your languages": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus idiomas"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus idiomas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos langues"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你的语言"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你的語言"
           }
         }
       }
