@@ -38,10 +38,12 @@ class CommunityExportTests(unittest.TestCase):
         (self.prompts / "calibration-v1.jsonl").write_text(json.dumps(dict(prompt_id=prompt_identity(CALIBRATION), text=CALIBRATION)) + "\n")
         (self.prompts / "heldout-v1.jsonl").write_text(json.dumps(dict(prompt_id=prompt_identity(HELDOUT), passage_id="book-0002", text=HELDOUT)) + "\n")
         self.session = str(uuid.uuid4()).upper()
-        data = dict(prompts=[dict(text=COMMUNITY, kind="community"), dict(text=CALIBRATION, kind="calibration"),
+        visit = str(uuid.uuid4()).upper()
+        data = dict(visits=[dict(id=visit, motionDevice=dict(vendorID="0x004C", productID="0x2027", model="AirPods Pro 3", firmware="9A348"))],
+                    prompts=[dict(text=COMMUNITY, kind="community"), dict(text=CALIBRATION, kind="calibration"),
                              dict(text=HELDOUT, kind="community"), dict(text=PERSONAL, kind="sentence")],
-                    pairs=[pair(COMMUNITY, self.session, 100), pair(CALIBRATION, self.session, 130, camera_on=False),
-                           pair(HELDOUT, self.session, 160), pair(PERSONAL, self.session, 190)])
+                    pairs=[dict(p, visitID=visit) for p in (pair(COMMUNITY, self.session, 100), pair(CALIBRATION, self.session, 130, camera_on=False),
+                                                           pair(HELDOUT, self.session, 160), pair(PERSONAL, self.session, 190))])
         (self.root / "sentence-training.json").write_text(json.dumps(data))
 
     def tearDown(self):
@@ -78,7 +80,9 @@ class CommunityExportTests(unittest.TestCase):
         session = json.loads((folder / "session.json").read_text())
         self.assertEqual(session["month"], "2026-11")
         self.assertEqual(session["sensor_side"], "right")
-        self.assertIsNone(session["airpods_model"])
+        self.assertEqual((session["airpods_model"], session["airpods_product_id"], session["airpods_firmware"]), ("AirPods Pro 3", "0x2027", "9A348"))
+        takes = [json.loads(l) for l in (folder / "takes.jsonl").read_text().splitlines()]
+        self.assertTrue(all(abs(t["motion_hz"] - 50) < 1 for t in takes), "Native rate is kept per take")
         first = (folder / "takes.jsonl").read_text()
         [again] = self.export()
         self.assertEqual(again, folder)

@@ -412,9 +412,11 @@ final class SentenceTrainingWorkflow {
                 error = recorder.error ?? "Could not start recording."; phase = .setup; return
             }
             var pairIDs: [UUID] = []
+            let device = await MotionDeviceInfo.probe()
             do {
                 let visit = try beginVisit(session: recordingSession, audioDevice: audio.activeDeviceName,
                                            timing: timing, presentation: presentation)
+                if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].motionDevice = device; try persist() }
                 for (groupIndex, group) in batch.enumerated() {
                     guard canRecord() else { throw Failure.disconnected }
                     let pair = try beginPair(prompts: group, visit: visit, session: recordingSession)

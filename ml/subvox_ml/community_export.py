@@ -25,10 +25,12 @@ SCHEMA_VERSION = 1
 SWIFT_EPOCH = datetime.datetime(2001, 1, 1, tzinfo=datetime.timezone.utc)
 MOTION_COLUMNS = ["take_id", "t", "ax", "ay", "az", "rx", "ry", "rz", "gx", "gy", "gz", "qw", "qx", "qy", "qz", "side"]
 CAMERA_COLUMNS = ["take_id", "t"] + camera_input.RAW_NAMES
-SESSION_KEYS = {"schema_version", "app_version", "contributor", "session_id", "airpods_model", "mac_model", "camera_model",
-                "sensor_side", "sample_rates", "consent_version", "month", "prompts_version", "takes"}
-TAKE_KEYS = {"take_id", "prompt_id", "passage_id", "mode", "cue_start", "cue_end", "eligible", "ineligible_reason",
+SESSION_KEYS = {"schema_version", "app_version", "contributor", "session_id", "airpods_model", "airpods_vendor_id", "airpods_product_id",
+                "airpods_firmware", "motion_source", "mac_model", "camera_model", "sensor_side", "sample_rates", "consent_version",
+                "month", "prompts_version", "takes"}
+TAKE_KEYS = {"take_id", "prompt_id", "passage_id", "mode", "cue_start", "cue_end", "motion_hz", "eligible", "ineligible_reason",
              "camera_coverage", "camera_eligible", "redo_count"}
+HEX_ID = re.compile(r"^0x[0-9A-F]{4}$")
 CONTRIBUTOR = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{1,63}$")
 MAX_SESSION_BYTES = 200 * 1024 * 1024
 
@@ -56,6 +58,13 @@ def load_prompt_index(prompts_dir):
     for path in sorted(prompts_dir.glob("heldout-v*.jsonl")):
         heldout.update(json.loads(line)["prompt_id"] for line in path.read_text().splitlines())
     return index, heldout
+
+
+def native_rate(samples):
+    t = np.asarray([s["t"] for s in samples], dtype=float)
+    d = np.diff(t)
+    d = d[d > 0]
+    return round(float(1 / np.median(d)), 2) if len(d) else None
 
 
 def month_of(swift_seconds):
@@ -106,6 +115,7 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
         raise ValueError("Contributor ID must be 2-64 letters, digits, '.', '_' or '-'")
     index, heldout = load_prompt_index(prompts_dir or find_prompts_dir())
     data = json.loads((Path(root) / "sentence-training.json").read_text())
+    devices = {v["id"]: v.get("motionDevice") for v in data.get("visits", [])}
     kinds = {p_id: p.get("kind", "sentence") for p in data.get("prompts", []) for p_id in [prompt_identity(p["text"])]}
     sessions = {}
     for pair in data.get("pairs", []):
@@ -133,6 +143,7 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
                 motion.append(m); cameras.append(c); all_samples += recording["samples"]
                 takes.append(dict(take_id=take_id, prompt_id=pair["promptIDs"][0], passage_id=index[pair["promptIDs"][0]], mode=mode,
                                   cue_start=recording["cueStart"] - origin, cue_end=recording["cueEnd"] - origin,
+                                  motion_hz=native_rate(recording["samples"]),
                                   eligible=reason is None, ineligible_reason=reason, camera_coverage=round(coverage, 4),
                                   camera_eligible=coverage >= .8, redo_count=None))
         if not takes:
@@ -141,8 +152,11 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
         camera_hz = float(1 / np.median(np.diff(times))) if len(times) > 2 and np.median(np.diff(times)) > 0 else None
         motion_t = sorted(s["t"] for s in all_samples)
         motion_hz = float(1 / np.median(np.diff(motion_t))) if len(motion_t) > 2 else None
+        device = next((devices.get(p.get("visitID")) for p in pairs if devices.get(p.get("visitID"))), None) or {}
         session = dict(schema_version=SCHEMA_VERSION, app_version=app_version, contributor=contributor, session_id=session_id,
-                       airpods_model=None, mac_model=None, camera_model=None, sensor_side=side_name(all_samples),
+                       airpods_model=device.get("model"), airpods_vendor_id=device.get("vendorID"), airpods_product_id=device.get("productID"),
+                       airpods_firmware=device.get("firmware"), motion_source="CMHeadphoneMotionManager",
+                       mac_model=None, camera_model=None, sensor_side=side_name(all_samples),
                        sample_rates=dict(motion_hz=round(motion_hz, 2) if motion_hz else None, camera_hz=round(camera_hz, 2) if camera_hz else None),
                        consent_version=consent_version, month=month_of(min(p["createdAt"] for p in pairs)),
                        prompts_version=prompts_version, takes=len(takes))
@@ -191,6 +205,9 @@ def validate_session(folder, index, heldout):
         problems.append("month must be YYYY-MM")
     if not CONTRIBUTOR.match(str(session.get("contributor"))) or folder.parent.name != session.get("contributor") or folder.name != session.get("session_id"):
         problems.append("contributor/session folder mismatch")
+    for key in ("airpods_vendor_id", "airpods_product_id"):
+        if session.get(key) is not None and not HEX_ID.match(str(session[key])):
+            problems.append(f"{key} must be a 0xNNNN hex ID")
     if session.get("sensor_side") not in ("left", "right", "unknown"):
         problems.append("sensor_side must be left, right or unknown")
     for key, value in session.items():

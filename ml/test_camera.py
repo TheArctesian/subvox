@@ -34,6 +34,24 @@ def recording():
     return dict(cueStart=103, cueEnd=105.9, samples=samples, condition="Silent mouthing")
 
 
+class MotionRateTests(unittest.TestCase):
+    def at(self, hz):
+        samples = [dict(t=100 + i / hz, ax=math.sin(i / 7) * .01, ay=0, az=0, rx=0, ry=0, rz=0, gx=0, gy=0, gz=-1, sensorLocation=1)
+                   for i in range(int(6 * hz))]
+        return dict(cueStart=103, cueEnd=105.5, samples=samples, condition="Silent mouthing")
+
+    def test_slower_airpods_are_interpolated_onto_the_50_hz_grid_and_flagged(self):
+        raw, quality = resample(self.at(25))
+        self.assertAlmostEqual(quality["rate"], 25, delta=.5)
+        self.assertEqual(len(raw), int(2.5 * 50) + 1)
+        self.assertTrue(any("native motion rate 25 Hz" in f for f in quality["flags"]))
+        self.assertFalse(any("native motion rate" in f for f in resample(self.at(50))[1]["flags"]))
+
+    def test_rates_below_twenty_hertz_are_still_rejected(self):
+        with self.assertRaisesRegex(ValueError, "below 20 Hz"):
+            resample(self.at(15))
+
+
 class CameraInputTests(unittest.TestCase):
     def test_eye_frame_ignores_head_position_roll_and_distance(self):
         base = camera.frame_values(reading(0, opening=.4))

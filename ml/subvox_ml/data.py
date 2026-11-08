@@ -11,6 +11,9 @@ import numpy as np
 
 SCHEMA = 3
 RATE = 50
+# Lowest native headphone rate accepted. Slower devices are interpolated onto the RATE grid
+# (no detail above their own Nyquist limit is invented) and flagged with their native rate.
+MIN_MOTION_RATE = 20
 VECTOR_KEYS = ("ax", "ay", "az", "rx", "ry", "rz", "gx", "gy", "gz")
 QUAT_KEYS = ("qw", "qx", "qy", "qz")
 BASE_NAMES = list(VECTOR_KEYS) + ["acc_vertical", "rot_vertical", "acc_horizontal", "rot_horizontal", "acc_norm", "rot_norm", "acc_dot_rot",
@@ -264,8 +267,8 @@ def resample(recording, baseline=False):
         raise ValueError("internal motion gap exceeds 120 ms")
     intervals=dt[selected[:-1] & selected[1:]]
     rate = 1 / float(np.median(intervals)) if len(intervals) else 0
-    if not math.isfinite(rate) or rate < 40:
-        raise ValueError("motion rate below 40 Hz; no invented high-rate information")
+    if not math.isfinite(rate) or rate < MIN_MOTION_RATE:
+        raise ValueError(f"motion rate below {MIN_MOTION_RATE} Hz")
     grid = lo + np.arange(int(math.floor((hi - lo) * RATE)) + 1) / RATE
     raw = np.stack([np.interp(grid, t, vectors[:, k]) for k in range(9)], axis=1).astype(np.float32)
     if all(k in samples[0] for k in QUAT_KEYS):
@@ -280,6 +283,8 @@ def resample(recording, baseline=False):
     if len(raw) < 25 or (np.linalg.norm(raw[:, 6:9], axis=1) < .1).any():
         raise ValueError("short sequence or invalid gravity vector")
     flags = []
+    if rate < RATE * .9:
+        flags.append(f"native motion rate {rate:.0f} Hz interpolated onto the {RATE} Hz grid")
     if np.max(np.linalg.norm(raw[:, :6], axis=1)) < .005:
         flags.append("low motion energy retained; not an exclusion")
     side = next(iter(locations))

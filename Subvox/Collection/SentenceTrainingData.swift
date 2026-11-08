@@ -127,6 +127,7 @@ struct SentencePair: Codable, Identifiable, Sendable {
 /// Mirrors the timestamp/source checks of the neural dataset resampler. These are
 /// eligibility checks, not recognition accuracy; pronunciation/CTC checks run at preparation.
 struct SentenceMotionEligibility: Sendable {
+    static let minimumRate = 20.0
     var reason: String?
     static func inspect(_ recording: SentenceRecording) -> Self {
         let samples = recording.samples
@@ -150,7 +151,9 @@ struct SentenceMotionEligibility: Sendable {
         if let gap = gaps.last, gap > 0.12 { return .init(reason: String(format: "Sensor gap of %.3f s (maximum 0.120 s)", gap)) }
         let middle = gaps.count / 2
         let median = gaps.count.isMultiple(of: 2) ? (gaps[middle - 1] + gaps[middle]) / 2 : gaps[middle]
-        guard 1 / median >= 40 else { return .init(reason: "Motion rate below 40 Hz") }
+        // Matches MIN_MOTION_RATE in ml/subvox_ml/data.py. Slower AirPods are interpolated onto the
+        // 50 Hz model grid there, and the native rate is kept with the take.
+        guard 1 / median >= Self.minimumRate else { return .init(reason: "Motion rate below \(Int(Self.minimumRate)) Hz") }
         let frames = Int(floor((hi - lo) * 50)) + 1
         guard frames >= 25, context.allSatisfy({ sqrt($0.gx * $0.gx + $0.gy * $0.gy + $0.gz * $0.gz) >= 0.1 }) else {
             return .init(reason: "Short sequence or invalid gravity vector")
@@ -237,6 +240,8 @@ struct SentenceVisit: Codable, Identifiable, Sendable {
     var presentation: String?
     var motionRate: Double?
     var recordingSessionID: UUID?
+    /// Headphone model, product ID and firmware; absent in older visits.
+    var motionDevice: MotionDeviceInfo?
 }
 
 /// The active personal training experiment, grouped and split by sentence.

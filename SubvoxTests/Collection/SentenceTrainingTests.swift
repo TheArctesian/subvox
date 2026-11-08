@@ -110,11 +110,18 @@ final class SentenceTrainingTests: XCTestCase {
 
     func testAutomaticUseSeparatesWordAndNeuralSamplingRequirements() {
         var item = automaticPair()
-        item.spoken!.samples = item.spoken!.samples.enumerated().filter { $0.offset.isMultiple(of: 2) }.map(\.element)
+        item.spoken!.samples = item.spoken!.samples.enumerated().filter { $0.offset.isMultiple(of: 3) }.map(\.element)
         item.silent!.samples = item.spoken!.samples
         XCTAssertTrue(item.usesAlignedWords, "The existing word alignment supports lower rates")
-        XCTAssertTrue(item.automaticUse.takes.allSatisfy { !$0.included && $0.reason == "Motion rate below 40 Hz" })
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy { !$0.included && $0.reason == "Motion rate below 20 Hz" })
         XCTAssertEqual(item.automaticUse.state, .warnings)
+    }
+
+    func testSlowerAirPodsAtTwentyFiveHertzStayEligible() {
+        var item = automaticPair()
+        item.spoken!.samples = item.spoken!.samples.enumerated().filter { $0.offset.isMultiple(of: 2) }.map(\.element)
+        item.silent!.samples = item.spoken!.samples
+        XCTAssertTrue(item.automaticUse.takes.allSatisfy(\.included), "Some AirPods report at about 25 Hz")
     }
 
     func testAutomaticUseHoldsWeakTranscriptAndPreservesManualOverrides() {
