@@ -456,6 +456,7 @@ def main():
     p=sub.add_parser("evaluate");p.add_argument("--model",required=True);p.add_argument("--dataset",required=True);p.add_argument("--fold",type=int,required=True);p.add_argument("--output")
     p=sub.add_parser("evaluate-fresh");p.add_argument("--session",required=True)
     p=sub.add_parser("rank");p.add_argument("--run",required=True);p.add_argument("--output",required=True)
+    p=sub.add_parser("closed-set");p.add_argument("--dataset",required=True);p.add_argument("--output",required=True);p.add_argument("--permutations",type=int,default=1000)
     p=sub.add_parser("prepare-teachers");p.add_argument("--dataset",required=True);p.add_argument("--base-run",required=True);p.add_argument("--output",required=True)
     args=parser.parse_args()
     if args.command=="prepare":
@@ -464,6 +465,13 @@ def main():
                        None if args.min_transcript_match<0 else args.min_transcript_match)
         result=dict(dataset=args.output,split=result["split"],excluded=len(result["excluded"]),promoted_former_tests=len(result["promoted_former_tests"]),
                     unreviewed_pairs=len(result["admission"]["unreviewed_pairs"]))
+    elif args.command=="closed-set":
+        from .closedset import closed_set
+        output=Path(args.output)
+        if output.exists():raise SystemExit("Closed-set report exists; choose a new output path")
+        examples,_,manifest=load_dataset(args.dataset)
+        result=dict(closed_set(examples,permutations=args.permutations),dataset=str(args.dataset),examples_hash=manifest["examples_hash"])
+        atomic_json(output,result)
     elif args.command=="prepare-teachers":
         from .teachers import enrich
         result=enrich(args.dataset,args.base_run,args.output)
