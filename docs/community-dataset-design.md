@@ -7,9 +7,11 @@ Status: build steps 1–3 are implemented (see "Build status" at the end). Steps
 Free silent dictation from AirPods motion fused with camera lip reading. Free dictation needs hundreds of hours of mouthed speech from many people. The plan:
 
 1. Subvox becomes installable by anyone. Recording, review and inference stay **local**.
-2. Contributors choose to share finished sessions to one **gated Hugging Face dataset**, as pull requests.
+2. Contributors choose to share finished sessions to one **open Hugging Face dataset** (CC BY 4.0, ungated), as pull requests.
 3. Contributors read **varied public-domain literature, poetry and speeches**, assigned to cover all phonemes across contributors. Each person reads different text.
-4. A shared **phoneme model** trains on the dataset, is published on the Hugging Face Hub, and is **personalised on each user's Mac** from a short calibration set.
+4. A shared **phoneme model** trains on the dataset, is published on the Hugging Face Hub as **open weights**, and is **personalised on each user's Mac** from a short calibration set.
+
+**Openness:** the code is AGPL-3.0-or-later, the data is CC BY 4.0, and the weights are open. Because anyone can download the data, the consent screen must say plainly that contributions are public and permanent in published copies.
 
 Why this direction: the closed-set results (README, "Closed-set sentence identification") show that the sensors carry sentence-level information with repetitions. But whole-sentence templates cannot recognise text that was never recorded. Free dictation needs sub-word units (phonemes) and a lot more varied data.
 
@@ -58,7 +60,7 @@ Lip landmarks and head motion are biometric personal data under UK GDPR, which m
   - Numeric camera points only, never images or video. Mouth crops are a later, separate opt-in (see 5.3).
   - Audio only for spoken takes, only with a separate opt-in, and only when it is needed for alignment (see 5.4).
   - No device names, account names, file paths or wall-clock timestamps. Times are relative to the session start, and the date is kept at month precision.
-- **Gated dataset:** access requires accepting terms (research use, no attempts to re-identify contributors). Contributor PRs are visible only to approved users.
+- **Open dataset:** the dataset is public and ungated under CC BY 4.0, so anyone can download it. The dataset card asks users not to attempt to re-identify contributors, but that request can't be enforced. Contributor PRs are public too. That makes data minimisation (numeric points only, no names, month-only dates) and a clear consent screen the main protections.
 - **Withdrawal:** deleting a contributor's data removes their files from the main branch. Full removal also needs history squashing, which is run periodically and documented on the dataset card.
 - **Before public launch:** get a short review from someone who knows data protection. It should cover contributors outside the UK and the lawful basis.
 
@@ -211,4 +213,4 @@ Steps 1–3 are fully local and useful for your own recordings before anyone els
 - Where to host the relay, and its abuse controls (step 5).
 - Whether audio is uploaded or aligned elsewhere (5.4).
 - When to add mouth crops (5.3), decided from the scaling check.
-- Dataset licence for contributed recordings (for example CC BY 4.0 with gated access), and the consent text wording, pending data-protection review.
+- Consent text wording for a fully open (ungated) dataset, pending data-protection review. Decided: data CC BY 4.0, weights open, code AGPL-3.0-or-later.

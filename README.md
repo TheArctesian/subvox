@@ -340,3 +340,9 @@ python3 Tools/corpus/lexicon.py
 Corpus tools cache pronunciation and public-domain source material under `~/Library/Caches/Subvox`. Those shared resources are not personal training examples.
 
 AirPods motion is typically about 50 Hz and includes head movement as well as articulation. The speech accelerometer and inward microphone are not exposed. Models are personal and may change when the AirPods are reseated. This remains an experiment in signal quality and word recognition.
+
+## Licence
+
+- **Code:** GNU AGPL-3.0-or-later (`LICENSE`). Anyone who runs a modified version as a network service must offer its source. Portions originally by Joe Blau remain under MIT; that notice is in `NOTICE`.
+- **Community data:** CC BY 4.0, fully open and ungated.
+- **Model weights:** released openly on Hugging Face, with the licence stated on each model card.
