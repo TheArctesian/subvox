@@ -37,7 +37,7 @@ _BY_LANGUAGE = {
     "es": {"p", "b", "β", "m", "f", "t", "d", "ð", "n", "s", "z", "θ", "x", "ɡ", "ɣ", "k", "l", "ʎ", "ɲ", "ŋ", "r", "ɾ",
            "tʃ", "ʝ", "j", "w", "a", "e", "i", "o", "u"},
     "zh": {"p", "pʰ", "m", "f", "t", "tʰ", "n", "l", "k", "kʰ", "x", "tɕ", "tɕʰ", "ɕ", "ʈʂ", "ʈʂʰ", "ʂ", "ʐ", "ts", "tsʰ",
-           "s", "j", "w", "ɥ", "a", "o", "ɤ", "e", "ɛ", "ə", "i", "u", "y", "ʊ", "ŋ", "ɚ", "ɹ̩", "ɻ̩"},
+           "s", "j", "w", "ɥ", "a", "o", "ɤ", "e", "ɛ", "ə", "i", "u", "y", "ʊ", "ŋ", "ɚ", "ɹ̩", "ɻ̩", "ɻ"},
 }
 INVENTORY = {p: tuple(sorted(l for l, s in _BY_LANGUAGE.items() if p in s)) for p in sorted(set().union(*_BY_LANGUAGE.values()))}
 
@@ -311,7 +311,14 @@ DEI_VERBS = set("走去来回做学买吃喝跑看上下写说找交给办")
 DURATIVE_VERBS = set("拿看坐站躺穿戴开关等听唱笑哭写想带放挂住拉抱牵背跟陪守开着关")
 
 
-NEUTRAL_SECOND = set("""爸爸 妈妈 哥哥 姐姐 弟弟 妹妹 爷爷 奶奶 姥姥 叔叔 舅舅 宝宝 谢谢 看看 说说 试试 想想 听听 走走
+# Readings that depend on meaning in a specific context (classical poems above all):
+# (context, character, reading). 朝辞白帝 zhāo "morning", 一日还 huán "return", 万重山 chóng "layers".
+CONTEXT_READINGS = [("朝辞", "朝", "zhao1"), ("日还", "还", "huan2"), ("重山", "重", "chong2"), ("不胜簪", "胜", "sheng1"),
+                    ("返景", "景", "ying3")]
+# 儿化: these words are one rhotacised syllable (哪儿 nǎr), not two.
+ERHUA = set("哪儿 这儿 那儿 点儿 会儿 块儿 玩儿 孩儿 边儿 空儿 事儿 片儿 味儿 劲儿 本儿 号儿 儿".split()) - {"儿"}
+
+NEUTRAL_SECOND = set("""师傅 爸爸 妈妈 哥哥 姐姐 弟弟 妹妹 爷爷 奶奶 姥姥 叔叔 舅舅 宝宝 谢谢 看看 说说 试试 想想 听听 走走
 东西 时候 什么 怎么 喜欢 衣服 朋友 学生 多少 麻烦 漂亮 休息 知道 明白 先生 地方 事情 认识 意思 舒服 客气 告诉 名字
 眼睛 耳朵 头发 早上 晚上 屋子 房子 桌子 椅子 孩子 儿子 杯子 包子 饺子 筷子 本子 日子 鼻子 肚子 我们 你们 他们 她们
 咱们 人们 这么 那么 多么 关系 便宜 认得 记得 觉得 晓得 舍得 部分 窗户 豆腐 萝卜 葡萄 玻璃 姑娘 丈夫 媳妇 打扮 打听
@@ -338,6 +345,12 @@ def _corrected(hanzi, tone3, sandhi, neutral=True):
         elif ch in "一不":
             out[i] = "yi1" if ch == "一" else "bu4"
     # Words whose second syllable is lexically neutral (not tone sandhi, so shown in every drill).
+    for context, ch, reading in CONTEXT_READINGS:
+        at = hanzi.find(context)
+        while at >= 0:
+            k = at + context.index(ch)
+            out[k] = reading
+            at = hanzi.find(context, at + 1)
     for k in range(len(hanzi) - 1) if neutral else ():
         if hanzi[k:k + 2] in NEUTRAL_SECOND and hanzi[k:k + 4] != "东西南北":
             out[k + 1] = re.sub(r"\d$", "5", out[k + 1])
@@ -369,12 +382,23 @@ def mandarin_syllables(text, sandhi=False, neutral=True):
         return []
     tone3 = _corrected(hanzi, [p[0] for p in pinyin(hanzi, style=Style.TONE3, neutral_tone_with_five=True)], sandhi, neutral)
     out = []
-    for syllable in tone3:
+    for k, syllable in enumerate(tone3):
+        if hanzi[k] == "儿" and k and hanzi[k - 1:k + 1] in ERHUA and out:
+            # 儿化: one rhotacised syllable (哪儿 nǎr /naɻ/); drop a final n, as in 点儿 diǎnr /tjaɻ/.
+            prev = out[-1]
+            phones = prev["phones"]
+            if phones[-1:] == ["n"]:
+                phones = ["a" if p == "ɛ" else p for p in phones[:-1]]  # 点儿 /tjɛn/ -> /tjaɻ/
+            prev.update(pinyin=prev["toneless"] + "r" + str(prev["tone"]), toneless=prev["toneless"] + "r", phones=phones + ["ɻ"])
+            continue
         tone = int(syllable[-1]) if syllable[-1].isdigit() else 5
         bare = re.sub(r"\d", "", syllable)
         spelled = bare.replace("v", "ü")
         initial, final = get_initials(spelled, strict=True), get_finals(spelled, strict=True).replace("ü", "v")
-        out.append(dict(pinyin=syllable, toneless=bare, tone=tone, phones=_syllable_ipa(initial, final)))
+        phones = _syllable_ipa(initial, final)
+        if tone == 5:
+            phones = ["ə" if p == "ɤ" else p for p in phones]  # neutral 的 了 么 个 着: /tə lə mə/
+        out.append(dict(pinyin=syllable, toneless=bare, tone=tone, phones=phones))
     return out
 
 

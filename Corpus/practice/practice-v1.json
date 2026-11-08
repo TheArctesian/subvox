@@ -4410,8 +4410,8 @@
       "tsan"
      ],
      "hant": "渾欲不勝簪。",
-     "pinyin": "hún yù bù shèng zān",
-     "zhuyin": "ㄏㄨㄣˊ ㄩˋ ㄅㄨˋ ㄕㄥˋ ㄗㄢ"
+     "pinyin": "hún yù bù shēng zān",
+     "zhuyin": "ㄏㄨㄣˊ ㄩˋ ㄅㄨˋ ㄕㄥ ㄗㄢ"
     }
    ]
   },
@@ -4456,14 +4456,14 @@
      "text": "返景入深林，",
      "ipa": [
       "fan",
-      "tɕiŋ",
+      "iŋ",
       "ʐu",
       "ʂən",
       "lin"
      ],
      "hant": "返景入深林，",
-     "pinyin": "fǎn jǐng rù shēn lín",
-     "zhuyin": "ㄈㄢˇ ㄐㄧㄥˇ ㄖㄨˋ ㄕㄣ ㄌㄧㄣˊ"
+     "pinyin": "fǎn yǐng rù shēn lín",
+     "zhuyin": "ㄈㄢˇ ㄧㄥˇ ㄖㄨˋ ㄕㄣ ㄌㄧㄣˊ"
     },
     {
      "text": "复照青苔上。",
@@ -4976,7 +4976,7 @@
      "text": "有了四千年吃人履历的我，",
      "ipa": [
       "jou",
-      "lɤ",
+      "lə",
       "sɹ̩",
       "tɕʰjɛn",
       "njɛn",
@@ -4984,10 +4984,10 @@
       "ʐən",
       "ly",
       "li",
-      "tɤ",
+      "tə",
       "wo"
      ],
-     "hant": "有了四千年喫人履歷的我，",
+     "hant": "有了四千年吃人履歷的我，",
      "pinyin": "yǒu le sì qiān nián chī rén lǚ lì de wǒ",
      "zhuyin": "ㄧㄡˇ ㄌㄜ˙ ㄙˋ ㄑㄧㄢ ㄋㄧㄢˊ ㄔ ㄖㄣˊ ㄌㄩˇ ㄌㄧˋ ㄉㄜ˙ ㄨㄛˇ"
     },
@@ -5016,10 +5016,10 @@
       "nan",
       "tɕjɛn",
       "ʈʂən",
-      "tɤ",
+      "tə",
       "ʐən"
      ],
-     "hant": "難見眞的人！",
+     "hant": "難見真的人！",
      "pinyin": "nán jiàn zhēn de rén",
      "zhuyin": "ㄋㄢˊ ㄐㄧㄢˋ ㄓㄣ ㄉㄜ˙ ㄖㄣˊ"
     },
@@ -5031,11 +5031,11 @@
       "ʈʂʰɻ̩",
       "kwo",
       "ʐən",
-      "tɤ",
+      "tə",
       "xai",
       "tsɹ̩"
      ],
-     "hant": "沒有喫過人的孩子，",
+     "hant": "沒有吃過人的孩子，",
      "pinyin": "méi yǒu chī guò rén de hái zi",
      "zhuyin": "ㄇㄟˊ ㄧㄡˇ ㄔ ㄍㄨㄛˋ ㄖㄣˊ ㄉㄜ˙ ㄏㄞˊ ㄗ˙"
     },
@@ -5079,7 +5079,7 @@
     {
      "text": "朝辞白帝彩云间，",
      "ipa": [
-      "ʈʂʰau",
+      "ʈʂau",
       "tsʰɹ̩",
       "pai",
       "ti",
@@ -5088,8 +5088,8 @@
       "tɕjɛn"
      ],
      "hant": "朝辭白帝彩雲間，",
-     "pinyin": "cháo cí bái dì cǎi yún jiān",
-     "zhuyin": "ㄔㄠˊ ㄘˊ ㄅㄞˊ ㄉㄧˋ ㄘㄞˇ ㄩㄣˊ ㄐㄧㄢ"
+     "pinyin": "zhāo cí bái dì cǎi yún jiān",
+     "zhuyin": "ㄓㄠ ㄘˊ ㄅㄞˊ ㄉㄧˋ ㄘㄞˇ ㄩㄣˊ ㄐㄧㄢ"
     },
     {
      "text": "千里江陵一日还。",
@@ -5100,11 +5100,11 @@
       "liŋ",
       "i",
       "ʐɻ̩",
-      "xai"
+      "xwan"
      ],
      "hant": "千里江陵一日還。",
-     "pinyin": "qiān lǐ jiāng líng yī rì hái",
-     "zhuyin": "ㄑㄧㄢ ㄌㄧˇ ㄐㄧㄤ ㄌㄧㄥˊ ㄧ ㄖˋ ㄏㄞˊ"
+     "pinyin": "qiān lǐ jiāng líng yī rì huán",
+     "zhuyin": "ㄑㄧㄢ ㄌㄧˇ ㄐㄧㄤ ㄌㄧㄥˊ ㄧ ㄖˋ ㄏㄨㄢˊ"
     },
     {
      "text": "两岸猿声啼不尽，",
@@ -5129,12 +5129,12 @@
       "i",
       "kwo",
       "wan",
-      "ʈʂʊŋ",
+      "ʈʂʰʊŋ",
       "ʂan"
      ],
      "hant": "輕舟已過萬重山。",
-     "pinyin": "qīng zhōu yǐ guò wàn zhòng shān",
-     "zhuyin": "ㄑㄧㄥ ㄓㄡ ㄧˇ ㄍㄨㄛˋ ㄨㄢˋ ㄓㄨㄥˋ ㄕㄢ"
+     "pinyin": "qīng zhōu yǐ guò wàn chóng shān",
+     "zhuyin": "ㄑㄧㄥ ㄓㄡ ㄧˇ ㄍㄨㄛˋ ㄨㄢˋ ㄔㄨㄥˊ ㄕㄢ"
     }
    ]
   },
@@ -9366,7 +9366,7 @@
       "na",
       "ʂɻ̩",
       "wo",
-      "tɤ",
+      "tə",
       "ʂu"
      ],
      "hant": "那是我的書",
@@ -9407,7 +9407,7 @@
       "i",
       "kɤ",
       "kɤ",
-      "kɤ"
+      "kə"
      ],
      "hant": "我有一個哥哥",
      "pinyin": "wǒ yǒu yī gè gē ge",
@@ -9665,12 +9665,11 @@
      "ipa": [
       "ni",
       "tsai",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "你在哪兒",
-     "pinyin": "nǐ zài nǎ ér",
-     "zhuyin": "ㄋㄧˇ ㄗㄞˋ ㄋㄚˇ ㄦˊ"
+     "pinyin": "nǐ zài nǎr",
+     "zhuyin": "ㄋㄧˇ ㄗㄞˋ ㄋㄚˇㄦ"
     },
     {
      "text": "她不在这儿",
@@ -9678,12 +9677,11 @@
       "tʰa",
       "pu",
       "tsai",
-      "ʈʂɤ",
-      "ɚ"
+      "ʈʂɤɻ"
      ],
      "hant": "她不在這兒",
-     "pinyin": "tā bù zài zhè ér",
-     "zhuyin": "ㄊㄚ ㄅㄨˋ ㄗㄞˋ ㄓㄜˋ ㄦˊ"
+     "pinyin": "tā bù zài zhèr",
+     "zhuyin": "ㄊㄚ ㄅㄨˋ ㄗㄞˋ ㄓㄜˋㄦ"
     },
     {
      "text": "手机在包里",
@@ -9788,7 +9786,7 @@
      "text": "这个很贵",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "xən",
       "kwei"
      ],
@@ -9928,7 +9926,7 @@
       "ɕjaŋ",
       "ʈʂʰɻ̩",
       "ʂən",
-      "mɤ"
+      "mə"
      ],
      "hant": "你想吃什麼",
      "pinyin": "nǐ xiǎng chī shén me",
@@ -10003,7 +10001,7 @@
      "text": "这个",
      "ipa": [
       "ʈʂɤ",
-      "kɤ"
+      "kə"
      ],
      "hant": "這個",
      "pinyin": "zhè ge",
@@ -10013,7 +10011,7 @@
      "text": "那个",
      "ipa": [
       "na",
-      "kɤ"
+      "kə"
      ],
      "hant": "那個",
      "pinyin": "nà ge",
@@ -10023,7 +10021,7 @@
      "text": "哪个",
      "ipa": [
       "na",
-      "kɤ"
+      "kə"
      ],
      "hant": "哪個",
      "pinyin": "nǎ ge",
@@ -10141,7 +10139,7 @@
       "tʰa",
       "tɕi",
       "swei",
-      "lɤ"
+      "lə"
      ],
      "hant": "他幾歲了",
      "pinyin": "tā jǐ suì le",
@@ -10233,7 +10231,7 @@
      "text": "我的书",
      "ipa": [
       "wo",
-      "tɤ",
+      "tə",
       "ʂu"
      ],
      "hant": "我的書",
@@ -10244,7 +10242,7 @@
      "text": "你的手机",
      "ipa": [
       "ni",
-      "tɤ",
+      "tə",
       "ʂou",
       "tɕi"
      ],
@@ -10256,7 +10254,7 @@
      "text": "他的名字",
      "ipa": [
       "tʰa",
-      "tɤ",
+      "tə",
       "miŋ",
       "tsɹ̩"
      ],
@@ -10269,7 +10267,7 @@
      "ipa": [
       "lau",
       "ʂɻ̩",
-      "tɤ",
+      "tə",
       "ʈʂʰɤ"
      ],
      "hant": "老師的車",
@@ -10282,7 +10280,7 @@
       "wo",
       "pʰəŋ",
       "jou",
-      "tɤ",
+      "tə",
       "tɕja"
      ],
      "hant": "我朋友的家",
@@ -10295,7 +10293,7 @@
       "ʈʂɤ",
       "ʂɻ̩",
       "wo",
-      "tɤ"
+      "tə"
      ],
      "hant": "這是我的",
      "pinyin": "zhè shì wǒ de",
@@ -10307,7 +10305,7 @@
       "na",
       "ʂɻ̩",
       "ʂei",
-      "tɤ",
+      "tə",
       "ʂu"
      ],
      "hant": "那是誰的書",
@@ -10320,7 +10318,7 @@
       "wo",
       "ma",
       "ma",
-      "tɤ",
+      "tə",
       "pʰəŋ",
       "jou"
      ],
@@ -10355,16 +10353,17 @@
    "note_hant": "Describing words and verb phrases go before 的 and the noun.",
    "phrases": [
     {
-     "text": "红的苹果",
+     "text": "红色的苹果",
      "ipa": [
       "xʊŋ",
-      "tɤ",
+      "sɤ",
+      "tə",
       "pʰiŋ",
       "kwo"
      ],
-     "hant": "紅的蘋果",
-     "pinyin": "hóng de píng guǒ",
-     "zhuyin": "ㄏㄨㄥˊ ㄉㄜ˙ ㄆㄧㄥˊ ㄍㄨㄛˇ"
+     "hant": "紅色的蘋果",
+     "pinyin": "hóng sè de píng guǒ",
+     "zhuyin": "ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ ㄆㄧㄥˊ ㄍㄨㄛˇ"
     },
     {
      "text": "我喜欢的歌",
@@ -10372,7 +10371,7 @@
       "wo",
       "ɕi",
       "xwan",
-      "tɤ",
+      "tə",
       "kɤ"
      ],
      "hant": "我喜歡的歌",
@@ -10385,7 +10384,7 @@
       "tswo",
       "tʰjɛn",
       "mai",
-      "tɤ",
+      "tə",
       "ʂu"
      ],
      "hant": "昨天買的書",
@@ -10397,7 +10396,7 @@
      "ipa": [
       "xən",
       "ta",
-      "tɤ",
+      "tə",
       "faŋ",
       "tsɹ̩"
      ],
@@ -10410,7 +10409,7 @@
      "ipa": [
       "pʰjau",
       "ljaŋ",
-      "tɤ",
+      "tə",
       "ny",
       "xai"
      ],
@@ -10423,7 +10422,7 @@
      "ipa": [
       "kʰai",
       "ʈʂʰɤ",
-      "tɤ",
+      "tə",
       "ʐən"
      ],
      "hant": "開車的人",
@@ -10435,7 +10434,7 @@
      "ipa": [
       "pʰjɛn",
       "i",
-      "tɤ",
+      "tə",
       "tʊŋ",
       "ɕi"
      ],
@@ -10449,7 +10448,7 @@
       "wo",
       "ɕjaŋ",
       "ʈʂʰɻ̩",
-      "tɤ",
+      "tə",
       "tsʰai"
      ],
      "hant": "我想吃的菜",
@@ -10719,7 +10718,7 @@
      "text": "这个人",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "ʐən"
      ],
      "hant": "這個人",
@@ -10836,12 +10835,11 @@
      "text": "一点儿",
      "ipa": [
       "i",
-      "tjɛn",
-      "ɚ"
+      "tjaɻ"
      ],
      "hant": "一點兒",
-     "pinyin": "yī diǎn ér",
-     "zhuyin": "ㄧ ㄉㄧㄢˇ ㄦˊ"
+     "pinyin": "yī diǎnr",
+     "zhuyin": "ㄧ ㄉㄧㄢˇㄦ"
     },
     {
      "text": "一些书",
@@ -10954,7 +10952,7 @@
      "ipa": [
       "wo",
       "ʈʂʰɻ̩",
-      "lɤ"
+      "lə"
      ],
      "hant": "我吃了",
      "pinyin": "wǒ chī le",
@@ -10965,7 +10963,7 @@
      "ipa": [
       "tʰa",
       "mai",
-      "lɤ",
+      "lə",
       "i",
       "pən",
       "ʂu"
@@ -10979,7 +10977,7 @@
      "ipa": [
       "wo",
       "xɤ",
-      "lɤ",
+      "lə",
       "ljaŋ",
       "pei",
       "ʈʂʰa"
@@ -10993,7 +10991,7 @@
      "ipa": [
       "ni",
       "ʈʂʰɻ̩",
-      "lɤ",
+      "lə",
       "ma"
      ],
      "hant": "你吃了嗎",
@@ -11005,7 +11003,7 @@
      "ipa": [
       "wo",
       "ʈʂʰɻ̩",
-      "lɤ",
+      "lə",
       "fan",
       "tɕjou",
       "tɕʰy"
@@ -11021,24 +11019,26 @@
       "tswo",
       "tʰjɛn",
       "lai",
-      "lɤ"
+      "lə"
      ],
      "hant": "她昨天來了",
      "pinyin": "tā zuó tiān lái le",
      "zhuyin": "ㄊㄚ ㄗㄨㄛˊ ㄊㄧㄢ ㄌㄞˊ ㄌㄜ˙"
     },
     {
-     "text": "我看了电影",
+     "text": "我看了一部电影",
      "ipa": [
       "wo",
       "kʰan",
-      "lɤ",
+      "lə",
+      "i",
+      "pu",
       "tjɛn",
       "iŋ"
      ],
-     "hant": "我看了電影",
-     "pinyin": "wǒ kàn le diàn yǐng",
-     "zhuyin": "ㄨㄛˇ ㄎㄢˋ ㄌㄜ˙ ㄉㄧㄢˋ ㄧㄥˇ"
+     "hant": "我看了一部電影",
+     "pinyin": "wǒ kàn le yī bù diàn yǐng",
+     "zhuyin": "ㄨㄛˇ ㄎㄢˋ ㄌㄜ˙ ㄧ ㄅㄨˋ ㄉㄧㄢˋ ㄧㄥˇ"
     }
    ],
    "level": "HSK2",
@@ -11071,7 +11071,7 @@
      "ipa": [
       "ɕja",
       "y",
-      "lɤ"
+      "lə"
      ],
      "hant": "下雨了",
      "pinyin": "xià yǔ le",
@@ -11082,7 +11082,7 @@
      "ipa": [
       "tʰjɛn",
       "xei",
-      "lɤ"
+      "lə"
      ],
      "hant": "天黑了",
      "pinyin": "tiān hēi le",
@@ -11093,7 +11093,7 @@
      "ipa": [
       "wo",
       "ɤ",
-      "lɤ"
+      "lə"
      ],
      "hant": "我餓了",
      "pinyin": "wǒ è le",
@@ -11107,7 +11107,7 @@
       "ta",
       "ɕɥe",
       "ʂəŋ",
-      "lɤ"
+      "lə"
      ],
      "hant": "他是大學生了",
      "pinyin": "tā shì dà xué sheng le",
@@ -11120,7 +11120,7 @@
       "tsai",
       "pa",
       "tjɛn",
-      "lɤ"
+      "lə"
      ],
      "hant": "現在八點了",
      "pinyin": "xiàn zài bā diǎn le",
@@ -11132,7 +11132,7 @@
       "wo",
       "pu",
       "tɕʰy",
-      "lɤ"
+      "lə"
      ],
      "hant": "我不去了",
      "pinyin": "wǒ bù qù le",
@@ -11146,7 +11146,7 @@
       "ʂwo",
       "ʈʂʊŋ",
       "wən",
-      "lɤ"
+      "lə"
      ],
      "hant": "她會說中文了",
      "pinyin": "tā huì shuō zhōng wén le",
@@ -11158,7 +11158,7 @@
       "ʈʂʰwən",
       "tʰjɛn",
       "lai",
-      "lɤ"
+      "lə"
      ],
      "hant": "春天來了",
      "pinyin": "chūn tiān lái le",
@@ -11235,12 +11235,11 @@
       "tʰa",
       "lai",
       "kwo",
-      "ʈʂɤ",
-      "ɚ"
+      "ʈʂɤɻ"
      ],
      "hant": "他來過這兒",
-     "pinyin": "tā lái guò zhè ér",
-     "zhuyin": "ㄊㄚ ㄌㄞˊ ㄍㄨㄛˋ ㄓㄜˋ ㄦˊ"
+     "pinyin": "tā lái guò zhèr",
+     "zhuyin": "ㄊㄚ ㄌㄞˊ ㄍㄨㄛˋ ㄓㄜˋㄦ"
     },
     {
      "text": "我看过这个电影",
@@ -11249,7 +11248,7 @@
       "kʰan",
       "kwo",
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "tjɛn",
       "iŋ"
      ],
@@ -11276,12 +11275,11 @@
       "ni",
       "tɕʰy",
       "kwo",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "你去過哪兒",
-     "pinyin": "nǐ qù guò nǎ ér",
-     "zhuyin": "ㄋㄧˇ ㄑㄩˋ ㄍㄨㄛˋ ㄋㄚˇ ㄦˊ"
+     "pinyin": "nǐ qù guò nǎr",
+     "zhuyin": "ㄋㄧˇ ㄑㄩˋ ㄍㄨㄛˋ ㄋㄚˇㄦ"
     },
     {
      "text": "我没见过他",
@@ -11393,7 +11391,7 @@
       "tsai",
       "tswo",
       "ʂən",
-      "mɤ"
+      "mə"
      ],
      "hant": "你在做什麼",
      "pinyin": "nǐ zài zuò shén me",
@@ -11458,7 +11456,7 @@
      "ipa": [
       "mən",
       "kʰai",
-      "ʈʂɤ"
+      "ʈʂə"
      ],
      "hant": "門開著",
      "pinyin": "mén kāi zhe",
@@ -11469,7 +11467,7 @@
      "ipa": [
       "tʰa",
       "tswo",
-      "ʈʂɤ",
+      "ʈʂə",
       "kʰan",
       "ʂu"
      ],
@@ -11482,7 +11480,7 @@
      "ipa": [
       "tʰa",
       "ʈʂʰwan",
-      "ʈʂɤ",
+      "ʈʂə",
       "xʊŋ",
       "i",
       "fu"
@@ -11496,7 +11494,7 @@
      "ipa": [
       "təŋ",
       "ljaŋ",
-      "ʈʂɤ"
+      "ʈʂə"
      ],
      "hant": "燈亮著",
      "pinyin": "dēng liàng zhe",
@@ -11508,7 +11506,7 @@
       "tɕʰjaŋ",
       "ʂaŋ",
       "kwa",
-      "ʈʂɤ",
+      "ʈʂə",
       "i",
       "ʈʂaŋ",
       "xwa"
@@ -11524,7 +11522,7 @@
       "tsɹ̩",
       "ʂaŋ",
       "faŋ",
-      "ʈʂɤ",
+      "ʈʂə",
       "i",
       "pən",
       "ʂu"
@@ -11538,7 +11536,7 @@
      "ipa": [
       "tʰa",
       "ɕjau",
-      "ʈʂɤ",
+      "ʈʂə",
       "ʂwo"
      ],
      "hant": "他笑著說",
@@ -11551,7 +11549,7 @@
       "ʂou",
       "li",
       "na",
-      "ʈʂɤ",
+      "ʈʂə",
       "ʂou",
       "tɕi"
      ],
@@ -11586,16 +11584,18 @@
    "note_hant": "Same verb, different aspect: finished, experienced, in progress.",
    "phrases": [
     {
-     "text": "我写了信",
+     "text": "我写了一封信",
      "ipa": [
       "wo",
       "ɕje",
-      "lɤ",
+      "lə",
+      "i",
+      "fəŋ",
       "ɕin"
      ],
-     "hant": "我寫了信",
-     "pinyin": "wǒ xiě le xìn",
-     "zhuyin": "ㄨㄛˇ ㄒㄧㄝˇ ㄌㄜ˙ ㄒㄧㄣˋ"
+     "hant": "我寫了一封信",
+     "pinyin": "wǒ xiě le yī fēng xìn",
+     "zhuyin": "ㄨㄛˇ ㄒㄧㄝˇ ㄌㄜ˙ ㄧ ㄈㄥ ㄒㄧㄣˋ"
     },
     {
      "text": "我写过信",
@@ -11653,7 +11653,7 @@
       "ɕje",
       "wan",
       "ɕin",
-      "lɤ"
+      "lə"
      ],
      "hant": "我寫完信了",
      "pinyin": "wǒ xiě wán xìn le",
@@ -11897,7 +11897,7 @@
       "ʈʂɤ",
       "ʂɻ̩",
       "ni",
-      "tɤ",
+      "tə",
       "ma"
      ],
      "hant": "這是你的嗎",
@@ -12063,7 +12063,7 @@
       "ʈʂɤ",
       "ʂɻ̩",
       "ʂən",
-      "mɤ"
+      "mə"
      ],
      "hant": "這是什麼",
      "pinyin": "zhè shì shén me",
@@ -12085,12 +12085,11 @@
      "ipa": [
       "ni",
       "tɕʰy",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "你去哪兒",
-     "pinyin": "nǐ qù nǎ ér",
-     "zhuyin": "ㄋㄧˇ ㄑㄩˋ ㄋㄚˇ ㄦˊ"
+     "pinyin": "nǐ qù nǎr",
+     "zhuyin": "ㄋㄧˇ ㄑㄩˋ ㄋㄚˇㄦ"
     },
     {
      "text": "你几岁",
@@ -12107,7 +12106,7 @@
      "text": "这个多少钱",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "two",
       "ʂau",
       "tɕʰjɛn"
@@ -12136,7 +12135,7 @@
       "ni",
       "tɕjau",
       "ʂən",
-      "mɤ",
+      "mə",
       "miŋ",
       "tsɹ̩"
      ],
@@ -12150,7 +12149,7 @@
       "ni",
       "wei",
       "ʂən",
-      "mɤ",
+      "mə",
       "pu",
       "tɕʰy"
      ],
@@ -12190,7 +12189,7 @@
       "tɕin",
       "tʰjɛn",
       "tsən",
-      "mɤ",
+      "mə",
       "jaŋ"
      ],
      "hant": "今天怎麼樣",
@@ -12203,12 +12202,11 @@
       "ni",
       "ʈʂu",
       "tsai",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "你住在哪兒",
-     "pinyin": "nǐ zhù zài nǎ ér",
-     "zhuyin": "ㄋㄧˇ ㄓㄨˋ ㄗㄞˋ ㄋㄚˇ ㄦˊ"
+     "pinyin": "nǐ zhù zài nǎr",
+     "zhuyin": "ㄋㄧˇ ㄓㄨˋ ㄗㄞˋ ㄋㄚˇㄦ"
     },
     {
      "text": "你几点起床",
@@ -12228,7 +12226,7 @@
      "ipa": [
       "ʂei",
       "lai",
-      "lɤ"
+      "lə"
      ],
      "hant": "誰來了",
      "pinyin": "shéi lái le",
@@ -12241,7 +12239,7 @@
       "ɕjaŋ",
       "xɤ",
       "ʂən",
-      "mɤ"
+      "mə"
      ],
      "hant": "你想喝什麼",
      "pinyin": "nǐ xiǎng hē shén me",
@@ -12252,7 +12250,7 @@
      "ipa": [
       "ni",
       "ʂən",
-      "mɤ",
+      "mə",
       "ʂɻ̩",
       "xou",
       "lai"
@@ -12269,7 +12267,7 @@
       "ʂu",
       "ʂɻ̩",
       "ni",
-      "tɤ"
+      "tə"
      ],
      "hant": "哪本書是你的",
      "pinyin": "nǎ běn shū shì nǐ de",
@@ -12280,7 +12278,7 @@
      "ipa": [
       "ni",
       "tsən",
-      "mɤ",
+      "mə",
       "tɕʰy"
      ],
      "hant": "你怎麼去",
@@ -12317,7 +12315,7 @@
      "text": "你呢",
      "ipa": [
       "ni",
-      "nɤ"
+      "nə"
      ],
      "hant": "你呢",
      "pinyin": "nǐ ne",
@@ -12330,7 +12328,7 @@
       "xən",
       "xau",
       "ni",
-      "nɤ"
+      "nə"
      ],
      "hant": "我很好，你呢",
      "pinyin": "wǒ hěn hǎo nǐ ne",
@@ -12340,9 +12338,9 @@
      "text": "你的书呢",
      "ipa": [
       "ni",
-      "tɤ",
+      "tə",
       "ʂu",
-      "nɤ"
+      "nə"
      ],
      "hant": "你的書呢",
      "pinyin": "nǐ de shū ne",
@@ -12389,7 +12387,7 @@
       "tʰa",
       "tsai",
       "tɕja",
-      "nɤ"
+      "nə"
      ],
      "hant": "他在家呢",
      "pinyin": "tā zài jiā ne",
@@ -12505,7 +12503,7 @@
      "ipa": [
       "pu",
       "jʊŋ",
-      "lɤ"
+      "lə"
      ],
      "hant": "不用了",
      "pinyin": "bù yòng le",
@@ -12543,7 +12541,7 @@
       "wo",
       "kʰan",
       "wan",
-      "lɤ"
+      "lə"
      ],
      "hant": "我看完了",
      "pinyin": "wǒ kàn wán le",
@@ -12556,7 +12554,7 @@
       "je",
       "ɕje",
       "wan",
-      "lɤ"
+      "lə"
      ],
      "hant": "作業寫完了",
      "pinyin": "zuò yè xiě wán le",
@@ -12568,7 +12566,7 @@
       "wo",
       "tʰiŋ",
       "tʊŋ",
-      "lɤ"
+      "lə"
      ],
      "hant": "我聽懂了",
      "pinyin": "wǒ tīng dǒng le",
@@ -12581,7 +12579,7 @@
       "kʰan",
       "tɕjɛn",
       "tʰa",
-      "lɤ"
+      "lə"
      ],
      "hant": "我看見他了",
      "pinyin": "wǒ kàn jiàn tā le",
@@ -12593,7 +12591,7 @@
       "ni",
       "ʂwo",
       "tsʰwo",
-      "lɤ"
+      "lə"
      ],
      "hant": "你說錯了",
      "pinyin": "nǐ shuō cuò le",
@@ -12607,7 +12605,7 @@
       "tau",
       "jau",
       "ʂɻ̩",
-      "lɤ"
+      "lə"
      ],
      "hant": "我找到鑰匙了",
      "pinyin": "wǒ zhǎo dào yào shi le",
@@ -12619,7 +12617,7 @@
       "fan",
       "tswo",
       "xau",
-      "lɤ"
+      "lə"
      ],
      "hant": "飯做好了",
      "pinyin": "fàn zuò hǎo le",
@@ -12631,7 +12629,7 @@
       "wo",
       "ʈʂʰɻ̩",
       "pau",
-      "lɤ"
+      "lə"
      ],
      "hant": "我吃飽了",
      "pinyin": "wǒ chī bǎo le",
@@ -12743,7 +12741,7 @@
       "ni",
       "tʰiŋ",
       "tʊŋ",
-      "lɤ",
+      "lə",
       "ma"
      ],
      "hant": "你聽懂了嗎",
@@ -12793,7 +12791,7 @@
       "tʰa",
       "ʈʂʰu",
       "tɕʰy",
-      "lɤ"
+      "lə"
      ],
      "hant": "他出去了",
      "pinyin": "tā chū qù le",
@@ -12830,7 +12828,7 @@
       "tʰa",
       "xwei",
       "lai",
-      "lɤ"
+      "lə"
      ],
      "hant": "他回來了",
      "pinyin": "tā huí lái le",
@@ -12843,7 +12841,7 @@
       "xwei",
       "tɕja",
       "tɕʰy",
-      "lɤ"
+      "lə"
      ],
      "hant": "她回家去了",
      "pinyin": "tā huí jiā qù le",
@@ -12857,7 +12855,7 @@
       "pʰau",
       "kwo",
       "lai",
-      "lɤ"
+      "lə"
      ],
      "hant": "孩子跑過來了",
      "pinyin": "hái zi pǎo guò lái le",
@@ -12906,7 +12904,7 @@
      "text": "听得懂",
      "ipa": [
       "tʰiŋ",
-      "tɤ",
+      "tə",
       "tʊŋ"
      ],
      "hant": "聽得懂",
@@ -12928,7 +12926,7 @@
      "text": "看得见",
      "ipa": [
       "kʰan",
-      "tɤ",
+      "tə",
       "tɕjɛn"
      ],
      "hant": "看得見",
@@ -12987,7 +12985,7 @@
      "ipa": [
       "ni",
       "tswo",
-      "tɤ",
+      "tə",
       "wan",
       "ma"
      ],
@@ -13026,7 +13024,7 @@
      "ipa": [
       "tʰa",
       "pʰau",
-      "tɤ",
+      "tə",
       "xən",
       "kʰwai"
      ],
@@ -13039,7 +13037,7 @@
      "ipa": [
       "tʰa",
       "ʂwo",
-      "tɤ",
+      "tə",
       "xən",
       "xau"
      ],
@@ -13052,7 +13050,7 @@
      "ipa": [
       "ni",
       "ɕje",
-      "tɤ",
+      "tə",
       "ʈʂən",
       "xau"
      ],
@@ -13065,7 +13063,7 @@
      "ipa": [
       "wo",
       "tswo",
-      "tɤ",
+      "tə",
       "pu",
       "xau"
      ],
@@ -13081,7 +13079,7 @@
       "ʈʂʊŋ",
       "wən",
       "ʂwo",
-      "tɤ",
+      "tə",
       "xən",
       "ljou",
       "li"
@@ -13097,7 +13095,7 @@
       "ʈʂʰaŋ",
       "kɤ",
       "ʈʂʰaŋ",
-      "tɤ",
+      "tə",
       "xau",
       "tʰiŋ"
      ],
@@ -13110,10 +13108,10 @@
      "ipa": [
       "ni",
       "lai",
-      "tɤ",
+      "tə",
       "tʰai",
       "tsau",
-      "lɤ"
+      "lə"
      ],
      "hant": "你來得太早了",
      "pinyin": "nǐ lái de tài zǎo le",
@@ -13124,7 +13122,7 @@
      "ipa": [
       "wo",
       "ʂwei",
-      "tɤ",
+      "tə",
       "xən",
       "wan"
      ],
@@ -13163,7 +13161,7 @@
      "ipa": [
       "wo",
       "ɕɥe",
-      "lɤ",
+      "lə",
       "ljaŋ",
       "njɛn",
       "ʈʂʊŋ",
@@ -13178,7 +13176,7 @@
      "ipa": [
       "wo",
       "təŋ",
-      "lɤ",
+      "lə",
       "ni",
       "i",
       "kɤ",
@@ -13194,7 +13192,7 @@
      "ipa": [
       "tʰa",
       "ʂwei",
-      "lɤ",
+      "lə",
       "pa",
       "kɤ",
       "ɕjau",
@@ -13212,7 +13210,7 @@
       "pei",
       "tɕiŋ",
       "ʈʂu",
-      "lɤ",
+      "lə",
       "san",
       "tʰjɛn"
      ],
@@ -13225,7 +13223,7 @@
      "ipa": [
       "tʰa",
       "kʰan",
-      "lɤ",
+      "lə",
       "pan",
       "kɤ",
       "ɕjau",
@@ -13325,7 +13323,7 @@
       "fan",
       "ʈʂʰɻ̩",
       "wan",
-      "lɤ"
+      "lə"
      ],
      "hant": "他把飯吃完了",
      "pinyin": "tā bǎ fàn chī wán le",
@@ -13356,7 +13354,7 @@
       "tsai",
       "tɕja",
       "li",
-      "lɤ"
+      "lə"
      ],
      "hant": "我把鑰匙忘在家裡了",
      "pinyin": "wǒ bǎ yào shi wàng zài jiā lǐ le",
@@ -13385,7 +13383,7 @@
       "je",
       "tswo",
       "wan",
-      "lɤ"
+      "lə"
      ],
      "hant": "她把作業做完了",
      "pinyin": "tā bǎ zuò yè zuò wán le",
@@ -13400,7 +13398,7 @@
       "ɕi",
       "nʊŋ",
       "tjou",
-      "lɤ"
+      "lə"
      ],
      "hant": "別把東西弄丟了",
      "pinyin": "bié bǎ dōng xi nòng diū le",
@@ -13436,13 +13434,13 @@
      "text": "我的自行车被偷了",
      "ipa": [
       "wo",
-      "tɤ",
+      "tə",
       "tsɹ̩",
       "ɕiŋ",
       "ʈʂʰɤ",
       "pei",
       "tʰou",
-      "lɤ"
+      "lə"
      ],
      "hant": "我的自行車被偷了",
      "pinyin": "wǒ de zì xíng chē bèi tōu le",
@@ -13456,7 +13454,7 @@
       "pei",
       "ta",
       "pʰo",
-      "lɤ"
+      "lə"
      ],
      "hant": "杯子被打破了",
      "pinyin": "bēi zi bèi dǎ pò le",
@@ -13471,7 +13469,7 @@
       "ʂɻ̩",
       "pʰi",
       "pʰiŋ",
-      "lɤ"
+      "lə"
      ],
      "hant": "他被老師批評了",
      "pinyin": "tā bèi lǎo shī pī píng le",
@@ -13486,7 +13484,7 @@
       "ʐən",
       "na",
       "tsou",
-      "lɤ"
+      "lə"
      ],
      "hant": "錢包被人拿走了",
      "pinyin": "qián bāo bèi rén ná zǒu le",
@@ -13501,7 +13499,7 @@
       "wo",
       "nʊŋ",
       "tjou",
-      "lɤ"
+      "lə"
      ],
      "hant": "手機被我弄丟了",
      "pinyin": "shǒu jī bèi wǒ nòng diū le",
@@ -13516,7 +13514,7 @@
       "fəŋ",
       "ʈʂʰwei",
       "kʰai",
-      "lɤ"
+      "lə"
      ],
      "hant": "窗戶被風吹開了",
      "pinyin": "chuāng hu bèi fēng chuī kāi le",
@@ -13531,7 +13529,7 @@
       "ti",
       "ti",
       "ʈʂʰɻ̩",
-      "lɤ"
+      "lə"
      ],
      "hant": "蛋糕被弟弟吃了",
      "pinyin": "dàn gāo bèi dì di chī le",
@@ -13545,7 +13543,7 @@
       "y",
       "lin",
       "ʂɻ̩",
-      "lɤ"
+      "lə"
      ],
      "hant": "我被雨淋濕了",
      "pinyin": "wǒ bèi yǔ lín shī le",
@@ -13607,10 +13605,10 @@
      "text": "这个比那个贵",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "pi",
       "na",
-      "kɤ",
+      "kə",
       "kwei"
      ],
      "hant": "這個比那個貴",
@@ -13653,7 +13651,7 @@
      "ipa": [
       "wo",
       "pʰau",
-      "tɤ",
+      "tə",
       "pi",
       "tʰa",
       "kʰwai"
@@ -13740,7 +13738,7 @@
       "tswo",
       "tʰjɛn",
       "na",
-      "mɤ",
+      "mə",
       "ləŋ"
      ],
      "hant": "今天沒有昨天那麼冷",
@@ -13751,11 +13749,11 @@
      "text": "这个没有那个贵",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "mei",
       "jou",
       "na",
-      "kɤ",
+      "kə",
       "kwei"
      ],
      "hant": "這個沒有那個貴",
@@ -13770,7 +13768,7 @@
       "jou",
       "ni",
       "na",
-      "mɤ",
+      "mə",
       "maŋ"
      ],
      "hant": "我沒有你那麼忙",
@@ -13785,7 +13783,7 @@
       "jou",
       "wo",
       "pʰau",
-      "tɤ",
+      "tə",
       "kʰwai"
      ],
      "hant": "他沒有我跑得快",
@@ -13827,13 +13825,13 @@
      "text": "我的房间没有他的干净",
      "ipa": [
       "wo",
-      "tɤ",
+      "tə",
       "faŋ",
       "tɕjɛn",
       "mei",
       "jou",
       "tʰa",
-      "tɤ",
+      "tə",
       "kan",
       "tɕiŋ"
      ],
@@ -13885,10 +13883,10 @@
      "text": "这个和那个一样",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "xɤ",
       "na",
-      "kɤ",
+      "kə",
       "i",
       "jaŋ"
      ],
@@ -13914,12 +13912,12 @@
      "text": "我的手机跟你的不一样",
      "ipa": [
       "wo",
-      "tɤ",
+      "tə",
       "ʂou",
       "tɕi",
       "kən",
       "ni",
-      "tɤ",
+      "tə",
       "pu",
       "i",
       "jaŋ"
@@ -13978,7 +13976,7 @@
       "tswo",
       "tʰjɛn",
       "lai",
-      "tɤ"
+      "tə"
      ],
      "hant": "我是昨天來的",
      "pinyin": "wǒ shì zuó tiān lái de",
@@ -13990,9 +13988,9 @@
       "ni",
       "ʂɻ̩",
       "tsən",
-      "mɤ",
+      "mə",
       "lai",
-      "tɤ"
+      "tə"
      ],
      "hant": "你是怎麼來的",
      "pinyin": "nǐ shì zěn me lái de",
@@ -14007,7 +14005,7 @@
       "fei",
       "tɕi",
       "lai",
-      "tɤ"
+      "tə"
      ],
      "hant": "他是坐飛機來的",
      "pinyin": "tā shì zuò fēi jī lái de",
@@ -14022,7 +14020,7 @@
       "pei",
       "tɕiŋ",
       "ɕɥe",
-      "tɤ",
+      "tə",
       "ʈʂʊŋ",
       "wən"
      ],
@@ -14036,11 +14034,11 @@
       "ni",
       "ʂɻ̩",
       "ʂən",
-      "mɤ",
+      "mə",
       "ʂɻ̩",
       "xou",
       "tau",
-      "tɤ"
+      "tə"
      ],
      "hant": "你是什麼時候到的",
      "pinyin": "nǐ shì shén me shí hou dào de",
@@ -14053,7 +14051,7 @@
       "ʂɻ̩",
       "ʂei",
       "tswo",
-      "tɤ"
+      "tə"
      ],
      "hant": "這是誰做的",
      "pinyin": "zhè shì shéi zuò de",
@@ -14069,7 +14067,7 @@
       "kɤ",
       "ʐən",
       "lai",
-      "tɤ"
+      "tə"
      ],
      "hant": "我不是一個人來的",
      "pinyin": "wǒ bù shì yī gè rén lái de",
@@ -14086,7 +14084,7 @@
       "i",
       "tɕʰi",
       "tɕʰy",
-      "tɤ"
+      "tə"
      ],
      "hant": "她是跟朋友一起去的",
      "pinyin": "tā shì gēn péng you yī qǐ qù de",
@@ -14270,7 +14268,7 @@
       "wo",
       "tei",
       "tsou",
-      "lɤ"
+      "lə"
      ],
      "hant": "我得走了",
      "pinyin": "wǒ děi zǒu le",
@@ -14284,13 +14282,12 @@
       "pi",
       "ɕy",
       "tsau",
-      "tjɛn",
-      "ɚ",
+      "tjaɻ",
       "tsou"
      ],
      "hant": "我們必須早點兒走",
-     "pinyin": "wǒ men bì xū zǎo diǎn ér zǒu",
-     "zhuyin": "ㄨㄛˇ ㄇㄣ˙ ㄅㄧˋ ㄒㄩ ㄗㄠˇ ㄉㄧㄢˇ ㄦˊ ㄗㄡˇ"
+     "pinyin": "wǒ men bì xū zǎo diǎnr zǒu",
+     "zhuyin": "ㄨㄛˇ ㄇㄣ˙ ㄅㄧˋ ㄒㄩ ㄗㄠˇ ㄉㄧㄢˇㄦ ㄗㄡˇ"
     },
     {
      "text": "你应该休息",
@@ -14357,7 +14354,7 @@
    "language": "zh",
    "title": "Time words before the verb",
    "title_hant": "Time words before the verb",
-   "note_hant": "Time words go after the subject and before the verb, never at the end.",
+   "note_hant": "Time words go after the subject or at the start and before the verb; never at the end.",
    "phrases": [
     {
      "text": "我明天去北京",
@@ -14422,7 +14419,7 @@
      "ipa": [
       "ni",
       "ʂən",
-      "mɤ",
+      "mə",
       "ʂɻ̩",
       "xou",
       "xwei",
@@ -14480,7 +14477,7 @@
    ],
    "level": "HSK1",
    "topic": "Sentence patterns",
-   "note": "Time words go after the subject and before the verb, never at the end.",
+   "note": "Time words go after the subject or at the start and before the verb; never at the end.",
    "source": null,
    "region": null,
    "title_l10n": {
@@ -14489,12 +14486,7 @@
     "zh-Hans": "动词前的时间词",
     "zh-Hant": "動詞前的時間詞"
    },
-   "note_l10n": {
-    "es": "Las palabras de tiempo van después del sujeto y antes del verbo, nunca al final.",
-    "fr": "Les mots de temps se placent après le sujet et avant le verbe, jamais à la fin.",
-    "zh-Hans": "时间词放在主语后、动词前，不放在句末。",
-    "zh-Hant": "時間詞放在主語後、動詞前，不放在句末。"
-   }
+   "note_l10n": null
   },
   {
    "id": "zh-coverbs",
@@ -14638,7 +14630,7 @@
    "language": "zh",
    "title": "Linking clauses",
    "title_hant": "Linking clauses",
-   "note_hant": "Paired connectors: 因爲…所以, 雖然…但是, 如果…就, 不但…而且.",
+   "note_hant": "Paired connectors: 因為…所以, 雖然…但是, 如果…就, 不但…而且.",
    "phrases": [
     {
      "text": "因为下雨，所以我没去",
@@ -14784,7 +14776,7 @@
     "es": "Conectores en pares: 因为…所以, 虽然…但是, 如果…就, 不但…而且.",
     "fr": "Connecteurs en paires : 因为…所以, 虽然…但是, 如果…就, 不但…而且.",
     "zh-Hans": "成对的关联词：因为…所以, 虽然…但是, 如果…就, 不但…而且。",
-    "zh-Hant": "成對的關聯詞：因爲…所以, 雖然…但是, 如果…就, 不但…而且。"
+    "zh-Hant": "成對的關聯詞：因為…所以, 雖然…但是, 如果…就, 不但…而且。"
    }
   },
   {
@@ -14798,25 +14790,23 @@
      "text": "有点儿贵",
      "ipa": [
       "jou",
-      "tjɛn",
-      "ɚ",
+      "tjaɻ",
       "kwei"
      ],
      "hant": "有點兒貴",
-     "pinyin": "yǒu diǎn ér guì",
-     "zhuyin": "ㄧㄡˇ ㄉㄧㄢˇ ㄦˊ ㄍㄨㄟˋ"
+     "pinyin": "yǒu diǎnr guì",
+     "zhuyin": "ㄧㄡˇ ㄉㄧㄢˇㄦ ㄍㄨㄟˋ"
     },
     {
      "text": "有点儿冷",
      "ipa": [
       "jou",
-      "tjɛn",
-      "ɚ",
+      "tjaɻ",
       "ləŋ"
      ],
      "hant": "有點兒冷",
-     "pinyin": "yǒu diǎn ér lěng",
-     "zhuyin": "ㄧㄡˇ ㄉㄧㄢˇ ㄦˊ ㄌㄥˇ"
+     "pinyin": "yǒu diǎnr lěng",
+     "zhuyin": "ㄧㄡˇ ㄉㄧㄢˇㄦ ㄌㄥˇ"
     },
     {
      "text": "便宜一点儿",
@@ -14824,12 +14814,11 @@
       "pʰjɛn",
       "i",
       "i",
-      "tjɛn",
-      "ɚ"
+      "tjaɻ"
      ],
      "hant": "便宜一點兒",
-     "pinyin": "pián yi yī diǎn ér",
-     "zhuyin": "ㄆㄧㄢˊ ㄧ˙ ㄧ ㄉㄧㄢˇ ㄦˊ"
+     "pinyin": "pián yi yī diǎnr",
+     "zhuyin": "ㄆㄧㄢˊ ㄧ˙ ㄧ ㄉㄧㄢˇㄦ"
     },
     {
      "text": "请说慢一点儿",
@@ -14838,25 +14827,23 @@
       "ʂwo",
       "man",
       "i",
-      "tjɛn",
-      "ɚ"
+      "tjaɻ"
      ],
      "hant": "請說慢一點兒",
-     "pinyin": "qǐng shuō màn yī diǎn ér",
-     "zhuyin": "ㄑㄧㄥˇ ㄕㄨㄛ ㄇㄢˋ ㄧ ㄉㄧㄢˇ ㄦˊ"
+     "pinyin": "qǐng shuō màn yī diǎnr",
+     "zhuyin": "ㄑㄧㄥˇ ㄕㄨㄛ ㄇㄢˋ ㄧ ㄉㄧㄢˇㄦ"
     },
     {
      "text": "我有点儿累",
      "ipa": [
       "wo",
       "jou",
-      "tjɛn",
-      "ɚ",
+      "tjaɻ",
       "lei"
      ],
      "hant": "我有點兒累",
-     "pinyin": "wǒ yǒu diǎn ér lèi",
-     "zhuyin": "ㄨㄛˇ ㄧㄡˇ ㄉㄧㄢˇ ㄦˊ ㄌㄟˋ"
+     "pinyin": "wǒ yǒu diǎnr lèi",
+     "zhuyin": "ㄨㄛˇ ㄧㄡˇ ㄉㄧㄢˇㄦ ㄌㄟˋ"
     },
     {
      "text": "我想吃点儿东西",
@@ -14864,14 +14851,13 @@
       "wo",
       "ɕjaŋ",
       "ʈʂʰɻ̩",
-      "tjɛn",
-      "ɚ",
+      "tjaɻ",
       "tʊŋ",
       "ɕi"
      ],
      "hant": "我想吃點兒東西",
-     "pinyin": "wǒ xiǎng chī diǎn ér dōng xi",
-     "zhuyin": "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄉㄧㄢˇ ㄦˊ ㄉㄨㄥ ㄒㄧ˙"
+     "pinyin": "wǒ xiǎng chī diǎnr dōng xi",
+     "zhuyin": "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄉㄧㄢˇㄦ ㄉㄨㄥ ㄒㄧ˙"
     },
     {
      "text": "再来一点儿",
@@ -14879,12 +14865,11 @@
       "tsai",
       "lai",
       "i",
-      "tjɛn",
-      "ɚ"
+      "tjaɻ"
      ],
      "hant": "再來一點兒",
-     "pinyin": "zài lái yī diǎn ér",
-     "zhuyin": "ㄗㄞˋ ㄌㄞˊ ㄧ ㄉㄧㄢˇ ㄦˊ"
+     "pinyin": "zài lái yī diǎnr",
+     "zhuyin": "ㄗㄞˋ ㄌㄞˊ ㄧ ㄉㄧㄢˇㄦ"
     }
    ],
    "level": "HSK2",
@@ -15062,28 +15047,25 @@
      "text": "从这儿到那儿",
      "ipa": [
       "tsʰʊŋ",
-      "ʈʂɤ",
-      "ɚ",
+      "ʈʂɤɻ",
       "tau",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "從這兒到那兒",
-     "pinyin": "cóng zhè ér dào nà ér",
-     "zhuyin": "ㄘㄨㄥˊ ㄓㄜˋ ㄦˊ ㄉㄠˋ ㄋㄚˋ ㄦˊ"
+     "pinyin": "cóng zhèr dào nàr",
+     "zhuyin": "ㄘㄨㄥˊ ㄓㄜˋㄦ ㄉㄠˋ ㄋㄚˋㄦ"
     },
     {
      "text": "离这儿远吗",
      "ipa": [
       "li",
-      "ʈʂɤ",
-      "ɚ",
+      "ʈʂɤɻ",
       "ɥɛn",
       "ma"
      ],
      "hant": "離這兒遠嗎",
-     "pinyin": "lí zhè ér yuǎn ma",
-     "zhuyin": "ㄌㄧˊ ㄓㄜˋ ㄦˊ ㄩㄢˇ ㄇㄚ˙"
+     "pinyin": "lí zhèr yuǎn ma",
+     "zhuyin": "ㄌㄧˊ ㄓㄜˋㄦ ㄩㄢˇ ㄇㄚ˙"
     },
     {
      "text": "从我家到公司要半个小时",
@@ -15110,14 +15092,13 @@
       "i",
       "ɥɛn",
       "li",
-      "ʈʂɤ",
-      "ɚ",
+      "ʈʂɤɻ",
       "pu",
       "ɥɛn"
      ],
      "hant": "醫院離這兒不遠",
-     "pinyin": "yī yuàn lí zhè ér bù yuǎn",
-     "zhuyin": "ㄧ ㄩㄢˋ ㄌㄧˊ ㄓㄜˋ ㄦˊ ㄅㄨˋ ㄩㄢˇ"
+     "pinyin": "yī yuàn lí zhèr bù yuǎn",
+     "zhuyin": "ㄧ ㄩㄢˋ ㄌㄧˊ ㄓㄜˋㄦ ㄅㄨˋ ㄩㄢˇ"
     },
     {
      "text": "往前走",
@@ -15449,7 +15430,7 @@
      "text": "这个多少钱",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "two",
       "ʂau",
       "tɕʰjɛn"
@@ -15463,15 +15444,14 @@
      "ipa": [
       "tʰai",
       "kwei",
-      "lɤ",
+      "lə",
       "pʰjɛn",
       "i",
-      "tjɛn",
-      "ɚ"
+      "tjaɻ"
      ],
      "hant": "太貴了，便宜點兒",
-     "pinyin": "tài guì le pián yi diǎn ér",
-     "zhuyin": "ㄊㄞˋ ㄍㄨㄟˋ ㄌㄜ˙ ㄆㄧㄢˊ ㄧ˙ ㄉㄧㄢˇ ㄦˊ"
+     "pinyin": "tài guì le pián yi diǎnr",
+     "zhuyin": "ㄊㄞˋ ㄍㄨㄟˋ ㄌㄜ˙ ㄆㄧㄢˊ ㄧ˙ ㄉㄧㄢˇㄦ"
     },
     {
      "text": "一共三十五块",
@@ -15598,7 +15578,7 @@
      "text": "我的生日是五月八号",
      "ipa": [
       "wo",
-      "tɤ",
+      "tə",
       "ʂəŋ",
       "ʐɻ̩",
       "ʂɻ̩",
@@ -15856,7 +15836,7 @@
      "text": "这个月",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "ɥe"
      ],
      "hant": "這個月",
@@ -15946,8 +15926,8 @@
       "ɕi"
      ],
      "hant": "休息",
-     "pinyin": "xiū xī",
-     "zhuyin": "ㄒㄧㄡ ㄒㄧ"
+     "pinyin": "xiū xi",
+     "zhuyin": "ㄒㄧㄡ ㄒㄧ˙"
     }
    ],
    "level": "HSK1",
@@ -16022,8 +16002,8 @@
       "jou"
      ],
      "hant": "朋友",
-     "pinyin": "péng yǒu",
-     "zhuyin": "ㄆㄥˊ ㄧㄡˇ"
+     "pinyin": "péng you",
+     "zhuyin": "ㄆㄥˊ ㄧㄡ˙"
     }
    ],
    "level": "HSK1",
@@ -16049,7 +16029,7 @@
    "language": "zh",
    "title": "Tone pairs: third tone + any",
    "title_hant": "Tone pairs: third tone + any",
-   "note_hant": "Low first tone (half-third before another tone) followed by 1, 2, 3, 4 and neutral: 北京 起牀 水果 感謝 椅子.",
+   "note_hant": "Low first tone (half-third before another tone) followed by 1, 2, 3, 4 and neutral: 北京 起床 水果 感謝 椅子.",
    "phrases": [
     {
      "text": "北京",
@@ -16174,8 +16154,8 @@
       "ɕje"
      ],
      "hant": "謝謝",
-     "pinyin": "xiè xiè",
-     "zhuyin": "ㄒㄧㄝˋ ㄒㄧㄝˋ"
+     "pinyin": "xiè xie",
+     "zhuyin": "ㄒㄧㄝˋ ㄒㄧㄝ˙"
     }
    ],
    "level": "HSK1",
@@ -20710,10 +20690,10 @@
      "ipa": [
       "jou",
       "ʂən",
-      "mɤ",
+      "mə",
       "tʰwei",
       "tɕjɛn",
-      "tɤ",
+      "tə",
       "ma"
      ],
      "hant": "有什麼推薦的嗎？",
@@ -20806,7 +20786,7 @@
      }
     }
    ],
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "Mainland restaurant talk; 买单 asks for the bill.",
    "source": null,
@@ -20861,13 +20841,13 @@
       "fu",
       "tɕʰy",
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "ti",
       "ʈʂɻ̩"
      ],
      "hant": "師傅，去這個地址。",
-     "pinyin": "shī fù qù zhè ge dì zhǐ",
-     "zhuyin": "ㄕ ㄈㄨˋ ㄑㄩˋ ㄓㄜˋ ㄍㄜ˙ ㄉㄧˋ ㄓˇ",
+     "pinyin": "shī fu qù zhè ge dì zhǐ",
+     "zhuyin": "ㄕ ㄈㄨ˙ ㄑㄩˋ ㄓㄜˋ ㄍㄜ˙ ㄉㄧˋ ㄓˇ",
      "gloss": "Driver, to this address please.",
      "gloss_l10n": {
       "es": "Chofer, a esta dirección, por favor.",
@@ -20926,12 +20906,11 @@
       "tʰje",
       "ʈʂan",
       "tsai",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "地鐵站在哪兒？",
-     "pinyin": "dì tiě zhàn zài nǎ ér",
-     "zhuyin": "ㄉㄧˋ ㄊㄧㄝˇ ㄓㄢˋ ㄗㄞˋ ㄋㄚˇ ㄦˊ",
+     "pinyin": "dì tiě zhàn zài nǎr",
+     "zhuyin": "ㄉㄧˋ ㄊㄧㄝˇ ㄓㄢˋ ㄗㄞˋ ㄋㄚˇㄦ",
      "gloss": "Where is the metro station?",
      "gloss_l10n": {
       "es": "¿Dónde está la estación del metro?",
@@ -21009,7 +20988,7 @@
      }
     }
    ],
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "Didi/taxi and metro talk; 师傅 addresses drivers.",
    "source": null,
@@ -21038,7 +21017,7 @@
      "text": "这个多少钱？",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "two",
       "ʂau",
       "tɕʰjɛn"
@@ -21059,7 +21038,7 @@
      "ipa": [
       "tʰai",
       "kwei",
-      "lɤ",
+      "lə",
       "pʰjɛn",
       "i",
       "tjɛn",
@@ -21127,7 +21106,7 @@
       "ta",
       "i",
       "xau",
-      "tɤ"
+      "tə"
      ],
      "hant": "有沒有大一號的？",
      "pinyin": "yǒu méi yǒu dà yī hào de",
@@ -21165,10 +21144,10 @@
      "text": "这个我要了。",
      "ipa": [
       "ʈʂɤ",
-      "kɤ",
+      "kə",
       "wo",
       "jau",
-      "lɤ"
+      "lə"
      ],
      "hant": "這個我要了。",
      "pinyin": "zhè ge wǒ yào le",
@@ -21202,7 +21181,7 @@
      }
     }
    ],
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "Market-style bargaining.",
    "source": null,
@@ -21235,12 +21214,11 @@
       "tsʰɤ",
       "swo",
       "tsai",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "請問，廁所在哪兒？",
-     "pinyin": "qǐng wèn cè suǒ zài nǎ ér",
-     "zhuyin": "ㄑㄧㄥˇ ㄨㄣˋ ㄘㄜˋ ㄙㄨㄛˇ ㄗㄞˋ ㄋㄚˇ ㄦˊ",
+     "pinyin": "qǐng wèn cè suǒ zài nǎr",
+     "zhuyin": "ㄑㄧㄥˇ ㄨㄣˋ ㄘㄜˋ ㄙㄨㄛˇ ㄗㄞˋ ㄋㄚˇㄦ",
      "gloss": "Excuse me, where's the toilet?",
      "gloss_l10n": {
       "es": "Disculpe, ¿dónde está el baño?",
@@ -21256,7 +21234,7 @@
       "ʈʂʰau",
       "ʂɻ̩",
       "tsən",
-      "mɤ",
+      "mə",
       "tsou"
      ],
      "hant": "去超市怎麼走？",
@@ -21315,14 +21293,13 @@
      "text": "离这儿远吗？",
      "ipa": [
       "li",
-      "ʈʂɤ",
-      "ɚ",
+      "ʈʂɤɻ",
       "ɥɛn",
       "ma"
      ],
      "hant": "離這兒遠嗎？",
-     "pinyin": "lí zhè ér yuǎn ma",
-     "zhuyin": "ㄌㄧˊ ㄓㄜˋ ㄦˊ ㄩㄢˇ ㄇㄚ˙",
+     "pinyin": "lí zhèr yuǎn ma",
+     "zhuyin": "ㄌㄧˊ ㄓㄜˋㄦ ㄩㄢˇ ㄇㄚ˙",
      "gloss": "Is it far from here?",
      "gloss_l10n": {
       "es": "¿Queda lejos de aquí?",
@@ -21380,7 +21357,7 @@
       "wo",
       "mi",
       "lu",
-      "lɤ"
+      "lə"
      ],
      "hant": "我迷路了。",
      "pinyin": "wǒ mí lù le",
@@ -21394,7 +21371,7 @@
      }
     }
    ],
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "Everyday direction words.",
    "source": null,
@@ -21464,7 +21441,7 @@
       "wo",
       "fa",
       "ʂau",
-      "lɤ"
+      "lə"
      ],
      "hant": "我發燒了。",
      "pinyin": "wǒ fā shāo le",
@@ -21505,7 +21482,7 @@
       "ʈʂɤ",
       "jau",
       "tsən",
-      "mɤ",
+      "mə",
       "ʈʂʰɻ̩"
      ],
      "hant": "這藥怎麼吃？",
@@ -21563,12 +21540,11 @@
       "jau",
       "tjɛn",
       "tsai",
-      "na",
-      "ɚ"
+      "naɻ"
      ],
      "hant": "藥店在哪兒？",
-     "pinyin": "yào diàn zài nǎ ér",
-     "zhuyin": "ㄧㄠˋ ㄉㄧㄢˋ ㄗㄞˋ ㄋㄚˇ ㄦˊ",
+     "pinyin": "yào diàn zài nǎr",
+     "zhuyin": "ㄧㄠˋ ㄉㄧㄢˋ ㄗㄞˋ ㄋㄚˇㄦ",
      "gloss": "Where's the pharmacy?",
      "gloss_l10n": {
       "es": "¿Dónde está la farmacia?",
@@ -21578,7 +21554,7 @@
      }
     }
    ],
-   "level": "A2",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "挂号 means registering at the hospital desk.",
    "source": null,
@@ -21699,7 +21675,7 @@
       "kʰwan",
       "ʈʂʰəŋ",
       "kʊŋ",
-      "lɤ"
+      "lə"
      ],
      "hant": "付款成功了。",
      "pinyin": "fù kuǎn chéng gōng le",
@@ -21719,7 +21695,7 @@
       "tɕi",
       "mei",
       "tjɛn",
-      "lɤ"
+      "lə"
      ],
      "hant": "手機沒電了。",
      "pinyin": "shǒu jī méi diàn le",
@@ -21760,7 +21736,7 @@
       "su",
       "tʰai",
       "man",
-      "lɤ"
+      "lə"
      ],
      "hant": "網速太慢了。",
      "pinyin": "wǎng sù tài màn le",
@@ -21774,7 +21750,7 @@
      }
     }
    ],
-   "level": "A2",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "Mobile payment is the default in Mainland shops.",
    "source": null,
@@ -21804,7 +21780,7 @@
      "ipa": [
       "ʈʂʰɻ̩",
       "fan",
-      "lɤ",
+      "lə",
       "ma"
      ],
      "hant": "吃飯了嗎？",
@@ -21843,7 +21819,7 @@
       "tswei",
       "tɕin",
       "tsən",
-      "mɤ",
+      "mə",
       "jaŋ"
      ],
      "hant": "最近怎麼樣？",
@@ -21882,14 +21858,13 @@
      "ipa": [
       "wo",
       "tsai",
-      "ʈʂɤ",
-      "ɚ",
+      "ʈʂɤɻ",
       "kʊŋ",
       "tswo"
      ],
      "hant": "我在這兒工作。",
-     "pinyin": "wǒ zài zhè ér gōng zuò",
-     "zhuyin": "ㄨㄛˇ ㄗㄞˋ ㄓㄜˋ ㄦˊ ㄍㄨㄥ ㄗㄨㄛˋ",
+     "pinyin": "wǒ zài zhèr gōng zuò",
+     "zhuyin": "ㄨㄛˇ ㄗㄞˋ ㄓㄜˋㄦ ㄍㄨㄥ ㄗㄨㄛˋ",
      "gloss": "I work here.",
      "gloss_l10n": {
       "es": "Trabajo aquí.",
@@ -21962,7 +21937,7 @@
      }
     }
    ],
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "Everyday greetings.",
    "source": null,
@@ -22061,7 +22036,7 @@
       "tjɛn",
       "fei",
       "tsən",
-      "mɤ",
+      "mə",
       "swan"
      ],
      "hant": "水電費怎麼算？",
@@ -22158,7 +22133,7 @@
      }
     }
    ],
-   "level": "A2",
+   "level": "HSK3",
    "topic": "Everyday life",
    "note": "押一付三 = one month's deposit, three months' rent up front.",
    "source": null,
@@ -26944,20 +26919,15 @@
       }
      },
      {
-      "text": "怒",
+      "text": "努",
       "ipa": [
        "nu"
       ],
-      "hant": "怒",
-      "pinyin": "nù",
-      "zhuyin": "ㄋㄨˋ",
-      "gloss": "anger",
-      "gloss_l10n": {
-       "es": "enojo",
-       "fr": "colère",
-       "zh-Hans": "愤怒",
-       "zh-Hant": "憤怒"
-      }
+      "hant": "努",
+      "pinyin": "nǔ",
+      "zhuyin": "ㄋㄨˇ",
+      "gloss": "make an effort",
+      "gloss_l10n": null
      }
     ],
     [
@@ -27008,6 +26978,476 @@
        "zh-Hans": "没有；无",
        "zh-Hant": "沒有；無"
       }
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "˥ ˧˥ ˨˩˦ ˥˩",
+   "label": "four tones",
+   "sets": [
+    [
+     {
+      "text": "妈",
+      "ipa": [
+       "ma"
+      ],
+      "hant": "媽",
+      "pinyin": "mā",
+      "zhuyin": "ㄇㄚ",
+      "gloss": "mum",
+      "gloss_l10n": {
+       "es": "mamá",
+       "fr": "maman",
+       "zh-Hans": "妈妈",
+       "zh-Hant": "媽媽"
+      }
+     },
+     {
+      "text": "麻",
+      "ipa": [
+       "ma"
+      ],
+      "hant": "麻",
+      "pinyin": "má",
+      "zhuyin": "ㄇㄚˊ",
+      "gloss": "hemp; numb",
+      "gloss_l10n": null
+     },
+     {
+      "text": "马",
+      "ipa": [
+       "ma"
+      ],
+      "hant": "馬",
+      "pinyin": "mǎ",
+      "zhuyin": "ㄇㄚˇ",
+      "gloss": "horse",
+      "gloss_l10n": null
+     },
+     {
+      "text": "骂",
+      "ipa": [
+       "ma"
+      ],
+      "hant": "罵",
+      "pinyin": "mà",
+      "zhuyin": "ㄇㄚˋ",
+      "gloss": "scold",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "汤",
+      "ipa": [
+       "tʰaŋ"
+      ],
+      "hant": "湯",
+      "pinyin": "tāng",
+      "zhuyin": "ㄊㄤ",
+      "gloss": "soup",
+      "gloss_l10n": null
+     },
+     {
+      "text": "糖",
+      "ipa": [
+       "tʰaŋ"
+      ],
+      "hant": "糖",
+      "pinyin": "táng",
+      "zhuyin": "ㄊㄤˊ",
+      "gloss": "sugar",
+      "gloss_l10n": null
+     },
+     {
+      "text": "躺",
+      "ipa": [
+       "tʰaŋ"
+      ],
+      "hant": "躺",
+      "pinyin": "tǎng",
+      "zhuyin": "ㄊㄤˇ",
+      "gloss": "lie down",
+      "gloss_l10n": null
+     },
+     {
+      "text": "烫",
+      "ipa": [
+       "tʰaŋ"
+      ],
+      "hant": "燙",
+      "pinyin": "tàng",
+      "zhuyin": "ㄊㄤˋ",
+      "gloss": "hot (to touch)",
+      "gloss_l10n": null
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "t tʰ",
+   "label": "aspiration (puff)",
+   "sets": [
+    [
+     {
+      "text": "大",
+      "ipa": [
+       "ta"
+      ],
+      "hant": "大",
+      "pinyin": "dà",
+      "zhuyin": "ㄉㄚˋ",
+      "gloss": "big",
+      "gloss_l10n": null
+     },
+     {
+      "text": "他",
+      "ipa": [
+       "tʰa"
+      ],
+      "hant": "他",
+      "pinyin": "tā",
+      "zhuyin": "ㄊㄚ",
+      "gloss": "he",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "在",
+      "ipa": [
+       "tsai"
+      ],
+      "hant": "在",
+      "pinyin": "zài",
+      "zhuyin": "ㄗㄞˋ",
+      "gloss": "at; be in",
+      "gloss_l10n": null
+     },
+     {
+      "text": "菜",
+      "ipa": [
+       "tsʰai"
+      ],
+      "hant": "菜",
+      "pinyin": "cài",
+      "zhuyin": "ㄘㄞˋ",
+      "gloss": "dish; vegetable",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "哥",
+      "ipa": [
+       "kɤ"
+      ],
+      "hant": "哥",
+      "pinyin": "gē",
+      "zhuyin": "ㄍㄜ",
+      "gloss": "elder brother",
+      "gloss_l10n": null
+     },
+     {
+      "text": "可",
+      "ipa": [
+       "kʰɤ"
+      ],
+      "hant": "可",
+      "pinyin": "kě",
+      "zhuyin": "ㄎㄜˇ",
+      "gloss": "can",
+      "gloss_l10n": null
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "ʈʂ ts tɕ",
+   "label": "zh z j · ch c q · sh s x",
+   "sets": [
+    [
+     {
+      "text": "知",
+      "ipa": [
+       "ʈʂɻ̩"
+      ],
+      "hant": "知",
+      "pinyin": "zhī",
+      "zhuyin": "ㄓ",
+      "gloss": "know",
+      "gloss_l10n": null
+     },
+     {
+      "text": "资",
+      "ipa": [
+       "tsɹ̩"
+      ],
+      "hant": "資",
+      "pinyin": "zī",
+      "zhuyin": "ㄗ",
+      "gloss": "funds",
+      "gloss_l10n": null
+     },
+     {
+      "text": "鸡",
+      "ipa": [
+       "tɕi"
+      ],
+      "hant": "雞",
+      "pinyin": "jī",
+      "zhuyin": "ㄐㄧ",
+      "gloss": "chicken",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "吃",
+      "ipa": [
+       "ʈʂʰɻ̩"
+      ],
+      "hant": "吃",
+      "pinyin": "chī",
+      "zhuyin": "ㄔ",
+      "gloss": "eat",
+      "gloss_l10n": null
+     },
+     {
+      "text": "次",
+      "ipa": [
+       "tsʰɹ̩"
+      ],
+      "hant": "次",
+      "pinyin": "cì",
+      "zhuyin": "ㄘˋ",
+      "gloss": "time (occurrence)",
+      "gloss_l10n": null
+     },
+     {
+      "text": "七",
+      "ipa": [
+       "tɕʰi"
+      ],
+      "hant": "七",
+      "pinyin": "qī",
+      "zhuyin": "ㄑㄧ",
+      "gloss": "seven",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "诗",
+      "ipa": [
+       "ʂɻ̩"
+      ],
+      "hant": "詩",
+      "pinyin": "shī",
+      "zhuyin": "ㄕ",
+      "gloss": "poem",
+      "gloss_l10n": null
+     },
+     {
+      "text": "思",
+      "ipa": [
+       "sɹ̩"
+      ],
+      "hant": "思",
+      "pinyin": "sī",
+      "zhuyin": "ㄙ",
+      "gloss": "think",
+      "gloss_l10n": null
+     },
+     {
+      "text": "西",
+      "ipa": [
+       "ɕi"
+      ],
+      "hant": "西",
+      "pinyin": "xī",
+      "zhuyin": "ㄒㄧ",
+      "gloss": "west",
+      "gloss_l10n": null
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "n l",
+   "label": null,
+   "sets": [
+    [
+     {
+      "text": "你",
+      "ipa": [
+       "ni"
+      ],
+      "hant": "你",
+      "pinyin": "nǐ",
+      "zhuyin": "ㄋㄧˇ",
+      "gloss": "you",
+      "gloss_l10n": {
+       "es": "tú",
+       "fr": "tu ; toi",
+       "zh-Hans": "你",
+       "zh-Hant": "你"
+      }
+     },
+     {
+      "text": "李",
+      "ipa": [
+       "li"
+      ],
+      "hant": "李",
+      "pinyin": "lǐ",
+      "zhuyin": "ㄌㄧˇ",
+      "gloss": "plum (surname Li)",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "男",
+      "ipa": [
+       "nan"
+      ],
+      "hant": "男",
+      "pinyin": "nán",
+      "zhuyin": "ㄋㄢˊ",
+      "gloss": "male",
+      "gloss_l10n": null
+     },
+     {
+      "text": "蓝",
+      "ipa": [
+       "lan"
+      ],
+      "hant": "藍",
+      "pinyin": "lán",
+      "zhuyin": "ㄌㄢˊ",
+      "gloss": "blue",
+      "gloss_l10n": null
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "n ŋ",
+   "label": "-n / -ng",
+   "sets": [
+    [
+     {
+      "text": "半",
+      "ipa": [
+       "pan"
+      ],
+      "hant": "半",
+      "pinyin": "bàn",
+      "zhuyin": "ㄅㄢˋ",
+      "gloss": "half",
+      "gloss_l10n": null
+     },
+     {
+      "text": "棒",
+      "ipa": [
+       "paŋ"
+      ],
+      "hant": "棒",
+      "pinyin": "bàng",
+      "zhuyin": "ㄅㄤˋ",
+      "gloss": "great; stick",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "门",
+      "ipa": [
+       "mən"
+      ],
+      "hant": "門",
+      "pinyin": "mén",
+      "zhuyin": "ㄇㄣˊ",
+      "gloss": "door",
+      "gloss_l10n": null
+     },
+     {
+      "text": "蒙",
+      "ipa": [
+       "məŋ"
+      ],
+      "hant": "蒙",
+      "pinyin": "méng",
+      "zhuyin": "ㄇㄥˊ",
+      "gloss": "cover",
+      "gloss_l10n": null
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "y u",
+   "label": null,
+   "sets": [
+    [
+     {
+      "text": "绿",
+      "ipa": [
+       "ly"
+      ],
+      "hant": "綠",
+      "pinyin": "lǜ",
+      "zhuyin": "ㄌㄩˋ",
+      "gloss": "green",
+      "gloss_l10n": null
+     },
+     {
+      "text": "路",
+      "ipa": [
+       "lu"
+      ],
+      "hant": "路",
+      "pinyin": "lù",
+      "zhuyin": "ㄌㄨˋ",
+      "gloss": "road",
+      "gloss_l10n": null
+     }
+    ],
+    [
+     {
+      "text": "女",
+      "ipa": [
+       "ny"
+      ],
+      "hant": "女",
+      "pinyin": "nǚ",
+      "zhuyin": "ㄋㄩˇ",
+      "gloss": "woman",
+      "gloss_l10n": {
+       "es": "mujer",
+       "fr": "femme",
+       "zh-Hans": "女人",
+       "zh-Hant": "女人"
+      }
+     },
+     {
+      "text": "努",
+      "ipa": [
+       "nu"
+      ],
+      "hant": "努",
+      "pinyin": "nǔ",
+      "zhuyin": "ㄋㄨˇ",
+      "gloss": "make an effort",
+      "gloss_l10n": null
      }
     ]
    ]
@@ -32961,7 +33401,7 @@
     "group": "Vowels",
     "name": "zhi vowel",
     "guide": "a buzzing curled-back 'r' held on, the vowel in 'zhi', 'chi', 'shi', 'ri'",
-    "tip": "Tongue tip lifted and drawn slightly back, not curled hard; hold the buzzy vowel.",
+    "tip": "Lips spread, not rounded; tongue tip raised toward the front of the roof of the mouth, not curled hard.",
     "say": "ʂɻ̩",
     "examples": [
      {
@@ -33508,7 +33948,7 @@
      {
       "text": "的",
       "ipa": [
-       "tɤ"
+       "tə"
       ],
       "hant": "的",
       "pinyin": "de",
@@ -34495,7 +34935,7 @@
     "ipa": "ʐ",
     "group": "Consonants",
     "name": "r",
-    "guide": "like a buzzing 'zh' with the tongue curled back; the Mandarin 'r'",
+    "guide": "like 'sh' with the voice on, as in 'measure', with the tongue tip raised",
     "tip": "Tongue tip lifted and drawn slightly back, not curled hard; voice on, gentle friction.",
     "say": "ʐa",
     "examples": [
@@ -34806,7 +35246,7 @@
      {
       "text": "的",
       "ipa": [
-       "tɤ"
+       "tə"
       ],
       "hant": "的",
       "pinyin": "de",
@@ -34815,7 +35255,7 @@
      {
       "text": "了",
       "ipa": [
-       "lɤ"
+       "lə"
       ],
       "hant": "了",
       "pinyin": "le",

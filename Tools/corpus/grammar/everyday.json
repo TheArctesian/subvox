@@ -696,7 +696,7 @@
  "zh": [
   {
    "id": "canting",
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Ordering at a restaurant",
    "note": "Mainland restaurant talk; 买单 asks for the bill.",
@@ -745,7 +745,7 @@
   },
   {
    "id": "dache",
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Taxis and metro",
    "note": "Didi/taxi and metro talk; 师傅 addresses drivers.",
@@ -794,7 +794,7 @@
   },
   {
    "id": "goumai",
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Shopping and bargaining",
    "note": "Market-style bargaining.",
@@ -843,7 +843,7 @@
   },
   {
    "id": "wenlu",
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Asking the way",
    "note": "Everyday direction words.",
@@ -892,7 +892,7 @@
   },
   {
    "id": "yiyuan",
-   "level": "A2",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Hospital and pharmacy",
    "note": "挂号 means registering at the hospital desk.",
@@ -941,7 +941,7 @@
   },
   {
    "id": "shouji",
-   "level": "A2",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Phone and WeChat Pay",
    "note": "Mobile payment is the default in Mainland shops.",
@@ -990,7 +990,7 @@
   },
   {
    "id": "hanxuan",
-   "level": "A1",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Small talk",
    "note": "Everyday greetings.",
@@ -1039,7 +1039,7 @@
   },
   {
    "id": "zufang",
-   "level": "A2",
+   "level": "HSK3",
    "topic": "Everyday life",
    "title": "Renting a flat",
    "note": "押一付三 = one month's deposit, three months' rent up front.",

@@ -365,8 +365,8 @@
    "note": "Describing words and verb phrases go before 的 and the noun.",
    "phrases": [
     {
-     "hans": "红的苹果",
-     "hant": "紅的蘋果"
+     "hans": "红色的苹果",
+     "hant": "紅色的蘋果"
     },
     {
      "hans": "我喜欢的歌",
@@ -594,8 +594,8 @@
      "hant": "她昨天來了"
     },
     {
-     "hans": "我看了电影",
-     "hant": "我看了電影"
+     "hans": "我看了一部电影",
+     "hant": "我看了一部電影"
     }
    ]
   },
@@ -771,8 +771,8 @@
    "note": "Same verb, different aspect: finished, experienced, in progress.",
    "phrases": [
     {
-     "hans": "我写了信",
-     "hant": "我寫了信"
+     "hans": "我写了一封信",
+     "hant": "我寫了一封信"
     },
     {
      "hans": "我写过信",
@@ -1630,7 +1630,7 @@
    "level": "HSK1",
    "topic": "Sentence patterns",
    "title": "Time words before the verb",
-   "note": "Time words go after the subject and before the verb, never at the end.",
+   "note": "Time words go after the subject or at the start and before the verb; never at the end.",
    "phrases": [
     {
      "hans": "我明天去北京",

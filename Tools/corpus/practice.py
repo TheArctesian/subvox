@@ -97,7 +97,13 @@ MINIMAL_PAIRS = [
     ("es", "ɾ r", [["pero", "perro"], ["caro", "carro"], ["coro", "corro"]]),
     ("es", "p b m", [["peso", "beso"], ["pala", "bala", "mala"]]),
     ("zh", "p pʰ m", [[("八", "八"), ("趴", "趴"), ("妈", "媽")], [("包", "包"), ("抛", "拋"), ("猫", "貓")]]),
-    ("zh", "y i u", [[("女", "女"), ("你", "你"), ("怒", "怒")], [("鱼", "魚"), ("移", "移"), ("无", "無")]]),
+    ("zh", "y i u", [[("女", "女"), ("你", "你"), ("努", "努")], [("鱼", "魚"), ("移", "移"), ("无", "無")]]),
+    ("zh", "˥ ˧˥ ˨˩˦ ˥˩", [[("妈", "媽"), ("麻", "麻"), ("马", "馬"), ("骂", "罵")], [("汤", "湯"), ("糖", "糖"), ("躺", "躺"), ("烫", "燙")]], "four tones"),
+    ("zh", "t tʰ", [[("大", "大"), ("他", "他")], [("在", "在"), ("菜", "菜")], [("哥", "哥"), ("可", "可")]], "aspiration (puff)"),
+    ("zh", "ʈʂ ts tɕ", [[("知", "知"), ("资", "資"), ("鸡", "雞")], [("吃", "吃"), ("次", "次"), ("七", "七")], [("诗", "詩"), ("思", "思"), ("西", "西")]], "zh z j · ch c q · sh s x"),
+    ("zh", "n l", [[("你", "你"), ("李", "李")], [("男", "男"), ("蓝", "藍")]]),
+    ("zh", "n ŋ", [[("半", "半"), ("棒", "棒")], [("门", "門"), ("蒙", "蒙")]], "-n / -ng"),
+    ("zh", "y u", [[("绿", "綠"), ("路", "路")], [("女", "女"), ("努", "努")]]),
 ]
 
 
@@ -134,15 +140,18 @@ def entry(text, language, sandhi=False, accent=None, neutral=True):
     if language == "zh":
         item["hant"] = hant or text
         item["pinyin"] = ipa.pinyin_marks(text, sandhi, neutral)
-        from pypinyin.style.bopomofo import BopomofoConverter
-        item["zhuyin"] = " ".join(BopomofoConverter().to_bopomofo(p) for p in item["pinyin"].split())
+        item["zhuyin"] = " ".join(zhuyin(p) for p in item["pinyin"].split())
     return item
 
 
 def traditional(text):
     """Simplified -> Traditional with Mainland vocabulary kept (OpenCC s2t, not s2tw)."""
     from opencc import OpenCC
-    return OpenCC("s2t").convert(text)
+    # OpenCC's s2t picks older variants for a few characters; Taiwan and Hong Kong use these forms.
+    out = OpenCC("s2t").convert(text)
+    for old, new in (("爲", "為"), ("牀", "床"), ("眞", "真"), ("喫", "吃"), ("裏", "裡")):
+        out = out.replace(old, new)
+    return out
 
 
 def traditional_title(title, meta):
@@ -160,7 +169,11 @@ PAIR_GLOSS = {
     "es": dict(pero="but", perro="dog", caro="expensive", carro="cart; car", coro="choir", corro="I run", peso="weight", beso="kiss",
                pala="shovel", bala="bullet", mala="bad"),
     "zh": {"八": "eight", "趴": "lie face down", "妈": "mum", "包": "bag", "抛": "throw", "猫": "cat", "女": "woman", "你": "you",
-           "怒": "anger", "鱼": "fish", "移": "move", "无": "without"},
+           "努": "make an effort", "鱼": "fish", "移": "move", "无": "without", "麻": "hemp; numb", "马": "horse", "骂": "scold",
+           "汤": "soup", "糖": "sugar", "躺": "lie down", "烫": "hot (to touch)", "大": "big", "他": "he", "在": "at; be in",
+           "菜": "dish; vegetable", "哥": "elder brother", "可": "can", "知": "know", "资": "funds", "鸡": "chicken", "吃": "eat",
+           "次": "time (occurrence)", "七": "seven", "诗": "poem", "思": "think", "西": "west", "李": "plum (surname Li)",
+           "男": "male", "蓝": "blue", "半": "half", "棒": "great; stick", "门": "door", "蒙": "cover", "绿": "green", "路": "road"},
 }
 
 
@@ -180,6 +193,14 @@ def phrase(p, language, sandhi=False, accent=None, neutral=True):
     if p.get("gloss"):
         item["gloss"] = p["gloss"]
     return item
+
+
+def zhuyin(pinyin):
+    """注音 for one tone-marked syllable; 儿化 (nǎr) is the base syllable plus ㄦ."""
+    from pypinyin.style.bopomofo import BopomofoConverter
+    if pinyin.endswith("r") and pinyin not in ("ér", "ěr", "èr", "er", "ēr"):
+        return BopomofoConverter().to_bopomofo(pinyin[:-1]) + "ㄦ"
+    return BopomofoConverter().to_bopomofo(pinyin)
 
 
 def both(value):
@@ -268,7 +289,7 @@ def build(year=2026):
     drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
                    note_hant=traditional_title(meta.get("note") or "", meta) if language == "zh" and meta.get("note") else None,
                    # Tone-pair drills teach the full tone of each syllable (休息 as 1+2), so no neutral tones there.
-                   phrases=[phrase(p, language, did in SANDHI_DRILLS, meta.get("region"), not did.startswith("zh-tone-pairs")) for p in phrases], **meta)
+                   phrases=[phrase(p, language, did in SANDHI_DRILLS, meta.get("region")) for p in phrases], **meta)
               for did, language, title, phrases, meta in load_drills()]
     pairs = [dict(language=language, contrast=contrast, label=(rest[0] if rest else None),
                   sets=[[glossed(w, language) for w in group] for group in groups])

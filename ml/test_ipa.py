@@ -113,7 +113,20 @@ class Mandarin(unittest.TestCase):
         self.assertEqual(ipa.pinyin_marks("我得到了"), "wǒ dé dào le")
         self.assertEqual(ipa.pinyin_marks("着急"), "zháo jí")
         self.assertEqual(ipa.pinyin_marks("东西南北"), "dōng xī nán běi")
-        self.assertEqual(ipa.pinyin_marks("休息", neutral=False), "xiū xī")
+        self.assertEqual(ipa.pinyin_marks("休息"), "xiū xi")
+
+    def test_poem_readings_follow_meaning(self):
+        self.assertEqual(ipa.pinyin_marks("朝辞白帝彩云间"), "zhāo cí bái dì cǎi yún jiān")
+        self.assertEqual(ipa.pinyin_marks("千里江陵一日还"), "qiān lǐ jiāng líng yī rì huán")
+        self.assertEqual(ipa.pinyin_marks("轻舟已过万重山"), "qīng zhōu yǐ guò wàn chóng shān")
+
+    def test_erhua_is_one_syllable(self):
+        self.assertEqual(ipa.pinyin_marks("你去哪儿"), "nǐ qù nǎr")
+        self.assertEqual(ipa.phonemize("一点儿", "zh")[-1], ["t", "j", "a", "ɻ"])
+
+    def test_neutral_syllables_use_schwa(self):
+        self.assertEqual(ipa.phonemize("我的", "zh")[-1], ["t", "ə"])
+        self.assertEqual(ipa.phonemize("哥", "zh")[0], ["k", "ɤ"])
 
     def test_tone_change_drills_show_spoken_tones(self):
         self.assertEqual(ipa.pinyin_marks("一天", sandhi=True), "yì tiān")
