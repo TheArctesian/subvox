@@ -486,14 +486,14 @@ struct SoundsView: View {
                     VStack(alignment: .leading, spacing: 14) {
                         ForEach(groups, id: \.self) { group in
                             Text(group).font(.headline).foregroundStyle(.secondary)
-                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 58), spacing: 6)], alignment: .leading, spacing: 6) {
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 66), spacing: 6)], alignment: .leading, spacing: 6) {
                                 ForEach(sounds.filter { $0.group == group }) { s in
                                     Button { selection = s.id; Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
                                         VStack(spacing: 1) {
                                             Text(s.ipa).font(.title2)
-                                            Text(s.name).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+                                            Text(s.name).font(.caption2).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.7)
                                         }
-                                        .frame(width: 58, height: 52)
+                                        .frame(width: 62, height: 52).padding(.horizontal, 2)
                                         .background(s.id == sound?.id ? AnyShapeStyle(.tint.opacity(0.25)) : AnyShapeStyle(.quaternary.opacity(0.35)),
                                                     in: RoundedRectangle(cornerRadius: 8))
                                     }
