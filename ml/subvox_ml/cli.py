@@ -464,8 +464,19 @@ def main():
     p.add_argument("--drop",default="");p.add_argument("--pr",type=int);p.add_argument("--prompts-dir")
     p=sub.add_parser("validate-community");p.add_argument("--session",required=True);p.add_argument("--prompts-dir")
     p=sub.add_parser("prepare-teachers");p.add_argument("--dataset",required=True);p.add_argument("--base-run",required=True);p.add_argument("--output",required=True)
+    p=sub.add_parser("phones");p.add_argument("--text",required=True);p.add_argument("--language",required=True)
+    p=sub.add_parser("phone-check");p.add_argument("--text",required=True);p.add_argument("--language",required=True);p.add_argument("--whisper-text",required=True);p.add_argument("--phone-intervals")
     args=parser.parse_args()
-    if args.command=="prepare":
+    if args.command=="phones":
+        from . import ipa
+        language=ipa.validate_language_tag(args.language)
+        result=dict(language=language,words=ipa.phonemize(args.text,language))
+        if language=="zh":result["syllables"]=ipa.mandarin_syllables(args.text)
+    elif args.command=="phone-check":
+        from .phone_check import check
+        intervals=json.loads(Path(args.phone_intervals).read_text()) if args.phone_intervals else None
+        result=check(args.text,args.language,args.whisper_text,intervals)
+    elif args.command=="prepare":
         corrections=json.loads(Path(args.corrections).read_text()) if args.corrections else None
         result=prepare(args.root,args.language,args.output,corrections,args.folds,
                        None if args.min_transcript_match<0 else args.min_transcript_match)
