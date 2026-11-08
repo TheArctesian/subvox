@@ -1,0 +1,1507 @@
+{
+ "version": 1,
+ "pieces": [
+  {
+   "id": "gettysburg",
+   "language": "en",
+   "kind": "speech",
+   "title": "Gettysburg Address",
+   "author": "Abraham Lincoln",
+   "year": 1863,
+   "lines": [
+    {
+     "text": "Four score and seven years ago our fathers brought forth on this continent a new nation,",
+     "ipa": [
+      "f ɔ ɹ",
+      "s k ɔ ɹ",
+      "æ n d",
+      "s ɛ v ə n",
+      "j ɪ ɹ z",
+      "ə ɡ oʊ",
+      "aʊ ɚ",
+      "f ɑ ð ɚ z",
+      "b ɹ ɔ t",
+      "f ɔ ɹ θ",
+      "ɔ n",
+      "ð ɪ s",
+      "k ɑ n t ɪ n ə n t",
+      "ə",
+      "n u",
+      "n eɪ ʃ ə n"
+     ]
+    },
+    {
+     "text": "conceived in Liberty, and dedicated to the proposition that all men are created equal.",
+     "ipa": [
+      "k ə n s i v d",
+      "ɪ n",
+      "l ɪ b ɚ t i",
+      "æ n d",
+      "d ɛ d ɪ k eɪ t ɪ d",
+      "t ə",
+      "ð ə",
+      "p ɹ ɑ p ə z ɪ ʃ ə n",
+      "ð æ t",
+      "ɔ l",
+      "m ɛ n",
+      "ɑ ɹ",
+      "k ɹ i eɪ t ɪ d",
+      "i k w ə l"
+     ]
+    },
+    {
+     "text": "Now we are engaged in a great civil war,",
+     "ipa": [
+      "n aʊ",
+      "w i",
+      "ɑ ɹ",
+      "ɛ ŋ ɡ eɪ dʒ d",
+      "ɪ n",
+      "ə",
+      "ɡ ɹ eɪ t",
+      "s ɪ v ə l",
+      "w ɔ ɹ"
+     ]
+    },
+    {
+     "text": "testing whether that nation, or any nation so conceived and so dedicated, can long endure.",
+     "ipa": [
+      "t ɛ s t ɪ ŋ",
+      "w ɛ ð ɚ",
+      "ð æ t",
+      "n eɪ ʃ ə n",
+      "ɔ ɹ",
+      "ɛ n i",
+      "n eɪ ʃ ə n",
+      "s oʊ",
+      "k ə n s i v d",
+      "æ n d",
+      "s oʊ",
+      "d ɛ d ɪ k eɪ t ɪ d",
+      "k æ n",
+      "l ɔ ŋ",
+      "ɛ n d ʊ ɹ"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tilbury",
+   "language": "en",
+   "kind": "speech",
+   "title": "Speech to the Troops at Tilbury",
+   "author": "Elizabeth I",
+   "year": 1588,
+   "lines": [
+    {
+     "text": "I know I have the body of a weak and feeble woman;",
+     "ipa": [
+      "aɪ",
+      "n oʊ",
+      "aɪ",
+      "h æ v",
+      "ð ə",
+      "b ɑ d i",
+      "ə v ə",
+      "w i k",
+      "æ n d",
+      "f i b ə l",
+      "w ʊ m ə n"
+     ]
+    },
+    {
+     "text": "but I have the heart and stomach of a king, and of a king of England too.",
+     "ipa": [
+      "b ʌ t",
+      "aɪ",
+      "h æ v",
+      "ð ə",
+      "h ɑ ɹ t",
+      "æ n d",
+      "s t ʌ m ə k",
+      "ə v ə",
+      "k ɪ ŋ",
+      "æ n d",
+      "ə v ə",
+      "k ɪ ŋ",
+      "ʌ v",
+      "ɪ ŋ ɡ l ə n d",
+      "t u"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "aint-i-a-woman",
+   "language": "en",
+   "kind": "speech",
+   "title": "Ain't I a Woman?",
+   "author": "Sojourner Truth",
+   "year": 1851,
+   "lines": [
+    {
+     "text": "That man over there says that women need to be helped into carriages,",
+     "ipa": [
+      "ð æ t",
+      "m æ n",
+      "oʊ v ɚ",
+      "ð ɛ ɹ",
+      "s ɛ z",
+      "ð æ t",
+      "w ɪ m ɪ n",
+      "n i d",
+      "t ə b i",
+      "h ɛ l p t",
+      "ɪ n t ʊ",
+      "k æ ɹ ɪ dʒ ɪ z"
+     ]
+    },
+    {
+     "text": "and lifted over ditches, and to have the best place everywhere.",
+     "ipa": [
+      "æ n d",
+      "l ɪ f t ɪ d",
+      "oʊ v ɚ",
+      "d ɪ tʃ ɪ z",
+      "æ n d",
+      "t ə",
+      "h æ v",
+      "ð ə",
+      "b ɛ s t",
+      "p l eɪ s",
+      "ɛ v ɹ ɪ w ɛ ɹ"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sonnet-18",
+   "language": "en",
+   "kind": "poem",
+   "title": "Sonnet 18",
+   "author": "William Shakespeare",
+   "year": 1609,
+   "lines": [
+    {
+     "text": "Shall I compare thee to a summer's day?",
+     "ipa": [
+      "ʃ æ l",
+      "aɪ",
+      "k ə m p ɛ ɹ",
+      "ð i",
+      "t ʊ",
+      "ə",
+      "s ʌ m ɚ z",
+      "d eɪ"
+     ]
+    },
+    {
+     "text": "Thou art more lovely and more temperate:",
+     "ipa": [
+      "ð aʊ",
+      "ɑ ɹ t",
+      "m ɔ ɹ",
+      "l ʌ v l i",
+      "æ n d",
+      "m ɔ ɹ",
+      "t ɛ m p ɚ ɹ ə t"
+     ]
+    },
+    {
+     "text": "Rough winds do shake the darling buds of May,",
+     "ipa": [
+      "ɹ ʌ f",
+      "w ɪ n d z",
+      "d u",
+      "ʃ eɪ k",
+      "ð ə",
+      "d ɑ ɹ l ɪ ŋ",
+      "b ʌ d z",
+      "ʌ v",
+      "m eɪ"
+     ]
+    },
+    {
+     "text": "And summer's lease hath all too short a date.",
+     "ipa": [
+      "æ n d",
+      "s ʌ m ɚ z",
+      "l i s",
+      "h æ θ",
+      "ɔ l",
+      "t u",
+      "ʃ ɔ ɹ t",
+      "ə",
+      "d eɪ t"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tyger",
+   "language": "en",
+   "kind": "poem",
+   "title": "The Tyger",
+   "author": "William Blake",
+   "year": 1794,
+   "lines": [
+    {
+     "text": "Tyger Tyger, burning bright,",
+     "ipa": [
+      "t aɪ ɡ ɚ",
+      "t aɪ ɡ ɚ",
+      "b ɝ n ɪ ŋ",
+      "b ɹ aɪ t"
+     ]
+    },
+    {
+     "text": "In the forests of the night;",
+     "ipa": [
+      "ɪ n ð ə",
+      "f ɔ ɹ ɪ s t s",
+      "ʌ v ð ə",
+      "n aɪ t"
+     ]
+    },
+    {
+     "text": "What immortal hand or eye,",
+     "ipa": [
+      "w ʌ t",
+      "ɪ m ɔ ɹ t ə l",
+      "h æ n d",
+      "ɔ ɹ",
+      "aɪ"
+     ]
+    },
+    {
+     "text": "Could frame thy fearful symmetry?",
+     "ipa": [
+      "k ʊ d",
+      "f ɹ eɪ m",
+      "ð aɪ",
+      "f ɪ ɹ f ə l",
+      "s ɪ m ə t ɹ i"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "corbeau",
+   "language": "fr",
+   "kind": "poem",
+   "title": "Le Corbeau et le Renard",
+   "author": "Jean de La Fontaine",
+   "year": 1668,
+   "lines": [
+    {
+     "text": "Maître Corbeau, sur un arbre perché,",
+     "ipa": [
+      "m ɛ t ʁ",
+      "k ɔ ʁ b o",
+      "s y ʁ",
+      "œ̃ n",
+      "a ʁ b ʁ",
+      "p ɛ ʁ ʃ e"
+     ]
+    },
+    {
+     "text": "Tenait en son bec un fromage.",
+     "ipa": [
+      "t ə n ɛ t",
+      "ɑ̃",
+      "s ɔ̃",
+      "b ɛ k",
+      "œ̃",
+      "f ʁ o m a ʒ"
+     ]
+    },
+    {
+     "text": "Maître Renard, par l'odeur alléché,",
+     "ipa": [
+      "m ɛ t ʁ",
+      "ʁ ə n a ʁ",
+      "p a ʁ",
+      "l o d œ ʁ",
+      "a l e ʃ e"
+     ]
+    },
+    {
+     "text": "Lui tint à peu près ce langage :",
+     "ipa": [
+      "l ɥ i",
+      "t ɛ̃ t",
+      "a",
+      "p ø",
+      "p ʁ ɛ",
+      "s ə",
+      "l ɑ̃ ɡ a ʒ"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "demain-des-l-aube",
+   "language": "fr",
+   "kind": "poem",
+   "title": "Demain, dès l'aube",
+   "author": "Victor Hugo",
+   "year": 1856,
+   "lines": [
+    {
+     "text": "Demain, dès l'aube, à l'heure où blanchit la campagne,",
+     "ipa": [
+      "d ə m ɛ̃",
+      "d ɛ",
+      "l o b",
+      "a",
+      "l œ ʁ",
+      "u",
+      "b l ɑ̃ ʃ i",
+      "l a",
+      "k ɑ̃ p a ɲ"
+     ]
+    },
+    {
+     "text": "Je partirai. Vois-tu, je sais que tu m'attends.",
+     "ipa": [
+      "ʒ ə",
+      "p a ʁ t i ʁ e",
+      "v w a t y",
+      "ʒ ə",
+      "s ɛ",
+      "k ə",
+      "t y",
+      "m a t ɑ̃"
+     ]
+    },
+    {
+     "text": "J'irai par la forêt, j'irai par la montagne.",
+     "ipa": [
+      "ʒ i ʁ e",
+      "p a ʁ",
+      "l a",
+      "f o ʁ ɛ",
+      "ʒ i ʁ e",
+      "p a ʁ",
+      "l a",
+      "m ɔ̃ t a ɲ"
+     ]
+    },
+    {
+     "text": "Je ne puis demeurer loin de toi plus longtemps.",
+     "ipa": [
+      "ʒ ə",
+      "n ə",
+      "p ɥ i",
+      "d ə m ø ʁ e",
+      "l w ɛ̃",
+      "d ə",
+      "t w a",
+      "p l y",
+      "l ɔ̃ t ɑ̃"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rima-xxi",
+   "language": "es",
+   "kind": "poem",
+   "title": "Rima XXI",
+   "author": "Gustavo Adolfo Bécquer",
+   "year": 1871,
+   "lines": [
+    {
+     "text": "¿Qué es poesía?, dices mientras clavas",
+     "ipa": [
+      "k e",
+      "e s",
+      "p o e s i a",
+      "ð i θ e s",
+      "m j e n t ɾ a s",
+      "k l a β a s"
+     ]
+    },
+    {
+     "text": "en mi pupila tu pupila azul.",
+     "ipa": [
+      "e n",
+      "m i",
+      "p u p i l a",
+      "t u",
+      "p u p i l a",
+      "a θ u l"
+     ]
+    },
+    {
+     "text": "¡Qué es poesía! ¿Y tú me lo preguntas?",
+     "ipa": [
+      "k e",
+      "e s",
+      "p o e s i a",
+      "i",
+      "t u",
+      "m e",
+      "l o",
+      "p ɾ e ɣ u n t a s"
+     ]
+    },
+    {
+     "text": "Poesía... eres tú.",
+     "ipa": [
+      "p o e s i a",
+      "e ɾ e s",
+      "t u"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "caminante",
+   "language": "es",
+   "kind": "poem",
+   "title": "Proverbios y cantares XXIX",
+   "author": "Antonio Machado",
+   "year": 1912,
+   "lines": [
+    {
+     "text": "Caminante, son tus huellas el camino y nada más;",
+     "ipa": [
+      "k a m i n a n t e",
+      "s o n",
+      "t u s",
+      "w e ʎ a s",
+      "e l",
+      "k a m i n o",
+      "i",
+      "n a ð a",
+      "m a s"
+     ]
+    },
+    {
+     "text": "caminante, no hay camino, se hace camino al andar.",
+     "ipa": [
+      "k a m i n a n t e",
+      "n o",
+      "a i",
+      "k a m i n o",
+      "s e",
+      "a θ e",
+      "k a m i n o",
+      "a l",
+      "a n d a ɾ"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "jing-ye-si",
+   "language": "zh",
+   "kind": "poem",
+   "title": "静夜思",
+   "author": "李白",
+   "year": 750,
+   "lines": [
+    {
+     "text": "床前明月光，",
+     "ipa": [
+      "ʈʂʰ w a ŋ",
+      "tɕʰ j ɛ n",
+      "m i ŋ",
+      "ɥ e",
+      "k w a ŋ"
+     ],
+     "pinyin": "chuang2 qian2 ming2 yue4 guang1"
+    },
+    {
+     "text": "疑是地上霜。",
+     "ipa": [
+      "i",
+      "ʂ ɻ̩",
+      "t i",
+      "ʂ a ŋ",
+      "ʂ w a ŋ"
+     ],
+     "pinyin": "yi2 shi4 di4 shang4 shuang1"
+    },
+    {
+     "text": "举头望明月，",
+     "ipa": [
+      "tɕ y",
+      "tʰ o u",
+      "w a ŋ",
+      "m i ŋ",
+      "ɥ e"
+     ],
+     "pinyin": "ju3 tou2 wang4 ming2 yue4"
+    },
+    {
+     "text": "低头思故乡。",
+     "ipa": [
+      "t i",
+      "tʰ o u",
+      "s ɹ̩",
+      "k u",
+      "ɕ j a ŋ"
+     ],
+     "pinyin": "di1 tou2 si1 gu4 xiang1"
+    }
+   ]
+  },
+  {
+   "id": "chun-xiao",
+   "language": "zh",
+   "kind": "poem",
+   "title": "春晓",
+   "author": "孟浩然",
+   "year": 730,
+   "lines": [
+    {
+     "text": "春眠不觉晓，",
+     "ipa": [
+      "ʈʂʰ w ə n",
+      "m j ɛ n",
+      "p u",
+      "tɕ ɥ e",
+      "ɕ j a u"
+     ],
+     "pinyin": "chun1 mian2 bu4 jue2 xiao3"
+    },
+    {
+     "text": "处处闻啼鸟。",
+     "ipa": [
+      "ʈʂʰ u",
+      "ʈʂʰ u",
+      "w ə n",
+      "tʰ i",
+      "n j a u"
+     ],
+     "pinyin": "chu4 chu4 wen2 ti2 niao3"
+    },
+    {
+     "text": "夜来风雨声，",
+     "ipa": [
+      "j e",
+      "l a i",
+      "f ə ŋ",
+      "y",
+      "ʂ ə ŋ"
+     ],
+     "pinyin": "ye4 lai2 feng1 yu3 sheng1"
+    },
+    {
+     "text": "花落知多少。",
+     "ipa": [
+      "x w a",
+      "l w o",
+      "ʈʂ ɻ̩",
+      "t w o",
+      "ʂ a u"
+     ],
+     "pinyin": "hua1 luo4 zhi1 duo1 shao3"
+    }
+   ]
+  }
+ ],
+ "drills": [
+  {
+   "id": "etre",
+   "language": "fr",
+   "title": "être (to be), present",
+   "phrases": [
+    {
+     "text": "je suis",
+     "ipa": [
+      "ʒ ə",
+      "s ɥ i"
+     ]
+    },
+    {
+     "text": "tu es",
+     "ipa": [
+      "t y",
+      "ɛ"
+     ]
+    },
+    {
+     "text": "il est",
+     "ipa": [
+      "i l",
+      "ɛ"
+     ]
+    },
+    {
+     "text": "elle est",
+     "ipa": [
+      "ɛ l",
+      "ɛ"
+     ]
+    },
+    {
+     "text": "nous sommes",
+     "ipa": [
+      "n u",
+      "s ɔ m"
+     ]
+    },
+    {
+     "text": "vous êtes",
+     "ipa": [
+      "v u z",
+      "ɛ t"
+     ]
+    },
+    {
+     "text": "ils sont",
+     "ipa": [
+      "i l",
+      "s ɔ̃"
+     ]
+    },
+    {
+     "text": "elles sont",
+     "ipa": [
+      "ɛ l",
+      "s ɔ̃"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "avoir",
+   "language": "fr",
+   "title": "avoir (to have), present",
+   "phrases": [
+    {
+     "text": "j'ai",
+     "ipa": [
+      "ʒ e"
+     ]
+    },
+    {
+     "text": "tu as",
+     "ipa": [
+      "t y",
+      "a"
+     ]
+    },
+    {
+     "text": "il a",
+     "ipa": [
+      "i l",
+      "a"
+     ]
+    },
+    {
+     "text": "nous avons",
+     "ipa": [
+      "n u z",
+      "a v ɔ̃"
+     ]
+    },
+    {
+     "text": "vous avez",
+     "ipa": [
+      "v u z",
+      "a v e"
+     ]
+    },
+    {
+     "text": "ils ont",
+     "ipa": [
+      "i l z",
+      "ɔ̃"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ser",
+   "language": "es",
+   "title": "ser (to be), present",
+   "phrases": [
+    {
+     "text": "yo soy",
+     "ipa": [
+      "ʝ o",
+      "s o i"
+     ]
+    },
+    {
+     "text": "tú eres",
+     "ipa": [
+      "t u",
+      "e ɾ e s"
+     ]
+    },
+    {
+     "text": "él es",
+     "ipa": [
+      "e l",
+      "e s"
+     ]
+    },
+    {
+     "text": "nosotros somos",
+     "ipa": [
+      "n o s o t ɾ o s",
+      "s o m o s"
+     ]
+    },
+    {
+     "text": "vosotros sois",
+     "ipa": [
+      "b o s o t ɾ o s",
+      "s o i s"
+     ]
+    },
+    {
+     "text": "ellos son",
+     "ipa": [
+      "e ʎ o s",
+      "s o n"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "estar",
+   "language": "es",
+   "title": "estar (to be), present",
+   "phrases": [
+    {
+     "text": "yo estoy",
+     "ipa": [
+      "ʝ o",
+      "e s t o i"
+     ]
+    },
+    {
+     "text": "tú estás",
+     "ipa": [
+      "t u",
+      "e s t a s"
+     ]
+    },
+    {
+     "text": "él está",
+     "ipa": [
+      "e l",
+      "e s t a"
+     ]
+    },
+    {
+     "text": "nosotros estamos",
+     "ipa": [
+      "n o s o t ɾ o s",
+      "e s t a m o s"
+     ]
+    },
+    {
+     "text": "vosotros estáis",
+     "ipa": [
+      "b o s o t ɾ o s",
+      "e s t a i s"
+     ]
+    },
+    {
+     "text": "ellos están",
+     "ipa": [
+      "e ʎ o s",
+      "e s t a n"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "to-be",
+   "language": "en",
+   "title": "to be, present",
+   "phrases": [
+    {
+     "text": "I am",
+     "ipa": [
+      "aɪ æ m"
+     ]
+    },
+    {
+     "text": "you are",
+     "ipa": [
+      "j u",
+      "ɑ ɹ"
+     ]
+    },
+    {
+     "text": "she is",
+     "ipa": [
+      "ʃ i",
+      "ɪ z"
+     ]
+    },
+    {
+     "text": "we are",
+     "ipa": [
+      "w i",
+      "ɑ ɹ"
+     ]
+    },
+    {
+     "text": "they are",
+     "ipa": [
+      "ð eɪ",
+      "ɑ ɹ"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "shi",
+   "language": "zh",
+   "title": "是 (to be)",
+   "phrases": [
+    {
+     "text": "我是学生",
+     "ipa": [
+      "w o",
+      "ʂ ɻ̩",
+      "ɕ ɥ e",
+      "ʂ ə ŋ"
+     ],
+     "pinyin": "wo3 shi4 xue2 sheng1"
+    },
+    {
+     "text": "你是老师",
+     "ipa": [
+      "n i",
+      "ʂ ɻ̩",
+      "l a u",
+      "ʂ ɻ̩"
+     ],
+     "pinyin": "ni3 shi4 lao3 shi1"
+    },
+    {
+     "text": "他是医生",
+     "ipa": [
+      "tʰ a",
+      "ʂ ɻ̩",
+      "i",
+      "ʂ ə ŋ"
+     ],
+     "pinyin": "ta1 shi4 yi1 sheng1"
+    },
+    {
+     "text": "我们是朋友",
+     "ipa": [
+      "w o",
+      "m ə n",
+      "ʂ ɻ̩",
+      "pʰ ə ŋ",
+      "j o u"
+     ],
+     "pinyin": "wo3 men5 shi4 peng2 you3"
+    }
+   ]
+  },
+  {
+   "id": "greetings-zh",
+   "language": "zh",
+   "title": "Greetings",
+   "phrases": [
+    {
+     "text": "你好",
+     "ipa": [
+      "n i",
+      "x a u"
+     ],
+     "pinyin": "ni3 hao3"
+    },
+    {
+     "text": "谢谢",
+     "ipa": [
+      "ɕ j e",
+      "ɕ j e"
+     ],
+     "pinyin": "xie4 xie4"
+    },
+    {
+     "text": "再见",
+     "ipa": [
+      "ts a i",
+      "tɕ j ɛ n"
+     ],
+     "pinyin": "zai4 jian4"
+    },
+    {
+     "text": "对不起",
+     "ipa": [
+      "t w e i",
+      "p u",
+      "tɕʰ i"
+     ],
+     "pinyin": "dui4 bu4 qi3"
+    },
+    {
+     "text": "没关系",
+     "ipa": [
+      "m e i",
+      "k w a n",
+      "ɕ i"
+     ],
+     "pinyin": "mei2 guan1 xi4"
+    }
+   ]
+  }
+ ],
+ "minimal_pairs": [
+  {
+   "language": "en",
+   "contrast": "p b m",
+   "sets": [
+    [
+     {
+      "text": "pat",
+      "ipa": [
+       "p æ t"
+      ]
+     },
+     {
+      "text": "bat",
+      "ipa": [
+       "b æ t"
+      ]
+     },
+     {
+      "text": "mat",
+      "ipa": [
+       "m æ t"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "pie",
+      "ipa": [
+       "p aɪ"
+      ]
+     },
+     {
+      "text": "buy",
+      "ipa": [
+       "b aɪ"
+      ]
+     },
+     {
+      "text": "my",
+      "ipa": [
+       "m aɪ"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "pea",
+      "ipa": [
+       "p i"
+      ]
+     },
+     {
+      "text": "bee",
+      "ipa": [
+       "b i"
+      ]
+     },
+     {
+      "text": "me",
+      "ipa": [
+       "m i"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "f v",
+   "sets": [
+    [
+     {
+      "text": "fan",
+      "ipa": [
+       "f æ n"
+      ]
+     },
+     {
+      "text": "van",
+      "ipa": [
+       "v æ n"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "fine",
+      "ipa": [
+       "f aɪ n"
+      ]
+     },
+     {
+      "text": "vine",
+      "ipa": [
+       "v aɪ n"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "safe",
+      "ipa": [
+       "s eɪ f"
+      ]
+     },
+     {
+      "text": "save",
+      "ipa": [
+       "s eɪ v"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "θ s",
+   "sets": [
+    [
+     {
+      "text": "think",
+      "ipa": [
+       "θ ɪ ŋ k"
+      ]
+     },
+     {
+      "text": "sink",
+      "ipa": [
+       "s ɪ ŋ k"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "thigh",
+      "ipa": [
+       "θ aɪ"
+      ]
+     },
+     {
+      "text": "sigh",
+      "ipa": [
+       "s aɪ"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "en",
+   "contrast": "i ɪ",
+   "sets": [
+    [
+     {
+      "text": "sheep",
+      "ipa": [
+       "ʃ i p"
+      ]
+     },
+     {
+      "text": "ship",
+      "ipa": [
+       "ʃ ɪ p"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "feet",
+      "ipa": [
+       "f i t"
+      ]
+     },
+     {
+      "text": "fit",
+      "ipa": [
+       "f ɪ t"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "fr",
+   "contrast": "y u",
+   "sets": [
+    [
+     {
+      "text": "rue",
+      "ipa": [
+       "ʁ y"
+      ]
+     },
+     {
+      "text": "roue",
+      "ipa": [
+       "ʁ u"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "tu",
+      "ipa": [
+       "t y"
+      ]
+     },
+     {
+      "text": "tout",
+      "ipa": [
+       "t u"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "vu",
+      "ipa": [
+       "v y"
+      ]
+     },
+     {
+      "text": "vous",
+      "ipa": [
+       "v u"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "dessus",
+      "ipa": [
+       "d ə s y"
+      ]
+     },
+     {
+      "text": "dessous",
+      "ipa": [
+       "d ə s u"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "fr",
+   "contrast": "p b m",
+   "sets": [
+    [
+     {
+      "text": "pain",
+      "ipa": [
+       "p ɛ̃"
+      ]
+     },
+     {
+      "text": "bain",
+      "ipa": [
+       "b ɛ̃"
+      ]
+     },
+     {
+      "text": "main",
+      "ipa": [
+       "m ɛ̃"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "pas",
+      "ipa": [
+       "p a"
+      ]
+     },
+     {
+      "text": "bas",
+      "ipa": [
+       "b a"
+      ]
+     },
+     {
+      "text": "mas",
+      "ipa": [
+       "m a s"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "fr",
+   "contrast": "f v",
+   "sets": [
+    [
+     {
+      "text": "fin",
+      "ipa": [
+       "f ɛ̃"
+      ]
+     },
+     {
+      "text": "vin",
+      "ipa": [
+       "v ɛ̃"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "faux",
+      "ipa": [
+       "f o"
+      ]
+     },
+     {
+      "text": "veau",
+      "ipa": [
+       "v o"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "fr",
+   "contrast": "ɔ̃ ɑ̃",
+   "sets": [
+    [
+     {
+      "text": "bon",
+      "ipa": [
+       "b ɔ̃"
+      ]
+     },
+     {
+      "text": "banc",
+      "ipa": [
+       "b ɑ̃"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "long",
+      "ipa": [
+       "l ɔ̃"
+      ]
+     },
+     {
+      "text": "lent",
+      "ipa": [
+       "l ɑ̃"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "es",
+   "contrast": "ɾ r",
+   "sets": [
+    [
+     {
+      "text": "pero",
+      "ipa": [
+       "p e ɾ o"
+      ]
+     },
+     {
+      "text": "perro",
+      "ipa": [
+       "p e r o"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "caro",
+      "ipa": [
+       "k a ɾ o"
+      ]
+     },
+     {
+      "text": "carro",
+      "ipa": [
+       "k a r o"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "coro",
+      "ipa": [
+       "k o ɾ o"
+      ]
+     },
+     {
+      "text": "corro",
+      "ipa": [
+       "k o r o"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "es",
+   "contrast": "p b m",
+   "sets": [
+    [
+     {
+      "text": "peso",
+      "ipa": [
+       "p e s o"
+      ]
+     },
+     {
+      "text": "beso",
+      "ipa": [
+       "b e s o"
+      ]
+     }
+    ],
+    [
+     {
+      "text": "pala",
+      "ipa": [
+       "p a l a"
+      ]
+     },
+     {
+      "text": "bala",
+      "ipa": [
+       "b a l a"
+      ]
+     },
+     {
+      "text": "mala",
+      "ipa": [
+       "m a l a"
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "p pʰ m",
+   "sets": [
+    [
+     {
+      "text": "八",
+      "ipa": [
+       "p a"
+      ],
+      "pinyin": "ba1"
+     },
+     {
+      "text": "趴",
+      "ipa": [
+       "pʰ a"
+      ],
+      "pinyin": "pa1"
+     },
+     {
+      "text": "妈",
+      "ipa": [
+       "m a"
+      ],
+      "pinyin": "ma1"
+     }
+    ],
+    [
+     {
+      "text": "包",
+      "ipa": [
+       "p a u"
+      ],
+      "pinyin": "bao1"
+     },
+     {
+      "text": "抛",
+      "ipa": [
+       "pʰ a u"
+      ],
+      "pinyin": "pao1"
+     },
+     {
+      "text": "猫",
+      "ipa": [
+       "m a u"
+      ],
+      "pinyin": "mao1"
+     }
+    ]
+   ]
+  },
+  {
+   "language": "zh",
+   "contrast": "y i u",
+   "sets": [
+    [
+     {
+      "text": "女",
+      "ipa": [
+       "n y"
+      ],
+      "pinyin": "nv3"
+     },
+     {
+      "text": "你",
+      "ipa": [
+       "n i"
+      ],
+      "pinyin": "ni3"
+     },
+     {
+      "text": "怒",
+      "ipa": [
+       "n u"
+      ],
+      "pinyin": "nu4"
+     }
+    ],
+    [
+     {
+      "text": "鱼",
+      "ipa": [
+       "y"
+      ],
+      "pinyin": "yu2"
+     },
+     {
+      "text": "移",
+      "ipa": [
+       "i"
+      ],
+      "pinyin": "yi2"
+     },
+     {
+      "text": "无",
+      "ipa": [
+       "u"
+      ],
+      "pinyin": "wu2"
+     }
+    ]
+   ]
+  }
+ ]
+}

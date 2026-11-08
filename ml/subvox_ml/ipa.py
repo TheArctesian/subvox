@@ -49,11 +49,16 @@ _ESPEAK_FOLD = {
     "es": {"ɛ": "e", "ɔ": "o", "ʒ": "ʝ", "ʃ": "tʃ", "v": "β", "ɟ": "ʝ"},
 }
 
+# Character-level folds inside clusters (Spanish diphthongs come out of espeak as aɪ, eʊ...).
+_CHAR_FOLD = {"es": {"ɪ": "i", "ʊ": "u"}, "fr": {}, "en": {}}
+
 
 def _split(token, language):
     """An espeak token -> inventory phones (some espeak tokens are clusters such as 'ɑɹ' or 'əl')."""
     token = token.replace("ː", "").replace("g", "ɡ")
     token = _ESPEAK_FOLD.get(language, {}).get(token, token)
+    for a, b in _CHAR_FOLD.get(language, {}).items():
+        token = token.replace(a, b)
     if token in _BY_LANGUAGE[language]:
         return [token]
     phones, rest = [], token
