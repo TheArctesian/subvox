@@ -1,0 +1,768 @@
+{
+ "es": {
+  "es": {
+   "a": {
+    "name": "a",
+    "guide": "Vocal abierta: casa, mamá, plata.",
+    "tip": "Boca abierta, mandíbula baja, lengua plana y relajada."
+   },
+   "e": {
+    "name": "e",
+    "guide": "Vocal media anterior: mesa, leche, verde.",
+    "tip": "Labios sin redondear, mandíbula a media altura, punta de la lengua tras los dientes de abajo."
+   },
+   "i": {
+    "name": "i",
+    "guide": "Vocal cerrada anterior: sí, camino, mil.",
+    "tip": "Labios estirados, mandíbula casi cerrada, lengua alta y adelantada."
+   },
+   "o": {
+    "name": "o",
+    "guide": "Vocal media posterior: oso, todo, como.",
+    "tip": "Labios redondeados, mandíbula a media altura, lengua recogida hacia atrás."
+   },
+   "u": {
+    "name": "u",
+    "guide": "Vocal cerrada posterior: uva, luna, tú.",
+    "tip": "Labios muy redondeados y adelantados, mandíbula casi cerrada, lengua alta atrás."
+   },
+   "p": {
+    "name": "p",
+    "guide": "Oclusiva sorda: papa, pato, tapa.",
+    "tip": "Cierra los labios y ábrelos de golpe, sin soplo fuerte ni vibración de la voz."
+   },
+   "b": {
+    "name": "b (inicial)",
+    "guide": "Oclusiva sonora al inicio o tras n: vaca, barco, un beso.",
+    "tip": "Labios cerrados del todo, la voz vibra desde antes de soltarlos."
+   },
+   "β": {
+    "name": "b suave",
+    "guide": "B y v entre vocales: lobo, uva, la vaca.",
+    "tip": "Los labios se acercan sin cerrarse; el aire pasa rozando y la voz vibra."
+   },
+   "t": {
+    "name": "t",
+    "guide": "Oclusiva dental sorda: tapa, tío, pato.",
+    "tip": "Punta de la lengua contra la cara interna de los dientes de arriba; sin soplo."
+   },
+   "d": {
+    "name": "d (inicial)",
+    "guide": "D al inicio o tras n y l: dedo, donde, falda.",
+    "tip": "Punta de la lengua contra los dientes superiores, con la voz vibrando."
+   },
+   "ð": {
+    "name": "d suave",
+    "guide": "D entre vocales o al final: cada, nada, verdad.",
+    "tip": "La lengua toca apenas los dientes, sin cerrar; es un roce suave con voz."
+   },
+   "k": {
+    "name": "k",
+    "guide": "C, qu o k sorda: casa, queso, poco.",
+    "tip": "El dorso de la lengua toca el velo del paladar; se suelta sin soplo."
+   },
+   "ɡ": {
+    "name": "g (inicial)",
+    "guide": "G al inicio o tras n: gato, gusto, tengo.",
+    "tip": "Dorso de la lengua contra el velo del paladar, con la voz vibrando."
+   },
+   "ɣ": {
+    "name": "g suave",
+    "guide": "G entre vocales: lago, amigo, la gota.",
+    "tip": "El dorso de la lengua se acerca al velo sin cerrar; roce suave con voz."
+   },
+   "f": {
+    "name": "f",
+    "guide": "Fricativa labiodental: familia, café, foco.",
+    "tip": "Dientes de arriba sobre el labio de abajo; el aire roza sin voz."
+   },
+   "s": {
+    "name": "s",
+    "guide": "Sorda: sol, casa, seis; también za, ce, ci en Latinoamérica.",
+    "tip": "Punta de la lengua cerca de los alvéolos, labios neutros; el aire roza sin voz."
+   },
+   "θ": {
+    "name": "z de Madrid",
+    "guide": "Solo en España: zapato, cielo, plaza.",
+    "tip": "Punta de la lengua entre los dientes; el aire roza sin voz. En México se dice s."
+   },
+   "x": {
+    "name": "j",
+    "guide": "Fricativa velar: jugo, caja, gente.",
+    "tip": "Dorso de la lengua cerca del velo; roce sin voz, más suave en el Caribe y otras regiones."
+   },
+   "tʃ": {
+    "name": "ch",
+    "guide": "Africada sorda: chico, mucho, leche.",
+    "tip": "Lengua plana contra el paladar, se suelta con roce; labios ligeramente adelantados."
+   },
+   "ʝ": {
+    "name": "y (yo)",
+    "guide": "Fricativa palatal: yo, playa, mayo.",
+    "tip": "Medio de la lengua cerca del paladar; tras pausa o n suena más cerrada (un yoyo)."
+   },
+   "ʎ": {
+    "name": "ll (calle)",
+    "guide": "Solo en algunas regiones: calle, pollo, llave.",
+    "tip": "Medio de la lengua pegado al paladar, lados libres. En México suena como y."
+   },
+   "m": {
+    "name": "m",
+    "guide": "Nasal bilabial: mamá, cama, mucho.",
+    "tip": "Labios cerrados, el aire sale por la nariz con la voz."
+   },
+   "n": {
+    "name": "n",
+    "guide": "Nasal alveolar: nada, mano, nube.",
+    "tip": "Punta de la lengua en los alvéolos, el aire sale por la nariz."
+   },
+   "ɲ": {
+    "name": "ñ",
+    "guide": "Nasal palatal: año, niña, mañana.",
+    "tip": "Medio de la lengua contra el paladar duro, aire por la nariz; no es n más i."
+   },
+   "l": {
+    "name": "l",
+    "guide": "Lateral: luna, pelo, sol.",
+    "tip": "Punta de la lengua en los alvéolos; el aire sale por los lados."
+   },
+   "ɾ": {
+    "name": "r simple",
+    "guide": "Vibrante simple: pero, caro, para, tres.",
+    "tip": "La punta de la lengua toca los alvéolos un solo golpe rápido."
+   },
+   "r": {
+    "name": "rr (vibrante)",
+    "guide": "Vibrante múltiple: perro, rata, carro.",
+    "tip": "Punta de la lengua relajada vibra contra los alvéolos con aire constante."
+   },
+   "j": {
+    "name": "y semiconsonante",
+    "guide": "Semiconsonante: tierra, hielo, viaje.",
+    "tip": "Lengua alta y adelantada como en i, pasa rápido a la vocal siguiente."
+   },
+   "w": {
+    "name": "u semiconsonante",
+    "guide": "Semiconsonante: bueno, agua, fuego.",
+    "tip": "Labios redondeados y lengua alta atrás como en u, pasa rápido a la vocal."
+   }
+  }
+ },
+ "fr": {
+  "fr": {
+   "a": {
+    "name": "a",
+    "guide": "Voyelle ouverte: patte, plat, chat. /a/ et /ɑ/ (pâte) sont confondus pour la plupart.",
+    "tip": "Bouche ouverte, mâchoire basse, langue à plat vers l'avant."
+   },
+   "e": {
+    "name": "é",
+    "guide": "É fermé: été, blé, parler.",
+    "tip": "Lèvres étirées, mâchoire presque fermée, langue avant haute."
+   },
+   "ɛ": {
+    "name": "è",
+    "guide": "È ouvert: père, mer, fête, lait.",
+    "tip": "Lèvres étirées, mâchoire mi-ouverte, langue avant à mi-hauteur."
+   },
+   "i": {
+    "name": "i",
+    "guide": "Voyelle fermée: midi, lit, ville.",
+    "tip": "Lèvres étirées, mâchoire presque fermée, langue haute à l'avant."
+   },
+   "y": {
+    "name": "u",
+    "guide": "U français: tu, lune, rue.",
+    "tip": "Langue comme pour i, lèvres arrondies et avancées."
+   },
+   "u": {
+    "name": "ou",
+    "guide": "Voyelle postérieure: nous, rouge, loup.",
+    "tip": "Lèvres très arrondies, mâchoire presque fermée, langue haute à l'arrière."
+   },
+   "o": {
+    "name": "o fermé",
+    "guide": "O fermé: eau, mot, rose, dos.",
+    "tip": "Lèvres arrondies, mâchoire mi-fermée, langue reculée."
+   },
+   "ɔ": {
+    "name": "o ouvert",
+    "guide": "O ouvert: porte, pomme, école, note.",
+    "tip": "Lèvres arrondies plus ouvertes, mâchoire mi-ouverte, langue reculée."
+   },
+   "ø": {
+    "name": "eu fermé",
+    "guide": "Eu fermé: peu, deux, bleu, nœud.",
+    "tip": "Langue comme pour é, lèvres arrondies et avancées."
+   },
+   "œ": {
+    "name": "eu ouvert",
+    "guide": "Eu ouvert: peur, sœur, fleur, jeune.",
+    "tip": "Langue comme pour è, lèvres arrondies, mâchoire plus ouverte."
+   },
+   "ə": {
+    "name": "e muet",
+    "guide": "E muet: le, petit, demain; il tombe souvent: samedi.",
+    "tip": "Lèvres légèrement arrondies, mâchoire mi-ouverte, langue détendue."
+   },
+   "ɑ̃": {
+    "name": "an",
+    "guide": "Voyelle nasale: dans, vent, enfant.",
+    "tip": "Bouche ouverte et arrondie, langue basse, l'air passe aussi par le nez."
+   },
+   "ɔ̃": {
+    "name": "on",
+    "guide": "Voyelle nasale: bon, mont, nom.",
+    "tip": "Lèvres arrondies, langue reculée, l'air passe par la bouche et le nez."
+   },
+   "ɛ̃": {
+    "name": "in",
+    "guide": "Voyelle nasale: vin, pain, plein, matin.",
+    "tip": "Lèvres étirées, mâchoire mi-ouverte, l'air passe par la bouche et le nez."
+   },
+   "œ̃": {
+    "name": "un",
+    "guide": "Voyelle nasale: un, brun, lundi; souvent confondue avec /ɛ̃/.",
+    "tip": "Lèvres arrondies, mâchoire mi-ouverte, l'air passe par le nez aussi."
+   },
+   "p": {
+    "name": "p",
+    "guide": "Occlusive sourde: papa, plage, soupe.",
+    "tip": "Lèvres closes puis relâchées, sans voix, avec peu de souffle."
+   },
+   "b": {
+    "name": "b",
+    "guide": "Occlusive sonore: bon, bébé, robe.",
+    "tip": "Lèvres closes puis relâchées, la voix vibre dès le début."
+   },
+   "t": {
+    "name": "t",
+    "guide": "Occlusive sourde: tête, table, vite.",
+    "tip": "Pointe de la langue contre les dents du haut, sans souffle."
+   },
+   "d": {
+    "name": "d",
+    "guide": "Occlusive sonore: dans, idée, rade.",
+    "tip": "Pointe de la langue contre les dents du haut, avec la voix."
+   },
+   "k": {
+    "name": "k",
+    "guide": "Occlusive sourde: café, quand, bac.",
+    "tip": "Dos de la langue contre le voile du palais, sans souffle."
+   },
+   "ɡ": {
+    "name": "g",
+    "guide": "Occlusive sonore: gare, gâteau, bague.",
+    "tip": "Dos de la langue contre le voile du palais, avec la voix."
+   },
+   "f": {
+    "name": "f",
+    "guide": "Fricative sourde: fou, café, neuf, photo.",
+    "tip": "Dents du haut sur la lèvre du bas, l'air frotte sans voix."
+   },
+   "v": {
+    "name": "v",
+    "guide": "Fricative sonore: vous, avoir, neuve.",
+    "tip": "Dents du haut sur la lèvre du bas, l'air frotte avec la voix."
+   },
+   "s": {
+    "name": "s",
+    "guide": "Fricative sourde: sac, poisson, classe.",
+    "tip": "Pointe de la langue derrière les dents du bas, l'air siffle sans voix."
+   },
+   "z": {
+    "name": "z",
+    "guide": "Fricative sonore: zéro, maison, rose, les amis.",
+    "tip": "Comme s mais avec la voix; c'est aussi le son de la liaison."
+   },
+   "ʃ": {
+    "name": "ch",
+    "guide": "Fricative sourde: chat, riche, vache.",
+    "tip": "Lèvres avancées et arrondies, langue haute, l'air frotte sans voix."
+   },
+   "ʒ": {
+    "name": "j",
+    "guide": "Fricative sonore: je, jour, rouge, mage.",
+    "tip": "Comme ch mais avec la voix; lèvres avancées."
+   },
+   "ʁ": {
+    "name": "r",
+    "guide": "R français: rue, rouge, mer, parler.",
+    "tip": "Pointe de la langue derrière les dents du bas, le fond de la langue frotte la luette."
+   },
+   "m": {
+    "name": "m",
+    "guide": "Nasale: mère, maman, homme.",
+    "tip": "Lèvres closes, l'air passe par le nez avec la voix."
+   },
+   "n": {
+    "name": "n",
+    "guide": "Nasale: nuit, ananas, sonne.",
+    "tip": "Pointe de la langue contre les dents du haut, l'air passe par le nez."
+   },
+   "ɲ": {
+    "name": "gn",
+    "guide": "Nasale palatale: agneau, montagne, vigne.",
+    "tip": "Milieu de la langue contre le palais dur, l'air passe par le nez."
+   },
+   "l": {
+    "name": "l",
+    "guide": "Latérale: lune, salle, ville.",
+    "tip": "Pointe de la langue contre les dents du haut, l'air passe sur les côtés."
+   },
+   "j": {
+    "name": "y",
+    "guide": "Semi-voyelle: yeux, bien, travail, papillon.",
+    "tip": "Langue haute devant comme pour i, glisse vite vers la voyelle."
+   },
+   "w": {
+    "name": "w",
+    "guide": "Semi-voyelle: oui, moi, jouer.",
+    "tip": "Lèvres arrondies comme pour ou, glisse vite vers la voyelle."
+   },
+   "ɥ": {
+    "name": "u bref",
+    "guide": "Semi-voyelle: huit, nuit, lui, cuisine.",
+    "tip": "Lèvres arrondies comme pour u, langue avant haute, glisse vite vers la voyelle."
+   }
+  }
+ },
+ "zh-Hans": {
+  "zh": {
+   "a": {
+    "name": "a 啊",
+    "guide": "开口大:妈、爸、拉",
+    "tip": "嘴张大,下巴放低,舌头平放"
+   },
+   "o": {
+    "name": "o 喔",
+    "guide": "圆唇半闭:波、摸、佛",
+    "tip": "双唇拢圆,舌身后缩,舌位半高"
+   },
+   "e": {
+    "name": "e(ie、ei)",
+    "guide": "ie、ei 里的 e:些、杯、飞",
+    "tip": "嘴角微展,下巴半开,舌尖抵下齿"
+   },
+   "ɛ": {
+    "name": "e(ian)",
+    "guide": "ian 里的 e:边、天、前",
+    "tip": "嘴微开不圆,舌面前部半低"
+   },
+   "ɤ": {
+    "name": "e 哥",
+    "guide": "e 单独成韵:哥、喝、这",
+    "tip": "嘴角微展不圆唇,舌身后缩"
+   },
+   "ə": {
+    "name": "轻读 e",
+    "guide": "轻读的 e:的、了、们、什么",
+    "tip": "嘴放松半开,舌居中,不用力"
+   },
+   "i": {
+    "name": "i 衣",
+    "guide": "i 衣:一、你、米",
+    "tip": "嘴角向两边展,舌面前部抬高"
+   },
+   "u": {
+    "name": "u 乌",
+    "guide": "u 乌:不、书、路",
+    "tip": "双唇拢圆突出,舌身后缩抬高"
+   },
+   "y": {
+    "name": "ü 迂",
+    "guide": "ü 迂:鱼、女、去",
+    "tip": "舌位同 i,双唇拢成小圆不动"
+   },
+   "ɚ": {
+    "name": "er 儿",
+    "guide": "er 儿:二、耳、儿子",
+    "tip": "舌尖上卷不碰上颚,同时发 e"
+   },
+   "ɹ̩": {
+    "name": "zi 韵母",
+    "guide": "zi、ci、si 的韵母:字、词、四",
+    "tip": "唇展,舌尖近上齿背,不碰"
+   },
+   "ɻ̩": {
+    "name": "zhi 韵母",
+    "guide": "zhi、chi、shi、ri 的韵母:知、吃、是",
+    "tip": "唇展,舌尖卷起近硬腭,不碰"
+   },
+   "ʊ": {
+    "name": "ong",
+    "guide": "ong 的韵母:东、中、红",
+    "tip": "双唇微圆,舌身后缩,舌根近软腭"
+   },
+   "j": {
+    "name": "y 滑音",
+    "guide": "y 开头:要、有、鸭",
+    "tip": "舌面前抬近硬腭,快速滑向后音"
+   },
+   "w": {
+    "name": "w 滑音",
+    "guide": "w 开头:我、问、五",
+    "tip": "双唇拢圆,舌身后缩,快速滑开"
+   },
+   "ɥ": {
+    "name": "ü 滑音",
+    "guide": "yu 开头:月、远、云",
+    "tip": "双唇拢小圆,舌面前抬,快速滑开"
+   },
+   "p": {
+    "name": "b 不送气",
+    "guide": "b 不送气:爸、不、杯",
+    "tip": "双唇闭合再放开,不呼强气流"
+   },
+   "pʰ": {
+    "name": "p 送气",
+    "guide": "p 送气:怕、跑、朋",
+    "tip": "双唇闭合,放开时用力呼气"
+   },
+   "m": {
+    "name": "m",
+    "guide": "m 鼻音:妈、马、门",
+    "tip": "双唇闭合,气流从鼻腔出"
+   },
+   "f": {
+    "name": "f",
+    "guide": "f 擦音:飞、放、饭",
+    "tip": "上齿轻咬下唇,气流摩擦而出"
+   },
+   "t": {
+    "name": "d 不送气",
+    "guide": "d 不送气:大、弟、都",
+    "tip": "舌尖抵上齿龈,放开,不送气"
+   },
+   "tʰ": {
+    "name": "t 送气",
+    "guide": "t 送气:他、天、同",
+    "tip": "舌尖抵上齿龈,放开时用力呼气"
+   },
+   "n": {
+    "name": "n",
+    "guide": "n 鼻音:你、难、牛",
+    "tip": "舌尖抵上齿龈,气流从鼻腔出"
+   },
+   "l": {
+    "name": "l",
+    "guide": "l 边音:来、六、老",
+    "tip": "舌尖抵上齿龈,气流从两侧出"
+   },
+   "k": {
+    "name": "g 不送气",
+    "guide": "g 不送气:哥、高、国",
+    "tip": "舌根抵软腭,放开,不送气"
+   },
+   "kʰ": {
+    "name": "k 送气",
+    "guide": "k 送气:可、看、快",
+    "tip": "舌根抵软腭,放开时用力呼气"
+   },
+   "x": {
+    "name": "h",
+    "guide": "h 擦音:喝、花、好",
+    "tip": "舌根近软腭,气流摩擦而出"
+   },
+   "ŋ": {
+    "name": "ng",
+    "guide": "ng 鼻音:唱、红、冷",
+    "tip": "舌根抵软腭,气流从鼻腔出"
+   },
+   "tɕ": {
+    "name": "j",
+    "guide": "j 不送气:家、见、几",
+    "tip": "舌面前抵硬腭,嘴角展,不送气"
+   },
+   "tɕʰ": {
+    "name": "q 送气",
+    "guide": "q 送气:七、去、请",
+    "tip": "舌面前抵硬腭,嘴角展,用力呼气"
+   },
+   "ɕ": {
+    "name": "x",
+    "guide": "x 擦音:西、学、小",
+    "tip": "舌面前近硬腭,嘴角展,气流摩擦"
+   },
+   "ts": {
+    "name": "z 不送气",
+    "guide": "z 不送气:子、做、早",
+    "tip": "舌尖抵上齿背,放开,不送气"
+   },
+   "tsʰ": {
+    "name": "c 送气",
+    "guide": "c 送气:次、草、才",
+    "tip": "舌尖抵上齿背,放开时用力呼气"
+   },
+   "s": {
+    "name": "s",
+    "guide": "s 擦音:三、四、苏",
+    "tip": "舌尖近上齿背,气流摩擦而出"
+   },
+   "ʈʂ": {
+    "name": "zh 不送气",
+    "guide": "zh 不送气:知、中、站",
+    "tip": "舌尖卷起抵硬腭前,放开,不送气"
+   },
+   "ʈʂʰ": {
+    "name": "ch 送气",
+    "guide": "ch 送气:吃、车、长",
+    "tip": "舌尖卷起抵硬腭前,用力呼气"
+   },
+   "ʂ": {
+    "name": "sh",
+    "guide": "sh 擦音:是、书、上",
+    "tip": "舌尖卷起近硬腭,气流摩擦"
+   },
+   "ʐ": {
+    "name": "r",
+    "guide": "r 擦音:日、人、热",
+    "tip": "舌位同 sh,声带振动"
+   },
+   "˥": {
+    "name": "一声 高平",
+    "guide": "高而平:妈、七、天",
+    "tip": "声音保持在最高音,平稳不降"
+   },
+   "˧˥": {
+    "name": "二声 上升",
+    "guide": "由中升高:十、人、白",
+    "tip": "从中音升到高音,像问「什么?」"
+   },
+   "˨˩˦": {
+    "name": "三声 降升",
+    "guide": "先降后升:你、好、马",
+    "tip": "降到最低再微升,单念时才全升"
+   },
+   "˥˩": {
+    "name": "四声 下降",
+    "guide": "由高快降:爸、去、是",
+    "tip": "从最高快速降到最低,短而有力"
+   },
+   "·": {
+    "name": "轻声",
+    "guide": "又轻又短:吗、的、子",
+    "tip": "不加重,音高随前一字而定"
+   }
+  }
+ },
+ "zh-Hant": {
+  "zh": {
+   "a": {
+    "name": "a ㄚ",
+    "guide": "開口大:媽、爸、拉",
+    "tip": "嘴張大,下巴放低,舌頭平放"
+   },
+   "o": {
+    "name": "o ㄛ",
+    "guide": "圓唇半閉:波、摸、佛",
+    "tip": "雙唇攏圓,舌身後縮,舌位半高"
+   },
+   "e": {
+    "name": "e(ㄝ、ㄟ)",
+    "guide": "ㄧㄝ、ㄟ 裡的 e:些、杯、飛",
+    "tip": "嘴角微展,下巴半開,舌尖抵下齒"
+   },
+   "ɛ": {
+    "name": "e(ㄢ)",
+    "guide": "ㄧㄢ 裡的 e:邊、天、前",
+    "tip": "嘴微開不圓,舌面前部半低"
+   },
+   "ɤ": {
+    "name": "e ㄜ",
+    "guide": "ㄜ 單獨成韻:哥、喝、這",
+    "tip": "嘴角微展不圓唇,舌身後縮"
+   },
+   "ə": {
+    "name": "輕讀 e",
+    "guide": "輕讀的 e:的、了、們、什麼",
+    "tip": "嘴放鬆半開,舌居中,不用力"
+   },
+   "i": {
+    "name": "i ㄧ",
+    "guide": "ㄧ:一、你、米",
+    "tip": "嘴角向兩邊展,舌面前部抬高"
+   },
+   "u": {
+    "name": "u ㄨ",
+    "guide": "ㄨ:不、書、路",
+    "tip": "雙唇攏圓突出,舌身後縮抬高"
+   },
+   "y": {
+    "name": "ü ㄩ",
+    "guide": "ㄩ:魚、女、去",
+    "tip": "舌位同 i,雙唇攏成小圓不動"
+   },
+   "ɚ": {
+    "name": "er ㄦ",
+    "guide": "ㄦ:二、耳、兒子",
+    "tip": "舌尖上捲不碰上顎,同時發 e"
+   },
+   "ɹ̩": {
+    "name": "ㄗㄘㄙ 韻母",
+    "guide": "ㄗ、ㄘ、ㄙ 的韻母:字、詞、四",
+    "tip": "唇展,舌尖近上齒背,不碰"
+   },
+   "ɻ̩": {
+    "name": "ㄓㄔㄕㄖ 韻母",
+    "guide": "ㄓ、ㄔ、ㄕ、ㄖ 的韻母:知、吃、是",
+    "tip": "唇展,舌尖捲起近硬顎,不碰"
+   },
+   "ʊ": {
+    "name": "ㄨㄥ ong",
+    "guide": "ㄨㄥ 的韻母:東、中、紅",
+    "tip": "雙唇微圓,舌身後縮,舌根近軟顎"
+   },
+   "j": {
+    "name": "y 滑音",
+    "guide": "y 開頭:要、有、鴨",
+    "tip": "舌面前抬近硬顎,快速滑向後音"
+   },
+   "w": {
+    "name": "w 滑音",
+    "guide": "w 開頭:我、問、五",
+    "tip": "雙唇攏圓,舌身後縮,快速滑開"
+   },
+   "ɥ": {
+    "name": "ü 滑音",
+    "guide": "yu 開頭:月、遠、雲",
+    "tip": "雙唇攏小圓,舌面前抬,快速滑開"
+   },
+   "p": {
+    "name": "b ㄅ 不送氣",
+    "guide": "ㄅ 不送氣:爸、不、杯",
+    "tip": "雙唇閉合再放開,不呼強氣流"
+   },
+   "pʰ": {
+    "name": "p ㄆ 送氣",
+    "guide": "ㄆ 送氣:怕、跑、朋",
+    "tip": "雙唇閉合,放開時用力呼氣"
+   },
+   "m": {
+    "name": "m ㄇ",
+    "guide": "ㄇ 鼻音:媽、馬、門",
+    "tip": "雙唇閉合,氣流從鼻腔出"
+   },
+   "f": {
+    "name": "f ㄈ",
+    "guide": "ㄈ 擦音:飛、放、飯",
+    "tip": "上齒輕咬下唇,氣流摩擦而出"
+   },
+   "t": {
+    "name": "d ㄉ 不送氣",
+    "guide": "ㄉ 不送氣:大、弟、都",
+    "tip": "舌尖抵上齒齦,放開,不送氣"
+   },
+   "tʰ": {
+    "name": "t ㄊ 送氣",
+    "guide": "ㄊ 送氣:他、天、同",
+    "tip": "舌尖抵上齒齦,放開時用力呼氣"
+   },
+   "n": {
+    "name": "n ㄋ",
+    "guide": "ㄋ 鼻音:你、難、牛",
+    "tip": "舌尖抵上齒齦,氣流從鼻腔出"
+   },
+   "l": {
+    "name": "l ㄌ",
+    "guide": "ㄌ 邊音:來、六、老",
+    "tip": "舌尖抵上齒齦,氣流從兩側出"
+   },
+   "k": {
+    "name": "g ㄍ 不送氣",
+    "guide": "ㄍ 不送氣:哥、高、國",
+    "tip": "舌根抵軟顎,放開,不送氣"
+   },
+   "kʰ": {
+    "name": "k ㄎ 送氣",
+    "guide": "ㄎ 送氣:可、看、快",
+    "tip": "舌根抵軟顎,放開時用力呼氣"
+   },
+   "x": {
+    "name": "h ㄏ",
+    "guide": "ㄏ 擦音:喝、花、好",
+    "tip": "舌根近軟顎,氣流摩擦而出"
+   },
+   "ŋ": {
+    "name": "ng ㄥ",
+    "guide": "ㄥ 鼻音:唱、紅、冷",
+    "tip": "舌根抵軟顎,氣流從鼻腔出"
+   },
+   "tɕ": {
+    "name": "j ㄐ",
+    "guide": "ㄐ 不送氣:家、見、幾",
+    "tip": "舌面前抵硬顎,嘴角展,不送氣"
+   },
+   "tɕʰ": {
+    "name": "q ㄑ 送氣",
+    "guide": "ㄑ 送氣:七、去、請",
+    "tip": "舌面前抵硬顎,嘴角展,用力呼氣"
+   },
+   "ɕ": {
+    "name": "x ㄒ",
+    "guide": "ㄒ 擦音:西、學、小",
+    "tip": "舌面前近硬顎,嘴角展,氣流摩擦"
+   },
+   "ts": {
+    "name": "z ㄗ 不送氣",
+    "guide": "ㄗ 不送氣:子、做、早",
+    "tip": "舌尖抵上齒背,放開,不送氣"
+   },
+   "tsʰ": {
+    "name": "c ㄘ 送氣",
+    "guide": "ㄘ 送氣:次、草、才",
+    "tip": "舌尖抵上齒背,放開時用力呼氣"
+   },
+   "s": {
+    "name": "s ㄙ",
+    "guide": "ㄙ 擦音:三、四、蘇",
+    "tip": "舌尖近上齒背,氣流摩擦而出"
+   },
+   "ʈʂ": {
+    "name": "zh ㄓ 不送氣",
+    "guide": "ㄓ 不送氣:知、中、站",
+    "tip": "舌尖捲起抵硬顎前,放開,不送氣"
+   },
+   "ʈʂʰ": {
+    "name": "ch ㄔ 送氣",
+    "guide": "ㄔ 送氣:吃、車、長",
+    "tip": "舌尖捲起抵硬顎前,用力呼氣"
+   },
+   "ʂ": {
+    "name": "sh ㄕ",
+    "guide": "ㄕ 擦音:是、書、上",
+    "tip": "舌尖捲起近硬顎,氣流摩擦"
+   },
+   "ʐ": {
+    "name": "r ㄖ",
+    "guide": "ㄖ 擦音:日、人、熱",
+    "tip": "舌位同 sh,聲帶振動"
+   },
+   "˥": {
+    "name": "第一聲 高平",
+    "guide": "高而平:媽、七、天",
+    "tip": "聲音保持在最高音,平穩不降"
+   },
+   "˧˥": {
+    "name": "第二聲 上揚",
+    "guide": "由中升高:十、人、白",
+    "tip": "從中音升到高音,像問「什麼?」"
+   },
+   "˨˩˦": {
+    "name": "第三聲 降升",
+    "guide": "先降後升:你、好、馬",
+    "tip": "降到最低再微升,單念時才全升"
+   },
+   "˥˩": {
+    "name": "第四聲 下降",
+    "guide": "由高快降:爸、去、是",
+    "tip": "從最高快速降到最低,短而有力"
+   },
+   "·": {
+    "name": "輕聲",
+    "guide": "又輕又短:嗎、的、子",
+    "tip": "不加重,音高隨前一字而定"
+   }
+  }
+ }
+}
