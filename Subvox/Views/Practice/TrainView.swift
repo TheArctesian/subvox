@@ -161,8 +161,8 @@ struct IPAToggle: View {
     var body: some View {
         HStack(spacing: 4) {
             Toggle("Show IPA", isOn: $isOn).help("⌘I")
-            Button { explain.toggle() } label: { Image(systemName: "questionmark.circle") }
-                .buttonStyle(.borderless).accessibilityLabel("What is IPA?")
+            Button("What are these symbols?") { explain.toggle() }
+                .buttonStyle(.link).font(.callout)
                 .popover(isPresented: $explain) {
                     Text("IPA (the International Phonetic Alphabet) writes down exactly how a word sounds, one symbol per sound: /ʃ/ is the \"sh\" in \"ship\". You don't need to learn it — press Listen to hear any word. The Sounds page explains every symbol. English follows General American; transcriptions are broad.")
                         .padding(16).frame(width: 340).fixedSize(horizontal: false, vertical: true)
@@ -495,6 +495,17 @@ struct MinimalPairsView: View {
                                 }
                                 .padding(12).frame(maxWidth: .infinity, alignment: .leading)
                                 .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
+                            }
+                        }
+                    }
+                    // What each contrasted sound is, in words, so the difference doesn't rest on the symbols alone.
+                    let guide = (model.practice.sounds[language.corpus] ?? [])
+                    ForEach(contrast?.contrast.split(separator: " ").map(String.init) ?? [], id: \.self) { symbol in
+                        if let sound = guide.first(where: { $0.ipa == symbol }) {
+                            let local = sound.text(for: model.nativeLanguage)
+                            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                                Text("/\(symbol)/").font(.ipa(20, relativeTo: .title3))
+                                Text("\(local.name): \(local.guide)").font(.body)
                             }
                         }
                     }

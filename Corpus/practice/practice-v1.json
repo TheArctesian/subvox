@@ -684,8 +684,8 @@
       "ʂau"
      ],
      "hant": "花落知多少。",
-     "pinyin": "huā luò zhī duō shǎo",
-     "zhuyin": "ㄏㄨㄚ ㄌㄨㄛˋ ㄓ ㄉㄨㄛ ㄕㄠˇ"
+     "pinyin": "huā luò zhī duō shao",
+     "zhuyin": "ㄏㄨㄚ ㄌㄨㄛˋ ㄓ ㄉㄨㄛ ㄕㄠ˙"
     }
    ]
   },
@@ -2082,7 +2082,7 @@
      "text": "Qui suivent, indolents compagnons de voyage,",
      "ipa": [
       "ki",
-      "sɥivt",
+      "sɥiv",
       "ɛ̃dolɑ̃",
       "kɔ̃paɲɔ̃",
       "də",
@@ -2345,7 +2345,7 @@
      "text": "Mais j’en avais tant pris dans mes ceintures closes",
      "ipa": [
       "mɛ",
-      "ʒɑ̃",
+      "ʒɑ̃n",
       "avɛ",
       "tɑ̃",
       "pʁi",
@@ -2377,7 +2377,7 @@
       "ɔ̃",
       "eklate",
       "le",
-      "ʁoz",
+      "ʁozz",
       "ɑ̃vole"
      ]
     },
@@ -5007,8 +5007,8 @@
       "pai"
      ],
      "hant": "當初雖然不知道，現在明白，",
-     "pinyin": "dāng chū suī rán bù zhī dào xiàn zài míng bái",
-     "zhuyin": "ㄉㄤ ㄔㄨ ㄙㄨㄟ ㄖㄢˊ ㄅㄨˋ ㄓ ㄉㄠˋ ㄒㄧㄢˋ ㄗㄞˋ ㄇㄧㄥˊ ㄅㄞˊ"
+     "pinyin": "dāng chū suī rán bù zhī dao xiàn zài míng bai",
+     "zhuyin": "ㄉㄤ ㄔㄨ ㄙㄨㄟ ㄖㄢˊ ㄅㄨˋ ㄓ ㄉㄠ˙ ㄒㄧㄢˋ ㄗㄞˋ ㄇㄧㄥˊ ㄅㄞ˙"
     },
     {
      "text": "难见真的人！",
@@ -5783,7 +5783,7 @@
      "text": "je suis allé au marché",
      "ipa": [
       "ʒə",
-      "sɥiz",
+      "sɥi",
       "ale",
       "o",
       "maʁʃe"
@@ -5868,7 +5868,7 @@
      "text": "nous habitions à Nice",
      "ipa": [
       "nuz",
-      "abitjɔ̃z",
+      "abitjɔ̃",
       "a",
       "nis"
      ]
@@ -6253,7 +6253,12 @@
     "zh-Hans": "否定：ne…pas / jamais / rien / plus",
     "zh-Hant": "否定：ne…pas / jamais / rien / plus"
    },
-   "note_l10n": null
+   "note_l10n": {
+    "es": "ne va antes del verbo y la segunda palabra después; ne se vuelve n’ ante vocal. Al hablar, ne suele omitirse (je sais pas); por escrito se mantiene.",
+    "fr": "ne se place avant le verbe, le second mot après ; ne devient n’ devant une voyelle. À l’oral, on supprime souvent ne (je sais pas) ; ici, on l’écrit.",
+    "zh-Hans": "ne 放在动词前，第二个词放在动词后；元音前 ne 变成 n’。口语里常省略 ne（je sais pas），书面要写。",
+    "zh-Hant": "ne 放在動詞前，第二個詞放在動詞後；母音前 ne 變成 n’。口語裡常省略 ne（je sais pas），書面要寫。"
+   }
   },
   {
    "id": "fr-questions",
@@ -6312,7 +6317,8 @@
     {
      "text": "qu'est-ce que tu veux",
      "ipa": [
-      "kɛskə",
+      "kɛs",
+      "kə",
       "ty",
       "vø"
      ]
@@ -6391,7 +6397,7 @@
     {
      "text": "j'en ai deux",
      "ipa": [
-      "ʒɑ̃",
+      "ʒɑ̃n",
       "e",
       "dø"
      ]
@@ -9275,8 +9281,8 @@
       "ʂəŋ"
      ],
      "hant": "我是學生",
-     "pinyin": "wǒ shì xué shēng",
-     "zhuyin": "ㄨㄛˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ"
+     "pinyin": "wǒ shì xué sheng",
+     "zhuyin": "ㄨㄛˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ˙"
     },
     {
      "text": "他是老师",
@@ -9351,8 +9357,8 @@
       "jou"
      ],
      "hant": "他們是朋友",
-     "pinyin": "tā men shì péng yǒu",
-     "zhuyin": "ㄊㄚ ㄇㄣ˙ ㄕˋ ㄆㄥˊ ㄧㄡˇ"
+     "pinyin": "tā men shì péng you",
+     "zhuyin": "ㄊㄚ ㄇㄣ˙ ㄕˋ ㄆㄥˊ ㄧㄡ˙"
     },
     {
      "text": "那是我的书",
@@ -9404,8 +9410,8 @@
       "kɤ"
      ],
      "hant": "我有一個哥哥",
-     "pinyin": "wǒ yǒu yī gè gē gē",
-     "zhuyin": "ㄨㄛˇ ㄧㄡˇ ㄧ ㄍㄜˋ ㄍㄜ ㄍㄜ"
+     "pinyin": "wǒ yǒu yī gè gē ge",
+     "zhuyin": "ㄨㄛˇ ㄧㄡˇ ㄧ ㄍㄜˋ ㄍㄜ ㄍㄜ˙"
     },
     {
      "text": "我没有姐姐",
@@ -9417,8 +9423,8 @@
       "tɕje"
      ],
      "hant": "我沒有姐姐",
-     "pinyin": "wǒ méi yǒu jiě jiě",
-     "zhuyin": "ㄨㄛˇ ㄇㄟˊ ㄧㄡˇ ㄐㄧㄝˇ ㄐㄧㄝˇ"
+     "pinyin": "wǒ méi yǒu jiě jie",
+     "zhuyin": "ㄨㄛˇ ㄇㄟˊ ㄧㄡˇ ㄐㄧㄝˇ ㄐㄧㄝ˙"
     },
     {
      "text": "你有手机吗",
@@ -9442,8 +9448,8 @@
       "tɕjɛn"
      ],
      "hant": "他有時間",
-     "pinyin": "tā yǒu shí jiān",
-     "zhuyin": "ㄊㄚ ㄧㄡˇ ㄕˊ ㄐㄧㄢ"
+     "pinyin": "tā yǒu shí jian",
+     "zhuyin": "ㄊㄚ ㄧㄡˇ ㄕˊ ㄐㄧㄢ˙"
     },
     {
      "text": "我没有钱",
@@ -9898,8 +9904,8 @@
       "fu"
      ],
      "hant": "我想買衣服",
-     "pinyin": "wǒ xiǎng mǎi yī fú",
-     "zhuyin": "ㄨㄛˇ ㄒㄧㄤˇ ㄇㄞˇ ㄧ ㄈㄨˊ"
+     "pinyin": "wǒ xiǎng mǎi yī fu",
+     "zhuyin": "ㄨㄛˇ ㄒㄧㄤˇ ㄇㄞˇ ㄧ ㄈㄨ˙"
     },
     {
      "text": "我要一杯咖啡",
@@ -9938,8 +9944,8 @@
       "ʂu"
      ],
      "hant": "我喜歡看書",
-     "pinyin": "wǒ xǐ huān kàn shū",
-     "zhuyin": "ㄨㄛˇ ㄒㄧˇ ㄏㄨㄢ ㄎㄢˋ ㄕㄨ"
+     "pinyin": "wǒ xǐ huan kàn shū",
+     "zhuyin": "ㄨㄛˇ ㄒㄧˇ ㄏㄨㄢ˙ ㄎㄢˋ ㄕㄨ"
     },
     {
      "text": "他喜欢听音乐",
@@ -9952,8 +9958,8 @@
       "ɥe"
      ],
      "hant": "他喜歡聽音樂",
-     "pinyin": "tā xǐ huān tīng yīn yuè",
-     "zhuyin": "ㄊㄚ ㄒㄧˇ ㄏㄨㄢ ㄊㄧㄥ ㄧㄣ ㄩㄝˋ"
+     "pinyin": "tā xǐ huan tīng yīn yuè",
+     "zhuyin": "ㄊㄚ ㄒㄧˇ ㄏㄨㄢ˙ ㄊㄧㄥ ㄧㄣ ㄩㄝˋ"
     },
     {
      "text": "我不想去",
@@ -10181,8 +10187,8 @@
       "mei"
      ],
      "hant": "我有一個妹妹",
-     "pinyin": "wǒ yǒu yī gè mèi mèi",
-     "zhuyin": "ㄨㄛˇ ㄧㄡˇ ㄧ ㄍㄜˋ ㄇㄟˋ ㄇㄟˋ"
+     "pinyin": "wǒ yǒu yī gè mèi mei",
+     "zhuyin": "ㄨㄛˇ ㄧㄡˇ ㄧ ㄍㄜˋ ㄇㄟˋ ㄇㄟ˙"
     },
     {
      "text": "她是我妈妈",
@@ -10194,8 +10200,8 @@
       "ma"
      ],
      "hant": "她是我媽媽",
-     "pinyin": "tā shì wǒ mā mā",
-     "zhuyin": "ㄊㄚ ㄕˋ ㄨㄛˇ ㄇㄚ ㄇㄚ"
+     "pinyin": "tā shì wǒ mā ma",
+     "zhuyin": "ㄊㄚ ㄕˋ ㄨㄛˇ ㄇㄚ ㄇㄚ˙"
     }
    ],
    "level": "HSK1",
@@ -10255,8 +10261,8 @@
       "tsɹ̩"
      ],
      "hant": "他的名字",
-     "pinyin": "tā de míng zì",
-     "zhuyin": "ㄊㄚ ㄉㄜ˙ ㄇㄧㄥˊ ㄗˋ"
+     "pinyin": "tā de míng zi",
+     "zhuyin": "ㄊㄚ ㄉㄜ˙ ㄇㄧㄥˊ ㄗ˙"
     },
     {
      "text": "老师的车",
@@ -10280,8 +10286,8 @@
       "tɕja"
      ],
      "hant": "我朋友的家",
-     "pinyin": "wǒ péng yǒu de jiā",
-     "zhuyin": "ㄨㄛˇ ㄆㄥˊ ㄧㄡˇ ㄉㄜ˙ ㄐㄧㄚ"
+     "pinyin": "wǒ péng you de jiā",
+     "zhuyin": "ㄨㄛˇ ㄆㄥˊ ㄧㄡ˙ ㄉㄜ˙ ㄐㄧㄚ"
     },
     {
      "text": "这是我的",
@@ -10319,8 +10325,8 @@
       "jou"
      ],
      "hant": "我媽媽的朋友",
-     "pinyin": "wǒ mā mā de péng yǒu",
-     "zhuyin": "ㄨㄛˇ ㄇㄚ ㄇㄚ ㄉㄜ˙ ㄆㄥˊ ㄧㄡˇ"
+     "pinyin": "wǒ mā ma de péng you",
+     "zhuyin": "ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄉㄜ˙ ㄆㄥˊ ㄧㄡ˙"
     }
    ],
    "level": "HSK1",
@@ -10370,8 +10376,8 @@
       "kɤ"
      ],
      "hant": "我喜歡的歌",
-     "pinyin": "wǒ xǐ huān de gē",
-     "zhuyin": "ㄨㄛˇ ㄒㄧˇ ㄏㄨㄢ ㄉㄜ˙ ㄍㄜ"
+     "pinyin": "wǒ xǐ huan de gē",
+     "zhuyin": "ㄨㄛˇ ㄒㄧˇ ㄏㄨㄢ˙ ㄉㄜ˙ ㄍㄜ"
     },
     {
      "text": "昨天买的书",
@@ -10409,8 +10415,8 @@
       "xai"
      ],
      "hant": "漂亮的女孩",
-     "pinyin": "piào liàng de nǚ hái",
-     "zhuyin": "ㄆㄧㄠˋ ㄌㄧㄤˋ ㄉㄜ˙ ㄋㄩˇ ㄏㄞˊ"
+     "pinyin": "piào liang de nǚ hái",
+     "zhuyin": "ㄆㄧㄠˋ ㄌㄧㄤ˙ ㄉㄜ˙ ㄋㄩˇ ㄏㄞˊ"
     },
     {
      "text": "开车的人",
@@ -10434,8 +10440,8 @@
       "ɕi"
      ],
      "hant": "便宜的東西",
-     "pinyin": "pián yi de dōng xī",
-     "zhuyin": "ㄆㄧㄢˊ ㄧ˙ ㄉㄜ˙ ㄉㄨㄥ ㄒㄧ"
+     "pinyin": "pián yi de dōng xi",
+     "zhuyin": "ㄆㄧㄢˊ ㄧ˙ ㄉㄜ˙ ㄉㄨㄥ ㄒㄧ˙"
     },
     {
      "text": "我想吃的菜",
@@ -10496,8 +10502,8 @@
       "ʂəŋ"
      ],
      "hant": "三個學生",
-     "pinyin": "sān gè xué shēng",
-     "zhuyin": "ㄙㄢ ㄍㄜˋ ㄒㄩㄝˊ ㄕㄥ"
+     "pinyin": "sān gè xué sheng",
+     "zhuyin": "ㄙㄢ ㄍㄜˋ ㄒㄩㄝˊ ㄕㄥ˙"
     },
     {
      "text": "两本书",
@@ -10624,8 +10630,8 @@
       "fu"
      ],
      "hant": "一件衣服",
-     "pinyin": "yī jiàn yī fú",
-     "zhuyin": "ㄧ ㄐㄧㄢˋ ㄧ ㄈㄨˊ"
+     "pinyin": "yī jiàn yī fu",
+     "zhuyin": "ㄧ ㄐㄧㄢˋ ㄧ ㄈㄨ˙"
     },
     {
      "text": "三条鱼",
@@ -10797,8 +10803,8 @@
       "fu"
      ],
      "hant": "哪件衣服",
-     "pinyin": "nǎ jiàn yī fú",
-     "zhuyin": "ㄋㄚˇ ㄐㄧㄢˋ ㄧ ㄈㄨˊ"
+     "pinyin": "nǎ jiàn yī fu",
+     "zhuyin": "ㄋㄚˇ ㄐㄧㄢˋ ㄧ ㄈㄨ˙"
     }
    ],
    "level": "HSK2",
@@ -11104,8 +11110,8 @@
       "lɤ"
      ],
      "hant": "他是大學生了",
-     "pinyin": "tā shì dà xué shēng le",
-     "zhuyin": "ㄊㄚ ㄕˋ ㄉㄚˋ ㄒㄩㄝˊ ㄕㄥ ㄌㄜ˙"
+     "pinyin": "tā shì dà xué sheng le",
+     "zhuyin": "ㄊㄚ ㄕˋ ㄉㄚˋ ㄒㄩㄝˊ ㄕㄥ˙ ㄌㄜ˙"
     },
     {
      "text": "现在八点了",
@@ -11482,8 +11488,8 @@
       "fu"
      ],
      "hant": "她穿著紅衣服",
-     "pinyin": "tā chuān zhe hóng yī fú",
-     "zhuyin": "ㄊㄚ ㄔㄨㄢ ㄓㄜ˙ ㄏㄨㄥˊ ㄧ ㄈㄨˊ"
+     "pinyin": "tā chuān zhe hóng yī fu",
+     "zhuyin": "ㄊㄚ ㄔㄨㄢ ㄓㄜ˙ ㄏㄨㄥˊ ㄧ ㄈㄨ˙"
     },
     {
      "text": "灯亮着",
@@ -11735,8 +11741,8 @@
       "ʂəŋ"
      ],
      "hant": "我不是學生",
-     "pinyin": "wǒ bù shì xué shēng",
-     "zhuyin": "ㄨㄛˇ ㄅㄨˋ ㄕˋ ㄒㄩㄝˊ ㄕㄥ"
+     "pinyin": "wǒ bù shì xué sheng",
+     "zhuyin": "ㄨㄛˇ ㄅㄨˋ ㄕˋ ㄒㄩㄝˊ ㄕㄥ˙"
     },
     {
      "text": "我没有钱",
@@ -11820,8 +11826,8 @@
       "ma"
      ],
      "hant": "你是學生嗎",
-     "pinyin": "nǐ shì xué shēng ma",
-     "zhuyin": "ㄋㄧˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ ㄇㄚ˙"
+     "pinyin": "nǐ shì xué sheng ma",
+     "zhuyin": "ㄋㄧˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ˙ ㄇㄚ˙"
     },
     {
      "text": "你有手机吗",
@@ -11860,8 +11866,8 @@
       "ma"
      ],
      "hant": "你喜歡茶嗎",
-     "pinyin": "nǐ xǐ huān chá ma",
-     "zhuyin": "ㄋㄧˇ ㄒㄧˇ ㄏㄨㄢ ㄔㄚˊ ㄇㄚ˙"
+     "pinyin": "nǐ xǐ huan chá ma",
+     "zhuyin": "ㄋㄧˇ ㄒㄧˇ ㄏㄨㄢ˙ ㄔㄚˊ ㄇㄚ˙"
     },
     {
      "text": "你忙吗",
@@ -11935,8 +11941,8 @@
       "ʂəŋ"
      ],
      "hant": "你是不是學生",
-     "pinyin": "nǐ shì bù shì xué shēng",
-     "zhuyin": "ㄋㄧˇ ㄕˋ ㄅㄨˋ ㄕˋ ㄒㄩㄝˊ ㄕㄥ"
+     "pinyin": "nǐ shì bù shì xué sheng",
+     "zhuyin": "ㄋㄧˇ ㄕˋ ㄅㄨˋ ㄕˋ ㄒㄩㄝˊ ㄕㄥ˙"
     },
     {
      "text": "你去不去",
@@ -11961,8 +11967,8 @@
       "tɕjɛn"
      ],
      "hant": "你有沒有時間",
-     "pinyin": "nǐ yǒu méi yǒu shí jiān",
-     "zhuyin": "ㄋㄧˇ ㄧㄡˇ ㄇㄟˊ ㄧㄡˇ ㄕˊ ㄐㄧㄢ"
+     "pinyin": "nǐ yǒu méi yǒu shí jian",
+     "zhuyin": "ㄋㄧˇ ㄧㄡˇ ㄇㄟˊ ㄧㄡˇ ㄕˊ ㄐㄧㄢ˙"
     },
     {
      "text": "好不好",
@@ -11999,8 +12005,8 @@
       "wən"
      ],
      "hant": "你喜歡不喜歡中文",
-     "pinyin": "nǐ xǐ huān bù xǐ huān zhōng wén",
-     "zhuyin": "ㄋㄧˇ ㄒㄧˇ ㄏㄨㄢ ㄅㄨˋ ㄒㄧˇ ㄏㄨㄢ ㄓㄨㄥ ㄨㄣˊ"
+     "pinyin": "nǐ xǐ huan bù xǐ huan zhōng wén",
+     "zhuyin": "ㄋㄧˇ ㄒㄧˇ ㄏㄨㄢ˙ ㄅㄨˋ ㄒㄧˇ ㄏㄨㄢ˙ ㄓㄨㄥ ㄨㄣˊ"
     },
     {
      "text": "他来不来",
@@ -12107,8 +12113,8 @@
       "tɕʰjɛn"
      ],
      "hant": "這個多少錢",
-     "pinyin": "zhè ge duō shǎo qián",
-     "zhuyin": "ㄓㄜˋ ㄍㄜ˙ ㄉㄨㄛ ㄕㄠˇ ㄑㄧㄢˊ"
+     "pinyin": "zhè ge duō shao qián",
+     "zhuyin": "ㄓㄜˋ ㄍㄜ˙ ㄉㄨㄛ ㄕㄠ˙ ㄑㄧㄢˊ"
     },
     {
      "text": "你有几个孩子",
@@ -12135,8 +12141,8 @@
       "tsɹ̩"
      ],
      "hant": "你叫什麼名字",
-     "pinyin": "nǐ jiào shén me míng zì",
-     "zhuyin": "ㄋㄧˇ ㄐㄧㄠˋ ㄕㄣˊ ㄇㄜ˙ ㄇㄧㄥˊ ㄗˋ"
+     "pinyin": "nǐ jiào shén me míng zi",
+     "zhuyin": "ㄋㄧˇ ㄐㄧㄠˋ ㄕㄣˊ ㄇㄜ˙ ㄇㄧㄥˊ ㄗ˙"
     },
     {
      "text": "你为什么不去",
@@ -12252,8 +12258,8 @@
       "lai"
      ],
      "hant": "你什麼時候來",
-     "pinyin": "nǐ shén me shí hòu lái",
-     "zhuyin": "ㄋㄧˇ ㄕㄣˊ ㄇㄜ˙ ㄕˊ ㄏㄡˋ ㄌㄞˊ"
+     "pinyin": "nǐ shén me shí hou lái",
+     "zhuyin": "ㄋㄧˇ ㄕㄣˊ ㄇㄜ˙ ㄕˊ ㄏㄡ˙ ㄌㄞˊ"
     },
     {
      "text": "哪本书是你的",
@@ -12374,8 +12380,8 @@
       "pa"
      ],
      "hant": "你是學生吧",
-     "pinyin": "nǐ shì xué shēng ba",
-     "zhuyin": "ㄋㄧˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ ㄅㄚ˙"
+     "pinyin": "nǐ shì xué sheng ba",
+     "zhuyin": "ㄋㄧˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ˙ ㄅㄚ˙"
     },
     {
      "text": "他在家呢",
@@ -12469,8 +12475,8 @@
       "tɕʰi"
      ],
      "hant": "別客氣",
-     "pinyin": "bié kè qì",
-     "zhuyin": "ㄅㄧㄝˊ ㄎㄜˋ ㄑㄧˋ"
+     "pinyin": "bié kè qi",
+     "zhuyin": "ㄅㄧㄝˊ ㄎㄜˋ ㄑㄧ˙"
     },
     {
      "text": "别担心",
@@ -12815,8 +12821,8 @@
       "kʰan"
      ],
      "hant": "我下去看看",
-     "pinyin": "wǒ xià qù kàn kàn",
-     "zhuyin": "ㄨㄛˇ ㄒㄧㄚˋ ㄑㄩˋ ㄎㄢˋ ㄎㄢˋ"
+     "pinyin": "wǒ xià qù kàn kan",
+     "zhuyin": "ㄨㄛˇ ㄒㄧㄚˋ ㄑㄩˋ ㄎㄢˋ ㄎㄢ˙"
     },
     {
      "text": "他回来了",
@@ -13135,8 +13141,8 @@
    "title_l10n": {
     "es": "Complemento de grado — 得",
     "fr": "Complément de degré — 得",
-    "zh-Hans": "程度补语 — 得",
-    "zh-Hant": "程度補語 — 得"
+    "zh-Hans": "状态补语 — 得",
+    "zh-Hant": "狀態補語 — 得"
    },
    "note_l10n": {
     "es": "Verbo + 得 + descripción indica qué tan bien o qué tan rápido se hace algo.",
@@ -13367,8 +13373,8 @@
       "kʰai"
      ],
      "hant": "請把窗戶打開",
-     "pinyin": "qǐng bǎ chuāng hù dǎ kāi",
-     "zhuyin": "ㄑㄧㄥˇ ㄅㄚˇ ㄔㄨㄤ ㄏㄨˋ ㄉㄚˇ ㄎㄞ"
+     "pinyin": "qǐng bǎ chuāng hu dǎ kāi",
+     "zhuyin": "ㄑㄧㄥˇ ㄅㄚˇ ㄔㄨㄤ ㄏㄨ˙ ㄉㄚˇ ㄎㄞ"
     },
     {
      "text": "她把作业做完了",
@@ -13397,8 +13403,8 @@
       "lɤ"
      ],
      "hant": "別把東西弄丟了",
-     "pinyin": "bié bǎ dōng xī nòng diū le",
-     "zhuyin": "ㄅㄧㄝˊ ㄅㄚˇ ㄉㄨㄥ ㄒㄧ ㄋㄨㄥˋ ㄉㄧㄡ ㄌㄜ˙"
+     "pinyin": "bié bǎ dōng xi nòng diū le",
+     "zhuyin": "ㄅㄧㄝˊ ㄅㄚˇ ㄉㄨㄥ ㄒㄧ˙ ㄋㄨㄥˋ ㄉㄧㄡ ㄌㄜ˙"
     }
    ],
    "level": "HSK3",
@@ -13513,8 +13519,8 @@
       "lɤ"
      ],
      "hant": "窗戶被風吹開了",
-     "pinyin": "chuāng hù bèi fēng chuī kāi le",
-     "zhuyin": "ㄔㄨㄤ ㄏㄨˋ ㄅㄟˋ ㄈㄥ ㄔㄨㄟ ㄎㄞ ㄌㄜ˙"
+     "pinyin": "chuāng hu bèi fēng chuī kāi le",
+     "zhuyin": "ㄔㄨㄤ ㄏㄨ˙ ㄅㄟˋ ㄈㄥ ㄔㄨㄟ ㄎㄞ ㄌㄜ˙"
     },
     {
      "text": "蛋糕被弟弟吃了",
@@ -13832,8 +13838,8 @@
       "tɕiŋ"
      ],
      "hant": "我的房間沒有他的乾淨",
-     "pinyin": "wǒ de fáng jiān méi yǒu tā de gān jìng",
-     "zhuyin": "ㄨㄛˇ ㄉㄜ˙ ㄈㄤˊ ㄐㄧㄢ ㄇㄟˊ ㄧㄡˇ ㄊㄚ ㄉㄜ˙ ㄍㄢ ㄐㄧㄥˋ"
+     "pinyin": "wǒ de fáng jiān méi yǒu tā de gān jing",
+     "zhuyin": "ㄨㄛˇ ㄉㄜ˙ ㄈㄤˊ ㄐㄧㄢ ㄇㄟˊ ㄧㄡˇ ㄊㄚ ㄉㄜ˙ ㄍㄢ ㄐㄧㄥ˙"
     }
    ],
    "level": "HSK3",
@@ -13935,8 +13941,8 @@
       "ljaŋ"
      ],
      "hant": "她和媽媽一樣漂亮",
-     "pinyin": "tā hé mā mā yī yàng piào liàng",
-     "zhuyin": "ㄊㄚ ㄏㄜˊ ㄇㄚ ㄇㄚ ㄧ ㄧㄤˋ ㄆㄧㄠˋ ㄌㄧㄤˋ"
+     "pinyin": "tā hé mā ma yī yàng piào liang",
+     "zhuyin": "ㄊㄚ ㄏㄜˊ ㄇㄚ ㄇㄚ˙ ㄧ ㄧㄤˋ ㄆㄧㄠˋ ㄌㄧㄤ˙"
     }
    ],
    "level": "HSK3",
@@ -14037,8 +14043,8 @@
       "tɤ"
      ],
      "hant": "你是什麼時候到的",
-     "pinyin": "nǐ shì shén me shí hòu dào de",
-     "zhuyin": "ㄋㄧˇ ㄕˋ ㄕㄣˊ ㄇㄜ˙ ㄕˊ ㄏㄡˋ ㄉㄠˋ ㄉㄜ˙"
+     "pinyin": "nǐ shì shén me shí hou dào de",
+     "zhuyin": "ㄋㄧˇ ㄕˋ ㄕㄣˊ ㄇㄜ˙ ㄕˊ ㄏㄡ˙ ㄉㄠˋ ㄉㄜ˙"
     },
     {
      "text": "这是谁做的",
@@ -14083,8 +14089,8 @@
       "tɤ"
      ],
      "hant": "她是跟朋友一起去的",
-     "pinyin": "tā shì gēn péng yǒu yī qǐ qù de",
-     "zhuyin": "ㄊㄚ ㄕˋ ㄍㄣ ㄆㄥˊ ㄧㄡˇ ㄧ ㄑㄧˇ ㄑㄩˋ ㄉㄜ˙"
+     "pinyin": "tā shì gēn péng you yī qǐ qù de",
+     "zhuyin": "ㄊㄚ ㄕˋ ㄍㄣ ㄆㄥˊ ㄧㄡ˙ ㄧ ㄑㄧˇ ㄑㄩˋ ㄉㄜ˙"
     }
    ],
    "level": "HSK3",
@@ -14296,8 +14302,8 @@
       "ɕi"
      ],
      "hant": "你應該休息",
-     "pinyin": "nǐ yīng gāi xiū xī",
-     "zhuyin": "ㄋㄧˇ ㄧㄥ ㄍㄞ ㄒㄧㄡ ㄒㄧ"
+     "pinyin": "nǐ yīng gāi xiū xi",
+     "zhuyin": "ㄋㄧˇ ㄧㄥ ㄍㄞ ㄒㄧㄡ ㄒㄧ˙"
     },
     {
      "text": "我得去医院",
@@ -14393,8 +14399,8 @@
       "pu"
      ],
      "hant": "他每天早上跑步",
-     "pinyin": "tā měi tiān zǎo shàng pǎo bù",
-     "zhuyin": "ㄊㄚ ㄇㄟˇ ㄊㄧㄢ ㄗㄠˇ ㄕㄤˋ ㄆㄠˇ ㄅㄨˋ"
+     "pinyin": "tā měi tiān zǎo shang pǎo bù",
+     "zhuyin": "ㄊㄚ ㄇㄟˇ ㄊㄧㄢ ㄗㄠˇ ㄕㄤ˙ ㄆㄠˇ ㄅㄨˋ"
     },
     {
      "text": "我昨天在家看书",
@@ -14423,8 +14429,8 @@
       "tɕja"
      ],
      "hant": "你什麼時候回家",
-     "pinyin": "nǐ shén me shí hòu huí jiā",
-     "zhuyin": "ㄋㄧˇ ㄕㄣˊ ㄇㄜ˙ ㄕˊ ㄏㄡˋ ㄏㄨㄟˊ ㄐㄧㄚ"
+     "pinyin": "nǐ shén me shí hou huí jiā",
+     "zhuyin": "ㄋㄧˇ ㄕㄣˊ ㄇㄜ˙ ㄕˊ ㄏㄡ˙ ㄏㄨㄟˊ ㄐㄧㄚ"
     },
     {
      "text": "我下个星期去上海",
@@ -14563,8 +14569,8 @@
       "xwa"
      ],
      "hant": "我給媽媽打電話",
-     "pinyin": "wǒ gěi mā mā dǎ diàn huà",
-     "zhuyin": "ㄨㄛˇ ㄍㄟˇ ㄇㄚ ㄇㄚ ㄉㄚˇ ㄉㄧㄢˋ ㄏㄨㄚˋ"
+     "pinyin": "wǒ gěi mā ma dǎ diàn huà",
+     "zhuyin": "ㄨㄛˇ ㄍㄟˇ ㄇㄚ ㄇㄚ˙ ㄉㄚˇ ㄉㄧㄢˋ ㄏㄨㄚˋ"
     },
     {
      "text": "我跟朋友去看电影",
@@ -14579,8 +14585,8 @@
       "iŋ"
      ],
      "hant": "我跟朋友去看電影",
-     "pinyin": "wǒ gēn péng yǒu qù kàn diàn yǐng",
-     "zhuyin": "ㄨㄛˇ ㄍㄣ ㄆㄥˊ ㄧㄡˇ ㄑㄩˋ ㄎㄢˋ ㄉㄧㄢˋ ㄧㄥˇ"
+     "pinyin": "wǒ gēn péng you qù kàn diàn yǐng",
+     "zhuyin": "ㄨㄛˇ ㄍㄣ ㄆㄥˊ ㄧㄡ˙ ㄑㄩˋ ㄎㄢˋ ㄉㄧㄢˋ ㄧㄥˇ"
     },
     {
      "text": "我坐飞机去",
@@ -14682,8 +14688,8 @@
       "pa"
      ],
      "hant": "如果你有時間，就來吧",
-     "pinyin": "rú guǒ nǐ yǒu shí jiān jiù lái ba",
-     "zhuyin": "ㄖㄨˊ ㄍㄨㄛˇ ㄋㄧˇ ㄧㄡˇ ㄕˊ ㄐㄧㄢ ㄐㄧㄡˋ ㄌㄞˊ ㄅㄚ˙"
+     "pinyin": "rú guǒ nǐ yǒu shí jian jiù lái ba",
+     "zhuyin": "ㄖㄨˊ ㄍㄨㄛˇ ㄋㄧˇ ㄧㄡˇ ㄕˊ ㄐㄧㄢ˙ ㄐㄧㄡˋ ㄌㄞˊ ㄅㄚ˙"
     },
     {
      "text": "我一边吃饭一边看电视",
@@ -14864,8 +14870,8 @@
       "ɕi"
      ],
      "hant": "我想吃點兒東西",
-     "pinyin": "wǒ xiǎng chī diǎn ér dōng xī",
-     "zhuyin": "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄉㄧㄢˇ ㄦˊ ㄉㄨㄥ ㄒㄧ"
+     "pinyin": "wǒ xiǎng chī diǎn ér dōng xi",
+     "zhuyin": "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄉㄧㄢˇ ㄦˊ ㄉㄨㄥ ㄒㄧ˙"
     },
     {
      "text": "再来一点儿",
@@ -14916,8 +14922,8 @@
       "ʂəŋ"
      ],
      "hant": "我也是學生",
-     "pinyin": "wǒ yě shì xué shēng",
-     "zhuyin": "ㄨㄛˇ ㄧㄝˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ"
+     "pinyin": "wǒ yě shì xué sheng",
+     "zhuyin": "ㄨㄛˇ ㄧㄝˇ ㄕˋ ㄒㄩㄝˊ ㄕㄥ˙"
     },
     {
      "text": "我们都是学生",
@@ -14930,8 +14936,8 @@
       "ʂəŋ"
      ],
      "hant": "我們都是學生",
-     "pinyin": "wǒ men dōu shì xué shēng",
-     "zhuyin": "ㄨㄛˇ ㄇㄣ˙ ㄉㄡ ㄕˋ ㄒㄩㄝˊ ㄕㄥ"
+     "pinyin": "wǒ men dōu shì xué sheng",
+     "zhuyin": "ㄨㄛˇ ㄇㄣ˙ ㄉㄡ ㄕˋ ㄒㄩㄝˊ ㄕㄥ˙"
     },
     {
      "text": "他也很忙",
@@ -14983,8 +14989,8 @@
       "tɕje"
      ],
      "hant": "她也有兩個姐姐",
-     "pinyin": "tā yě yǒu liǎng gè jiě jiě",
-     "zhuyin": "ㄊㄚ ㄧㄝˇ ㄧㄡˇ ㄌㄧㄤˇ ㄍㄜˋ ㄐㄧㄝˇ ㄐㄧㄝˇ"
+     "pinyin": "tā yě yǒu liǎng gè jiě jie",
+     "zhuyin": "ㄊㄚ ㄧㄝˇ ㄧㄡˇ ㄌㄧㄤˇ ㄍㄜˋ ㄐㄧㄝˇ ㄐㄧㄝ˙"
     },
     {
      "text": "他们都没来",
@@ -15449,8 +15455,8 @@
       "tɕʰjɛn"
      ],
      "hant": "這個多少錢",
-     "pinyin": "zhè ge duō shǎo qián",
-     "zhuyin": "ㄓㄜˋ ㄍㄜ˙ ㄉㄨㄛ ㄕㄠˇ ㄑㄧㄢˊ"
+     "pinyin": "zhè ge duō shao qián",
+     "zhuyin": "ㄓㄜˋ ㄍㄜ˙ ㄉㄨㄛ ㄕㄠ˙ ㄑㄧㄢˊ"
     },
     {
      "text": "太贵了，便宜点儿",
@@ -15755,8 +15761,8 @@
       "tɕjau"
      ],
      "hant": "他晚上十一點睡覺",
-     "pinyin": "tā wǎn shàng shí yī diǎn shuì jiào",
-     "zhuyin": "ㄊㄚ ㄨㄢˇ ㄕㄤˋ ㄕˊ ㄧ ㄉㄧㄢˇ ㄕㄨㄟˋ ㄐㄧㄠˋ"
+     "pinyin": "tā wǎn shang shí yī diǎn shuì jiào",
+     "zhuyin": "ㄊㄚ ㄨㄢˇ ㄕㄤ˙ ㄕˊ ㄧ ㄉㄧㄢˇ ㄕㄨㄟˋ ㄐㄧㄠˋ"
     }
    ],
    "level": "HSK1",
@@ -15940,8 +15946,8 @@
       "ɕi"
      ],
      "hant": "休息",
-     "pinyin": "xiū xī",
-     "zhuyin": "ㄒㄧㄡ ㄒㄧ"
+     "pinyin": "xiū xi",
+     "zhuyin": "ㄒㄧㄡ ㄒㄧ˙"
     }
    ],
    "level": "HSK1",
@@ -16016,8 +16022,8 @@
       "jou"
      ],
      "hant": "朋友",
-     "pinyin": "péng yǒu",
-     "zhuyin": "ㄆㄥˊ ㄧㄡˇ"
+     "pinyin": "péng you",
+     "zhuyin": "ㄆㄥˊ ㄧㄡ˙"
     }
    ],
    "level": "HSK1",
@@ -16168,8 +16174,8 @@
       "ɕje"
      ],
      "hant": "謝謝",
-     "pinyin": "xiè xiè",
-     "zhuyin": "ㄒㄧㄝˋ ㄒㄧㄝˋ"
+     "pinyin": "xiè xie",
+     "zhuyin": "ㄒㄧㄝˋ ㄒㄧㄝ˙"
     }
    ],
    "level": "HSK1",
@@ -19955,7 +19961,7 @@
      "text": "Je suis allergique à la pénicilline.",
      "ipa": [
       "ʒə",
-      "sɥiz",
+      "sɥi",
       "alɛʁʒik",
       "a",
       "la",
@@ -20067,7 +20073,7 @@
      "text": "Je suis en réunion.",
      "ipa": [
       "ʒə",
-      "sɥiz",
+      "sɥi",
       "ɑ̃",
       "ʁeynjɔ̃"
      ],
@@ -20115,7 +20121,7 @@
      "text": "Je suis en télétravail demain.",
      "ipa": [
       "ʒə",
-      "sɥiz",
+      "sɥi",
       "ɑ̃",
       "teletʁavaj",
       "dəmɛ̃"
@@ -20731,8 +20737,8 @@
       "ɕje"
      ],
      "hant": "不要辣，謝謝。",
-     "pinyin": "bù yào là xiè xiè",
-     "zhuyin": "ㄅㄨˋ ㄧㄠˋ ㄌㄚˋ ㄒㄧㄝˋ ㄒㄧㄝˋ",
+     "pinyin": "bù yào là xiè xie",
+     "zhuyin": "ㄅㄨˋ ㄧㄠˋ ㄌㄚˋ ㄒㄧㄝˋ ㄒㄧㄝ˙",
      "gloss": "No spice, thanks.",
      "gloss_l10n": {
       "es": "Sin picante, gracias.",
@@ -20882,8 +20888,8 @@
       "xaŋ"
      ],
      "hant": "麻煩開一下導航。",
-     "pinyin": "má fán kāi yī xià dǎo háng",
-     "zhuyin": "ㄇㄚˊ ㄈㄢˊ ㄎㄞ ㄧ ㄒㄧㄚˋ ㄉㄠˇ ㄏㄤˊ",
+     "pinyin": "má fan kāi yī xià dǎo háng",
+     "zhuyin": "ㄇㄚˊ ㄈㄢ˙ ㄎㄞ ㄧ ㄒㄧㄚˋ ㄉㄠˇ ㄏㄤˊ",
      "gloss": "Could you turn on the navigation?",
      "gloss_l10n": {
       "es": "¿Podría encender el GPS?",
@@ -21038,8 +21044,8 @@
       "tɕʰjɛn"
      ],
      "hant": "這個多少錢？",
-     "pinyin": "zhè ge duō shǎo qián",
-     "zhuyin": "ㄓㄜˋ ㄍㄜ˙ ㄉㄨㄛ ㄕㄠˇ ㄑㄧㄢˊ",
+     "pinyin": "zhè ge duō shao qián",
+     "zhuyin": "ㄓㄜˋ ㄍㄜ˙ ㄉㄨㄛ ㄕㄠ˙ ㄑㄧㄢˊ",
      "gloss": "How much is this?",
      "gloss_l10n": {
       "es": "¿Cuánto cuesta esto?",
@@ -21102,8 +21108,8 @@
       "kʰan"
      ],
      "hant": "我隨便看看。",
-     "pinyin": "wǒ suí biàn kàn kàn",
-     "zhuyin": "ㄨㄛˇ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄎㄢˋ ㄎㄢˋ",
+     "pinyin": "wǒ suí biàn kàn kan",
+     "zhuyin": "ㄨㄛˇ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄎㄢˋ ㄎㄢ˙",
      "gloss": "I'm just looking.",
      "gloss_l10n": {
       "es": "Solo estoy viendo.",
@@ -21145,8 +21151,8 @@
       "ma"
      ],
      "hant": "我可以試試嗎？",
-     "pinyin": "wǒ kě yǐ shì shì ma",
-     "zhuyin": "ㄨㄛˇ ㄎㄜˇ ㄧˇ ㄕˋ ㄕˋ ㄇㄚ˙",
+     "pinyin": "wǒ kě yǐ shì shi ma",
+     "zhuyin": "ㄨㄛˇ ㄎㄜˇ ㄧˇ ㄕˋ ㄕ˙ ㄇㄚ˙",
      "gloss": "May I try it?",
      "gloss_l10n": {
       "es": "¿Puedo probármelo?",
@@ -21925,8 +21931,8 @@
       "ɕja"
      ],
      "hant": "不好意思，借過一下。",
-     "pinyin": "bù hǎo yì sī jiè guò yī xià",
-     "zhuyin": "ㄅㄨˋ ㄏㄠˇ ㄧˋ ㄙ ㄐㄧㄝˋ ㄍㄨㄛˋ ㄧ ㄒㄧㄚˋ",
+     "pinyin": "bù hǎo yì si jiè guò yī xià",
+     "zhuyin": "ㄅㄨˋ ㄏㄠˇ ㄧˋ ㄙ˙ ㄐㄧㄝˋ ㄍㄨㄛˋ ㄧ ㄒㄧㄚˋ",
      "gloss": "Sorry, may I get past?",
      "gloss_l10n": {
       "es": "Perdón, ¿puedo pasar?",
@@ -22016,8 +22022,8 @@
       "ʂau"
      ],
      "hant": "房租一個月多少？",
-     "pinyin": "fáng zū yī gè yuè duō shǎo",
-     "zhuyin": "ㄈㄤˊ ㄗㄨ ㄧ ㄍㄜˋ ㄩㄝˋ ㄉㄨㄛ ㄕㄠˇ",
+     "pinyin": "fáng zū yī gè yuè duō shao",
+     "zhuyin": "ㄈㄤˊ ㄗㄨ ㄧ ㄍㄜˋ ㄩㄝˋ ㄉㄨㄛ ㄕㄠ˙",
      "gloss": "How much is the rent a month?",
      "gloss_l10n": {
       "es": "¿Cuánto es la renta al mes?",
@@ -22306,7 +22312,7 @@
    "region": null,
    "title_l10n": {
     "es": "Cafetería",
-    "fr": "Salon de café",
+    "fr": "Au café",
     "zh-Hans": "咖啡店",
     "zh-Hant": "咖啡店"
    },
@@ -22474,7 +22480,7 @@
    "region": null,
    "title_l10n": {
     "es": "Direcciones",
-    "fr": "Directions",
+    "fr": "Demander son chemin",
     "zh-Hans": "方向",
     "zh-Hant": "方向"
    },
@@ -24088,7 +24094,12 @@
     "zh-Hans": "En famille à Lyon",
     "zh-Hant": "En famille à Lyon"
    },
-   "note_l10n": null
+   "note_l10n": {
+    "es": "Saludos y frases en familia: tu con la familia y los niños, vous en tiendas y cafés.",
+    "fr": "Salutations et phrases en famille : tu avec la famille et les enfants, vous dans les magasins et les cafés.",
+    "zh-Hans": "家庭问候：对家人和孩子用 tu，在商店和咖啡馆用 vous。",
+    "zh-Hant": "家庭問候：對家人和孩子用 tu，在商店和咖啡館用 vous。"
+   }
   },
   {
    "id": "es-tacos-mx",
@@ -27039,7 +27050,7 @@
      },
      "fr": {
       "name": "i long",
-      "guide": "comme le i français, mais plus long et tendu ('eat' n'est pas 'it')",
+      "guide": "comme le i français, mais plus long et tendu (« eat » n« est pas  »it')",
       "tip": "lèvres étirées en sourire, mâchoire presque fermée"
      },
      "zh-Hans": {
@@ -27089,7 +27100,7 @@
      },
      "fr": {
       "name": "i bref",
-      "guide": "entre i et é, bref et relâché; pas un i français; absent du français",
+      "guide": "entre i et é, bref et relâché ; pas un i français ; absent du français",
       "tip": "lèvres détendues, mâchoire un peu plus ouverte que pour i"
      },
      "zh-Hans": {
@@ -27139,7 +27150,7 @@
      },
      "fr": {
       "name": "è",
-      "guide": "comme le è de 'père', un peu plus ouvert",
+      "guide": "comme le è de « père », un peu plus ouvert",
       "tip": "mâchoire mi-ouverte, lèvres neutres"
      },
      "zh-Hans": {
@@ -27189,7 +27200,7 @@
      },
      "fr": {
       "name": "a ouvert",
-      "guide": "entre a et è, très ouvert; absent du français",
+      "guide": "entre a et è, très ouvert ; absent du français",
       "tip": "mâchoire bien basse, lèvres étirées sur les côtés"
      },
      "zh-Hans": {
@@ -27239,7 +27250,7 @@
      },
      "fr": {
       "name": "a profond",
-      "guide": "comme le â de 'pâte', plus long et en arrière",
+      "guide": "comme le â de « pâte », plus long et en arrière",
       "tip": "bouche ouverte et détendue, langue basse et reculée"
      },
      "zh-Hans": {
@@ -27289,7 +27300,7 @@
      },
      "fr": {
       "name": "o ouvert long",
-      "guide": "comme le o de 'porte', mais plus long, presque 'oa'",
+      "guide": "comme le o de « porte », mais plus long, presque « oa »",
       "tip": "mâchoire tombante, lèvres peu arrondies"
      },
      "zh-Hans": {
@@ -27339,7 +27350,7 @@
      },
      "fr": {
       "name": "a neutre bref",
-      "guide": "entre a et eu, bref et détendu ('cup'); absent du français",
+      "guide": "entre a et eu, bref et détendu (« cup ») ; absent du français",
       "tip": "bouche mi-ouverte, lèvres détendues et non arrondies"
      },
      "zh-Hans": {
@@ -27389,7 +27400,7 @@
      },
      "fr": {
       "name": "ou bref",
-      "guide": "comme un ou français plus court et relâché; absent du français",
+      "guide": "comme un ou français plus court et relâché ; absent du français",
       "tip": "lèvres à peine arrondies, sans les avancer"
      },
      "zh-Hans": {
@@ -27539,7 +27550,7 @@
      },
      "fr": {
       "name": "er faible",
-      "guide": "un e bref avec le r anglais en même temps; absent du français",
+      "guide": "un e bref avec le r anglais en même temps ; absent du français",
       "tip": "langue recourbée sans toucher, lèvres un peu arrondies"
      },
      "zh-Hans": {
@@ -27589,7 +27600,7 @@
      },
      "fr": {
       "name": "er accentué",
-      "guide": "voyelle longue colorée par le r anglais, sans r français; absent du français",
+      "guide": "voyelle longue colorée par le r anglais, sans r français ; absent du français",
       "tip": "langue recourbée sans toucher, lèvres un peu arrondies"
      },
      "zh-Hans": {
@@ -27639,7 +27650,7 @@
      },
      "fr": {
       "name": "aï",
-      "guide": "comme 'aï' de 'maïs', avec a plus ouvert et glissé vers un i relâché",
+      "guide": "comme « aï » de « maïs », avec a plus ouvert et glissé vers un i relâché",
       "tip": "mâchoire basse qui remonte à la fin, sans fermer"
      },
      "zh-Hans": {
@@ -27689,7 +27700,7 @@
      },
      "fr": {
       "name": "aou",
-      "guide": "a ouvert qui glisse vers un ou bref; absent du français",
+      "guide": "a ouvert qui glisse vers un ou bref ; absent du français",
       "tip": "mâchoire basse, lèvres qui s'arrondissent à la fin"
      },
      "zh-Hans": {
@@ -27739,7 +27750,7 @@
      },
      "fr": {
       "name": "éï",
-      "guide": "é long qui glisse vers i; en français é reste pur; absent du français",
+      "guide": "é long qui glisse vers i ; en français é reste pur ; absent du français",
       "tip": "mâchoire mi-fermée qui monte, lèvres s'étirent à la fin"
      },
      "zh-Hans": {
@@ -27788,8 +27799,8 @@
       "tip": "labios redondeados que se cierran más al final"
      },
      "fr": {
-      "name": "oou",
-      "guide": "o long qui glisse vers ou; ne le garde pas pur comme en français; absent du français",
+      "name": "o-ou",
+      "guide": "o long qui glisse vers ou ; ne le garde pas pur comme en français ; absent du français",
       "tip": "lèvres arrondies qui se ferment davantage à la fin"
      },
      "zh-Hans": {
@@ -27839,7 +27850,7 @@
      },
      "fr": {
       "name": "oï",
-      "guide": "o ouvert qui glisse vers i, comme 'oy' de 'boycott'",
+      "guide": "o ouvert qui glisse vers i, comme « oy » de « boycott »",
       "tip": "lèvres arrondies qui s'étirent vers le i"
      },
      "zh-Hans": {
@@ -27890,7 +27901,7 @@
      "fr": {
       "name": "p aspiré",
       "guide": "comme le p français, avec un souffle d'air en début de syllabe accentuée",
-      "tip": "lèvres closes qui s'ouvrent en jet d'air; test : feuille de papier"
+      "tip": "lèvres closes qui s« ouvrent en jet d »air ; test : feuille de papier"
      },
      "zh-Hans": {
       "name": "送气 p",
@@ -27939,7 +27950,7 @@
      },
      "fr": {
       "name": "b",
-      "guide": "comme le b français; la voix démarre dès l'ouverture des lèvres",
+      "guide": "comme le b français ; la voix démarre dès l'ouverture des lèvres",
       "tip": "lèvres closes, voix dès le début"
      },
      "zh-Hans": {
@@ -27990,7 +28001,7 @@
      "fr": {
       "name": "t aspiré",
       "guide": "comme le t français, mais langue sur les alvéoles, avec souffle",
-      "tip": "pointe de la langue sur la gencive derrière les dents; souffle"
+      "tip": "pointe de la langue sur la gencive derrière les dents ; souffle"
      },
      "zh-Hans": {
       "name": "送气 t",
@@ -28139,7 +28150,7 @@
      },
      "fr": {
       "name": "g",
-      "guide": "comme le g de 'gare'",
+      "guide": "comme le g de « gare »",
       "tip": "arrière de la langue ferme le passage, avec voix"
      },
      "zh-Hans": {
@@ -28289,7 +28300,7 @@
      },
      "fr": {
       "name": "th sourd",
-      "guide": "un f ou s avec la langue entre les dents; ni 's' ni 'f'; absent du français",
+      "guide": "la langue entre les dents, on souffle doucement (ni « s » ni « f ») ; absent du français",
       "tip": "pointe de la langue entre les dents, souffle sans voix"
      },
      "zh-Hans": {
@@ -28339,7 +28350,7 @@
      },
      "fr": {
       "name": "th sonore",
-      "guide": "comme th sourd mais avec la voix; ni 'z' ni 'd'; absent du français",
+      "guide": "comme th sourd mais avec la voix ; ni « z » ni « d » ; absent du français",
       "tip": "pointe de la langue entre les dents, voix qui vibre"
      },
      "zh-Hans": {
@@ -28389,7 +28400,7 @@
      },
      "fr": {
       "name": "s",
-      "guide": "comme le s de 'sac'; reste sourd, même entre voyelles ('base')",
+      "guide": "comme le s de « sac » ; reste sourd, même entre voyelles (« base »)",
       "tip": "dents presque jointes, air qui siffle au centre de la langue"
      },
      "zh-Hans": {
@@ -28439,8 +28450,8 @@
      },
      "fr": {
       "name": "z",
-      "guide": "comme le z français; en fin de mot, 'is' se dit avec z, pas s",
-      "tip": "comme s mais avec la gorge qui vibre; main sur la gorge"
+      "guide": "comme le z français ; en fin de mot, « is » se dit avec z, pas s",
+      "tip": "comme s mais avec la gorge qui vibre ; main sur la gorge"
      },
      "zh-Hans": {
       "name": "z",
@@ -28489,7 +28500,7 @@
      },
      "fr": {
       "name": "sh",
-      "guide": "comme le ch de 'chat', lèvres un peu plus avancées",
+      "guide": "comme le ch de « chat », lèvres un peu plus avancées",
       "tip": "lèvres arrondies et avancées, air continu"
      },
      "zh-Hans": {
@@ -28539,7 +28550,7 @@
      },
      "fr": {
       "name": "zh",
-      "guide": "comme le j français de 'je'",
+      "guide": "comme le j français de « je »",
       "tip": "lèvres arrondies et avancées, voix qui vibre"
      },
      "zh-Hans": {
@@ -28588,9 +28599,9 @@
       "tip": "boca ya en posición de la vocal; el aire sale de la garganta"
      },
      "fr": {
-      "name": "h aspiré",
-      "guide": "simple souffle expiré, comme un soupir; absent du français",
-      "tip": "bouche déjà prête pour la voyelle; l'air sort de la gorge"
+      "name": "h expiré",
+      "guide": "simple souffle expiré, comme un soupir ; absent du français",
+      "tip": "bouche déjà prête pour la voyelle ; l'air sort de la gorge"
      },
      "zh-Hans": {
       "name": "h",
@@ -28639,8 +28650,8 @@
      },
      "fr": {
       "name": "ch",
-      "guide": "comme le 'tch' de 'tchao', t et ch soudés",
-      "tip": "pointe de la langue touche la gencive, se relâche en 'ch'"
+      "guide": "comme le « tch » de « tchao », t et ch soudés",
+      "tip": "pointe de la langue touche la gencive, se relâche en « ch »"
      },
      "zh-Hans": {
       "name": "ch",
@@ -28689,8 +28700,8 @@
      },
      "fr": {
       "name": "j anglais",
-      "guide": "d et j français soudés, comme 'dj' de 'djembé'",
-      "tip": "langue touche la gencive, se relâche en 'j'; lèvres arrondies"
+      "guide": "d et j français soudés, comme « dj » de « djembé »",
+      "tip": "langue touche la gencive, se relâche en « j » ; lèvres arrondies"
      },
      "zh-Hans": {
       "name": "j",
@@ -28739,7 +28750,7 @@
      },
      "fr": {
       "name": "m",
-      "guide": "comme le m français; en fin de mot, ferme bien les lèvres",
+      "guide": "comme le m français ; en fin de mot, ferme bien les lèvres",
       "tip": "lèvres closes, air par le nez"
      },
      "zh-Hans": {
@@ -28789,7 +28800,7 @@
      },
      "fr": {
       "name": "n",
-      "guide": "comme le n français, langue sur la gencive; en fin de mot, pas de voyelle",
+      "guide": "comme le n français, langue sur la gencive ; en fin de mot, pas de voyelle",
       "tip": "pointe de la langue sur la gencive derrière les dents"
      },
      "zh-Hans": {
@@ -28839,8 +28850,8 @@
      },
      "fr": {
       "name": "ng",
-      "guide": "comme 'ng' de 'camping', sans g final; absent du français",
-      "tip": "arrière de la langue monte au voile; pas de g ensuite"
+      "guide": "comme « ng » de « camping », sans g final ; rare en français (parking, camping)",
+      "tip": "arrière de la langue monte au voile ; pas de g ensuite"
      },
      "zh-Hans": {
       "name": "ng",
@@ -28889,8 +28900,8 @@
      },
      "fr": {
       "name": "l",
-      "guide": "plus sombre qu'en français, surtout en fin de mot ('full')",
-      "tip": "pointe sur la gencive; en fin de mot, l'arrière se recule"
+      "guide": "plus sombre qu« en français, surtout en fin de mot ( »full')",
+      "tip": "pointe sur la gencive ; en fin de mot, l'arrière se recule"
      },
      "zh-Hans": {
       "name": "l",
@@ -28939,7 +28950,7 @@
      },
      "fr": {
       "name": "r anglais",
-      "guide": "pas le r français: pointe de langue recourbée sans toucher; absent du français",
+      "guide": "pas le r français : pointe de langue recourbée sans toucher ; absent du français",
       "tip": "pointe recourbée vers l'arrière sans toucher, lèvres arrondies"
      },
      "zh-Hans": {
@@ -28989,7 +29000,7 @@
      },
      "fr": {
       "name": "y",
-      "guide": "comme le y de 'yeux'",
+      "guide": "comme le y de « yeux »",
       "tip": "langue haute et avancée, glisse vite vers la voyelle"
      },
      "zh-Hans": {
@@ -29039,7 +29050,7 @@
      },
      "fr": {
       "name": "w",
-      "guide": "comme 'ou' de 'oui', lèvres arrondies",
+      "guide": "comme « ou » de « oui », lèvres arrondies",
       "tip": "lèvres très arrondies qui s'ouvrent vite vers la voyelle"
      },
      "zh-Hans": {
@@ -30988,7 +30999,7 @@
     "local": {
      "fr": {
       "name": "o",
-      "guide": "comme le o fermé de 'eau', plus bref, sans glisser vers ou",
+      "guide": "comme le o fermé de « eau », plus bref, sans glisser vers ou",
       "tip": "lèvres arrondies, mâchoire presque fermée"
      },
      "es": {
@@ -31092,7 +31103,7 @@
      "fr": {
       "name": "p",
       "guide": "comme le p français, sans souffle",
-      "tip": "lèvres closes qui s'ouvrent sans jet d'air"
+      "tip": "lèvres closes qui s« ouvrent sans jet d »air"
      },
      "es": {
       "name": "p",
@@ -31141,7 +31152,7 @@
     "local": {
      "fr": {
       "name": "b",
-      "guide": "comme le b français; reste fort en début de mot",
+      "guide": "comme le b français ; reste fort en début de mot",
       "tip": "lèvres closes, voix dès le début"
      },
      "es": {
@@ -31194,7 +31205,7 @@
     "local": {
      "fr": {
       "name": "b doux",
-      "guide": "entre b et v: lèvres qui se frôlent sans se fermer; absent du français",
+      "guide": "entre b et v : lèvres qui se frôlent sans se fermer ; absent du français",
       "tip": "lèvres presque jointes sans se fermer, voix qui vibre"
      },
      "es": {
@@ -31344,7 +31355,7 @@
     "local": {
      "fr": {
       "name": "d doux",
-      "guide": "comme th anglais sonore doux: langue sur les dents sans fermer; absent du français",
+      "guide": "comme th anglais sonore doux : langue sur les dents sans fermer ; absent du français",
       "tip": "pointe de la langue contre les dents sans fermer, voix"
      },
      "es": {
@@ -31450,7 +31461,7 @@
     "local": {
      "fr": {
       "name": "g",
-      "guide": "comme le g de 'gare'; reste fort en début de mot",
+      "guide": "comme le g de « gare » ; reste fort en début de mot",
       "tip": "arrière de la langue ferme le passage, avec voix"
      },
      "es": {
@@ -31500,7 +31511,7 @@
     "local": {
      "fr": {
       "name": "g doux",
-      "guide": "un g sans fermeture, proche d'un r français léger, plus avancé; absent du français",
+      "guide": "un g sans fermeture, proche d'un r français léger, plus avancé ; absent du français",
       "tip": "arrière de la langue près du voile sans le toucher, voix"
      },
      "es": {
@@ -31659,7 +31670,7 @@
     "local": {
      "fr": {
       "name": "z d'Espagne",
-      "guide": "comme th anglais sourd ('think'), langue entre les dents; absent du français",
+      "guide": "comme th anglais sourd (« think »), langue entre les dents ; absent du français",
       "tip": "pointe de la langue entre les dents, souffle sans voix"
      },
      "es": {
@@ -31709,7 +31720,7 @@
     "local": {
      "fr": {
       "name": "j espagnol",
-      "guide": "un h fortement soufflé, raclement de gorge léger; absent du français",
+      "guide": "un h fortement soufflé, raclement de gorge léger ; absent du français",
       "tip": "arrière de la langue près du voile, air qui frotte, sans voix"
      },
      "es": {
@@ -31759,8 +31770,8 @@
     "local": {
      "fr": {
       "name": "ch",
-      "guide": "comme 'tch' de 'tchèque', un seul son; absent du français",
-      "tip": "pointe de la langue touche la gencive, se relâche en 'ch'"
+      "guide": "comme « tch » de « tchèque », un seul son ; absent du français",
+      "tip": "pointe de la langue touche la gencive, se relâche en « ch »"
      },
      "es": {
       "name": "ch",
@@ -31809,7 +31820,7 @@
     "local": {
      "fr": {
       "name": "y (yo)",
-      "guide": "comme le y de 'yeux' mais avec friction, parfois proche de 'dj'; absent du français",
+      "guide": "comme le y de « yeux » mais avec friction, parfois proche de « dj » ; absent du français",
       "tip": "milieu de la langue près du palais, avec voix"
      },
      "es": {
@@ -31868,7 +31879,7 @@
     "local": {
      "fr": {
       "name": "ll (calle)",
-      "guide": "comme 'li' de 'milieu' en un seul son; souvent dit comme y; absent du français",
+      "guide": "comme « li » de « milieu » en un seul son ; souvent dit comme y ; absent du français",
       "tip": "milieu de la langue contre le palais, avec voix"
      },
      "es": {
@@ -32018,7 +32029,7 @@
     "local": {
      "fr": {
       "name": "ñ",
-      "guide": "comme gn de 'montagne'",
+      "guide": "comme gn de « montagne »",
       "tip": "milieu de la langue contre le palais, air par le nez"
      },
      "es": {
@@ -32121,7 +32132,7 @@
     "local": {
      "fr": {
       "name": "r battu",
-      "guide": "un seul battement de la pointe de la langue sur la gencive; absent du français",
+      "guide": "un seul battement de la pointe de la langue sur la gencive ; absent du français",
       "tip": "pointe de la langue frappe la gencive une fois, comme un d rapide"
      },
      "es": {
@@ -32171,7 +32182,7 @@
     "local": {
      "fr": {
       "name": "r roulé",
-      "guide": "plusieurs vibrations de la pointe de la langue; pas le r français; absent du français",
+      "guide": "plusieurs vibrations de la pointe de la langue ; pas le r français ; absent du français",
       "tip": "pointe de la langue vibre sur la gencive, mâchoire détendue"
      },
      "es": {
@@ -32221,7 +32232,7 @@
     "local": {
      "fr": {
       "name": "y",
-      "guide": "comme le y de 'yeux'",
+      "guide": "comme le y de « yeux »",
       "tip": "langue haute et avancée, glisse vite vers la voyelle"
      },
      "es": {
@@ -32271,7 +32282,7 @@
     "local": {
      "fr": {
       "name": "w",
-      "guide": "comme 'ou' de 'oui'",
+      "guide": "comme « ou » de « oui »",
       "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
      },
      "es": {
@@ -32317,8 +32328,8 @@
        "pa"
       ],
       "hant": "爸爸",
-      "pinyin": "bà bà",
-      "zhuyin": "ㄅㄚˋ ㄅㄚˋ"
+      "pinyin": "bà ba",
+      "zhuyin": "ㄅㄚˋ ㄅㄚ˙"
      },
      {
       "text": "她",
@@ -32397,7 +32408,7 @@
      },
      "fr": {
       "name": "o",
-      "guide": "comme le o de 'mot', avec léger glissement depuis ou ('wo')",
+      "guide": "comme le o de « mot », avec léger glissement depuis ou (« wo »)",
       "tip": "lèvres arrondies, mâchoire mi-ouverte"
      },
      "zh-Hans": {
@@ -32427,8 +32438,8 @@
        "ɕje"
       ],
       "hant": "謝謝",
-      "pinyin": "xiè xiè",
-      "zhuyin": "ㄒㄧㄝˋ ㄒㄧㄝˋ"
+      "pinyin": "xiè xie",
+      "zhuyin": "ㄒㄧㄝˋ ㄒㄧㄝ˙"
      },
      {
       "text": "北京",
@@ -32458,7 +32469,7 @@
      },
      "fr": {
       "name": "e (ei, ie)",
-      "guide": "comme le é français; apparaît dans 'ei' et 'ie'",
+      "guide": "comme le é français ; apparaît dans « ei » et « ie »",
       "tip": "lèvres étirées, mâchoire mi-fermée"
      },
      "zh-Hans": {
@@ -32517,7 +32528,7 @@
      },
      "fr": {
       "name": "e (ian)",
-      "guide": "comme le è de 'père'; apparaît dans 'ian' et 'yue'",
+      "guide": "comme le è de « père » ; apparaît dans « ian » et « yue »",
       "tip": "mâchoire mi-ouverte, lèvres étirées"
      },
      "zh-Hans": {
@@ -32576,8 +32587,8 @@
      },
      "fr": {
       "name": "e (arrière)",
-      "guide": "comme un o avec les lèvres étirées, non arrondies; absent du français",
-      "tip": "mâchoire mi-fermée, langue reculée; dis 'o' en souriant"
+      "guide": "comme un o avec les lèvres étirées, non arrondies ; absent du français",
+      "tip": "mâchoire mi-fermée, langue reculée ; dis « o » en souriant"
      },
      "zh-Hans": {
       "name": "e 哥",
@@ -32812,7 +32823,7 @@
      },
      "fr": {
       "name": "ü",
-      "guide": "comme le u français de 'tu'",
+      "guide": "comme le u français de « tu »",
       "tip": "lèvres en petit cercle, langue avancée comme pour i"
      },
      "zh-Hans": {
@@ -32871,7 +32882,7 @@
      },
      "fr": {
       "name": "er",
-      "guide": "e faible avec la pointe de la langue recourbée; absent du français",
+      "guide": "e faible avec la pointe de la langue recourbée ; absent du français",
       "tip": "langue recourbée vers l'arrière sans toucher, lèvres neutres"
      },
      "zh-Hans": {
@@ -32930,7 +32941,7 @@
      },
      "fr": {
       "name": "voyelle de zi",
-      "guide": "bourdonnement de s prolongé, avec voix, sans voyelle; absent du français",
+      "guide": "bourdonnement de s prolongé, avec voix, sans voyelle ; absent du français",
       "tip": "dents presque jointes, langue plate, lèvres étirées"
      },
      "zh-Hans": {
@@ -32989,7 +33000,7 @@
      },
      "fr": {
       "name": "voyelle de zhi",
-      "guide": "bourdonnement avec voix après zh, ch, sh, r, langue recourbée; absent du français",
+      "guide": "bourdonnement avec voix après zh, ch, sh, r, langue recourbée ; absent du français",
       "tip": "pointe de la langue recourbée vers l'arrière sans toucher"
      },
      "zh-Hans": {
@@ -33048,7 +33059,7 @@
      },
      "fr": {
       "name": "ong",
-      "guide": "entre o et ou fermés, suivi de ng; absent du français",
+      "guide": "entre o et ou fermés, suivi de ng ; absent du français",
       "tip": "lèvres un peu arrondies, langue reculée, finit nasal en ng"
      },
      "zh-Hans": {
@@ -33107,7 +33118,7 @@
      },
      "fr": {
       "name": "y",
-      "guide": "comme le y de 'yeux'",
+      "guide": "comme le y de « yeux »",
       "tip": "langue haute et avancée, glisse vite vers la voyelle"
      },
      "zh-Hans": {
@@ -33166,7 +33177,7 @@
      },
      "fr": {
       "name": "w",
-      "guide": "comme 'ou' de 'oui'",
+      "guide": "comme « ou » de « oui »",
       "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
      },
      "zh-Hans": {
@@ -33225,7 +33236,7 @@
      },
      "fr": {
       "name": "ü glissé",
-      "guide": "comme 'ui' de 'huit' avant voyelle ('yue')",
+      "guide": "comme « ui » de « huit » avant voyelle (« yue »)",
       "tip": "lèvres en petit cercle, langue avancée, s'ouvrent vite"
      },
      "zh-Hans": {
@@ -33284,8 +33295,8 @@
      },
      "fr": {
       "name": "b · sans souffle",
-      "guide": "comme le p français, sans souffle; en pinyin écrit b, pas le b français",
-      "tip": "lèvres closes qui s'ouvrent sans expulser d'air"
+      "guide": "comme le p français, sans souffle ; en pinyin écrit b, pas le b français",
+      "tip": "lèvres closes qui s« ouvrent sans expulser d »air"
      },
      "zh-Hans": {
       "name": "b 不送气",
@@ -33323,8 +33334,8 @@
        "jou"
       ],
       "hant": "朋友",
-      "pinyin": "péng yǒu",
-      "zhuyin": "ㄆㄥˊ ㄧㄡˇ"
+      "pinyin": "péng you",
+      "zhuyin": "ㄆㄥˊ ㄧㄡ˙"
      },
      {
       "text": "平",
@@ -33344,8 +33355,8 @@
      },
      "fr": {
       "name": "p · soufflé",
-      "guide": "p français suivi d'un fort jet d'air; absent du français",
-      "tip": "lèvres closes relâchées avec souffle; test : feuille de papier"
+      "guide": "p français suivi d« un fort jet d »air ; absent du français",
+      "tip": "lèvres closes relâchées avec souffle ; test : feuille de papier"
      },
      "zh-Hans": {
       "name": "p 送气",
@@ -33521,7 +33532,7 @@
      },
      "fr": {
       "name": "d · sans souffle",
-      "guide": "comme le t français, sans souffle; en pinyin écrit d, pas le d français",
+      "guide": "comme le t français, sans souffle ; en pinyin écrit d, pas le d français",
       "tip": "pointe de la langue derrière les dents, relâchée sans air"
      },
      "zh-Hans": {
@@ -33580,7 +33591,7 @@
      },
      "fr": {
       "name": "t · soufflé",
-      "guide": "t français suivi d'un fort jet d'air; absent du français",
+      "guide": "t français suivi d« un fort jet d »air ; absent du français",
       "tip": "pointe de la langue derrière les dents, relâchée avec souffle"
      },
      "zh-Hans": {
@@ -33757,7 +33768,7 @@
      },
      "fr": {
       "name": "g · sans souffle",
-      "guide": "comme le k français, sans souffle; en pinyin écrit g, pas le g français",
+      "guide": "comme le k français, sans souffle ; en pinyin écrit g, pas le g français",
       "tip": "arrière de la langue contre le voile, relâché sans air"
      },
      "zh-Hans": {
@@ -33816,7 +33827,7 @@
      },
      "fr": {
       "name": "k · soufflé",
-      "guide": "k français suivi d'un fort jet d'air; absent du français",
+      "guide": "k français suivi d« un fort jet d »air ; absent du français",
       "tip": "arrière de la langue contre le voile, relâché avec souffle"
      },
      "zh-Hans": {
@@ -33875,7 +33886,7 @@
      },
      "fr": {
       "name": "h",
-      "guide": "raclement léger de gorge, proche d'un r français sourd, plus en avant; absent du français",
+      "guide": "raclement léger de gorge, proche d'un r français sourd, plus en avant ; absent du français",
       "tip": "arrière de la langue près du voile, l'air frotte"
      },
      "zh-Hans": {
@@ -33934,8 +33945,8 @@
      },
      "fr": {
       "name": "ng",
-      "guide": "comme 'ng' de 'camping', aussi en fin de syllabe, sans g; absent du français",
-      "tip": "arrière de la langue monte au voile; pas de g ensuite"
+      "guide": "comme « ng » de « camping », aussi en fin de syllabe, sans g ; absent du français",
+      "tip": "arrière de la langue monte au voile ; pas de g ensuite"
      },
      "zh-Hans": {
       "name": "ng",
@@ -33993,7 +34004,7 @@
      },
      "fr": {
       "name": "j",
-      "guide": "comme 'tch' de 'tchao' mais langue plate, sans souffle; absent du français",
+      "guide": "comme « tch » de « tchao » mais langue plate, sans souffle ; absent du français",
       "tip": "pointe de la langue en bas, lèvres étirées en sourire"
      },
      "zh-Hans": {
@@ -34052,7 +34063,7 @@
      },
      "fr": {
       "name": "q",
-      "guide": "comme j mais avec un jet d'air; absent du français",
+      "guide": "comme j mais avec un jet d'air ; absent du français",
       "tip": "pointe de la langue en bas, lèvres étirées, relâche avec souffle"
      },
      "zh-Hans": {
@@ -34111,7 +34122,7 @@
      },
      "fr": {
       "name": "x",
-      "guide": "comme 'ch' de 'chat' mais langue plate et lèvres étirées; absent du français",
+      "guide": "comme « ch » de « chat » mais langue plate et lèvres étirées ; absent du français",
       "tip": "pointe de la langue en bas, lèvres étirées en sourire"
      },
      "zh-Hans": {
@@ -34170,7 +34181,7 @@
      },
      "fr": {
       "name": "z",
-      "guide": "comme 'ts' de 'tsé-tsé', un seul son, sans souffle; absent du français",
+      "guide": "comme « ts » de « tsé-tsé », un seul son, sans souffle ; absent du français",
       "tip": "dents presque jointes, langue plate, relâché sans air"
      },
      "zh-Hans": {
@@ -34229,7 +34240,7 @@
      },
      "fr": {
       "name": "c",
-      "guide": "comme 'ts' avec un jet d'air; absent du français",
+      "guide": "comme « ts » avec un jet d'air ; absent du français",
       "tip": "dents presque jointes, langue plate, relâché avec souffle"
      },
      "zh-Hans": {
@@ -34347,7 +34358,7 @@
      },
      "fr": {
       "name": "zh",
-      "guide": "comme 'tch' avec la pointe de la langue recourbée, sans souffle; absent du français",
+      "guide": "comme « tch » avec la pointe de la langue recourbée, sans souffle ; absent du français",
       "tip": "pointe de la langue recourbée vers le palais, lèvres neutres"
      },
      "zh-Hans": {
@@ -34406,7 +34417,7 @@
      },
      "fr": {
       "name": "ch",
-      "guide": "comme zh mais avec un jet d'air; absent du français",
+      "guide": "comme zh mais avec un jet d'air ; absent du français",
       "tip": "pointe de la langue recourbée vers le palais, relâche avec souffle"
      },
      "zh-Hans": {
@@ -34465,7 +34476,7 @@
      },
      "fr": {
       "name": "sh",
-      "guide": "comme 'ch' de 'chat' avec la pointe de la langue recourbée; absent du français",
+      "guide": "comme « ch » de « chat » avec la pointe de la langue recourbée ; absent du français",
       "tip": "pointe de la langue recourbée vers l'arrière sans toucher, lèvres neutres"
      },
      "zh-Hans": {
@@ -34524,7 +34535,7 @@
      },
      "fr": {
       "name": "r",
-      "guide": "comme j français, avec la langue recourbée; pas le r français; absent du français",
+      "guide": "comme j français, avec la langue recourbée ; pas le r français ; absent du français",
       "tip": "pointe de la langue recourbée vers l'arrière, voix qui vibre"
      },
      "zh-Hans": {
@@ -34583,8 +34594,8 @@
      },
      "fr": {
       "name": "ton 1 (haut)",
-      "guide": "note aiguë et plate, tenue; absent du français",
-      "tip": "mâchoire détendue; voix haute et constante, sans monter ni descendre"
+      "guide": "note aiguë et plate, tenue ; absent du français",
+      "tip": "mâchoire détendue ; voix haute et constante, sans monter ni descendre"
      },
      "zh-Hans": {
       "name": "一声 高平",
@@ -34642,8 +34653,8 @@
      },
      "fr": {
       "name": "ton 2 (montant)",
-      "guide": "monte comme en posant une question: 'vraiment ?'; absent du français",
-      "tip": "mâchoire détendue; la voix monte du moyen vers l'aigu"
+      "guide": "monte comme en posant une question : « vraiment ? » ; absent du français",
+      "tip": "mâchoire détendue ; la voix monte du moyen vers l'aigu"
      },
      "zh-Hans": {
       "name": "二声 上升",
@@ -34701,8 +34712,8 @@
      },
      "fr": {
       "name": "ton 3 (descendant-montant)",
-      "guide": "descend bas puis remonte un peu; en parole normale, il descend seulement; absent du français",
-      "tip": "mâchoire détendue; voix basse et grave, sans tension"
+      "guide": "descend bas puis remonte un peu ; en parole normale, il descend seulement ; absent du français",
+      "tip": "mâchoire détendue ; voix basse et grave, sans tension"
      },
      "zh-Hans": {
       "name": "三声 降升",
@@ -34760,8 +34771,8 @@
      },
      "fr": {
       "name": "ton 4 (descendant)",
-      "guide": "tombe de haut en bas, sec, comme un ordre: 'stop !'; absent du français",
-      "tip": "mâchoire qui se relâche vite; la voix chute avec fermeté"
+      "guide": "tombe de haut en bas, sec, comme un ordre : « stop ! » ; absent du français",
+      "tip": "mâchoire qui se relâche vite ; la voix chute avec fermeté"
      },
      "zh-Hans": {
       "name": "四声 下降",
@@ -34819,7 +34830,7 @@
      },
      "fr": {
       "name": "ton neutre",
-      "guide": "syllabe légère et brève, sans accent, hauteur selon la syllabe précédente; absent du français",
+      "guide": "syllabe légère et brève, sans accent, hauteur selon la syllabe précédente ; absent du français",
       "tip": "mâchoire et lèvres détendues, syllabe très brève"
      },
      "zh-Hans": {

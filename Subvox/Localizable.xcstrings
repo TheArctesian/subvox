@@ -142,31 +142,31 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@: %@"
+            "value": "%1$@: %2$@"
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@: %@"
+            "value": "%1$@: %2$@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ : %@"
+            "value": "%1$@ : %2$@"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@：%@"
+            "value": "%1$@：%2$@"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@：%@"
+            "value": "%1$@：%2$@"
           }
         }
       }
@@ -4154,31 +4154,31 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Idioma"
+            "value": "Frases y gramática"
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Idioma"
+            "value": "Frases y gramática"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Langue"
+            "value": "Exercices"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "语言"
+            "value": "句型练习"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "語言"
+            "value": "句型練習"
           }
         }
       }
@@ -4247,6 +4247,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "學習方式"
+          }
+        }
+      }
+    },
+    "Left AirPod": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPod izquierdo"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPod izquierdo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPod gauche"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "左耳 AirPod"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "左耳 AirPod"
           }
         }
       }
@@ -7209,6 +7243,40 @@
         }
       }
     },
+    "Recordings stay on this Mac until you choose to share them. The camera only reads lip points; no video or photos are saved.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac hasta que decidas compartirlas. La cámara solo lee puntos de los labios; no se guardan videos ni fotos."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac hasta que decidas compartirlas. La cámara solo lee puntos de los labios; no se guardan videos ni fotos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les enregistrements restent sur ce Mac jusqu’à ce que vous choisissiez de les partager. La caméra ne lit que des points des lèvres ; aucune vidéo ni photo n’est enregistrée."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录音、AirPods 动作和嘴部关键点只保存在这台 Mac 上；只有你按“发送”才会分享。摄像头只用来提取嘴部关键点，不保存视频或照片。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "錄音、AirPods 動作和嘴部關鍵點只保存在這台 Mac 上；只有你按「傳送」才會分享。相機只用來擷取嘴部關鍵點，不保存影片或照片。"
+          }
+        }
+      }
+    },
     "Recordings stay on this Mac. Sharing to the open community dataset is a separate, opt-in step.": {
       "localizations": {
         "es": {
@@ -7647,6 +7715,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "請先檢查驗證用的詞組，才能啟用詞語檢查。"
+          }
+        }
+      }
+    },
+    "Right AirPod": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPod derecho"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPod derecho"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPod droit"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "右耳 AirPod"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "右耳 AirPod"
           }
         }
       }
@@ -10813,6 +10915,40 @@
         }
       }
     },
+    "What are these symbols?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué son estos símbolos?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué son estos símbolos?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que sont ces symboles ?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这些符号是什么？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這些符號是什麼？"
+          }
+        }
+      }
+    },
     "What is IPA?": {
       "localizations": {
         "es": {
@@ -10911,6 +11047,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "儲存了什麼，儲存在哪裡"
+          }
+        }
+      }
+    },
+    "What's saved?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué se guarda?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué se guarda?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qu’est-ce qui est enregistré ?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存了什么？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存了什麼？"
           }
         }
       }

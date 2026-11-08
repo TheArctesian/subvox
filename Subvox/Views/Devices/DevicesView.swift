@@ -48,7 +48,7 @@ struct DevicesView: View {
                     .font(.headline).foregroundStyle(motion.status == .streaming ? Color.green : Color.secondary)
                 LabeledContent("Sample rate", value: String(format: "%.1f Hz", motion.sampleRate))
                 LabeledContent("Samples", value: "\(motion.sampleCount)")
-                LabeledContent("Reported sensor", value: motion.latest?.sensorLocation == 1 ? "Left AirPod" : motion.latest?.sensorLocation == 2 ? "Right AirPod" : "Unavailable")
+                LabeledContent("Reported sensor", value: motion.latest?.sensorLocation == 1 ? String(localized: "Left AirPod") : motion.latest?.sensorLocation == 2 ? String(localized: "Right AirPod") : String(localized: "Unavailable"))
                 if motion.status == .waiting {
                     Text("Put in AirPods Pro and make sure they're the active output on this Mac.")
                         .font(.caption)

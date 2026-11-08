@@ -115,11 +115,14 @@ def phonemize(text, language, accent=None):
         # espeak's Latin American voice writes intervocalic ll as j + j (calle /kajje/); it is /ʝ/.
         words = [_collapse(w, ("j", "j"), "ʝ") for w in words]
     if language == "fr":
-        words = [_french_glides(w) for w in words]
+        # Word by word, so espeak's over-eager liaison never leaks in; linking consonants come
+        # back only where French makes liaison (see _french_word).
         spelled = re.findall(r"[\w'’-]+", _french_spelling(text).lower())
-        if len(spelled) == len(words):  # only when espeak's words line up with the spelling
-            words = [_french_gn(s, w) for s, w in zip(spelled, words)]
-            words = _french_liaison(spelled, words, text)
+        if len(spelled) == len(words):
+            # In-sentence readings (they settle homographs like habitions, est), minus wrong liaisons.
+            words = [_french_glides(_french_gn(w, _french_in_context(spelled, i, words[i]))) for i, w in enumerate(spelled)]
+        else:
+            words = [_french_glides(_french_gn(w, _french_word(spelled, i))) for i, w in enumerate(spelled)]
     return words
 
 
@@ -164,32 +167,68 @@ def _french_spelling(text):
     return re.sub(r"\b(" + "|".join(ARCHAIC) + r")\b", lambda m: ARCHAIC[m.group(1)], text)
 
 
-@lru_cache(maxsize=4096)
+@lru_cache(maxsize=8192)
 def _french_alone(word):
+    return tuple(p for w in _french_tokens(word) for p in w)
+
+
+def _french_tokens(text):
     from phonemizer.separator import Separator
-    raw = _backend("fr").phonemize([word], separator=Separator(phone=" ", word=" | "), strip=True)[0]
-    return tuple(p for token in raw.replace("|", " ").split() for p in _split(token, "fr"))
+    raw = _backend("fr").phonemize([text], separator=Separator(phone=" ", word=" | "), strip=True)[0]
+    return [[p for token in word.split() for p in _split(token, "fr")] for word in raw.split("|") if word.strip()]
 
 
-def _french_liaison(spelled, words, text):
-    out = [list(w) for w in words]
-    for i, (spelling, word) in enumerate(zip(spelled, out)):
-        if spelling in FRENCH_WORDS:
-            out[i] = list(FRENCH_WORDS[spelling])
-            continue
-        if i + 1 >= len(out) or not word:
-            continue
-        alone = list(_french_alone(spelling))
-        linked = len(word) == len(alone) + 1 and word[:-1] == alone and word[-1] in ("z", "t", "n", "p", "ʁ")
-        nxt = spelled[i + 1]
-        if linked and (spelling not in LIAISON_AFTER or nxt == "et"):
-            out[i] = alone
-        elif linked and spelling in DENASALISE:
+VOWEL_START = re.compile(r"^[aeiouyéèêëàâîïôûùœæh]")
+
+
+def _french_in_context(spelled, i, word):
+    """espeak's reading of word i in its sentence, with a final linking consonant removed unless
+    French makes liaison there. A final consonant counts as linking when the word said alone
+    doesn't end in it and the next word starts with a vowel or h."""
+    word = list(word)
+    spelling = spelled[i]
+    if spelling in FRENCH_WORDS:
+        return list(FRENCH_WORDS[spelling])
+    nxt = spelled[i + 1] if i + 1 < len(spelled) else ""
+    if spelling == "comment" and nxt.startswith(("a", "e", "i", "o", "u", "é")) and word[-1:] != ["t"]:
+        return word + ["t"]
+    if not word or not nxt or not VOWEL_START.match(nxt) or word[-1] not in ("z", "t", "n", "p", "ʁ"):
+        return word
+    alone = list(_french_alone(spelling))
+    if alone and alone[-1] == word[-1]:
+        return word  # a consonant the word always has (sept, avec), not a liaison
+    trigger = re.split(r"['’]", spelling)[-1]
+    if nxt != "et" and (spelling in LIAISON_AFTER or trigger in LIAISON_AFTER):
+        if spelling in DENASALISE:
             nasal, oral = DENASALISE[spelling]
-            out[i] = [oral if p == nasal else p for p in word]
-        elif spelling == "comment" and not linked and nxt and nxt[0] in "aeiouéèêh" and out[i + 1] and out[i + 1][0] not in "ʁ":
-            out[i] = word + ["t"]  # comment‿allez-vous
-    return out
+            return [oral if p == nasal else p for p in word]
+        return word
+    return word[:-1]
+
+
+def _french_word(spelled, i):
+    """Phones of word i: said alone, plus the linking consonant when liaison applies (the
+    previous-word rule: after liaison words, before a vowel or mute h, never before et)."""
+    word = spelled[i]
+    if word in FRENCH_WORDS:
+        return list(FRENCH_WORDS[word])
+    alone = list(_french_alone(word))
+    nxt = spelled[i + 1] if i + 1 < len(spelled) else ""
+    trigger = re.split(r"['’]", word)[-1]  # j'en -> en, c'est -> est (and the whole word)
+    if not nxt or nxt == "et" or not VOWEL_START.match(nxt):
+        return alone
+    if word == "comment" and nxt.startswith(("a", "e", "i", "o", "u", "é")):
+        return alone + ["t"]
+    if word not in LIAISON_AFTER and trigger not in LIAISON_AFTER:
+        return alone
+    pair = _french_tokens(f"{word} {nxt}")
+    linked = pair[0] if len(pair) == 2 else alone  # espeak decides h aspiré (les haricots)
+    if len(linked) == len(alone) + 1 and linked[:-1] == alone and linked[-1] in ("z", "t", "n", "p", "ʁ"):
+        if word in DENASALISE:
+            nasal, oral = DENASALISE[word]
+            linked = [oral if p == nasal else p for p in linked]
+        return linked
+    return alone
 
 
 def _french_gn(spelling, word):
@@ -263,6 +302,13 @@ PRONOUNS_BEFORE_DEI = set("我你他她它们咱还也就都先")
 DEI_VERBS = set("走去来回做学买吃喝跑看上下写说找交给办")
 
 
+NEUTRAL_SECOND = set("""爸爸 妈妈 哥哥 姐姐 弟弟 妹妹 爷爷 奶奶 姥姥 叔叔 舅舅 宝宝 谢谢 看看 说说 试试 想想 听听 走走
+东西 时候 什么 怎么 喜欢 衣服 朋友 学生 多少 麻烦 漂亮 休息 知道 明白 先生 地方 事情 认识 意思 舒服 客气 告诉 名字
+眼睛 耳朵 头发 早上 晚上 屋子 房子 桌子 椅子 孩子 儿子 杯子 包子 饺子 筷子 本子 日子 鼻子 肚子 我们 你们 他们 她们
+咱们 人们 这么 那么 多么 关系 便宜 认得 记得 觉得 晓得 舍得 时间 部分 窗户 豆腐 萝卜 葡萄 玻璃 姑娘 丈夫 媳妇 打扮 打听
+聪明 糊涂 热闹 凉快 暖和 清楚 干净 结实 商量 收拾 招呼 照顾 消息 生意 力气 价钱 规矩 道理 钥匙 太阳 月亮 尾巴""".split())
+
+
 def _corrected(hanzi, tone3, sandhi):
     """Fixes the readings pypinyin's dictionary gets wrong in everyday text.
 
@@ -282,6 +328,10 @@ def _corrected(hanzi, tone3, sandhi):
             out[i] = "shei2"
         elif ch in "一不":
             out[i] = "yi1" if ch == "一" else "bu4"
+    # Words whose second syllable is lexically neutral (not tone sandhi, so shown in every drill).
+    for k in range(len(hanzi) - 1):
+        if hanzi[k:k + 2] in NEUTRAL_SECOND:
+            out[k + 1] = re.sub(r"\d$", "5", out[k + 1])
     if sandhi:
         for i, ch in enumerate(hanzi):
             nxt_tone = int(out[i + 1][-1]) if i + 1 < len(out) and out[i + 1][-1].isdigit() else None

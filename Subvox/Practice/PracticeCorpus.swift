@@ -53,7 +53,7 @@ enum AppLanguage: String, CaseIterable, Identifiable, Codable {
     /// The tag stored on prompts and takes (BCP-47; the script subtag keeps Traditional takes apart).
     var tag: String { rawValue }
     /// The language's name in the interface language ("英文", "anglais"), for sentences in the UI.
-    var localizedName: String { Locale.current.localizedString(forIdentifier: rawValue) ?? name }
+    var localizedName: String { Locale.current.localizedString(forIdentifier: self == .es ? "es-ES" : rawValue) ?? name }
 }
 
 /// Corpus/practice/practice-v1.json, built by Tools/corpus/practice.py with IPA from ml/subvox_ml/ipa.py.
