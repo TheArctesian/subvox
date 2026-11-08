@@ -19,9 +19,11 @@ import re
 from pathlib import Path
 import numpy as np
 from . import camera as camera_input
+from . import ipa
 from .data import RATE, resample
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2  # v2: language tags, speaker status, speaking style, expected/produced phones per take
+SUPPORTED_SCHEMAS = (1, 2)
 SWIFT_EPOCH = datetime.datetime(2001, 1, 1, tzinfo=datetime.timezone.utc)
 MOTION_COLUMNS = ["take_id", "t", "ax", "ay", "az", "rx", "ry", "rz", "gx", "gy", "gz", "qw", "qx", "qy", "qz", "side"]
 CAMERA_COLUMNS = ["take_id", "t"] + camera_input.RAW_NAMES
@@ -30,6 +32,8 @@ SESSION_KEYS = {"schema_version", "app_version", "contributor", "session_id", "a
                 "month", "prompts_version", "takes"}
 TAKE_KEYS = {"take_id", "prompt_id", "passage_id", "mode", "cue_start", "cue_end", "motion_hz", "eligible", "ineligible_reason",
              "camera_coverage", "camera_eligible", "redo_count"}
+TAKE_KEYS_V2 = TAKE_KEYS | {"language", "speaker_status", "first_language", "speaking_style", "expected_phones", "produced_phones"}
+SPEAKING_STYLES = ("natural", "exaggerated")
 HEX_ID = re.compile(r"^0x[0-9A-F]{4}$")
 CONTRIBUTOR = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{1,63}$")
 MAX_SESSION_BYTES = 200 * 1024 * 1024
@@ -117,6 +121,7 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
     data = json.loads((Path(root) / "sentence-training.json").read_text())
     devices = {v["id"]: v.get("motionDevice") for v in data.get("visits", [])}
     kinds = {p_id: p.get("kind", "sentence") for p in data.get("prompts", []) for p_id in [prompt_identity(p["text"])]}
+    speaker = data.get("speaker") or {}
     sessions = {}
     for pair in data.get("pairs", []):
         ids = pair.get("promptIDs") or []
@@ -147,7 +152,11 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
                                   cue_start=recording["cueStart"] - origin, cue_end=recording["cueEnd"] - origin,
                                   motion_hz=native_rate(recording["samples"]),
                                   eligible=reason is None, ineligible_reason=reason, camera_coverage=round(coverage, 4),
-                                  camera_eligible=coverage >= .8, redo_count=None))
+                                  camera_eligible=coverage >= .8, redo_count=None,
+                                  language=pair.get("language") or "en", speaker_status=pair.get("speakerStatus") or speaker.get("status") or "unknown",
+                                  first_language=pair.get("firstLanguage") or speaker.get("firstLanguage"),
+                                  speaking_style=pair.get("speakingStyle") or "natural",
+                                  expected_phones=pair.get("expectedPhones") or expected_phones(pair.get("text", ""), pair.get("language") or "en"), produced_phones=(pair.get("producedPhones") or {}).get(mode)))
         if not takes:
             continue
         times = sorted(r["t"] for r in readings_all)
@@ -201,7 +210,8 @@ def validate_session(folder, index, heldout):
     session = json.loads((folder / "session.json").read_text())
     if set(session) != SESSION_KEYS:
         problems.append(f"session.json keys differ: extra {sorted(set(session) - SESSION_KEYS)}, missing {sorted(SESSION_KEYS - set(session))}")
-    if session.get("schema_version") != SCHEMA_VERSION:
+    version = session.get("schema_version")
+    if version not in SUPPORTED_SCHEMAS:
         problems.append("unsupported schema_version")
     if not re.fullmatch(r"\d{4}-\d{2}", str(session.get("month"))):
         problems.append("month must be YYYY-MM")
@@ -218,9 +228,12 @@ def validate_session(folder, index, heldout):
     takes = [json.loads(line) for line in (folder / "takes.jsonl").read_text().splitlines()]
     ids = set()
     for take in takes:
-        if set(take) != TAKE_KEYS:
-            problems.append(f"take keys differ: {sorted(set(take) ^ TAKE_KEYS)}")
+        expected_keys = TAKE_KEYS_V2 if version == 2 else TAKE_KEYS
+        if set(take) != expected_keys:
+            problems.append(f"take keys differ: {sorted(set(take) ^ expected_keys)}")
             continue
+        if version == 2:
+            problems += language_problems(take)
         ids.add(take["take_id"])
         if take["mode"] not in ("spoken", "mouthed"):
             problems.append(f"bad mode {take['mode']}")
@@ -254,6 +267,44 @@ def validate_session(folder, index, heldout):
     elif set(camera_table.column("take_id").to_pylist()) - ids:
         problems.append("camera rows for unknown takes")
     return problems
+
+
+def language_problems(take):
+    problems = []
+    for key in ("language", "first_language"):
+        if take[key] is None and key == "first_language":
+            continue
+        try:
+            ipa.validate_language_tag(take[key])
+        except ValueError:
+            if key == "language" or not re.fullmatch(r"[a-z]{2,3}(?:-[A-Z]{2})?", str(take[key])):
+                problems.append(f"bad {key} tag {take[key]!r}")
+    if take["speaker_status"] not in ipa.SPEAKER_STATUS:
+        problems.append(f"bad speaker_status {take['speaker_status']!r}")
+    if take["speaking_style"] not in SPEAKING_STYLES:
+        problems.append(f"bad speaking_style {take['speaking_style']!r}")
+    for key in ("expected_phones", "produced_phones"):
+        value = take[key]
+        if value is not None and (not isinstance(value, list) or any(p not in ipa.INVENTORY for p in value)):
+            problems.append(f"{key} must be a list of shared-inventory IPA phones")
+    return problems
+
+
+def training_phones(take):
+    """The label a take trains on (data rule 3): the phones actually produced when a phone check ran;
+    the textbook phones only for a native speaker reading known text; otherwise None (practice only)."""
+    if take.get("produced_phones"):
+        return take["produced_phones"]
+    if take.get("speaker_status") == "native" and take.get("speaking_style") == "natural":
+        return take.get("expected_phones")
+    return None
+
+
+def expected_phones(text, language):
+    try:
+        return ipa.phones(text, ipa.validate_language_tag(language)) if language == "zh" or ipa.espeak_available() else None
+    except (ValueError, RuntimeError):
+        return None
 
 
 def without_takes(folder, drop, destination):

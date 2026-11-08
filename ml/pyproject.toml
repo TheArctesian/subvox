@@ -7,7 +7,9 @@ license = "AGPL-3.0-or-later"
 dependencies = [
     "huggingface-hub>=0.34,<2",
     "numpy>=1.26,<3",
+    "phonemizer>=3.3,<4",
     "pyarrow>=16,<23",
+    "pypinyin>=0.53,<1",
     "torch>=2.5,<3",
 ]
 

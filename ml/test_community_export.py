@@ -5,7 +5,7 @@ import uuid
 from pathlib import Path
 import pyarrow.parquet as pq
 from subvox_ml import camera
-from subvox_ml.community_export import export_sessions, validate_session, load_prompt_index, prompt_identity, MOTION_COLUMNS, CAMERA_COLUMNS
+from subvox_ml.community_export import training_phones, export_sessions, validate_session, load_prompt_index, prompt_identity, MOTION_COLUMNS, CAMERA_COLUMNS
 from test_camera import reading
 
 COMMUNITY = "The cat sat on the mat."
@@ -167,3 +167,42 @@ class UploadTests(Fixture):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LanguageTagTests(Fixture):
+    def takes(self, folder):
+        return [json.loads(l) for l in (folder / "takes.jsonl").read_text().splitlines()]
+
+    def test_takes_carry_language_speaker_and_expected_phones(self):
+        [folder] = self.export()
+        self.assertEqual(json.loads((folder / "session.json").read_text())["schema_version"], 2)
+        for take in self.takes(folder):
+            self.assertEqual((take["language"], take["speaker_status"], take["speaking_style"]), ("en", "unknown", "natural"))
+        community = next(t for t in self.takes(folder) if t["passage_id"] == "book-0001")
+        if community["expected_phones"] is not None:  # needs espeak-ng
+            self.assertEqual(community["expected_phones"][:3], ["ð", "ə", "k"])
+
+    def test_validator_rejects_bad_tags_and_off_inventory_phones(self):
+        [folder] = self.export()
+        takes = self.takes(folder)
+        takes[0].update(language="de", produced_phones=["ʘ"], speaker_status="fluent")
+        (folder / "takes.jsonl").write_text("".join(json.dumps(t) + "\n" for t in takes))
+        problems = validate_session(folder, *load_prompt_index(self.prompts))
+        self.assertTrue(any("language tag" in p for p in problems))
+        self.assertTrue(any("produced_phones" in p for p in problems))
+        self.assertTrue(any("speaker_status" in p for p in problems))
+
+    def test_schema_v1_sessions_still_validate(self):
+        [folder] = self.export()
+        session = json.loads((folder / "session.json").read_text())
+        (folder / "session.json").write_text(json.dumps(dict(session, schema_version=1)))
+        v2_only = ("language", "speaker_status", "first_language", "speaking_style", "expected_phones", "produced_phones")
+        takes = [{k: v for k, v in t.items() if k not in v2_only} for t in self.takes(folder)]
+        (folder / "takes.jsonl").write_text("".join(json.dumps(t) + "\n" for t in takes))
+        self.assertEqual(validate_session(folder, *load_prompt_index(self.prompts)), [])
+
+    def test_learners_train_only_on_produced_phones(self):
+        base = dict(expected_phones=["s", "ɥ", "i"], speaking_style="natural")
+        self.assertIsNone(training_phones(dict(base, speaker_status="learning", produced_phones=None)))
+        self.assertEqual(training_phones(dict(base, speaker_status="learning", produced_phones=["s", "y", "i"])), ["s", "y", "i"])
+        self.assertEqual(training_phones(dict(base, speaker_status="native", produced_phones=None)), ["s", "ɥ", "i"])
