@@ -103,6 +103,18 @@ def entry(text, language):
     return item
 
 
+def traditional(text):
+    """Simplified -> Traditional with Mainland vocabulary kept (OpenCC s2t, not s2tw)."""
+    from opencc import OpenCC
+    return OpenCC("s2t").convert(text)
+
+
+def traditional_title(title, meta):
+    # OpenCC can't tell the measure word 隻 from the adverb 只 out of context.
+    hant = traditional(title)
+    return hant.replace("只", "隻") if meta.get("topic") == "Measure words" else hant
+
+
 def both(value):
     return value if isinstance(value, tuple) else (value, value)
 
@@ -114,9 +126,10 @@ def build(year=2026):
             raise ValueError(f"{title} is not public domain in both the UK and US")
         (title, title_hant), (author, author_hant) = both(title), both(author)
         pieces.append(dict(id=pid, language=language, kind=kind, title=title, title_hant=title_hant, author=author,
-                           author_hant=author_hant, year=published, date=SPOKEN.get(pid),
+                           author_hant=author_hant, year=published, date=SPOKEN.get(pid) or (f"c. {published}" if published < 1000 else None),
                            lines=[entry(line, language) for line in lines]))
-    drills = [dict(id=did, language=language, title=title, phrases=[entry(p, language) for p in phrases], **meta)
+    drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
+                   phrases=[entry(p, language) for p in phrases], **meta)
               for did, language, title, phrases, meta in load_drills()]
     pairs = [dict(language=language, contrast=contrast, sets=[[entry(w, language) for w in group] for group in groups])
              for language, contrast, groups in MINIMAL_PAIRS]

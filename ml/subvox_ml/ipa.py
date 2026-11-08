@@ -188,6 +188,13 @@ def mandarin_syllables(text):
     return out
 
 
+def pinyin_marks(text):
+    """Tone-marked pinyin for display ("yín háng"), read from the Simplified form for context."""
+    from pypinyin import Style, pinyin
+    hanzi = _to_simplified("".join(ch for ch in text if "\u4e00" <= ch <= "\u9fff" or "\u3400" <= ch <= "\u4dbf"))
+    return " ".join(p[0] for p in pinyin(hanzi, style=Style.TONE)) if hanzi else ""
+
+
 def strip_tones(syllables):
     return [re.sub(r"\d", "", s) for s in syllables]
 

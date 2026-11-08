@@ -471,7 +471,9 @@ def main():
         from . import ipa
         language=ipa.validate_language_tag(args.language)
         result=dict(language=language,words=ipa.phonemize(args.text,language))
-        if language=="zh":result["syllables"]=ipa.mandarin_syllables(args.text)
+        if language=="zh":
+            result["syllables"]=ipa.mandarin_syllables(args.text)
+            result["pinyin"]=ipa.pinyin_marks(args.text)
         if args.output:atomic_json(Path(args.output),result)
     elif args.command=="phone-check":
         from .phone_check import check

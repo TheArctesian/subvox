@@ -59,7 +59,10 @@ struct PracticeCorpus: Decodable {
     }
     struct Drill: Decodable, Identifiable, Hashable {
         var id: String; var language: String; var title: String; var phrases: [Line]
+        var titleHant: String? = nil
         var level: String? = nil; var topic: String? = nil; var note: String? = nil
+        enum CodingKeys: String, CodingKey { case id, language, title, phrases, level, topic, note, titleHant = "title_hant" }
+        func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
     }
     struct MinimalPairs: Decodable, Identifiable, Hashable {
         var language: String; var contrast: String; var sets: [[Line]]
@@ -98,15 +101,18 @@ extension PracticeCorpus {
         runtime = SequenceRuntime(root: SentenceStore.directory.appending(path: "SequenceLearning"))
     }
 
-    /// IPA per word for any text (Free Practice), from the same converter the trainer uses.
-    func phones(text: String, language: String) async -> [String]? {
+    struct Reading: Hashable { var ipa: [String]; var pinyin: String? }
+
+    /// IPA per word (and tone-marked pinyin for Chinese) for any text, from the trainer's converter.
+    func phones(text: String, language: String) async -> Reading? {
         try? FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         let output = root.appending(path: "phones-\(UUID()).json")
         defer { try? FileManager.default.removeItem(at: output) }
-        struct Result: Decodable { var words: [[String]] }
+        struct Result: Decodable { var words: [[String]]; var pinyin: String? }
         do {
             try await runtime.run(["phones", "--text", text, "--language", language, "--output", output.path])
-            return try JSONDecoder().decode(Result.self, from: Data(contentsOf: output)).words.map { $0.joined() }
+            let result = try JSONDecoder().decode(Result.self, from: Data(contentsOf: output))
+            return Reading(ipa: result.words.map { $0.joined() }, pinyin: result.pinyin)
         } catch { return nil }
     }
 

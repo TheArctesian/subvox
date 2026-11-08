@@ -530,7 +530,7 @@
    "author": "李白",
    "author_hant": "李白",
    "year": 750,
-   "date": null,
+   "date": "c. 750",
    "lines": [
     {
      "text": "床前明月光，",
@@ -591,7 +591,7 @@
    "author": "孟浩然",
    "author_hant": "孟浩然",
    "year": 730,
-   "date": null,
+   "date": "c. 730",
    "lines": [
     {
      "text": "春眠不觉晓，",
@@ -649,6 +649,7 @@
    "id": "fr-etre-present",
    "language": "fr",
    "title": "être — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je suis français",
@@ -716,6 +717,7 @@
    "id": "fr-avoir-present",
    "language": "fr",
    "title": "avoir — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "j'ai faim",
@@ -787,6 +789,7 @@
    "id": "fr-aller-faire-present",
    "language": "fr",
    "title": "aller and faire — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je vais bien",
@@ -859,6 +862,7 @@
    "id": "fr-pouvoir-vouloir-present",
    "language": "fr",
    "title": "pouvoir and vouloir — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je peux venir",
@@ -936,6 +940,7 @@
    "id": "fr-regular-verbs-present",
    "language": "fr",
    "title": "Regular -er, -ir, -re verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je parle français",
@@ -1012,6 +1017,7 @@
    "id": "fr-reflexive-verbs",
    "language": "fr",
    "title": "Reflexive verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je me lève à sept heures",
@@ -1084,6 +1090,7 @@
    "id": "fr-passe-compose",
    "language": "fr",
    "title": "Passé composé — avoir vs être",
+   "title_hant": null,
    "phrases": [
     {
      "text": "j'ai mangé",
@@ -1165,6 +1172,7 @@
    "id": "fr-imparfait",
    "language": "fr",
    "title": "Imparfait",
+   "title_hant": null,
    "phrases": [
     {
      "text": "j'étais fatigué",
@@ -1224,6 +1232,7 @@
    "id": "fr-futur",
    "language": "fr",
    "title": "Futur proche and futur simple",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je vais partir",
@@ -1291,6 +1300,7 @@
    "id": "fr-conditionnel",
    "language": "fr",
    "title": "Conditional",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je voudrais un café",
@@ -1358,6 +1368,7 @@
    "id": "fr-subjonctif",
    "language": "fr",
    "title": "Subjunctive triggers",
+   "title_hant": null,
    "phrases": [
     {
      "text": "il faut que je parte",
@@ -1441,6 +1452,7 @@
    "id": "fr-negation",
    "language": "fr",
    "title": "Negation: ne…pas / jamais / rien / plus",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je ne sais pas",
@@ -1516,6 +1528,7 @@
    "id": "fr-questions",
    "language": "fr",
    "title": "Questions: est-ce que, inversion, interrogatives",
+   "title_hant": null,
    "phrases": [
     {
      "text": "tu viens",
@@ -1589,6 +1602,7 @@
    "id": "fr-pronoms-simples",
    "language": "fr",
    "title": "Object pronouns: le/la/les, y, en",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je le vois",
@@ -1662,6 +1676,7 @@
    "id": "fr-pronoms-ordre",
    "language": "fr",
    "title": "Pronoun order: me/te + le, le + lui, y + en",
+   "title_hant": null,
    "phrases": [
     {
      "text": "je le lui donne",
@@ -1735,6 +1750,7 @@
    "id": "fr-accord",
    "language": "fr",
    "title": "Gender, number and possessives",
+   "title_hant": null,
    "phrases": [
     {
      "text": "un petit garçon",
@@ -1807,6 +1823,7 @@
    "id": "fr-partitif",
    "language": "fr",
    "title": "Partitive articles: du, de la, de l', des",
+   "title_hant": null,
    "phrases": [
     {
      "text": "du pain",
@@ -1875,6 +1892,7 @@
    "id": "fr-prepositions",
    "language": "fr",
    "title": "à and de, contractions au/du/aux/des",
+   "title_hant": null,
    "phrases": [
     {
      "text": "au marché",
@@ -1944,6 +1962,7 @@
    "id": "fr-nombres-heure",
    "language": "fr",
    "title": "Numbers, time and dates",
+   "title_hant": null,
    "phrases": [
     {
      "text": "vingt et un",
@@ -2017,6 +2036,7 @@
    "id": "fr-liaison-elision",
    "language": "fr",
    "title": "Liaison and elision",
+   "title_hant": null,
    "phrases": [
     {
      "text": "les amis",
@@ -2079,6 +2099,7 @@
    "id": "fr-imperatif",
    "language": "fr",
    "title": "Imperative",
+   "title_hant": null,
    "phrases": [
     {
      "text": "parle plus lentement",
@@ -2149,6 +2170,7 @@
    "id": "fr-comparatifs",
    "language": "fr",
    "title": "Comparatives and superlatives",
+   "title_hant": null,
    "phrases": [
     {
      "text": "plus grand que moi",
@@ -2219,6 +2241,7 @@
    "id": "fr-relatifs",
    "language": "fr",
    "title": "Relative pronouns: qui, que, où",
+   "title_hant": null,
    "phrases": [
     {
      "text": "l'homme qui parle",
@@ -2298,6 +2321,7 @@
    "id": "es-ser-estar",
    "language": "es",
    "title": "ser vs estar",
+   "title_hant": null,
    "phrases": [
     {
      "text": "soy alto",
@@ -2367,6 +2391,7 @@
    "id": "es-ser-present",
    "language": "es",
    "title": "ser — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "yo soy médico",
@@ -2437,6 +2462,7 @@
    "id": "es-tener-present",
    "language": "es",
    "title": "tener — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "tengo hambre",
@@ -2493,6 +2519,7 @@
    "id": "es-ir-hacer-present",
    "language": "es",
    "title": "ir and hacer — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "voy al trabajo",
@@ -2559,6 +2586,7 @@
    "id": "es-poder-querer-present",
    "language": "es",
    "title": "poder and querer — present",
+   "title_hant": null,
    "phrases": [
     {
      "text": "puedo ayudarte",
@@ -2621,6 +2649,7 @@
    "id": "es-regular-verbs",
    "language": "es",
    "title": "Regular -ar, -er, -ir verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "hablo español",
@@ -2684,6 +2713,7 @@
    "id": "es-reflexive",
    "language": "es",
    "title": "Reflexive verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "me levanto temprano",
@@ -2754,6 +2784,7 @@
    "id": "es-perfecto-indefinido",
    "language": "es",
    "title": "Pretérito perfecto vs indefinido",
+   "title_hant": null,
    "phrases": [
     {
      "text": "he comido",
@@ -2817,6 +2848,7 @@
    "id": "es-imperfecto",
    "language": "es",
    "title": "Imperfecto",
+   "title_hant": null,
    "phrases": [
     {
      "text": "era pequeño",
@@ -2873,6 +2905,7 @@
    "id": "es-futuro",
    "language": "es",
    "title": "ir a + infinitive and futuro simple",
+   "title_hant": null,
    "phrases": [
     {
      "text": "voy a salir",
@@ -2936,6 +2969,7 @@
    "id": "es-condicional",
    "language": "es",
    "title": "Conditional",
+   "title_hant": null,
    "phrases": [
     {
      "text": "me gustaría un café",
@@ -2993,6 +3027,7 @@
    "id": "es-subjuntivo",
    "language": "es",
    "title": "Subjunctive triggers",
+   "title_hant": null,
    "phrases": [
     {
      "text": "quiero que vengas",
@@ -3064,6 +3099,7 @@
    "id": "es-negacion",
    "language": "es",
    "title": "Negation: no, nunca, nada, nadie",
+   "title_hant": null,
    "phrases": [
     {
      "text": "no sé",
@@ -3131,6 +3167,7 @@
    "id": "es-preguntas",
    "language": "es",
    "title": "Question words",
+   "title_hant": null,
    "phrases": [
     {
      "text": "¿cómo te llamas?",
@@ -3200,6 +3237,7 @@
    "id": "es-pronombres-objeto",
    "language": "es",
    "title": "Direct and indirect object pronouns",
+   "title_hant": null,
    "phrases": [
     {
      "text": "lo veo",
@@ -3267,6 +3305,7 @@
    "id": "es-pronombres-orden",
    "language": "es",
    "title": "Pronoun order: se lo, me lo",
+   "title_hant": null,
    "phrases": [
     {
      "text": "se lo doy",
@@ -3343,6 +3382,7 @@
    "id": "es-concordancia",
    "language": "es",
    "title": "Gender, number and possessives",
+   "title_hant": null,
    "phrases": [
     {
      "text": "el niño pequeño",
@@ -3416,6 +3456,7 @@
    "id": "es-por-para",
    "language": "es",
    "title": "por vs para",
+   "title_hant": null,
    "phrases": [
     {
      "text": "por la mañana",
@@ -3490,6 +3531,7 @@
    "id": "es-numeros-hora",
    "language": "es",
    "title": "Numbers, time and dates",
+   "title_hant": null,
    "phrases": [
     {
      "text": "son las ocho",
@@ -3565,6 +3607,7 @@
    "id": "es-acento-tilde",
    "language": "es",
    "title": "Stress shifts and tilde pairs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "mi papá come papas",
@@ -3645,6 +3688,7 @@
    "id": "es-gustar",
    "language": "es",
    "title": "gustar and similar verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "me gusta el café",
@@ -3718,6 +3762,7 @@
    "id": "es-imperativo",
    "language": "es",
    "title": "Imperative (tú)",
+   "title_hant": null,
    "phrases": [
     {
      "text": "habla más despacio",
@@ -3783,6 +3828,7 @@
    "id": "es-comparativos",
    "language": "es",
    "title": "Comparatives and superlatives",
+   "title_hant": null,
    "phrases": [
     {
      "text": "más alto que yo",
@@ -3854,6 +3900,7 @@
    "id": "zh-shi-basic",
    "language": "zh",
    "title": "是 — A is B",
+   "title_hant": "是 — A is B",
    "phrases": [
     {
      "text": "我是学生",
@@ -3958,6 +4005,7 @@
    "id": "zh-you-meiyou",
    "language": "zh",
    "title": "有 / 没有 — have, there is",
+   "title_hant": "有 / 沒有 — have, there is",
    "phrases": [
     {
      "text": "我有一个哥哥",
@@ -4067,6 +4115,7 @@
    "id": "zh-pronouns-men",
    "language": "zh",
    "title": "Pronouns and plural 们",
+   "title_hant": "Pronouns and plural 們",
    "phrases": [
     {
      "text": "我们",
@@ -4139,6 +4188,7 @@
    "id": "zh-zai-location",
    "language": "zh",
    "title": "在 — be located",
+   "title_hant": "在 — be located",
    "phrases": [
     {
      "text": "我在家",
@@ -4242,6 +4292,7 @@
    "id": "zh-hen-adjective",
    "language": "zh",
    "title": "Adjectives with 很",
+   "title_hant": "Adjectives with 很",
    "phrases": [
     {
      "text": "我很忙",
@@ -4338,6 +4389,7 @@
    "id": "zh-want-like",
    "language": "zh",
    "title": "想 / 要 / 喜欢 + verb",
+   "title_hant": "想 / 要 / 喜歡 + verb",
    "phrases": [
     {
      "text": "我想喝茶",
@@ -4445,6 +4497,7 @@
    "id": "zh-demonstratives",
    "language": "zh",
    "title": "这 / 那 / 哪 — this, that, which",
+   "title_hant": "這 / 那 / 哪 — this, that, which",
    "phrases": [
     {
      "text": "这个",
@@ -4531,6 +4584,7 @@
    "id": "zh-age-family",
    "language": "zh",
    "title": "Age and family",
+   "title_hant": "Age and family",
    "phrases": [
     {
      "text": "我今年三十岁",
@@ -4630,6 +4684,7 @@
    "id": "zh-de-possession",
    "language": "zh",
    "title": "的 — possession",
+   "title_hant": "的 — possession",
    "phrases": [
     {
      "text": "我的书",
@@ -4732,6 +4787,7 @@
    "id": "zh-de-modifying",
    "language": "zh",
    "title": "的 — modifying a noun",
+   "title_hant": "的 — modifying a noun",
    "phrases": [
     {
      "text": "红的苹果",
@@ -4837,6 +4893,7 @@
    "id": "zh-mw-basic",
    "language": "zh",
    "title": "个 本 张 杯",
+   "title_hant": "個 本 張 杯",
    "phrases": [
     {
      "text": "一个人",
@@ -4931,6 +4988,7 @@
    "id": "zh-mw-more",
    "language": "zh",
    "title": "只 件 条 双 辆 把",
+   "title_hant": "隻 件 條 雙 輛 把",
    "phrases": [
     {
      "text": "一只猫",
@@ -5024,6 +5082,7 @@
    "id": "zh-mw-demonstrative",
    "language": "zh",
    "title": "这 / 那 + number + measure word",
+   "title_hant": "這 / 那 + number + measure word",
    "phrases": [
     {
      "text": "这个人",
@@ -5118,6 +5177,7 @@
    "id": "zh-mw-quantity",
    "language": "zh",
    "title": "一点儿 一些 一碗 一块",
+   "title_hant": "一點兒 一些 一碗 一塊",
    "phrases": [
     {
      "text": "一点儿",
@@ -5212,6 +5272,7 @@
    "id": "zh-le-completion",
    "language": "zh",
    "title": "了 — completed action",
+   "title_hant": "了 — completed action",
    "phrases": [
     {
      "text": "我吃了",
@@ -5307,6 +5368,7 @@
    "id": "zh-le-change",
    "language": "zh",
    "title": "了 — change of state",
+   "title_hant": "了 — change of state",
    "phrases": [
     {
      "text": "下雨了",
@@ -5408,6 +5470,7 @@
    "id": "zh-guo-experience",
    "language": "zh",
    "title": "过 — have ever done",
+   "title_hant": "過 — have ever done",
    "phrases": [
     {
      "text": "我去过中国",
@@ -5517,6 +5580,7 @@
    "id": "zh-zai-progressive",
    "language": "zh",
    "title": "在 / 正在 — in progress",
+   "title_hant": "在 / 正在 — in progress",
    "phrases": [
     {
      "text": "我在吃饭",
@@ -5625,6 +5689,7 @@
    "id": "zh-zhe-continuous",
    "language": "zh",
    "title": "着 — continuing state",
+   "title_hant": "着 — continuing state",
    "phrases": [
     {
      "text": "门开着",
@@ -5734,6 +5799,7 @@
    "id": "zh-aspect-contrast",
    "language": "zh",
    "title": "了 / 过 / 在 compared",
+   "title_hant": "了 / 過 / 在 compared",
    "phrases": [
     {
      "text": "我写了信",
@@ -5813,6 +5879,7 @@
    "id": "zh-bu-vs-mei",
    "language": "zh",
    "title": "不 vs 没",
+   "title_hant": "不 vs 沒",
    "phrases": [
     {
      "text": "我不去",
@@ -5910,6 +5977,7 @@
    "id": "zh-ma-questions",
    "language": "zh",
    "title": "吗 questions",
+   "title_hant": "嗎 questions",
    "phrases": [
     {
      "text": "你好吗",
@@ -6012,6 +6080,7 @@
    "id": "zh-a-not-a",
    "language": "zh",
    "title": "A-not-A questions",
+   "title_hant": "A-not-A questions",
    "phrases": [
     {
      "text": "你是不是学生",
@@ -6116,6 +6185,7 @@
    "id": "zh-question-words-1",
    "language": "zh",
    "title": "Question words 什么 谁 哪儿 几 多少",
+   "title_hant": "Question words 什麼 誰 哪兒 幾 多少",
    "phrases": [
     {
      "text": "这是什么",
@@ -6220,6 +6290,7 @@
    "id": "zh-question-words-2",
    "language": "zh",
    "title": "More question words",
+   "title_hant": "More question words",
    "phrases": [
     {
      "text": "今天怎么样",
@@ -6326,6 +6397,7 @@
    "id": "zh-particles-ne-ba",
    "language": "zh",
    "title": "呢 and 吧",
+   "title_hant": "呢 and 吧",
    "phrases": [
     {
      "text": "你呢",
@@ -6412,6 +6484,7 @@
    "id": "zh-bie-buyong",
    "language": "zh",
    "title": "别 / 不要 / 不用 — don't",
+   "title_hant": "別 / 不要 / 不用 — don't",
    "phrases": [
     {
      "text": "别走",
@@ -6505,6 +6578,7 @@
    "id": "zh-result-complement",
    "language": "zh",
    "title": "Resultative — 看完, 听懂",
+   "title_hant": "Resultative — 看完, 聽懂",
    "phrases": [
     {
      "text": "我看完了",
@@ -6608,6 +6682,7 @@
    "id": "zh-result-negative",
    "language": "zh",
    "title": "Resultative — negative with 没",
+   "title_hant": "Resultative — negative with 沒",
    "phrases": [
     {
      "text": "我没听懂",
@@ -6699,6 +6774,7 @@
    "id": "zh-directional-complement",
    "language": "zh",
    "title": "Directional — 进来, 出去",
+   "title_hant": "Directional — 進來, 出去",
    "phrases": [
     {
      "text": "请进来",
@@ -6802,6 +6878,7 @@
    "id": "zh-potential-complement",
    "language": "zh",
    "title": "Potential — 听得懂 / 听不懂",
+   "title_hant": "Potential — 聽得懂 / 聽不懂",
    "phrases": [
     {
      "text": "听得懂",
@@ -6898,6 +6975,7 @@
    "id": "zh-degree-complement",
    "language": "zh",
    "title": "Degree — 得",
+   "title_hant": "Degree — 得",
    "phrases": [
     {
      "text": "他跑得很快",
@@ -7012,6 +7090,7 @@
    "id": "zh-duration-frequency",
    "language": "zh",
    "title": "Duration and frequency",
+   "title_hant": "Duration and frequency",
    "phrases": [
     {
      "text": "我学了两年中文",
@@ -7120,6 +7199,7 @@
    "id": "zh-ba-construction",
    "language": "zh",
    "title": "把 sentences",
+   "title_hant": "把 sentences",
    "phrases": [
     {
      "text": "我把书放在桌子上",
@@ -7241,6 +7321,7 @@
    "id": "zh-bei-passive",
    "language": "zh",
    "title": "被 passive",
+   "title_hant": "被 passive",
    "phrases": [
     {
      "text": "我的自行车被偷了",
@@ -7363,6 +7444,7 @@
    "id": "zh-bi-comparison",
    "language": "zh",
    "title": "比 — comparison",
+   "title_hant": "比 — comparison",
    "phrases": [
     {
      "text": "我比他高",
@@ -7480,6 +7562,7 @@
    "id": "zh-meiyou-comparison",
    "language": "zh",
    "title": "没有…那么 — not as … as",
+   "title_hant": "沒有…那麼 — not as … as",
    "phrases": [
     {
      "text": "我没有他高",
@@ -7607,6 +7690,7 @@
    "id": "zh-yiyang",
    "language": "zh",
    "title": "跟 / 和…一样 — same as",
+   "title_hant": "跟 / 和…一樣 — same as",
    "phrases": [
     {
      "text": "我跟你一样高",
@@ -7690,6 +7774,7 @@
    "id": "zh-shi-de",
    "language": "zh",
    "title": "是…的 — when, how, where",
+   "title_hant": "是…的 — when, how, where",
    "phrases": [
     {
      "text": "我是昨天来的",
@@ -7815,6 +7900,7 @@
    "id": "zh-modals-hui-neng-keyi",
    "language": "zh",
    "title": "会 / 能 / 可以",
+   "title_hant": "會 / 能 / 可以",
    "phrases": [
     {
      "text": "我会说中文",
@@ -7924,6 +8010,7 @@
    "id": "zh-should-must",
    "language": "zh",
    "title": "应该 / 得 / 必须",
+   "title_hant": "應該 / 得 / 必須",
    "phrases": [
     {
      "text": "你应该多喝水",
@@ -8012,6 +8099,7 @@
    "id": "zh-time-word-order",
    "language": "zh",
    "title": "Time words before the verb",
+   "title_hant": "Time words before the verb",
    "phrases": [
     {
      "text": "我明天去北京",
@@ -8133,6 +8221,7 @@
    "id": "zh-coverbs",
    "language": "zh",
    "title": "在 / 从 / 到 / 给 / 跟 + verb",
+   "title_hant": "在 / 從 / 到 / 給 / 跟 + verb",
    "phrases": [
     {
      "text": "我在家吃饭",
@@ -8247,6 +8336,7 @@
    "id": "zh-connectors",
    "language": "zh",
    "title": "Linking clauses",
+   "title_hant": "Linking clauses",
    "phrases": [
     {
      "text": "因为下雨，所以我没去",
@@ -8378,6 +8468,7 @@
    "id": "zh-youdian-yidianer",
    "language": "zh",
    "title": "有点儿 vs 一点儿",
+   "title_hant": "有點兒 vs 一點兒",
    "phrases": [
     {
      "text": "有点儿贵",
@@ -8474,6 +8565,7 @@
    "id": "zh-adverbs-ye-dou",
    "language": "zh",
    "title": "也 / 都 / 还 adverbs",
+   "title_hant": "也 / 都 / 還 adverbs",
    "phrases": [
     {
      "text": "我也是学生",
@@ -8582,6 +8674,7 @@
    "id": "zh-distance-direction",
    "language": "zh",
    "title": "离 / 从…到 / 往",
+   "title_hant": "離 / 從…到 / 往",
    "phrases": [
     {
      "text": "我家离学校很近",
@@ -8694,6 +8787,7 @@
    "id": "zh-numbers-1-100",
    "language": "zh",
    "title": "Numbers 1–100",
+   "title_hant": "Numbers 1–100",
    "phrases": [
     {
      "text": "一二三四五",
@@ -8789,6 +8883,7 @@
    "id": "zh-numbers-large",
    "language": "zh",
    "title": "Hundreds, thousands, 万",
+   "title_hant": "Hundreds, thousands, 萬",
    "phrases": [
     {
      "text": "一百零五",
@@ -8882,6 +8977,7 @@
    "id": "zh-money",
    "language": "zh",
    "title": "Money and prices",
+   "title_hant": "Money and prices",
    "phrases": [
     {
      "text": "一块钱",
@@ -8986,6 +9082,7 @@
    "id": "zh-dates",
    "language": "zh",
    "title": "Dates and weekdays",
+   "title_hant": "Dates and weekdays",
    "phrases": [
     {
      "text": "今天几月几号",
@@ -9088,6 +9185,7 @@
    "id": "zh-clock-time",
    "language": "zh",
    "title": "Telling the time",
+   "title_hant": "Telling the time",
    "phrases": [
     {
      "text": "现在几点",
@@ -9192,6 +9290,7 @@
    "id": "zh-time-words",
    "language": "zh",
    "title": "Day, week and year words",
+   "title_hant": "Day, week and year words",
    "phrases": [
     {
      "text": "前天",
@@ -9278,6 +9377,7 @@
    "id": "zh-tone-pairs-1",
    "language": "zh",
    "title": "Tone pairs: first tone + any",
+   "title_hant": "Tone pairs: first tone + any",
    "phrases": [
     {
      "text": "今天",
@@ -9334,6 +9434,7 @@
    "id": "zh-tone-pairs-2",
    "language": "zh",
    "title": "Tone pairs: second tone + any",
+   "title_hant": "Tone pairs: second tone + any",
    "phrases": [
     {
      "text": "明天",
@@ -9390,6 +9491,7 @@
    "id": "zh-tone-pairs-3",
    "language": "zh",
    "title": "Tone pairs: third tone + any",
+   "title_hant": "Tone pairs: third tone + any",
    "phrases": [
     {
      "text": "北京",
@@ -9446,6 +9548,7 @@
    "id": "zh-tone-pairs-4",
    "language": "zh",
    "title": "Tone pairs: fourth tone + any",
+   "title_hant": "Tone pairs: fourth tone + any",
    "phrases": [
     {
      "text": "汽车",
@@ -9502,6 +9605,7 @@
    "id": "zh-tone3-sandhi",
    "language": "zh",
    "title": "Third-tone sandhi",
+   "title_hant": "Third-tone sandhi",
    "phrases": [
     {
      "text": "你好",
@@ -9577,6 +9681,7 @@
    "id": "zh-yi-tone-change",
    "language": "zh",
    "title": "一 tone changes",
+   "title_hant": "一 tone changes",
    "phrases": [
     {
      "text": "一天",
@@ -9651,6 +9756,7 @@
    "id": "zh-bu-tone-change",
    "language": "zh",
    "title": "不 tone changes",
+   "title_hant": "不 tone changes",
    "phrases": [
     {
      "text": "不吃",
@@ -9725,6 +9831,7 @@
    "id": "en-be-have-do",
    "language": "en",
    "title": "be, have and do",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I am a teacher.",
@@ -9811,6 +9918,7 @@
    "id": "en-present-simple-vs-continuous",
    "language": "en",
    "title": "Present simple vs present continuous",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I work in a bank.",
@@ -9899,6 +10007,7 @@
    "id": "en-past-irregular",
    "language": "en",
    "title": "Past simple: common irregular verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I went to the market.",
@@ -9989,6 +10098,7 @@
    "id": "en-present-perfect-vs-past",
    "language": "en",
    "title": "Present perfect vs past simple",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I've lived here for ten years.",
@@ -10083,6 +10193,7 @@
    "id": "en-future-will-going-to",
    "language": "en",
    "title": "Future: will and going to",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I'll help you with that.",
@@ -10180,6 +10291,7 @@
    "id": "en-modals",
    "language": "en",
    "title": "Modal verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I can swim.",
@@ -10268,6 +10380,7 @@
    "id": "en-conditionals-0-1-2",
    "language": "en",
    "title": "Conditionals 0, 1 and 2",
+   "title_hant": null,
    "phrases": [
     {
      "text": "If you heat ice, it melts.",
@@ -10374,6 +10487,7 @@
    "id": "en-do-support-questions",
    "language": "en",
    "title": "Questions with do, does and did",
+   "title_hant": null,
    "phrases": [
     {
      "text": "Do you like coffee?",
@@ -10460,6 +10574,7 @@
    "id": "en-tag-questions",
    "language": "en",
    "title": "Tag questions",
+   "title_hant": null,
    "phrases": [
     {
      "text": "It's cold, isn't it?",
@@ -10549,6 +10664,7 @@
    "id": "en-comparatives-superlatives",
    "language": "en",
    "title": "Comparatives and superlatives",
+   "title_hant": null,
    "phrases": [
     {
      "text": "This bag is cheaper than that one.",
@@ -10647,6 +10763,7 @@
    "id": "en-articles",
    "language": "en",
    "title": "Articles: a, an, the and none",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I have a dog.",
@@ -10732,6 +10849,7 @@
    "id": "en-phrasal-verbs",
    "language": "en",
    "title": "Common phrasal verbs",
+   "title_hant": null,
    "phrases": [
     {
      "text": "Please turn on the light.",
@@ -10816,6 +10934,7 @@
    "id": "en-weak-forms",
    "language": "en",
    "title": "Weak forms",
+   "title_hant": null,
    "phrases": [
     {
      "text": "I can come at six.",
@@ -10899,6 +11018,7 @@
    "id": "en-ed-endings",
    "language": "en",
    "title": "-ed endings: /t/ /d/ /ɪd/",
+   "title_hant": null,
    "phrases": [
     {
      "text": "She walked home.",
@@ -10977,6 +11097,7 @@
    "id": "en-s-endings",
    "language": "en",
    "title": "-s endings: /s/ /z/ /ɪz/",
+   "title_hant": null,
    "phrases": [
     {
      "text": "He walks and talks.",
@@ -11055,6 +11176,7 @@
    "id": "en-word-stress-pairs",
    "language": "en",
    "title": "Word stress: noun vs verb",
+   "title_hant": null,
    "phrases": [
     {
      "text": "Keep a record of it.",

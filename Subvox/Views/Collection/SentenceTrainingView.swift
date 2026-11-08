@@ -56,7 +56,10 @@ struct SentenceTrainingView: View {
                     Text("Record").tag(Section.record)
                     Text("Review" + (attentionCount > 0 ? " (\(attentionCount))" : "")).tag(Section.review)
                     Text("Progress").tag(Section.progress)
-                }.pickerStyle(.segmented).labelsHidden().frame(maxWidth: 460).padding(.top, 20)
+                }.pickerStyle(.segmented).labelsHidden().frame(maxWidth: 460).padding(.vertical, 12)
+                    // The scroll view below can draw past its top edge on macOS 26; an opaque bar
+                    // drawn above it keeps scrolled text from showing through the section picker.
+                    .frame(maxWidth: .infinity).background(Color(nsColor: .windowBackgroundColor)).zIndex(1)
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 24) {
                         if let error = workflow.error { Text(error).foregroundStyle(.red) }

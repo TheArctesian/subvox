@@ -311,12 +311,12 @@ struct LanguagePracticeView: View {
                      mode: .drill) {
             Picker("Drill", selection: Binding(get: { drill?.id }, set: { selection = $0 })) {
                 if topics.isEmpty {
-                    ForEach(drills) { Text($0.title).tag(Optional($0.id)) }
+                    ForEach(drills) { Text($0.title(language)).tag(Optional($0.id)) }
                 } else {
                     ForEach(topics, id: \.self) { topic in
                         Section(topic) {
                             ForEach(drills.filter { $0.topic == topic }) { d in
-                                Text(d.level.map { "\(d.title) · \($0)" } ?? d.title).tag(Optional(d.id))
+                                Text(d.level.map { "\(d.title(language)) · \($0)" } ?? d.title(language)).tag(Optional(d.id))
                             }
                         }
                     }
@@ -399,7 +399,7 @@ struct FreePracticeView: View {
     @Environment(AppModel.self) private var model
     @AppStorage("practice.free.text") private var text = ""
     @AppStorage("practice.showIPA") private var showIPA = true
-    @State private var ipa: [String: [String]] = [:]
+    @State private var readings: [String: PracticeChecker.Reading] = [:]
 
     /// One take per sentence, so a long passage is broken into speakable pieces.
     static func sentences(_ text: String) -> [String] {
@@ -432,11 +432,14 @@ struct FreePracticeView: View {
                     .accessibilityLabel("Practice text")
                 Text(sentences.isEmpty ? "Each sentence becomes one take." : "\(sentences.count) sentence\(sentences.count == 1 ? "" : "s"). A take trains only when Whisper agrees with at least 85% of it; otherwise it stays practice.")
                     .font(.caption).foregroundStyle(.secondary)
-                if showIPA && !sentences.isEmpty {
-                    VStack(alignment: .leading, spacing: 6) {
+                if !sentences.isEmpty && (showIPA || language.isChinese) {
+                    VStack(alignment: .leading, spacing: 8) {
                         ForEach(sentences, id: \.self) { s in
-                            if let words = ipa[language.tag + s] {
-                                Text("/" + words.joined(separator: " ") + "/").foregroundStyle(.secondary).textSelection(.enabled)
+                            if let reading = readings[language.tag + s] {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    if let pinyin = reading.pinyin, !pinyin.isEmpty { Text(pinyin).foregroundStyle(.secondary) }
+                                    if showIPA { Text("/" + reading.ipa.joined(separator: " ") + "/").foregroundStyle(.secondary) }
+                                }.textSelection(.enabled)
                             }
                         }
                     }
@@ -444,11 +447,11 @@ struct FreePracticeView: View {
             }
         }
         .task(id: "\(showIPA)|\(language.tag)|\(text)") {
-            guard showIPA else { return }
+            guard showIPA || language.isChinese else { return }
             try? await Task.sleep(for: .milliseconds(700))  // wait for typing to pause
-            for s in sentences where ipa[language.tag + s] == nil {
+            for s in sentences where readings[language.tag + s] == nil {
                 guard !Task.isCancelled else { return }
-                if let words = await model.practiceChecker.phones(text: s, language: language.tag) { ipa[language.tag + s] = words }
+                if let reading = await model.practiceChecker.phones(text: s, language: language.tag) { readings[language.tag + s] = reading }
             }
         }
     }
