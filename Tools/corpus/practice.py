@@ -130,6 +130,8 @@ def entry(text, language, sandhi=False, accent=None):
     if language == "zh":
         item["hant"] = hant or text
         item["pinyin"] = ipa.pinyin_marks(text, sandhi)
+        from pypinyin.style.bopomofo import BopomofoConverter
+        item["zhuyin"] = " ".join(BopomofoConverter().to_bopomofo(p) for p in item["pinyin"].split())
     return item
 
 

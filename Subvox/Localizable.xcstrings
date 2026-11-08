@@ -9,6 +9,12 @@
             "value": " · %lld %% de las palabras reconocidas"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · %lld %% de las palabras reconocidas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -37,6 +43,12 @@
             "value": "%@ añadido"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ agregado"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -60,6 +72,12 @@
     "%@ · %@. Public domain in the UK and US.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %@. Dominio público en el Reino Unido y EE. UU."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%@ · %@. Dominio público en el Reino Unido y EE. UU."
@@ -93,6 +111,12 @@
             "value": "%@, %@, %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, %@, %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -116,6 +140,12 @@
     "%@: %@": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%@: %@"
@@ -149,6 +179,12 @@
             "value": "%lld %@ · unos %lld min"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld %@ · unos %lld min"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -172,6 +208,12 @@
     "%lld days in a row": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld días seguidos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld días seguidos"
@@ -205,6 +247,12 @@
             "value": "%lld de %lld"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -228,6 +276,12 @@
     "%lld of %lld kept for training": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld conservadas para el entrenamiento"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld de %lld conservadas para el entrenamiento"
@@ -261,6 +315,12 @@
             "value": "%lld de %lld frases grabadas"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld frases grabadas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -284,6 +344,12 @@
     "%lld of %lld sentences reserved for the final test": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld frases reservadas para la prueba final"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld de %lld frases reservadas para la prueba final"
@@ -317,6 +383,12 @@
             "value": "%lld de %lld sonidos practicados"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld sonidos practicados"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -340,6 +412,12 @@
     "%lld of %lld takes": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld tomas"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld de %lld tomas"
@@ -373,6 +451,12 @@
             "value": "%lld de %lld palabras de validación tenían límites y pronunciaciones utilizables."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld palabras de validación tenían límites y pronunciaciones utilizables."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -396,6 +480,12 @@
     "%lld pairs need attention; usable recordings are included automatically": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld pares requieren atención; las grabaciones utilizables se incluyen automáticamente"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld pares requieren atención; las grabaciones utilizables se incluyen automáticamente"
@@ -429,6 +519,12 @@
             "value": "%lld pasajes por sesión"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld pasajes por sesión"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -452,6 +548,12 @@
     "%lld sentences recorded": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld frases grabadas"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld frases grabadas"
@@ -485,6 +587,12 @@
             "value": "%lld frases. Una toma solo se usa para entrenar si Whisper coincide con al menos el 85 %% de su contenido; si no, queda como práctica."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld frases. Una toma solo se usa para entrenar si Whisper coincide con al menos el 85 %% de su contenido; si no, queda como práctica."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -508,6 +616,12 @@
     "%lld tries today": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld intentos hoy"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld intentos hoy"
@@ -541,6 +655,12 @@
             "value": ", practicado"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ", practicado"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -564,6 +684,12 @@
     "/%@/": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/%@/"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "/%@/"
@@ -597,6 +723,12 @@
             "value": "/%@/  %lld/4"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/%@/  %lld/4"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -620,6 +752,12 @@
     "1 day in a row": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 día seguido"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "1 día seguido"
@@ -653,6 +791,12 @@
             "value": "1 frase. Una toma solo se usa para entrenar si Whisper coincide con al menos el 85 %% de su contenido; si no, queda como práctica."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 frase. Una toma solo se usa para entrenar si Whisper coincide con al menos el 85 %% de su contenido; si no, queda como práctica."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -676,6 +820,12 @@
     "1 try today": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 intento hoy"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "1 intento hoy"
@@ -709,6 +859,12 @@
             "value": "; el texto escrito requiere 85 %"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "; el texto escrito requiere 85 %"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -735,6 +891,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Añadir: %@"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregar: %@"
           }
         },
         "fr": {
@@ -765,6 +927,12 @@
             "value": "Añadir un banco conserva las grabaciones existentes y reserva el 25 % del corpus ampliado para la prueba final."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregar un banco conserva las grabaciones existentes y reserva el 25 % del corpus ampliado para la prueba final."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -788,6 +956,12 @@
     "Advanced": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avanzado"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Avanzado"
@@ -821,6 +995,12 @@
             "value": "Herramientas avanzadas para investigadores"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herramientas avanzadas para investigadores"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -849,6 +1029,12 @@
             "value": "AirPods y micrófono: abrir Dispositivos"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods y micrófono: abrir Dispositivos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -864,7 +1050,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "AirPods 與麥克風：打開「裝置」"
+            "value": "AirPods 與麥克風：開啟「裝置」"
           }
         }
       }
@@ -872,6 +1058,12 @@
     "AirPods connected · allow Motion access": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods conectados · permite el acceso al movimiento"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "AirPods conectados · permite el acceso al movimiento"
@@ -905,6 +1097,12 @@
             "value": "AirPods conectados · aún sin movimiento"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirPods conectados · aún sin movimiento"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -928,6 +1126,12 @@
     "AirPods motion": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movimiento de los AirPods"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Movimiento de los AirPods"
@@ -961,6 +1165,12 @@
             "value": "Se registran el movimiento de los AirPods y los puntos numéricos de los labios. Nunca vídeo ni fotos."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se registran el movimiento de los AirPods y los puntos numéricos de los labios. Nunca vídeo ni fotos."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -984,6 +1194,12 @@
     "AirPods motion is coming through": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Llega el movimiento de los AirPods"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Llega el movimiento de los AirPods"
@@ -1017,6 +1233,12 @@
             "value": "Permite Subvox en Ajustes del Sistema › Privacidad y seguridad › Cámara."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite Subvox en Configuración del Sistema › Privacidad y seguridad › Cámara."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1045,6 +1267,12 @@
             "value": "Permite Subvox en Ajustes del Sistema › Privacidad y seguridad › Movimiento y forma física y vuelve a abrir la app."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite Subvox en Configuración del Sistema › Privacidad y seguridad › Movimiento y forma física y vuelve a abrir la app."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1060,7 +1288,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請在「系統設定 › 隱私權與安全性 › 動作與健身」中允許 Subvox，然後重新打開 App。"
+            "value": "請在「系統設定 › 隱私權與安全性 › 動作與健身」中允許 Subvox，然後重新開啟 App。"
           }
         }
       }
@@ -1068,6 +1296,12 @@
     "Already shared (%lld)": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya compartidas (%lld)"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Ya compartidas (%lld)"
@@ -1101,6 +1335,12 @@
             "value": "Anónimo (próximamente)"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anónimo (próximamente)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1124,6 +1364,12 @@
     "Anonymous sharing needs a relay server that isn't running yet. Choose Local only or Hugging Face for now.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El uso compartido anónimo requiere un servidor de retransmisión que aún no está activo. Por ahora, elige Solo local o Hugging Face."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "El uso compartido anónimo requiere un servidor de retransmisión que aún no está activo. Por ahora, elige Solo local o Hugging Face."
@@ -1157,6 +1403,12 @@
             "value": "Idioma de la app"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma de la app"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1180,6 +1432,12 @@
     "Automatic": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automático"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Automático"
@@ -1213,6 +1471,12 @@
             "value": "Volver al entrenamiento"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver al entrenamiento"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1236,6 +1500,12 @@
     "Before you share": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antes de compartir"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Antes de compartir"
@@ -1269,6 +1539,12 @@
             "value": "AFI amplio. Los sonidos del inglés siguen el inglés estadounidense general."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AFI amplio. Los sonidos del inglés siguen el inglés estadounidense general."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1292,6 +1568,12 @@
     "Camera access is needed to record": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se necesita acceso a la cámara para grabar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Se necesita acceso a la cámara para grabar"
@@ -1325,6 +1607,12 @@
             "value": "Cancelar"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1348,6 +1636,12 @@
     "Capturing from %@": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capturando desde %@"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Capturando desde %@"
@@ -1381,6 +1675,12 @@
             "value": "Canales"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canales"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1404,6 +1704,12 @@
     "Check again": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobar de nuevo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Comprobar de nuevo"
@@ -1437,6 +1743,12 @@
             "value": "Comprobar la señal de movimiento"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobar la señal de movimiento"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1460,6 +1772,12 @@
     "Check validation words": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobar las palabras de validación"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Comprobar las palabras de validación"
@@ -1493,6 +1811,12 @@
             "value": "Comprobar si los AirPods detectan el movimiento de la boca"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobar si los AirPods detectan el movimiento de la boca"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1516,6 +1840,12 @@
     "Check word times against audio": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparar los tiempos de las palabras con el audio"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Comparar los tiempos de las palabras con el audio"
@@ -1549,6 +1879,12 @@
             "value": "Comprueba la señal de tus AirPods y el micrófono antes de grabar."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprueba la señal de tus AirPods y el micrófono antes de grabar."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1572,6 +1908,12 @@
     "Check your model": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa tu modelo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Revisa tu modelo"
@@ -1605,10 +1947,16 @@
             "value": "Chino"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chino"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chinois"
+            "value": "chinois"
           }
         },
         "zh-Hans": {
@@ -1628,6 +1976,12 @@
     "Choose a local Whisper model in recording settings.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige un modelo de Whisper local en los ajustes de grabación."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Elige un modelo de Whisper local en los ajustes de grabación."
@@ -1661,6 +2015,12 @@
             "value": "Elige otro idioma en la barra de herramientas."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige otro idioma en la barra de herramientas."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1684,6 +2044,12 @@
     "Confirm prompt and include": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirmar el texto e incluirlo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Confirmar el texto e incluirlo"
@@ -1717,6 +2083,12 @@
             "value": "La confirmación aprueba el texto como etiqueta. Los movimientos no válidos y los tiempos de palabras no disponibles siguen excluidos del método afectado."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La confirmación aprueba el texto como etiqueta. Los movimientos no válidos y los tiempos de palabras no disponibles siguen excluidos del método afectado."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1740,6 +2112,12 @@
     "Connect your AirPods to start.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conecta tus AirPods para empezar."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Conecta tus AirPods para empezar."
@@ -1773,6 +2151,12 @@
             "value": "Consonantes"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consonantes"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1796,6 +2180,12 @@
     "Continue": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Continuar"
@@ -1829,6 +2219,12 @@
             "value": "Copiar enlace"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar enlace"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1852,6 +2248,12 @@
     "Dataset": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conjunto de datos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Conjunto de datos"
@@ -1885,6 +2287,12 @@
             "value": "Detalles"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalles"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1908,6 +2316,12 @@
     "Development sentences": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frases de desarrollo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Frases de desarrollo"
@@ -1941,6 +2355,12 @@
             "value": "Dispositivos"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dispositivos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1969,6 +2389,12 @@
             "value": "¿No se abrió o se abrió otra página? Abre el enlace de nuevo o cópialo en un navegador donde hayas iniciado sesión en Hugging Face."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿No se abrió o se abrió otra página? Abre el enlace de nuevo o cópialo en un navegador donde hayas iniciado sesión en Hugging Face."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1984,7 +2410,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "沒有打開，或打開了別的頁面？請再打開一次連結，或把連結拷貝到已登入 Hugging Face 的任一瀏覽器中。"
+            "value": "沒有開啟，或開啟了別的頁面？請再開啟一次連結，或把連結拷貝到已登入 Hugging Face 的任一瀏覽器中。"
           }
         }
       }
@@ -1992,6 +2418,12 @@
     "Diphthongs": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diptongos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Diptongos"
@@ -2025,6 +2457,12 @@
             "value": "Hecho"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hecho"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2048,6 +2486,12 @@
     "Draft wording pending a data-protection review.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redacción provisional, pendiente de una revisión de protección de datos."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Redacción provisional, pendiente de una revisión de protección de datos."
@@ -2081,6 +2525,12 @@
             "value": "Ejercicio"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ejercicio"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2104,6 +2554,12 @@
     "Each batch uses fresh sentences from the selected role.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada tanda usa frases nuevas del rol seleccionado."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Cada tanda usa frases nuevas del rol seleccionado."
@@ -2137,10 +2593,16 @@
             "value": "Cada expresión se reproduce con una voz del sistema antes de que la digas. Dila siempre en voz alta antes de articularla sin voz; las respuestas articuladas de memoria no se usan."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada expresión se reproduce con una voz del sistema antes de que la digas. Dila siempre en voz alta antes de articularla sin voz; las respuestas articuladas de memoria no se usan."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chaque expression est lue par une voix système avant que vous la disiez. Dites-la toujours à voix haute avant de l’articuler sans voix ; les réponses articulées de mémoire ne sont pas utilisées."
+            "value": "Chaque expression est lue par une voix système avant que vous la disiez. Dites-la toujours à voix haute avant de l’articuler en silence ; les réponses articulées de mémoire ne sont pas utilisées."
           }
         },
         "zh-Hans": {
@@ -2152,7 +2614,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "每個短語會先用系統語音播放，再由你說。請務必先出聲讀，再不出聲地動嘴；憑記憶只動嘴的回答不會被採用。"
+            "value": "每個片語會先用系統語音播放，再由你說。請務必先出聲讀，再不出聲地動嘴；憑記憶只動嘴的回答不會被採用。"
           }
         }
       }
@@ -2160,6 +2622,12 @@
     "Each sentence becomes one take.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada frase se convierte en una toma."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Cada frase se convierte en una toma."
@@ -2193,10 +2661,16 @@
             "value": "Cada frase se dice en voz alta y luego se articula sin voz; la toma hablada hace posible la alineación de fonos."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada frase se dice en voz alta y luego se articula sin voz; la toma hablada hace posible la alineación de fonos."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chaque phrase est dite à voix haute, puis articulée sans voix ; la prise parlée permet l’alignement des phones."
+            "value": "Chaque phrase est dite à voix haute, puis articulée en silence ; la prise parlée permet l’alignement des phones."
           }
         },
         "zh-Hans": {
@@ -2221,6 +2695,12 @@
             "value": "Cada sesión se convierte en una pull request en tu cuenta de Hugging Face, de modo que figuras como colaborador."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada sesión se convierte en una pull request en tu cuenta de Hugging Face, de modo que figuras como colaborador."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2236,7 +2716,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "每次分享會以你的 Hugging Face 帳號提交一個拉取請求，你會被列為貢獻者。"
+            "value": "每次分享會以你的 Hugging Face 帳號提交一個提取要求，你會被列為貢獻者。"
           }
         }
       }
@@ -2244,6 +2724,12 @@
     "Each visit keeps one role and fresh sentence groups. Re-record mistakes from review; completed or partial sentences are not automatically repeated in every session.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada visita mantiene un solo rol y grupos de frases nuevos. Vuelve a grabar los errores desde la revisión; las frases completas o parciales no se repiten automáticamente en cada sesión."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Cada visita mantiene un solo rol y grupos de frases nuevos. Vuelve a grabar los errores desde la revisión; las frases completas o parciales no se repiten automáticamente en cada sesión."
@@ -2277,10 +2763,16 @@
             "value": "Inglés"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inglés"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anglais"
+            "value": "anglais"
           }
         },
         "zh-Hans": {
@@ -2300,6 +2792,12 @@
     "Everyone reads the same %lld short sentences first. After that you get passages from books, poems and speeches.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos leen primero las mismas %lld frases cortas. Después recibes pasajes de libros, poemas y discursos."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Todos leen primero las mismas %lld frases cortas. Después recibes pasajes de libros, poemas y discursos."
@@ -2333,6 +2831,12 @@
             "value": "Todo permanece en este Mac, salvo que elijas compartirlo."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo permanece en este Mac, salvo que elijas compartirlo."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2356,6 +2860,12 @@
     "Everything stays on this Mac. Never video or photos.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo permanece en este Mac. Nunca vídeo ni fotos."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Todo permanece en este Mac. Nunca vídeo ni fotos."
@@ -2389,6 +2899,12 @@
             "value": "Ejemplos"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ejemplos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2412,6 +2928,12 @@
     "Exclude pair": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir par"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Excluir par"
@@ -2445,6 +2967,12 @@
             "value": "Excluir este par de las futuras instantáneas de entrenamiento. La grabación se conserva."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir este par de las futuras instantáneas de entrenamiento. La grabación se conserva."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2468,6 +2996,12 @@
     "Excluded": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluido"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Excluido"
@@ -2501,6 +3035,12 @@
             "value": "Grabaciones excluidas o reservadas (%lld)"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabaciones excluidas o reservadas (%lld)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2524,6 +3064,12 @@
     "Existing local model files are reused; no download is required.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se reutilizan los archivos de modelo locales existentes; no hace falta descargar nada."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Se reutilizan los archivos de modelo locales existentes; no hace falta descargar nada."
@@ -2557,6 +3103,12 @@
             "value": "Esperado"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperado"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2580,6 +3132,12 @@
     "Faster, but without a spoken take these can't be phone-aligned.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más rápido, pero sin una toma hablada no se puede alinear por fonos."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Más rápido, pero sin una toma hablada no se puede alinear por fonos."
@@ -2613,6 +3171,12 @@
             "value": "Termina de iniciar sesión en tu navegador…"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termina de iniciar sesión en tu navegador…"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2641,6 +3205,12 @@
             "value": "¿Terminaste? Pulsa Espacio."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Terminaste? Presiona Espacio."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2664,6 +3234,12 @@
     "First, %lld calibration sentences that every contributor reads once.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero, %lld frases de calibración que cada colaborador lee una vez."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Primero, %lld frases de calibración que cada colaborador lee una vez."
@@ -2697,6 +3273,12 @@
             "value": "Sigue las palabras resaltadas."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sigue las palabras resaltadas."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2720,6 +3302,12 @@
     "Four dictionary occurrences per sound. Coverage measures collected examples, not recognition accuracy; your pronunciation may differ.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuatro apariciones del diccionario por sonido. La cobertura mide los ejemplos recopilados, no la precisión del reconocimiento; tu pronunciación puede diferir."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Cuatro apariciones del diccionario por sonido. La cobertura mide los ejemplos recopilados, no la precisión del reconocimiento; tu pronunciación puede diferir."
@@ -2753,6 +3341,12 @@
             "value": "Práctica libre"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Práctica libre"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2781,10 +3375,16 @@
             "value": "Francés"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francés"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Français"
+            "value": "français"
           }
         },
         "zh-Hans": {
@@ -2804,6 +3404,12 @@
     "Glides": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semivocales"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Semivocales"
@@ -2837,6 +3443,12 @@
             "value": "Movimiento de auriculares no compatible"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movimiento de audífonos no compatible"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2860,6 +3472,12 @@
     "Hear each sound, read how the lips and jaw make it, then say the example words.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escucha cada sonido, lee cómo lo forman los labios y la mandíbula y luego di las palabras de ejemplo."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Escucha cada sonido, lee cómo lo forman los labios y la mandíbula y luego di las palabras de ejemplo."
@@ -2893,6 +3511,12 @@
             "value": "Escuchar el sonido"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escuchar el sonido"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2921,6 +3545,12 @@
             "value": "Ayuda a crear un conjunto de datos abierto sobre el habla silenciosa. Nada sale de este Mac hasta que pulses Enviar."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayuda a crear un conjunto de datos abierto sobre el habla silenciosa. Nada sale de este Mac hasta que presiones Enviar."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2944,6 +3574,12 @@
     "Hide takes": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar tomas"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Ocultar tomas"
@@ -2977,6 +3613,12 @@
             "value": "Mantén pulsado Espacio o mantén pulsado aquí"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén presionado Espacio o mantén presionado aquí"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3000,6 +3642,12 @@
     "How to share": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo compartir"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Cómo compartir"
@@ -3033,6 +3681,12 @@
             "value": "Cuenta de Hugging Face"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta de Hugging Face"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3056,6 +3710,12 @@
     "I agree to share": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acepto compartir"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Acepto compartir"
@@ -3089,6 +3749,12 @@
             "value": "Tengo 18 años o más."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tengo 18 años o más."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3112,6 +3778,12 @@
     "I speak": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hablo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Hablo"
@@ -3145,6 +3817,12 @@
             "value": "Entiendo que mis contribuciones están vinculadas a mi nombre de usuario de Hugging Face."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entiendo que mis contribuciones están vinculadas a mi nombre de usuario de Hugging Face."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3168,6 +3846,12 @@
     "I understand the dataset is public (CC BY 4.0): anyone can download and reuse what I share, and published copies can't be fully withdrawn.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entiendo que el conjunto de datos es público (CC BY 4.0): cualquiera puede descargar y reutilizar lo que comparto, y las copias publicadas no se pueden retirar por completo."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Entiendo que el conjunto de datos es público (CC BY 4.0): cualquiera puede descargar y reutilizar lo que comparto, y las copias publicadas no se pueden retirar por completo."
@@ -3201,6 +3885,12 @@
             "value": "Estoy practicando"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estoy practicando"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3229,10 +3919,16 @@
             "value": "El AFI (Alfabeto Fonético Internacional) anota exactamente cómo suena una palabra, con un símbolo por sonido: /ʃ/ es el «sh» de «ship». No necesitas aprenderlo: pulsa Escuchar para oír cualquier palabra. La página Sonidos explica cada símbolo. El inglés sigue el inglés estadounidense general; las transcripciones son amplias."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El AFI (Alfabeto Fonético Internacional) anota exactamente cómo suena una palabra, con un símbolo por sonido: /ʃ/ es el «sh» de «ship». No necesitas aprenderlo: presiona Escuchar para oír cualquier palabra. La página Sonidos explica cada símbolo. El inglés sigue el inglés estadounidense general; las transcripciones son amplias."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "L’API (Alphabet phonétique international) note exactement comment sonne un mot, avec un symbole par son : /ʃ/ correspond au « sh » de « ship ». Inutile de l’apprendre : cliquez sur Écouter pour entendre n’importe quel mot. La page Sons explique chaque symbole. L’anglais suit l’anglais américain standard ; les transcriptions sont larges."
+            "value": "L’API (Alphabet phonétique international) note exactement comment sonne un mot, avec un symbole par son : /ʃ/ correspond au « ch » de « chat ». Inutile de l’apprendre : cliquez sur Écouter pour entendre n’importe quel mot. La page Sons explique chaque symbole. L’anglais suit l’anglais américain standard ; les transcriptions sont larges."
           }
         },
         "zh-Hans": {
@@ -3244,7 +3940,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "國際音標 (IPA) 用符號準確寫出一個詞怎麼讀，每個發音一個符號：/ʃ/ 就是 “ship” 裡的 “sh”。你不用學它，按「聽」就能聽到任何詞的讀音。「發音」頁面會解釋每個符號。英語採用通用美式，標註為寬式。"
+            "value": "國際音標 (IPA) 用符號準確寫出一個詞怎麼讀，每個發音一個符號：/ʃ/ 就是 「ship」 裡的 「sh」。你不用學它，按「聽」就能聽到任何詞的讀音。「發音」頁面會解釋每個符號。英語採用通用美式，標註為寬式。"
           }
         }
       }
@@ -3257,10 +3953,16 @@
             "value": "En una ronda, primero se reproduce cada palabra; la dices en voz alta y luego la articulas sin voz."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En una ronda, primero se reproduce cada palabra; la dices en voz alta y luego la articulas sin voz."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dans une manche, chaque mot est d’abord lu ; vous le dites à voix haute, puis vous l’articulez sans voix."
+            "value": "Dans une série, chaque mot est d’abord lu ; vous le dites à voix haute, puis vous l’articulez en silence."
           }
         },
         "zh-Hans": {
@@ -3280,6 +3982,12 @@
     "Included automatically or by you (%lld)": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incluidas automáticamente o por ti (%lld)"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Incluidas automáticamente o por ti (%lld)"
@@ -3313,6 +4021,12 @@
             "value": "Par incompleto. Vuelve a grabar para obtener ambas tomas."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par incompleto. Vuelve a grabar para obtener ambas tomas."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3336,6 +4050,12 @@
     "Input": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrada"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Entrada"
@@ -3369,6 +4089,12 @@
             "value": "Conservado para el entrenamiento"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservado para el entrenamiento"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3392,6 +4118,12 @@
     "Language": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Idioma"
@@ -3425,10 +4157,16 @@
             "value": "Última ronda: %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última ronda: %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dernière manche : %@"
+            "value": "Dernière série : %@"
           }
         },
         "zh-Hans": {
@@ -3448,6 +4186,12 @@
     "Learning method": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Método de aprendizaje"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Método de aprendizaje"
@@ -3473,9 +4217,49 @@
         }
       }
     },
+    "Letter": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carta"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lettre"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "书信"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "書信"
+          }
+        }
+      }
+    },
     "Listen": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escuchar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Escuchar"
@@ -3509,6 +4293,12 @@
             "value": "Escuchar %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escuchar %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3537,10 +4327,16 @@
             "value": "Escucha, dilo en voz alta y vuelve a decirlo sin voz, solo con los labios."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escucha, dilo en voz alta y vuelve a decirlo sin voz, solo con los labios."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Écoutez, dites-le à voix haute, puis répétez-le sans voix, avec les lèvres seulement."
+            "value": "Écoutez, dites-le à voix haute, puis répétez-le en silence, avec les lèvres seulement."
           }
         },
         "zh-Hans": {
@@ -3560,6 +4356,12 @@
     "Live motion": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movimiento en vivo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Movimiento en vivo"
@@ -3593,10 +4395,16 @@
             "value": "Movimiento en vivo (últimos 8 s)"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movimiento en vivo (últimos 8 s)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mouvement en direct (8 dernières s)"
+            "value": "Mouvement en direct (8 dernières secondes)"
           }
         },
         "zh-Hans": {
@@ -3616,6 +4424,12 @@
     "Local Whisper": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whisper local"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Whisper local"
@@ -3649,6 +4463,12 @@
             "value": "Solo local"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo local"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3677,10 +4497,16 @@
             "value": "ARTICULA SIN VOZ"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ARTICULA SIN VOZ"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "ARTICULEZ SANS VOIX"
+            "value": "ARTICULEZ EN SILENCE"
           }
         },
         "zh-Hans": {
@@ -3697,6 +4523,40 @@
         }
       }
     },
+    "Manifesto": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manifiesto"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manifiesto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manifeste"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "宣言"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "宣言"
+          }
+        }
+      }
+    },
     "Manual override": {
       "localizations": {
         "es": {
@@ -3705,10 +4565,16 @@
             "value": "Anulación manual"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anulación manual"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forçage manuel"
+            "value": "Remplacement manuel"
           }
         },
         "zh-Hans": {
@@ -3728,6 +4594,12 @@
     "Mark these phone estimates reviewed": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar estas estimaciones de fonos como revisadas"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Marcar estas estimaciones de fonos como revisadas"
@@ -3761,6 +4633,12 @@
             "value": "Micrófono"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Micrófono"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3784,6 +4662,12 @@
     "Microphone check": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prueba del micrófono"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Prueba del micrófono"
@@ -3817,6 +4701,12 @@
             "value": "Pares mínimos"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pares mínimos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3840,6 +4730,12 @@
     "Model settings": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes del modelo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Ajustes del modelo"
@@ -3873,6 +4769,12 @@
             "value": "Acceso al movimiento denegado"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso al movimiento denegado"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3896,6 +4798,12 @@
     "Motion channels": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canales de movimiento"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Canales de movimiento"
@@ -3929,10 +4837,16 @@
             "value": "Articula sin voz, solo con los labios"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Articula sin voz, solo con los labios"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Articulez sans voix, avec les lèvres"
+            "value": "Articulez en silence, avec les lèvres"
           }
         },
         "zh-Hans": {
@@ -3952,6 +4866,12 @@
     "Mouthed only (skip the spoken half)": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo articulado (sin la parte hablada)"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Solo articulado (sin la parte hablada)"
@@ -3985,6 +4905,12 @@
             "value": "Vocales nasales"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vocales nasales"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4008,6 +4934,12 @@
     "Needs AirPods with head tracking": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requiere AirPods con seguimiento de la cabeza"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Requiere AirPods con seguimiento de la cabeza"
@@ -4041,6 +4973,12 @@
             "value": "Requieren atención (%lld)"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requieren atención (%lld)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4064,6 +5002,12 @@
     "Needs speech recognition set up": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requiere configurar el reconocimiento de voz"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Requiere configurar el reconocimiento de voz"
@@ -4097,6 +5041,12 @@
             "value": "Siguiente"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siguiente"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4120,6 +5070,12 @@
     "Next batch: %lld paired prompts, about %lld minutes.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Próxima tanda: %lld textos emparejados, unos %lld minutos."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Próxima tanda: %lld textos emparejados, unos %lld minutos."
@@ -4153,6 +5109,12 @@
             "value": "Siguiente: %@ — %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siguiente: %@ — %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4176,6 +5138,12 @@
     "No aligned word examples yet": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay ejemplos de palabras alineadas"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Aún no hay ejemplos de palabras alineadas"
@@ -4209,6 +5177,12 @@
             "value": "Aún no hay ejercicios en %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay ejercicios en %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4237,6 +5211,12 @@
             "value": "Aún no hay pares mínimos en %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay pares mínimos en %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4257,9 +5237,49 @@
         }
       }
     },
+    "No motion yet": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún sin movimiento"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún sin movimiento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun mouvement pour l’instant"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还没有运动数据"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "還沒有動作資料"
+          }
+        }
+      }
+    },
     "No pieces in %@ yet": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay textos en %@"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Aún no hay textos en %@"
@@ -4293,6 +5313,12 @@
             "value": "Aún no hay grabaciones"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay grabaciones"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4316,6 +5342,12 @@
     "No sound guide for %@ yet": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay guía de sonidos para %@"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Aún no hay guía de sonidos para %@"
@@ -4349,6 +5381,12 @@
             "value": "Aún no encontrado"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no encontrado"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4372,6 +5410,12 @@
     "Not used for training": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se usa para el entrenamiento"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "No se usa para el entrenamiento"
@@ -4405,6 +5449,12 @@
             "value": "No hay nada nuevo que enviar. Graba más pasajes de la comunidad y aparecerán aquí."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay nada nuevo que enviar. Graba más pasajes de la comunidad y aparecerán aquí."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4428,6 +5478,12 @@
     "Nothing to practise yet": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay nada que practicar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Aún no hay nada que practicar"
@@ -4461,6 +5517,12 @@
             "value": "En este Mac: tu voz como audio, el movimiento de la cabeza de los AirPods y los puntos numéricos de labios y mandíbula de la cámara. Nunca vídeo ni fotos."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En este Mac: tu voz como audio, el movimiento de la cabeza de los AirPods y los puntos numéricos de labios y mandíbula de la cámara. Nunca vídeo ni fotos."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4489,6 +5551,12 @@
             "value": "Abrir el enlace de nuevo"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir el enlace de nuevo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4504,7 +5572,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "再次打開連結"
+            "value": "再次開啟連結"
           }
         }
       }
@@ -4512,6 +5580,12 @@
     "Open raw recording": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir la grabación sin procesar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Abrir la grabación sin procesar"
@@ -4532,7 +5606,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "打開原始錄音"
+            "value": "開啟原始錄音"
           }
         }
       }
@@ -4540,6 +5614,12 @@
     "Opens Devices": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre Dispositivos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Abre Dispositivos"
@@ -4560,7 +5640,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "打開「裝置」"
+            "value": "開啟「裝置」"
           }
         }
       }
@@ -4568,6 +5648,12 @@
     "Opens Devices.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre Dispositivos."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Abre Dispositivos."
@@ -4588,7 +5674,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "打開「裝置」。"
+            "value": "開啟「裝置」。"
           }
         }
       }
@@ -4596,6 +5682,12 @@
     "Opens huggingface.co in your browser. Subvox asks only to read your public profile and open pull requests on your behalf; it can't change your repositories or settings.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre huggingface.co en tu navegador. Subvox solo solicita leer tu perfil público y abrir pull requests en tu nombre; no puede cambiar tus repositorios ni tus ajustes."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Abre huggingface.co en tu navegador. Subvox solo solicita leer tu perfil público y abrir pull requests en tu nombre; no puede cambiar tus repositorios ni tus ajustes."
@@ -4616,7 +5708,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在瀏覽器中打開 huggingface.co。Subvox 只會請求讀取你的公開資料，並代你提交拉取請求；它無法更改你的儲存庫或設定。"
+            "value": "在瀏覽器中開啟 huggingface.co。Subvox 只會請求讀取你的公開資料，並代你提交提取要求；它無法更改你的儲存庫或設定。"
           }
         }
       }
@@ -4624,6 +5716,12 @@
     "Override": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anular"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Anular"
@@ -4657,6 +5755,12 @@
             "value": "Ritmo"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ritmo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4685,6 +5789,12 @@
             "value": "Estimaciones de alineación de fonemas · revisar antes de supervisar"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estimaciones de alineación de fonemas · revisar antes de supervisar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4705,9 +5815,49 @@
         }
       }
     },
+    "Poem": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poema"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poema"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poème"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "诗"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詩"
+          }
+        }
+      }
+    },
     "Practice": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Práctica"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Práctica"
@@ -4741,6 +5891,12 @@
             "value": "La práctica necesita reconocimiento de voz en este Mac (un modelo de Whisper local) para comprobar lo que dijiste. No se sube nada."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La práctica necesita reconocimiento de voz en este Mac (un modelo de Whisper local) para comprobar lo que dijiste. No se sube nada."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4764,6 +5920,12 @@
     "Practice only": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo práctica"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Solo práctica"
@@ -4797,6 +5959,12 @@
             "value": "Texto de práctica"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Texto de práctica"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4820,6 +5988,12 @@
     "Practice uses a Whisper model already on this Mac to hear what you said. Nothing is downloaded.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La práctica usa un modelo de Whisper que ya está en este Mac para oír lo que dices. No se descarga nada."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "La práctica usa un modelo de Whisper que ya está en este Mac para oír lo que dices. No se descarga nada."
@@ -4853,6 +6027,12 @@
             "value": "Practicar de nuevo"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar de nuevo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4876,6 +6056,12 @@
     "Practise Language": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma de práctica"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Idioma de práctica"
@@ -4909,6 +6095,12 @@
             "value": "Practicando %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicando %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4932,6 +6124,12 @@
     "Practising %@; you speak %@": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicando %@; hablas %@"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Practicando %@; hablas %@"
@@ -4965,6 +6163,12 @@
             "value": "Vista previa de la próxima tanda"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista previa de la próxima tanda"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4993,10 +6197,16 @@
             "value": "Echa un vistazo al texto, relájate, habla y luego articula sin voz el mismo texto. Pulsa Hecho al terminar y Repetir si te equivocas. Cada toma guardada espera a que continúes."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Echa un vistazo al texto, relájate, habla y luego articula sin voz el mismo texto. Presiona Hecho al terminar y Repetir si te equivocas. Cada toma guardada espera a que continúes."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Parcourez le texte, détendez-vous, parlez, puis articulez sans voix le même texte. Cliquez sur Terminé quand vous avez fini, et sur Refaire en cas d’erreur. Chaque prise enregistrée attend que vous continuiez."
+            "value": "Parcourez le texte, détendez-vous, parlez, puis articulez en silence le même texte. Cliquez sur Terminé quand vous avez fini, et sur Refaire en cas d’erreur. Chaque prise enregistrée attend que vous continuiez."
           }
         },
         "zh-Hans": {
@@ -5016,6 +6226,12 @@
     "Processing stays on this Mac.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El procesamiento se queda en este Mac."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "El procesamiento se queda en este Mac."
@@ -5049,6 +6265,12 @@
             "value": "Progreso"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progreso"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5069,9 +6291,49 @@
         }
       }
     },
+    "Prose": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prosa"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prosa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prose"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "散文"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "散文"
+          }
+        }
+      }
+    },
     "Pull request #%lld": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull request n.º %lld"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Pull request n.º %lld"
@@ -5092,7 +6354,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "拉取請求 #%lld"
+            "value": "提取要求 #%lld"
           }
         }
       }
@@ -5100,6 +6362,12 @@
     "Put both AirPods in your ears. If it stays here, play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte los dos AirPods. Si sigue así, reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Ponte los dos AirPods. Si sigue así, reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods."
@@ -5133,6 +6401,12 @@
             "value": "Ponte los AirPods Pro y asegúrate de que sean la salida activa de este Mac."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte los AirPods Pro y asegúrate de que sean la salida activa de este Mac."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5153,9 +6427,49 @@
         }
       }
     },
+    "Put in your AirPods, play something in Music or Safari, and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte los AirPods, reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods de la barra de menús."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte los AirPods, reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods de la barra de menús."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mettez vos AirPods, lancez un son dans Musique ou Safari et choisissez Audio spatial › Suivi de la tête dans le menu des AirPods de la barre des menus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "戴上 AirPods，在“音乐”或 Safari 中播放声音，并在菜单栏的 AirPods 菜单里把空间音频设为“头部追踪”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "戴上 AirPods，在「音樂」或 Safari 中播放聲音，並在選單列的 AirPods 選單裡把空間音訊設為「頭部追蹤」。"
+          }
+        }
+      }
+    },
     "REST": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "REPOSO"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "REPOSO"
@@ -5189,6 +6503,12 @@
             "value": "Volver a grabar"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver a grabar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5212,6 +6532,12 @@
     "Read a public-domain speech or poem at your own pace. The words highlight as you go.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee un discurso o poema de dominio público a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Lee un discurso o poema de dominio público a tu ritmo. Las palabras se resaltan a medida que avanzas."
@@ -5245,10 +6571,16 @@
             "value": "Lee una frase corta en voz alta y luego articúlala sin voz, solo con los labios. Unos diez minutos por sesión."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee una frase corta en voz alta y luego articúlala sin voz, solo con los labios. Unos diez minutos por sesión."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lisez une phrase courte à voix haute, puis articulez-la sans voix, avec les lèvres. Environ dix minutes par session."
+            "value": "Lisez une phrase courte à voix haute, puis articulez-la en silence, avec les lèvres. Environ dix minutes par session."
           }
         },
         "zh-Hans": {
@@ -5268,6 +6600,12 @@
     "Read as": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer como"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Leer como"
@@ -5301,6 +6639,12 @@
             "value": "Leer desde"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer desde"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5329,10 +6673,16 @@
             "value": "Léelo en voz alta y luego articúlalo sin voz, unas pocas líneas cada vez. El reconocimiento de voz de este Mac comprueba cuánto entendió."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Léelo en voz alta y luego articúlalo sin voz, unas pocas líneas cada vez. El reconocimiento de voz de este Mac comprueba cuánto entendió."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lisez-le à voix haute, puis articulez-le sans voix, quelques lignes à la fois. La reconnaissance vocale de ce Mac vérifie ce qu’elle a compris."
+            "value": "Lisez-le à voix haute, puis articulez-le en silence, quelques lignes à la fois. La reconnaissance vocale de ce Mac vérifie ce qu’elle a compris."
           }
         },
         "zh-Hans": {
@@ -5352,6 +6702,12 @@
     "Reading": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lectura"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Lectura"
@@ -5385,6 +6741,12 @@
             "value": "Listo"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5408,6 +6770,12 @@
     "Ready to send": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo para enviar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Listo para enviar"
@@ -5441,6 +6809,12 @@
             "value": "Reconocido"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconocido"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5464,6 +6838,12 @@
     "Record": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Grabar"
@@ -5497,6 +6877,12 @@
             "value": "Grabar los próximos pasajes"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabar los próximos pasajes"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5520,6 +6906,12 @@
     "Record a sentence pair to compare its motion and transcript here.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Graba un par de frases para comparar aquí su movimiento y su transcripción."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Graba un par de frases para comparar aquí su movimiento y su transcripción."
@@ -5553,6 +6945,12 @@
             "value": "Grabar los sonidos que faltan"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabar los sonidos que faltan"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5576,6 +6974,12 @@
     "Record non-speech movements": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabar movimientos sin habla"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Grabar movimientos sin habla"
@@ -5609,6 +7013,12 @@
             "value": "Grabar frases"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabar frases"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5632,6 +7042,12 @@
     "Recording decisions": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decisiones de grabación"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Decisiones de grabación"
@@ -5665,6 +7081,12 @@
             "value": "Detalles de la grabación"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalles de la grabación"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5688,6 +7110,12 @@
     "Recording settings": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes de grabación"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Ajustes de grabación"
@@ -5721,6 +7149,12 @@
             "value": "Las grabaciones se quedan en este Mac. Compartirlas con el conjunto de datos abierto de la comunidad es un paso aparte y opcional."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac. Compartirlas con el conjunto de datos abierto de la comunidad es un paso aparte y opcional."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5744,6 +7178,12 @@
     "Recordings stay on this Mac. You can still record community passages for your own use.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones se quedan en este Mac. Aun así, puedes grabar pasajes de la comunidad para uso propio."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Las grabaciones se quedan en este Mac. Aun así, puedes grabar pasajes de la comunidad para uso propio."
@@ -5777,6 +7217,12 @@
             "value": "Repetir"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repetir"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5800,6 +7246,12 @@
     "Refresh": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualizar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Actualizar"
@@ -5833,6 +7285,12 @@
             "value": "Actualizar las entradas de micrófono"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualizar las entradas de micrófono"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5856,6 +7314,12 @@
     "Relax": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relájate"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Relájate"
@@ -5889,6 +7353,12 @@
             "value": "Relaja la boca. Espera la señal de grabación."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relaja la boca. Espera la señal de grabación."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5912,6 +7382,12 @@
     "Reported sensor": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensor reportado"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Sensor reportado"
@@ -5945,6 +7421,12 @@
             "value": "Reintentar"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5968,6 +7450,12 @@
     "Retry alignment": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar la alineación"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Reintentar la alineación"
@@ -6001,6 +7489,12 @@
             "value": "Revisar las grabaciones"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisar las grabaciones"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6024,6 +7518,12 @@
     "Review takes": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisar las tomas"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Revisar las tomas"
@@ -6057,6 +7557,12 @@
             "value": "Revisa los pares de validación para activar la comprobación de palabras."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa los pares de validación para activar la comprobación de palabras."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6080,6 +7586,12 @@
     "Run local Whisper on %lld pending spoken takes": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ejecutar Whisper local en %lld tomas habladas pendientes"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Ejecutar Whisper local en %lld tomas habladas pendientes"
@@ -6113,6 +7625,12 @@
             "value": "HABLA EN VOZ ALTA"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HABLA EN VOZ ALTA"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6136,6 +7654,12 @@
     "Same as the Mac": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Igual que el Mac"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Igual que el Mac"
@@ -6169,6 +7693,12 @@
             "value": "Frecuencia de muestreo"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frecuencia de muestreo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6192,6 +7722,12 @@
     "Samples": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestras"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Muestras"
@@ -6225,6 +7761,12 @@
             "value": "Estudios guardados con modelo congelado"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estudios guardados con modelo congelado"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6248,6 +7790,12 @@
     "Selected %@. %@": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionado %@. %@"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Seleccionado %@. %@"
@@ -6281,6 +7829,12 @@
             "value": "Seleccionar los AirPods como entrada los cambia al perfil de auriculares Bluetooth, lo que puede reducir la calidad de reproducción."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar los AirPods como entrada los cambia al perfil de audífonos Bluetooth, lo que puede reducir la calidad de reproducción."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6304,6 +7858,12 @@
     "Send": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Enviar"
@@ -6337,6 +7897,12 @@
             "value": "Enviar todo (%lld)"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar todo (%lld)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6360,6 +7926,12 @@
     "Sent": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviado"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Enviado"
@@ -6393,6 +7965,12 @@
             "value": "La elegibilidad de las frases se aplica en la próxima preparación del conjunto de datos, que también comprueba la cobertura de pronunciación. Los conjuntos de datos existentes y los modelos congelados no cambian. Los roles de validación y de prueba final se mantienen separados del entrenamiento."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La elegibilidad de las frases se aplica en la próxima preparación del conjunto de datos, que también comprueba la cobertura de pronunciación. Los conjuntos de datos existentes y los modelos congelados no cambian. Los roles de validación y de prueba final se mantienen separados del entrenamiento."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6416,6 +7994,12 @@
     "Sentence models": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modelos de frases"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Modelos de frases"
@@ -6449,6 +8033,12 @@
             "value": "Las sesiones de frases guardan el audio del micrófono y el movimiento de los AirPods, con puntos numéricos de la cámara si están activados. No se guarda vídeo. La sesión aparte sin habla solo registra el movimiento."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las sesiones de frases guardan el audio del micrófono y el movimiento de los AirPods, con puntos numéricos de la cámara si están activados. No se guarda vídeo. La sesión aparte sin habla solo registra el movimiento."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6472,6 +8062,12 @@
     "Sentence training can include this recording automatically even if word alignment failed. Motion quality and pronunciation coverage are checked separately. Transcript agreement does not measure motion accuracy.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El entrenamiento con frases puede incluir esta grabación automáticamente aunque falle la alineación de palabras. La calidad del movimiento y la cobertura de pronunciación se comprueban por separado. La coincidencia con la transcripción no mide la precisión del movimiento."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "El entrenamiento con frases puede incluir esta grabación automáticamente aunque falle la alineación de palabras. La calidad del movimiento y la cobertura de pronunciación se comprueban por separado. La coincidencia con la transcripción no mide la precisión del movimiento."
@@ -6505,6 +8101,12 @@
             "value": "Las unidades de secuencia y los límites de palabras son estimaciones; compara sus resultados con los datos de validación."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las unidades de secuencia y los límites de palabras son estimaciones; compara sus resultados con los datos de validación."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6528,6 +8130,12 @@
     "Session %@ · %@": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sesión %@ · %@"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Sesión %@ · %@"
@@ -6561,6 +8169,12 @@
             "value": "Sesión %@ · %@ · %lld tomas"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sesión %@ · %@ · %lld tomas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6584,6 +8198,12 @@
     "Session notes: fit, posture or pronunciation": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notas de la sesión: ajuste, postura o pronunciación"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Notas de la sesión: ajuste, postura o pronunciación"
@@ -6617,6 +8237,12 @@
             "value": "Configurar Whisper…"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurar Whisper…"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6640,6 +8266,12 @@
     "Share Recordings…": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir grabaciones…"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Compartir grabaciones…"
@@ -6673,6 +8305,12 @@
             "value": "Compartir grabaciones"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir grabaciones"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6696,6 +8334,12 @@
     "Share recordings…": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir grabaciones…"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Compartir grabaciones…"
@@ -6729,6 +8373,12 @@
             "value": "Uso compartido"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uso compartido"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6752,6 +8402,12 @@
     "Short sentences from public-domain books, poems and speeches, chosen to be easy to say. Passages are read in order and picked to cover the sounds you haven't recorded yet.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frases cortas de libros, poemas y discursos de dominio público, elegidas por ser fáciles de decir. Los pasajes se leen en orden y se seleccionan para cubrir los sonidos que aún no has grabado."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Frases cortas de libros, poemas y discursos de dominio público, elegidas por ser fáciles de decir. Los pasajes se leen en orden y se seleccionan para cubrir los sonidos que aún no has grabado."
@@ -6785,6 +8441,12 @@
             "value": "Mostrar AFI"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar AFI"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6808,6 +8470,12 @@
     "Show in Finder": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar en el Finder"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Mostrar en el Finder"
@@ -6841,6 +8509,12 @@
             "value": "Mostrar u ocultar AFI"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar u ocultar AFI"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6869,10 +8543,16 @@
             "value": "Muestra cada uno; lo dices en voz alta y luego lo articulas sin voz. Comando Retorno."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestra cada uno; lo dices en voz alta y luego lo articulas sin voz. Comando Retorno."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Affiche chaque élément ; vous le dites à voix haute, puis l’articulez sans voix. Commande Retour."
+            "value": "Affiche chaque élément ; vous le dites à voix haute, puis l’articulez en silence. Commande Retour."
           }
         },
         "zh-Hans": {
@@ -6897,10 +8577,16 @@
             "value": "Muestra cada uno; lo dices en voz alta y luego lo articulas sin voz. ⌘↩"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestra cada uno; lo dices en voz alta y luego lo articulas sin voz. ⌘↩"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Affiche chaque élément ; vous le dites à voix haute, puis l’articulez sans voix. ⌘↩"
+            "value": "Affiche chaque élément ; vous le dites à voix haute, puis l’articulez en silence. ⌘↩"
           }
         },
         "zh-Hans": {
@@ -6920,6 +8606,12 @@
     "Shuffle": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mezclar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Mezclar"
@@ -6953,6 +8645,12 @@
             "value": "Iniciar sesión con Hugging Face"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar sesión con Hugging Face"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6976,6 +8674,12 @@
     "Sign out": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Cerrar sesión"
@@ -7009,6 +8713,12 @@
             "value": "Sesión iniciada como %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sesión iniciada como %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7032,6 +8742,12 @@
     "Simple view": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista simple"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Vista simple"
@@ -7065,6 +8781,12 @@
             "value": "Omitir por ahora"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Omitir por ahora"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7088,6 +8810,12 @@
     "Sound coverage: %lld of %lld units at the collection target": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cobertura de sonidos: %lld de %lld unidades en el objetivo de recopilación"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Cobertura de sonidos: %lld de %lld unidades en el objetivo de recopilación"
@@ -7121,6 +8849,12 @@
             "value": "Sonido: %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonido: %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7144,6 +8878,12 @@
     "Sounds": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonidos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Sonidos"
@@ -7177,6 +8917,12 @@
             "value": "Los sonidos se comparan palabra por palabra, así que un sonido dentro de una palabra bien reconocida aún no se comprueba."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los sonidos se comparan palabra por palabra, así que un sonido dentro de una palabra bien reconocida aún no se comprueba."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7200,6 +8946,12 @@
     "Space or → start, finish or next  ·  ← redo": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espacio o → iniciar, terminar o siguiente  ·  ← repetir"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Espacio o → iniciar, terminar o siguiente  ·  ← repetir"
@@ -7233,10 +8985,16 @@
             "value": "Español"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Español"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Espagnol"
+            "value": "espagnol"
           }
         },
         "zh-Hans": {
@@ -7256,6 +9014,12 @@
     "Speak aloud": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Habla en voz alta"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Habla en voz alta"
@@ -7289,10 +9053,16 @@
             "value": "Habla y luego articula sin voz. Graba a tu ritmo."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Habla y luego articula sin voz. Graba a tu ritmo."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Parlez, puis articulez sans voix. Enregistrez à votre rythme."
+            "value": "Parlez, puis articulez en silence. Enregistrez à votre rythme."
           }
         },
         "zh-Hans": {
@@ -7309,9 +9079,49 @@
         }
       }
     },
+    "Speech": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discurso"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discurso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discours"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "演讲"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "演講"
+          }
+        }
+      }
+    },
     "Speech & Poetry": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discursos y poesía"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Discursos y poesía"
@@ -7345,6 +9155,12 @@
             "value": "El reconocimiento de voz se ejecuta en este Mac. Nada sale de él a menos que pulses Enviar en Compartir grabaciones, y el audio nunca se comparte."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El reconocimiento de voz se ejecuta en este Mac. Nada sale de él a menos que presiones Enviar en Compartir grabaciones, y el audio nunca se comparte."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7368,6 +9184,12 @@
     "Start": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Iniciar"
@@ -7401,6 +9223,12 @@
             "value": "Iniciar ejercicio"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar ejercicio"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7424,6 +9252,12 @@
     "Start Pairs": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar pares"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Iniciar pares"
@@ -7457,6 +9291,12 @@
             "value": "Iniciar práctica"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar práctica"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7480,6 +9320,12 @@
     "Start Reading": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar lectura"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Iniciar lectura"
@@ -7513,6 +9359,12 @@
             "value": "Iniciar grabación"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar grabación"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7536,6 +9388,12 @@
     "Start Sounds": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar sonidos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Iniciar sonidos"
@@ -7569,10 +9427,16 @@
             "value": "Empieza aquí: difícil para quienes hablan %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza aquí: difícil para quienes hablan %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Commencez ici : difficile pour les locuteurs de %@"
+            "value": "Commencez ici : sons difficiles quand on parle %@"
           }
         },
         "zh-Hans": {
@@ -7592,6 +9456,12 @@
     "Start take": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar toma"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Iniciar toma"
@@ -7625,6 +9495,12 @@
             "value": "Empezar a usar Subvox"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar a usar Subvox"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7648,6 +9524,12 @@
     "Stop and save": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detener y guardar"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Detener y guardar"
@@ -7681,6 +9563,12 @@
             "value": "Detener la prueba"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detener la prueba"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7704,6 +9592,12 @@
     "Streaming": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recibiendo datos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Recibiendo datos"
@@ -7737,10 +9631,16 @@
             "value": "Subvox es un proyecto de investigación abierto que enseña a los ordenadores a entender palabras articuladas sin voz, a partir del movimiento de la cabeza con los AirPods y de la forma de tus labios."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subvox es un proyecto de investigación abierto que enseña a los computadoras a entender palabras articuladas sin voz, a partir del movimiento de la cabeza con los AirPods y de la forma de tus labios."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Subvox est un projet de recherche ouvert qui apprend aux ordinateurs à comprendre les mots articulés sans voix, à partir des mouvements de tête des AirPods et de la forme de vos lèvres."
+            "value": "Subvox est un projet de recherche ouvert qui apprend aux ordinateurs à comprendre les mots articulés en silence, à partir des mouvements de tête des AirPods et de la forme de vos lèvres."
           }
         },
         "zh-Hans": {
@@ -7760,6 +9660,12 @@
     "System default": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Predeterminado del sistema"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Predeterminado del sistema"
@@ -7793,6 +9699,12 @@
             "value": "Toma guardada. Pulsa Espacio para la siguiente o repite si hubo un error."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toma guardada. Presiona Espacio para la siguiente o repite si hubo un error."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7816,6 +9728,12 @@
     "Test microphone": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probar el micrófono"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Probar el micrófono"
@@ -7849,6 +9767,12 @@
             "value": "El idioma que practicas (⌥⌘1–6) y el idioma que hablas"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El idioma que practicas (⌥⌘1–6) y el idioma que hablas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7877,10 +9801,16 @@
             "value": "La ronda reproduce estas palabras en orden aleatorio."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La ronda reproduce estas palabras en orden aleatorio."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "La manche lit ces mots dans un ordre aléatoire."
+            "value": "La série lit ces mots dans un ordre aléatoire."
           }
         },
         "zh-Hans": {
@@ -7903,6 +9833,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Este Mac no puede leer el movimiento de los auriculares."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este Mac no puede leer el movimiento de los audífonos."
           }
         },
         "fr": {
@@ -7928,6 +9864,12 @@
     "This recording session": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta sesión de grabación"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Esta sesión de grabación"
@@ -7961,6 +9903,12 @@
             "value": "Esta línea base de palabras usa límites estimados. La decodificación experimental de frases y su evaluación aparte están en Avanzado → Modelos de frases."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta línea base de palabras usa límites estimados. La decodificación experimental de frases y su evaluación aparte están en Avanzado → Modelos de frases."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7984,6 +9932,12 @@
     "Tones": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tonos"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Tonos"
@@ -8017,10 +9971,16 @@
             "value": "Entrenar"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrenar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entraîner"
+            "value": "Entraînement"
           }
         },
         "zh-Hans": {
@@ -8040,6 +10000,12 @@
     "Training section": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sección de entrenamiento"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Sección de entrenamiento"
@@ -8073,6 +10039,12 @@
             "value": "Frases de entrenamiento"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frases de entrenamiento"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8096,6 +10068,12 @@
     "Transcript agreement: %lld%%": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coincidencia con la transcripción: %lld %%"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Coincidencia con la transcripción: %lld %%"
@@ -8129,6 +10107,12 @@
             "value": "Difícil: "
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difícil: "
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8152,6 +10136,12 @@
     "Try model": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probar el modelo"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Probar el modelo"
@@ -8185,6 +10175,12 @@
             "value": "Escribe o pega lo que quieras memorizar."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe o pega lo que quieras memorizar."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8213,6 +10209,12 @@
             "value": "Escribe o pega texto en %@"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe o pega texto en %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8233,9 +10235,49 @@
         }
       }
     },
+    "Unavailable": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No disponible"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No disponible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indisponible"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不可用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法使用"
+          }
+        }
+      }
+    },
     "Untick any take you don't want to share. Dropped takes are left out of the upload; your local recording isn't changed.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desmarca las tomas que no quieras compartir. Las tomas descartadas no se suben; tu grabación local no cambia."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Desmarca las tomas que no quieras compartir. Las tomas descartadas no se suben; tu grabación local no cambia."
@@ -8269,6 +10311,12 @@
             "value": "Hasta %lld frases de entrenamiento por tanda"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hasta %lld frases de entrenamiento por tanda"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8292,6 +10340,12 @@
     "Usable pairs build the word baseline automatically. Sentence models can use recordings even when word alignment fails.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los pares utilizables forman automáticamente la línea base de palabras. Los modelos de frases pueden usar las grabaciones aunque falle la alineación de palabras."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Los pares utilizables forman automáticamente la línea base de palabras. Los modelos de frases pueden usar las grabaciones aunque falle la alineación de palabras."
@@ -8325,6 +10379,12 @@
             "value": "Las grabaciones utilizables se incluyen automáticamente. Los fallos en los tiempos de las palabras no bloquean el entrenamiento con frases; cada toma se comprueba por separado. Se conservan las grabaciones originales."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las grabaciones utilizables se incluyen automáticamente. Los fallos en los tiempos de las palabras no bloquean el entrenamiento con frases; cada toma se comprueba por separado. Se conservan las grabaciones originales."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8348,6 +10408,12 @@
     "Use AirPods Pro, AirPods (3rd generation or later) or AirPods Max as this Mac's sound output. Then play something in Music or Safari and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa unos AirPods Pro, AirPods (3.ª generación o posterior) o AirPods Max como salida de sonido de este Mac. Después reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods de la barra de menús."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Usa unos AirPods Pro, AirPods (3.ª generación o posterior) o AirPods Max como salida de sonido de este Mac. Después reproduce algo en Música o Safari y elige Audio espacial › Seguimiento de la cabeza en el menú de los AirPods de la barra de menús."
@@ -8381,6 +10447,12 @@
             "value": "Usar la decisión automática"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar la decisión automática"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8404,6 +10476,12 @@
     "Use the Mac microphone to keep AirPods in their normal audio mode.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa el micrófono del Mac para mantener los AirPods en su modo de audio normal."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Usa el micrófono del Mac para mantener los AirPods en su modo de audio normal."
@@ -8437,6 +10515,12 @@
             "value": "Las frases de validación se añaden por separado; los pasajes unen hasta tres frases."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las frases de validación se agregan por separado; los pasajes unen hasta tres frases."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8460,6 +10544,12 @@
     "Vowels": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vocales"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Vocales"
@@ -8493,6 +10583,12 @@
             "value": "Esperando los AirPods"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando los AirPods"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8516,6 +10612,12 @@
     "Waiting for speech recognition": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando el reconocimiento de voz"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Esperando el reconocimiento de voz"
@@ -8549,6 +10651,12 @@
             "value": "Calentamiento: %lld de %lld frases"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calentamiento: %lld de %lld frases"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8572,6 +10680,12 @@
     "Welcome to Subvox": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te damos la bienvenida a Subvox"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Te damos la bienvenida a Subvox"
@@ -8605,6 +10719,12 @@
             "value": "¿Qué es el AFI?"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué es el AFI?"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8628,6 +10748,12 @@
     "What is shared: AirPods head-motion, numeric lip and jaw points from the camera, which sentence you read, your AirPods model and firmware, and the month. Never video, images, audio, file names, device names or exact times.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que se comparte: el movimiento de la cabeza de los AirPods, los puntos numéricos de labios y mandíbula de la cámara, qué frase leíste, el modelo y el firmware de tus AirPods, y el mes. Nunca vídeo, imágenes, audio, nombres de archivo, nombres de dispositivo ni horas exactas."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Lo que se comparte: el movimiento de la cabeza de los AirPods, los puntos numéricos de labios y mandíbula de la cámara, qué frase leíste, el modelo y el firmware de tus AirPods, y el mes. Nunca vídeo, imágenes, audio, nombres de archivo, nombres de dispositivo ni horas exactas."
@@ -8661,6 +10787,12 @@
             "value": "Qué se guarda y dónde"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qué se guarda y dónde"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8684,6 +10816,12 @@
     "Whisper model path": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruta del modelo de Whisper"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Ruta del modelo de Whisper"
@@ -8717,6 +10855,12 @@
             "value": "Ruta del servidor de Whisper"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruta del servidor de Whisper"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8740,6 +10884,12 @@
     "Withdraw agreement": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirar mi consentimiento"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Retirar mi consentimiento"
@@ -8773,6 +10923,12 @@
             "value": "Retirarlo detiene los envíos futuros. Para eliminar datos que ya compartiste, escribe a %@. Las copias que otros hayan descargado no se pueden recuperar."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirarlo detiene los envíos futuros. Para eliminar datos que ya compartiste, escribe a %@. Las copias que otros hayan descargado no se pueden recuperar."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8796,6 +10952,12 @@
     "Words that differ by one sound and look alike on the lips. Hear each pair, then say every word.": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palabras que se distinguen por un solo sonido y se ven iguales en los labios. Escucha cada par y luego di cada palabra."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Palabras que se distinguen por un solo sonido y se ven iguales en los labios. Escucha cada par y luego di cada palabra."
@@ -8829,6 +10991,12 @@
             "value": "Trabajar en"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajar en"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8852,6 +11020,12 @@
     "You agreed to share (%@).": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceptaste compartir (%@)."
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Aceptaste compartir (%@)."
@@ -8885,6 +11059,12 @@
             "value": "Puedes cambiarlo en cualquier momento desde Grabar › Compartir grabaciones."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puedes cambiarlo en cualquier momento desde Grabar › Compartir grabaciones."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -8913,10 +11093,16 @@
             "value": "Lees frases cortas en voz alta y luego las articulas sin voz, solo con los labios. Unos diez minutos por sesión."
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lees frases cortas en voz alta y luego las articulas sin voz, solo con los labios. Unos diez minutos por sesión."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vous lisez des phrases courtes à voix haute, puis vous les articulez sans voix, avec les lèvres. Environ dix minutes par session."
+            "value": "Vous lisez des phrases courtes à voix haute, puis vous les articulez en silence, avec les lèvres. Environ dix minutes par session."
           }
         },
         "zh-Hans": {
@@ -8936,6 +11122,12 @@
     "You said": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dijiste"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "Dijiste"
@@ -8961,9 +11153,49 @@
         }
       }
     },
+    "c. %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h. %@"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h. %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "v. %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "约 %@ 年"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "約 %@ 年"
+          }
+        }
+      }
+    },
     "parts": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "partes"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "partes"
@@ -8997,6 +11229,12 @@
             "value": "expresiones"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "expresiones"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -9012,7 +11250,7 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "短語"
+            "value": "片語"
           }
         }
       }
@@ -9020,6 +11258,12 @@
     "sentences": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "frases"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "frases"
@@ -9053,6 +11297,12 @@
             "value": "tomas"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tomas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -9076,6 +11326,12 @@
     "word timing was missing": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "faltaban los tiempos de las palabras"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "faltaban los tiempos de las palabras"
@@ -9109,6 +11365,12 @@
             "value": "palabras"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "palabras"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -9132,6 +11394,12 @@
     "±%.3f": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "±%.3f"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "±%.3f"
@@ -9165,6 +11433,12 @@
             "value": "⌘I"
           }
         },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘I"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -9188,6 +11462,12 @@
     "⌘↩": {
       "localizations": {
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘↩"
+          }
+        },
+        "es-419": {
           "stringUnit": {
             "state": "translated",
             "value": "⌘↩"

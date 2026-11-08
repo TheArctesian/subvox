@@ -84,17 +84,17 @@ struct LanguageMenu: View {
                 }
             }
         } label: {
-            Label("Practising \(model.language.name)", systemImage: "globe")
+            Label("Practising \(model.language.localizedName)", systemImage: "globe")
                 .labelStyle(.titleAndIcon)
         }
         .help("The language you're practising (⌥⌘1–6), and the language you speak")
-        .accessibilityLabel("Practising \(model.language.name); you speak \(Self.nativeName(model.nativeLanguage))")
+        .accessibilityLabel("Practising \(model.language.localizedName); you speak \(Self.nativeName(model.nativeLanguage))")
     }
 
     /// The interface language, separate from the practice language. macOS reads it at launch,
     /// so changing it relaunches the app.
     static let interfaceLanguages: [(code: String, name: String)] = [
-        ("", String(localized: "Same as the Mac")), ("en", "English"), ("fr", "Français"), ("es", "Español"),
+        ("", String(localized: "Same as the Mac")), ("en", "English"), ("fr", "Français"), ("es", "Español (España)"), ("es-419", "Español (Latinoamérica)"),
         ("zh-Hans", "简体中文"), ("zh-Hant", "繁體中文")]
     static var currentInterface: String { (UserDefaults.standard.array(forKey: "AppleLanguages") as? [String])?.first.flatMap { code in
         interfaceLanguages.first { !$0.code.isEmpty && code.hasPrefix($0.code) }?.code } ?? "" }

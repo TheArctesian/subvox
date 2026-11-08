@@ -274,8 +274,11 @@ struct PracticeLineView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(Self.spoken(line.text(language), language)).font(.title2)
-            if let gloss = line.gloss { Text(gloss).font(.callout).foregroundStyle(.secondary) }
-            if let pinyin = line.pinyin { Text(pinyin).font(.title3).foregroundStyle(.secondary) }
+            // Glosses are English, so they show only to learners who speak English.
+            if let gloss = line.gloss, UserDefaults.standard.string(forKey: "ui.nativeLanguage") ?? "en" == "en" {
+                Text(gloss).font(.callout).foregroundStyle(.secondary)
+            }
+            if let reading = line.reading(language) { Text(reading).font(.title3).foregroundStyle(.secondary) }
             if showIPA {
                 // Large enough that look-alike symbols (ɾ / r, ɡ / g) are told apart; VoiceOver skips it.
                 Text("/" + line.ipa(language).joined(separator: " ") + "/").font(.ipa(18, relativeTo: .title3)).foregroundStyle(.secondary)
@@ -348,7 +351,7 @@ struct SpeechPracticeView: View {
             IPAToggle(isOn: $showIPA)
         } content: {
             if pieces.isEmpty {
-                ContentUnavailableView("No pieces in \(language.name) yet", systemImage: "text.quote", description: Text("Choose another language from the toolbar."))
+                ContentUnavailableView("No pieces in \(language.localizedName) yet", systemImage: "text.quote", description: Text("Choose another language from the toolbar."))
             } else {
                 HStack(alignment: .top, spacing: 20) {
                     VStack(spacing: 4) {
@@ -437,7 +440,7 @@ struct LanguagePracticeView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
             } else {
-                ContentUnavailableView("No drills in \(language.name) yet", systemImage: "character.bubble", description: Text("Choose another language from the toolbar."))
+                ContentUnavailableView("No drills in \(language.localizedName) yet", systemImage: "character.bubble", description: Text("Choose another language from the toolbar."))
             }
         }
         .onChange(of: model.language) { selection = nil }
@@ -475,7 +478,7 @@ struct MinimalPairsView: View {
             IPAToggle(isOn: $showIPA)
         } content: {
             if contrast == nil {
-                ContentUnavailableView("No minimal pairs in \(language.name) yet", systemImage: "circle.grid.2x1", description: Text("Choose another language from the toolbar."))
+                ContentUnavailableView("No minimal pairs in \(language.localizedName) yet", systemImage: "circle.grid.2x1", description: Text("Choose another language from the toolbar."))
             } else {
                 VStack(alignment: .leading, spacing: 12) {
                     // Each row is one contrast set, side by side, so the difference is easy to see and hear.
@@ -542,7 +545,7 @@ struct FreePracticeView: View {
                     .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
                     .overlay(alignment: .topLeading) {
                         if text.isEmpty {
-                            Text("Type or paste text in \(language.name)").font(.title2).foregroundStyle(.tertiary)
+                            Text("Type or paste text in \(language.localizedName)").font(.title2).foregroundStyle(.tertiary)
                                 .padding(.horizontal, 11).padding(.vertical, 6).allowsHitTesting(false)
                         }
                     }
@@ -599,7 +602,7 @@ struct SoundsView: View {
             IPAToggle(isOn: $showIPA)
         } content: {
             if sounds.isEmpty {
-                ContentUnavailableView("No sound guide for \(language.name) yet", systemImage: "waveform", description: Text("Choose another language from the toolbar."))
+                ContentUnavailableView("No sound guide for \(language.localizedName) yet", systemImage: "waveform", description: Text("Choose another language from the toolbar."))
             } else {
                 HStack(alignment: .top, spacing: 24) {
                     ScrollView { VStack(alignment: .leading, spacing: 14) {

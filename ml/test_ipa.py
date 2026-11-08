@@ -12,6 +12,21 @@ class EspeakLanguages(unittest.TestCase):
         self.assertEqual(ipa.phones("vous êtes", "fr"), ["v", "u", "z", "ɛ", "t"])  # liaison z
         self.assertEqual(ipa.phones("ils ont", "fr"), ["i", "l", "z", "ɔ̃"])
 
+    def test_french_liaison_only_where_natives_make_it(self):
+        def say(t):
+            return " ".join("".join(w) for w in ipa.phonemize(t, "fr"))
+        self.assertEqual(say("tu vas au travail"), "ty va o tʁavaj")          # no liaison after a verb
+        self.assertEqual(say("je voudrais un café"), "ʒə vudʁɛ œ̃ kafe")
+        self.assertEqual(say("Tenait en son bec"), "tənɛ ɑ̃ sɔ̃ bɛk")
+        self.assertEqual(say("trois heures et quart"), "tʁwaz œʁ e kaʁ")      # never before et
+        self.assertEqual(say("les enfants"), "lez ɑ̃fɑ̃")                       # obligatory after a determiner
+        self.assertEqual(say("vous êtes"), "vuz ɛt")
+        self.assertEqual(say("un bon ami"), "œ̃ bɔn ami")                     # bon loses its nasal
+        self.assertEqual(say("mon ami"), "mɔ̃n ami")
+        self.assertEqual(say("comment allez-vous"), "kɔmɑ̃t alevu")
+        self.assertEqual(say("vas-y"), "vazi")
+        self.assertEqual(say("Rouen"), "ʁwɑ̃")
+
     def test_french_gn_is_palatal_but_ni_stays_n_j(self):
         self.assertEqual(ipa.phones("agneau", "fr"), ["a", "ɲ", "o"])
         self.assertEqual(ipa.phones("champignon", "fr"), ["ʃ", "ɑ̃", "p", "i", "ɲ", "ɔ̃"])

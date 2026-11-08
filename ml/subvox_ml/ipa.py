@@ -108,16 +108,18 @@ def phonemize(text, language, accent=None):
     if language not in LANGUAGES:
         raise ValueError(f"Unsupported language {language!r}")
     from phonemizer.separator import Separator
-    raw = _backend(language, accent).phonemize([text], separator=Separator(phone=" ", word=" | "), strip=True)[0]
+    spoken = _french_spelling(text) if language == "fr" else text
+    raw = _backend(language, accent).phonemize([spoken], separator=Separator(phone=" ", word=" | "), strip=True)[0]
     words = [[p for token in word.split() for p in _split(token, language)] for word in raw.split("|") if word.strip()]
     if language == "es":
         # espeak's Latin American voice writes intervocalic ll as j + j (calle /kajje/); it is /ʝ/.
         words = [_collapse(w, ("j", "j"), "ʝ") for w in words]
     if language == "fr":
         words = [_french_glides(w) for w in words]
-        spelled = re.findall(r"[\w'’-]+", text.lower())
+        spelled = re.findall(r"[\w'’-]+", _french_spelling(text).lower())
         if len(spelled) == len(words):  # only when espeak's words line up with the spelling
             words = [_french_gn(s, w) for s, w in zip(spelled, words)]
+            words = _french_liaison(spelled, words, text)
     return words
 
 
@@ -138,6 +140,55 @@ def _collapse(word, pair, into):
             out.append(into); k += 2
         else:
             out.append(word[k]); k += 1
+    return out
+
+
+# espeak makes liaison after almost any word before a vowel ("tu vas‿au travail"). Liaison is
+# only made after these words (determiners, pronouns, numbers, short prepositions and adverbs,
+# est, and a few adjectives before a noun); everywhere else the linking consonant is dropped.
+LIAISON_AFTER = set("""les des ces mes tes ses nos vos leurs aux un mon ton son en on nous vous ils elles dont quand chez dans
+sans sous très plus moins tout deux trois six dix vingt quels quelles quel aucun plusieurs certains est c'est petit petits
+grand grands bon bons gros mauvais premier dernier aux leur cent""".split())
+DENASALISE = {"bon": ("ɔ̃", "ɔ"), "certain": ("ɛ̃", "ɛ"), "ancien": ("ɛ̃", "ɛ"), "moyen": ("ɛ̃", "ɛ"), "plein": ("ɛ̃", "ɛ"), "prochain": ("ɛ̃", "ɛ")}
+FRENCH_WORDS = {"rouen": ["ʁ", "w", "ɑ̃"], "amiens": ["a", "m", "j", "ɛ̃"], "dreyfus": ["d", "ʁ", "ɛ", "f", "y", "s"]}
+# Old spellings (Ronsard) read as their modern pronunciation.
+ARCHAIC = {"avoit": "avait", "desclose": "déclose", "ceste": "cette", "vostre": "votre", "vesprée": "vêprée", "estoit": "était",
+           "point": "point", "ayant": "ayant"}
+
+
+def _french_spelling(text):
+    """Spelling tweaks before espeak: '-y' is the pronoun y (vas-y), not the letter; archaic forms."""
+    # vas-y, allons-y: obligatory liaison, and espeak would read a lone "y" as the letter "i grec".
+    text = re.sub(r"s-y\b", "-zi", text)
+    text = re.sub(r"-y\b", "-i", text)
+    return re.sub(r"\b(" + "|".join(ARCHAIC) + r")\b", lambda m: ARCHAIC[m.group(1)], text)
+
+
+@lru_cache(maxsize=4096)
+def _french_alone(word):
+    from phonemizer.separator import Separator
+    raw = _backend("fr").phonemize([word], separator=Separator(phone=" ", word=" | "), strip=True)[0]
+    return tuple(p for token in raw.replace("|", " ").split() for p in _split(token, "fr"))
+
+
+def _french_liaison(spelled, words, text):
+    out = [list(w) for w in words]
+    for i, (spelling, word) in enumerate(zip(spelled, out)):
+        if spelling in FRENCH_WORDS:
+            out[i] = list(FRENCH_WORDS[spelling])
+            continue
+        if i + 1 >= len(out) or not word:
+            continue
+        alone = list(_french_alone(spelling))
+        linked = len(word) == len(alone) + 1 and word[:-1] == alone and word[-1] in ("z", "t", "n", "p", "ʁ")
+        nxt = spelled[i + 1]
+        if linked and (spelling not in LIAISON_AFTER or nxt == "et"):
+            out[i] = alone
+        elif linked and spelling in DENASALISE:
+            nasal, oral = DENASALISE[spelling]
+            out[i] = [oral if p == nasal else p for p in word]
+        elif spelling == "comment" and not linked and nxt and nxt[0] in "aeiouéèêh" and out[i + 1] and out[i + 1][0] not in "ʁ":
+            out[i] = word + ["t"]  # comment‿allez-vous
     return out
 
 

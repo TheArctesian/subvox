@@ -52,6 +52,8 @@ enum AppLanguage: String, CaseIterable, Identifiable, Codable {
     var isChinese: Bool { corpus == "zh" }
     /// The tag stored on prompts and takes (BCP-47; the script subtag keeps Traditional takes apart).
     var tag: String { rawValue }
+    /// The language's name in the interface language ("英文", "anglais"), for sentences in the UI.
+    var localizedName: String { Locale.current.localizedString(forIdentifier: rawValue) ?? name }
 }
 
 /// Corpus/practice/practice-v1.json, built by Tools/corpus/practice.py with IPA from ml/subvox_ml/ipa.py.
@@ -66,7 +68,10 @@ struct PracticeCorpus: Decodable {
         /// Mexican phones where they differ (seseo, yeísmo), and "ES" for Spain-only phrases (vosotros).
         var ipaMx: [String]? = nil
         var region: String? = nil
-        enum CodingKeys: String, CodingKey { case text, ipa, pinyin, hant, gloss, region, ipaMx = "ipa_mx" }
+        /// 注音 (Bopomofo), shown instead of pinyin when practising Traditional Chinese.
+        var zhuyin: String? = nil
+        enum CodingKeys: String, CodingKey { case text, ipa, pinyin, hant, gloss, region, zhuyin, ipaMx = "ipa_mx" }
+        func reading(_ language: AppLanguage) -> String? { language == .zhHant ? (zhuyin ?? pinyin) : pinyin }
         func text(_ language: AppLanguage) -> String { language == .zhHant ? (hant ?? text) : text }
         func ipa(_ language: AppLanguage) -> [String] { language == .esMX ? (ipaMx ?? ipa) : ipa }
     }
@@ -80,8 +85,27 @@ struct PracticeCorpus: Decodable {
         }
         func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
         func author(_ language: AppLanguage) -> String { language == .zhHant ? (authorHant ?? author) : author }
-        /// "Speech · 19 November 1863" or "Poem · 1609".
-        var when: String { "\(kind.capitalized) · \(date ?? String(year))" }
+        /// "Speech · 19 November 1863" or "Poem · 1609", in the interface language.
+        var when: String {
+            let kindName = switch kind {
+            case "speech": String(localized: "Speech")
+            case "poem": String(localized: "Poem")
+            case "letter": String(localized: "Letter")
+            case "prose": String(localized: "Prose")
+            case "manifesto": String(localized: "Manifesto")
+            default: kind.capitalized
+            }
+            return "\(kindName) · \(Self.localizedDate(date, year: year))"
+        }
+
+        static func localizedDate(_ date: String?, year: Int) -> String {
+            guard let date else { return String(year) }
+            if date.hasPrefix("c. ") { return String(localized: "c. \(String(date.dropFirst(3)))") }
+            let parser = DateFormatter()
+            parser.locale = Locale(identifier: "en_GB"); parser.dateFormat = "d MMMM yyyy"
+            guard let parsed = parser.date(from: date) else { return date }
+            return parsed.formatted(date: .long, time: .omitted)
+        }
     }
     struct Drill: Decodable, Identifiable, Hashable {
         var id: String; var language: String; var title: String; var phrases: [Line]

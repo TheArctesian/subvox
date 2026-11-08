@@ -3,32 +3,32 @@
   "en": {
    "i": {
     "name": "i larga",
-    "guide": "como la i española, pero más larga y tensa: 'eat' no es 'it'",
+    "guide": "como la i del español, pero más larga y tensa: 'eat' no es 'it'",
     "tip": "labios estirados en sonrisa, mandíbula casi cerrada"
    },
    "ɪ": {
     "name": "i corta",
-    "guide": "como la i española pero más corta y relajada; no digas 'i'; nuevo para hispanohablantes",
+    "guide": "como la i del español pero más corta y relajada; no digas 'i'; nuevo para hispanohablantes",
     "tip": "labios relajados, mandíbula algo más abierta que para la i"
    },
    "ɛ": {
     "name": "e abierta",
-    "guide": "como la e española, un poco más abierta y baja ('bed')",
+    "guide": "como la e del español, un poco más abierta y baja ('bed')",
     "tip": "mandíbula algo más abierta que en español, labios neutros"
    },
    "æ": {
     "name": "a-e abierta",
-    "guide": "entre a y e españolas, muy abierta; nuevo para hispanohablantes",
+    "guide": "entre a y e del españols, muy abierta; nuevo para hispanohablantes",
     "tip": "mandíbula bien baja, labios estirados a los lados"
    },
    "ɑ": {
     "name": "a profunda",
-    "guide": "como la a española pero más atrás y larga, como en 'ah'",
+    "guide": "como la a del español pero más atrás y larga, como en 'ah'",
     "tip": "boca abierta y relajada, lengua baja y atrás"
    },
    "ɔ": {
     "name": "o abierta larga",
-    "guide": "como la o española, más abierta y larga, casi 'oa'; nuevo para hispanohablantes",
+    "guide": "como la o del español, más abierta y larga, casi 'oa'; nuevo para hispanohablantes",
     "tip": "mandíbula caída y labios algo redondeados"
    },
    "ʌ": {
@@ -38,12 +38,12 @@
    },
    "ʊ": {
     "name": "u corta",
-    "guide": "como una u española más corta y relajada; nuevo para hispanohablantes",
+    "guide": "como una u del español más corta y relajada; nuevo para hispanohablantes",
     "tip": "labios apenas redondeados, sin proyectarlos hacia delante"
    },
    "u": {
     "name": "u larga",
-    "guide": "como la u española pero más larga, con labios muy redondeados",
+    "guide": "como la u del español pero más larga, con labios muy redondeados",
     "tip": "labios en círculo pequeño, mandíbula casi cerrada"
    },
    "ə": {
@@ -58,7 +58,7 @@
    },
    "ɝ": {
     "name": "er acentuada",
-    "guide": "vocal larga con la r inglesa incluida, no 'er' española; nuevo para hispanohablantes",
+    "guide": "vocal larga con la r inglesa incluida, no 'er' del español; nuevo para hispanohablantes",
     "tip": "lengua curvada hacia atrás sin tocar, labios algo redondeados"
    },
    "aɪ": {
@@ -78,7 +78,7 @@
    },
    "oʊ": {
     "name": "ou",
-    "guide": "como la o española pero deslizando a u; no la dejes pura",
+    "guide": "como la o del español pero deslizando a u; no la dejes pura",
     "tip": "labios redondeados que se cierran más al final"
    },
    "ɔɪ": {
@@ -88,47 +88,47 @@
    },
    "p": {
     "name": "p con soplo",
-    "guide": "como la p española, pero con soplo de aire al inicio de sílaba tónica",
+    "guide": "como la p del español, pero con soplo de aire al inicio de sílaba tónica",
     "tip": "labios cerrados y se sueltan con bocanada; prueba con un papel"
    },
    "b": {
     "name": "b",
-    "guide": "como la b española de 'bien'; entre vocales no la suavices",
+    "guide": "como la b del español de 'bien'; entre vocales no la suavices",
     "tip": "labios cerrados y la voz suena desde el inicio"
    },
    "t": {
     "name": "t con soplo",
-    "guide": "como la t española, pero con la lengua en el alvéolo y con soplo de aire",
+    "guide": "como la t del español, pero con la lengua en el alvéolo y con soplo de aire",
     "tip": "punta de la lengua en la encía tras los dientes; suelta aire"
    },
    "d": {
     "name": "d",
-    "guide": "como la d española de 'donde', con la lengua en el alvéolo; no la suavices",
+    "guide": "como la d del español de 'donde', con la lengua en el alvéolo; no la suavices",
     "tip": "punta de la lengua en la encía, sin hacerse fricativa"
    },
    "k": {
     "name": "k con soplo",
-    "guide": "como la k/c española, pero con soplo de aire al inicio de sílaba tónica",
+    "guide": "como la k/c del español, pero con soplo de aire al inicio de sílaba tónica",
     "tip": "parte trasera de la lengua toca el velo y se suelta con aire"
    },
    "ɡ": {
     "name": "g",
-    "guide": "como la g española de 'gato', pero sin suavizarse entre vocales",
+    "guide": "como la g del español de 'gato', pero sin suavizarse entre vocales",
     "tip": "parte trasera de la lengua cierra del todo; voz desde el inicio"
    },
    "f": {
     "name": "f",
-    "guide": "igual que la f española",
+    "guide": "igual que la f del español",
     "tip": "dientes superiores sobre el labio inferior"
    },
    "v": {
     "name": "v",
-    "guide": "como la f pero con voz; no es la b española; nuevo para hispanohablantes",
+    "guide": "como la f pero con voz; no es la b del español; nuevo para hispanohablantes",
     "tip": "dientes superiores tocan el labio inferior y vibra; labios no se cierran"
    },
    "θ": {
     "name": "th sorda",
-    "guide": "como la z de España ('zapato'); nuevo para hispanohablantes de América",
+    "guide": "lengua entre los dientes, como la z de Madrid ('zapato'); nuevo para hispanohablantes de América",
     "tip": "punta de la lengua entre los dientes, soplando aire sin voz"
    },
    "ð": {
@@ -138,7 +138,7 @@
    },
    "s": {
     "name": "s",
-    "guide": "como la s española; no añadas una e delante en 'school' ni 'street'",
+    "guide": "como la s del español; no añadas una e delante en 'school' ni 'street'",
     "tip": "dientes casi juntos, aire silbante por el centro de la lengua"
    },
    "z": {
@@ -148,37 +148,37 @@
    },
    "ʃ": {
     "name": "sh",
-    "guide": "como 'chsss' para pedir silencio, sin t inicial; nuevo para hispanohablantes",
+    "guide": "como 'shhh' para pedir silencio, sin t inicial; nuevo para hispanohablantes",
     "tip": "labios algo redondeados y adelantados, aire continuo"
    },
    "ʒ": {
     "name": "zh",
-    "guide": "como 'sh' pero con voz; parecida a la ll rioplatense; nuevo para hispanohablantes",
+    "guide": "como 'sh' pero con voz; como la y de 'yo' dicha con fuerza; nuevo para hispanohablantes",
     "tip": "labios algo redondeados, garganta vibrando, aire continuo"
    },
    "h": {
     "name": "h aspirada",
-    "guide": "como una j española muy suave, solo un soplo; nuevo para hispanohablantes",
+    "guide": "como una j del español muy suave, solo un soplo; nuevo para hispanohablantes",
     "tip": "boca ya en posición de la vocal; el aire sale de la garganta"
    },
    "tʃ": {
     "name": "ch",
-    "guide": "como la ch española, algo más fuerte",
+    "guide": "como la ch del español, algo más fuerte",
     "tip": "punta de la lengua toca la encía y se suelta en 'sh'; labios adelantados"
    },
    "dʒ": {
     "name": "j inglesa",
-    "guide": "como ch pero con voz; parecida a la y rioplatense fuerte; nuevo para hispanohablantes",
+    "guide": "como ch pero con voz; como la y de 'yo' dicha con fuerza; nuevo para hispanohablantes",
     "tip": "lengua toca la encía y se suelta en 'zh'; labios algo redondeados"
    },
    "m": {
     "name": "m",
-    "guide": "igual que la m española; al final de palabra cierra bien los labios",
+    "guide": "igual que la m del español; al final de palabra cierra bien los labios",
     "tip": "labios cerrados y el aire sale por la nariz"
    },
    "n": {
     "name": "n",
-    "guide": "como la n española, con la lengua en el alvéolo; al final no se vuelve ng",
+    "guide": "como la n del español, con la lengua en el alvéolo; al final no se vuelve ng",
     "tip": "punta de la lengua en la encía tras los dientes"
    },
    "ŋ": {
@@ -188,12 +188,12 @@
    },
    "l": {
     "name": "l",
-    "guide": "más oscura que la l española, sobre todo al final ('full')",
+    "guide": "más oscura que la l del español, sobre todo al final ('full')",
     "tip": "punta en la encía; al final la parte trasera se retrae"
    },
    "ɹ": {
     "name": "r inglesa",
-    "guide": "no es la r española: la lengua no toca ni vibra; nuevo para hispanohablantes",
+    "guide": "no es la r del español: la lengua no toca ni vibra; nuevo para hispanohablantes",
     "tip": "punta de la lengua curvada hacia atrás sin tocar, labios algo redondeados"
    },
    "j": {
@@ -210,22 +210,22 @@
   "fr": {
    "a": {
     "name": "a",
-    "guide": "como la a española, algo más adelantada",
+    "guide": "como la a del español, algo más adelantada",
     "tip": "boca abierta, labios neutros, lengua baja y adelante"
    },
    "e": {
     "name": "é",
-    "guide": "como la e española de 'mesa', más cerrada y tensa",
+    "guide": "como la e del español de 'mesa', más cerrada y tensa",
     "tip": "labios estirados y mandíbula casi cerrada; sin deslizar a i"
    },
    "ɛ": {
     "name": "è",
-    "guide": "como la e española de 'perro', más abierta",
+    "guide": "como la e del español de 'perro', más abierta",
     "tip": "mandíbula más abierta que en é, labios neutros"
    },
    "i": {
     "name": "i",
-    "guide": "como la i española, algo más tensa",
+    "guide": "como la i del español, algo más tensa",
     "tip": "labios estirados en sonrisa, lengua alta y adelante"
    },
    "y": {
@@ -235,17 +235,17 @@
    },
    "u": {
     "name": "ou",
-    "guide": "como la u española, con labios más redondeados y adelantados",
+    "guide": "como la u del español, con labios más redondeados y adelantados",
     "tip": "labios en círculo pequeño y hacia delante, lengua atrás"
    },
    "o": {
     "name": "o cerrada",
-    "guide": "como la o española de 'ojo', más cerrada y sin deslizar a u",
+    "guide": "como la o del español de 'ojo', más cerrada y sin deslizar a u",
     "tip": "labios redondeados y tensos, mandíbula casi cerrada"
    },
    "ɔ": {
     "name": "o abierta",
-    "guide": "como la o española de 'sol', algo más abierta",
+    "guide": "como la o del español de 'sol', algo más abierta",
     "tip": "mandíbula más abierta y labios redondeados con menos tensión"
    },
    "ø": {
@@ -285,47 +285,47 @@
    },
    "p": {
     "name": "p",
-    "guide": "igual que la p española, sin soplo de aire",
+    "guide": "igual que la p del español, sin soplo de aire",
     "tip": "labios cerrados que se abren sin bocanada"
    },
    "b": {
     "name": "b",
-    "guide": "como la b española de 'bien'; siempre fuerte, sin suavizarse entre vocales",
+    "guide": "como la b del español de 'bien'; siempre fuerte, sin suavizarse entre vocales",
     "tip": "labios cerrados del todo y voz desde el inicio"
    },
    "t": {
     "name": "t",
-    "guide": "igual que la t española, con la lengua contra los dientes",
+    "guide": "igual que la t del español, con la lengua contra los dientes",
     "tip": "punta de la lengua contra los dientes superiores"
    },
    "d": {
     "name": "d",
-    "guide": "como la d española de 'donde'; sin suavizarse entre vocales",
+    "guide": "como la d del español de 'donde'; sin suavizarse entre vocales",
     "tip": "punta de la lengua contra los dientes superiores, con voz"
    },
    "k": {
     "name": "k",
-    "guide": "igual que la k/c española, sin soplo de aire",
+    "guide": "igual que la k/c del español, sin soplo de aire",
     "tip": "parte trasera de la lengua toca el velo y se suelta"
    },
    "ɡ": {
     "name": "g",
-    "guide": "como la g española de 'gato'; sin suavizarse entre vocales",
+    "guide": "como la g del español de 'gato'; sin suavizarse entre vocales",
     "tip": "parte trasera de la lengua cierra del todo, con voz"
    },
    "f": {
     "name": "f",
-    "guide": "igual que la f española",
+    "guide": "igual que la f del español",
     "tip": "dientes superiores sobre el labio inferior"
    },
    "v": {
     "name": "v",
-    "guide": "como la f pero con voz; no es la b española; nuevo para hispanohablantes",
+    "guide": "como la f pero con voz; no es la b del español; nuevo para hispanohablantes",
     "tip": "dientes superiores tocan el labio inferior y vibra; labios no se cierran"
    },
    "s": {
     "name": "s",
-    "guide": "igual que la s española; entre vocales sigue siendo s sorda ('dessert')",
+    "guide": "igual que la s del español; entre vocales sigue siendo s sorda ('dessert')",
     "tip": "dientes casi juntos, aire silbante por el centro de la lengua"
    },
    "z": {
@@ -335,37 +335,37 @@
    },
    "ʃ": {
     "name": "ch",
-    "guide": "como 'chsss' para pedir silencio, sin t inicial; nuevo para hispanohablantes",
+    "guide": "como 'shhh' para pedir silencio, sin t inicial; nuevo para hispanohablantes",
     "tip": "labios algo redondeados y adelantados, aire continuo"
    },
    "ʒ": {
     "name": "j francesa",
-    "guide": "como 'ch' francesa pero con voz; parecida a la ll rioplatense; nuevo para hispanohablantes",
+    "guide": "como 'ch' francesa pero con voz; como la y de 'yo' dicha con fuerza; nuevo para hispanohablantes",
     "tip": "labios algo redondeados, garganta vibrando, aire continuo"
    },
    "ʁ": {
     "name": "r francesa",
-    "guide": "no es la r española: raspa suave de garganta, como j sonora; nuevo para hispanohablantes",
+    "guide": "no es la r del español: raspa suave de garganta, como j sonora; nuevo para hispanohablantes",
     "tip": "parte trasera de la lengua cerca de la úvula; la punta queda abajo"
    },
    "m": {
     "name": "m",
-    "guide": "igual que la m española",
+    "guide": "igual que la m del español",
     "tip": "labios cerrados y el aire sale por la nariz"
    },
    "n": {
     "name": "n",
-    "guide": "igual que la n española, con la lengua contra los dientes",
+    "guide": "igual que la n del español, con la lengua contra los dientes",
     "tip": "punta de la lengua contra los dientes superiores"
    },
    "ɲ": {
     "name": "gn",
-    "guide": "igual que la ñ española ('montagne')",
+    "guide": "igual que la ñ del español ('montagne')",
     "tip": "medio de la lengua contra el paladar, aire por la nariz"
    },
    "l": {
     "name": "l",
-    "guide": "como la l española, clara",
+    "guide": "como la l del español, clara",
     "tip": "punta de la lengua contra los dientes superiores"
    },
    "j": {
@@ -387,17 +387,17 @@
   "zh": {
    "a": {
     "name": "a",
-    "guide": "como la a española, abierta y adelantada",
+    "guide": "como la a del español, abierta y adelantada",
     "tip": "boca abierta y relajada, lengua baja"
    },
    "o": {
     "name": "o",
-    "guide": "como la o española, con un leve deslizamiento desde u ('wo')",
+    "guide": "como la o del español, con un leve deslizamiento desde u ('wo')",
     "tip": "labios redondeados, mandíbula media"
    },
    "e": {
     "name": "e (ei, ie)",
-    "guide": "como la e española; aparece en 'ei' y 'ie'",
+    "guide": "como la e del español; aparece en 'ei' y 'ie'",
     "tip": "labios estirados, mandíbula media"
    },
    "ɛ": {
@@ -407,7 +407,7 @@
    },
    "ɤ": {
     "name": "e (atrás)",
-    "guide": "como una o española con labios estirados, no redondos; nuevo para hispanohablantes",
+    "guide": "como una o del español con labios estirados, no redondos; nuevo para hispanohablantes",
     "tip": "mandíbula media, lengua atrás; di 'o' sonriendo"
    },
    "ə": {
@@ -417,12 +417,12 @@
    },
    "i": {
     "name": "i",
-    "guide": "como la i española",
+    "guide": "como la i del español",
     "tip": "labios estirados, lengua alta y adelante"
    },
    "u": {
     "name": "u",
-    "guide": "como la u española, con labios muy redondeados",
+    "guide": "como la u del español, con labios muy redondeados",
     "tip": "labios en círculo pequeño, lengua atrás"
    },
    "y": {
@@ -447,7 +447,7 @@
    },
    "ʊ": {
     "name": "ong",
-    "guide": "entre o y u españolas, seguida de ng; nuevo para hispanohablantes",
+    "guide": "entre o y u del españols, seguida de ng; nuevo para hispanohablantes",
     "tip": "labios algo redondeados, lengua atrás, termina nasal en ng"
    },
    "j": {
@@ -467,57 +467,57 @@
    },
    "p": {
     "name": "b · sin soplo",
-    "guide": "como la p española, sin soplo; en pinyin se escribe b, no la b española",
+    "guide": "como la p del español, sin soplo; en pinyin se escribe b, no la b del español",
     "tip": "labios cerrados que se abren sin expulsar aire"
    },
    "pʰ": {
     "name": "p · con soplo",
-    "guide": "como la p española con una bocanada fuerte de aire; nuevo para hispanohablantes",
+    "guide": "como la p del español con una bocanada fuerte de aire; nuevo para hispanohablantes",
     "tip": "labios cerrados que se sueltan con soplo; prueba con un papel"
    },
    "m": {
     "name": "m",
-    "guide": "igual que la m española",
+    "guide": "igual que la m del español",
     "tip": "labios cerrados, aire por la nariz"
    },
    "f": {
     "name": "f",
-    "guide": "igual que la f española",
+    "guide": "igual que la f del español",
     "tip": "dientes superiores sobre el labio inferior"
    },
    "t": {
     "name": "d · sin soplo",
-    "guide": "como la t española, sin soplo; en pinyin se escribe d, no la d española",
+    "guide": "como la t del español, sin soplo; en pinyin se escribe d, no la d del español",
     "tip": "punta de la lengua tras los dientes, se suelta sin aire"
    },
    "tʰ": {
     "name": "t · con soplo",
-    "guide": "como la t española con una bocanada fuerte de aire; nuevo para hispanohablantes",
+    "guide": "como la t del español con una bocanada fuerte de aire; nuevo para hispanohablantes",
     "tip": "punta de la lengua tras los dientes, se suelta con soplo"
    },
    "n": {
     "name": "n",
-    "guide": "igual que la n española",
+    "guide": "igual que la n del español",
     "tip": "punta de la lengua tras los dientes superiores"
    },
    "l": {
     "name": "l",
-    "guide": "como la l española, clara",
+    "guide": "como la l del español, clara",
     "tip": "punta de la lengua tras los dientes superiores"
    },
    "k": {
     "name": "g · sin soplo",
-    "guide": "como la k/c española, sin soplo; en pinyin se escribe g, no la g suave",
+    "guide": "como la k/c del español, sin soplo; en pinyin se escribe g, no la g suave",
     "tip": "parte trasera de la lengua toca el velo, se suelta sin aire"
    },
    "kʰ": {
     "name": "k · con soplo",
-    "guide": "como la k española con una bocanada fuerte de aire; nuevo para hispanohablantes",
+    "guide": "como la k del español con una bocanada fuerte de aire; nuevo para hispanohablantes",
     "tip": "parte trasera de la lengua toca el velo, se suelta con soplo"
    },
    "x": {
     "name": "h",
-    "guide": "como la j española de 'jamón'",
+    "guide": "como la j del español de 'jamón'",
     "tip": "parte trasera de la lengua cerca del velo, aire rozando"
    },
    "ŋ": {
@@ -527,7 +527,7 @@
    },
    "tɕ": {
     "name": "j",
-    "guide": "como la ch española pero con lengua plana y sin soplo; nuevo para hispanohablantes",
+    "guide": "como la ch del español pero con lengua plana y sin soplo; nuevo para hispanohablantes",
     "tip": "punta de la lengua abajo, labios estirados en sonrisa"
    },
    "tɕʰ": {
@@ -542,17 +542,17 @@
    },
    "ts": {
     "name": "z",
-    "guide": "como 'ts' de 'tsetsé', un solo sonido sin soplo; nuevo para hispanohablantes",
+    "guide": "como 'ts' de 'pizza', un solo sonido sin soplo; nuevo para hispanohablantes",
     "tip": "dientes casi juntos, lengua plana, se suelta sin aire"
    },
    "tsʰ": {
     "name": "c",
-    "guide": "como 'ts' con una bocanada de aire; no es la c española; nuevo para hispanohablantes",
+    "guide": "como 'ts' con una bocanada de aire; no es la c del español; nuevo para hispanohablantes",
     "tip": "dientes casi juntos, lengua plana, se suelta con soplo"
    },
    "s": {
     "name": "s",
-    "guide": "igual que la s española",
+    "guide": "igual que la s del español",
     "tip": "dientes casi juntos, aire silbante"
    },
    "ʈʂ": {
@@ -572,7 +572,7 @@
    },
    "ʐ": {
     "name": "r",
-    "guide": "como sh pero con voz y lengua curvada; no es la r española; nuevo para hispanohablantes",
+    "guide": "como sh pero con voz y lengua curvada; no es la r del español; nuevo para hispanohablantes",
     "tip": "punta de la lengua curvada hacia atrás, garganta vibrando"
    },
    "˥": {
