@@ -18,10 +18,10 @@ struct RecordingCueStatus: View {
     var color: Color
     var body: some View {
         VStack(spacing: 8) {
-            Text(timer).font(.system(size: 20, weight: .medium).monospacedDigit()).foregroundStyle(.secondary)
+            Text(timer).font(.system(size: 20, weight: .medium).monospacedDigit()).foregroundStyle(.primary)
             HStack(spacing: 7) {
-                Circle().fill(color).frame(width: 6, height: 6)
-                Text(title).font(.system(size: 13, weight: .semibold))
+                Circle().fill(color).frame(width: 9, height: 9)
+                Text(title).font(.system(size: 17, weight: .semibold))
             }
             .padding(.horizontal, 13).padding(.vertical, 7)
             .background(color.opacity(0.12), in: Capsule())

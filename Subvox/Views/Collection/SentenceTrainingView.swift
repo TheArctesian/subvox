@@ -10,6 +10,8 @@ struct SentenceTrainingView: View {
     @State private var channel = MotionPlotChannel.rotation
     private enum Section: String, CaseIterable { case record = "Record", review = "Review", progress = "Progress" }
     @State private var section = Section.record
+    /// VoiceOver starts on the recording screen's title when a round begins and at each new take.
+    @AccessibilityFocusState private var focusRecording: Bool
 
     var body: some View {
         if model.showContribute { ContributeView() }
@@ -241,7 +243,7 @@ struct SentenceTrainingView: View {
         let status=workflow.phase == .ready ? "Ready":resting ? "Relax":workflow.phase == .ended ? "Saved":"Recording"
         return RecordingViewport {
             VStack(spacing:8) {
-                HStack {Text(recordingTitle).font(.headline);Spacer();Text("\(min(workflow.index+1,workflow.total)) of \(workflow.total)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)}
+                HStack {Text(recordingTitle).font(.headline).accessibilityAddTraits(.isHeader).accessibilityFocused($focusRecording);Spacer();Text("\(min(workflow.index+1,workflow.total)) of \(workflow.total)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)}
                 ProgressView(value:Double(workflow.index),total:Double(max(1,workflow.total))).tint(color)
             }
         } prompt: {
@@ -274,21 +276,23 @@ struct SentenceTrainingView: View {
                     }.buttonStyle(.borderedProminent).disabled(!workflow.canAdvance)
                 }.controlSize(.large).frame(maxWidth:.infinity)
                 HStack(spacing:16) {
-                    Text("Space or → start, finish or next  ·  ← redo").font(.callout).foregroundStyle(.secondary)
-                    Button("Stop and save",action:workflow.stop).buttonStyle(.borderless).font(.caption).foregroundStyle(.secondary)
+                    Text("Space or → start, finish or next  ·  ← redo  ·  Esc stop").font(.callout).foregroundStyle(.secondary)
+                    Button("Stop and Save (Esc)",action:workflow.stop).keyboardShortcut(.cancelAction).font(.callout)
                 }
             }.frame(maxWidth:.infinity)
         } motion: {LiveMotionPanel(plotHeight:44)}
+        .onAppear { focusRecording = true }
+        .onChange(of: model.sentenceTraining.phase) { if model.sentenceTraining.phase == .ready { focusRecording = true } }
     }
 
     private var recordingTitle: String {
         switch model.sentenceTraining.currentKind {
-        case .sound: "Sounds"
-        case .speech: "Speech & Poetry"
-        case .drill: "Language drill"
-        case .minimalPair: "Minimal Pairs"
-        case .freeText: "Free Practice"
-        default: "Reading"
+        case .sound: TrainMode.sounds.title
+        case .speech: TrainMode.speech.title
+        case .drill: TrainMode.language.title
+        case .minimalPair: TrainMode.minimalPairs.title
+        case .freeText: TrainMode.free.title
+        default: TrainMode.reading.title
         }
     }
 

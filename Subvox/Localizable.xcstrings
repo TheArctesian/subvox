@@ -443,6 +443,74 @@
         }
       }
     },
+    "%lld of %lld today": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld hoy"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld hoy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sur %lld aujourd’hui"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天 %lld/%lld"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天 %lld/%lld"
+          }
+        }
+      }
+    },
+    "%lld of %lld today · %lld days in a row": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld hoy · %lld días seguidos"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld hoy · %lld días seguidos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sur %lld aujourd’hui · %lld jours de suite"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天 %lld/%lld · 连续 %lld 天"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天 %lld/%lld · 連續 %lld 天"
+          }
+        }
+      }
+    },
     "%lld of %lld validation words had usable boundaries and pronunciations.": {
       "localizations": {
         "es": {
@@ -681,6 +749,40 @@
         }
       }
     },
+    ". Press Space to start; a tone marks the start.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Presiona Espacio para empezar; un tono marca el inicio."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Presiona Espacio para empezar; un tono marca el inicio."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Appuyez sur Espace pour commencer ; un son marque le début."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "。按空格键开始；提示音表示开始。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "。按空白鍵開始；提示音表示開始。"
+          }
+        }
+      }
+    },
     "/%@/": {
       "localizations": {
         "es": {
@@ -779,6 +881,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "連續 1 天"
+          }
+        }
+      }
+    },
+    "1 sentence. A take trains only when Whisper agrees with at least 85% of it; otherwise it stays practice.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 frase. Una toma solo se usa para entrenar si Whisper coincide con al menos el 85 % de su contenido; si no, queda como práctica."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 frase. Una toma solo se usa para entrenar si Whisper coincide con al menos el 85 % de su contenido; si no, queda como práctica."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 phrase. Une prise n’est utilisée pour l’entraînement que si Whisper concorde avec au moins 85 % de son contenu ; sinon, elle reste un simple exercice."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 个句子。一次录音只有在 Whisper 识别结果与内容至少 85% 相符时才会用于训练，否则仅作练习。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 個句子。一次錄音只有在 Whisper 辨識結果與內容至少 85% 相符時才會用於訓練，否則僅作練習。"
           }
         }
       }
@@ -3605,6 +3741,74 @@
         }
       }
     },
+    "Heard as written": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se oyó tal como está escrito"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se oyó tal como está escrito"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entendu comme écrit"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "听到的和文字一致"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聽到的和文字一致"
+          }
+        }
+      }
+    },
+    "Heard something different — try it again": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se oyó algo distinto: inténtalo otra vez"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se oyó algo distinto: inténtalo otra vez"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entendu autre chose — réessayez"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "听到的不太一样——再试一次"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聽到的不太一樣——再試一次"
+          }
+        }
+      }
+    },
     "Help build an open dataset for silent speech. Nothing leaves this Mac until you press Send.": {
       "localizations": {
         "es": {
@@ -4927,6 +5131,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "動作聲道"
+          }
+        }
+      }
+    },
+    "Mouth it silently, lips only": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dilo sin voz, solo con los labios"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dilo sin voz, solo con los labios"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Articulez-le en silence, avec les lèvres"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不出声，只动嘴唇"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不出聲，只動嘴唇"
           }
         }
       }
@@ -6257,6 +6495,40 @@
         }
       }
     },
+    "Practise This Sound": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar este sonido"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar este sonido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pratiquer ce son"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "练习这个音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "練習這個音"
+          }
+        }
+      }
+    },
     "Practising %@": {
       "localizations": {
         "es": {
@@ -7277,6 +7549,40 @@
         }
       }
     },
+    "Recording finished.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabación terminada."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabación terminada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrement terminé."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录音完成。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "錄音完成。"
+          }
+        }
+      }
+    },
     "Recording settings": {
       "localizations": {
         "es": {
@@ -7409,6 +7715,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "錄音只留在這台 Mac 上。你仍可以錄製社群文章供自己使用。"
+          }
+        }
+      }
+    },
+    "Records the %lld example words: each one aloud, then mouthed.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Graba las %lld palabras de ejemplo: cada una en voz alta y luego sin voz."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Graba las %lld palabras de ejemplo: cada una en voz alta y luego sin voz."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistre les %lld mots d’exemple : chacun à voix haute, puis articulé en silence."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "录下 %lld 个例词：每个先出声说，再不出声只动嘴唇。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "錄下 %lld 個例詞：每個先出聲說，再不出聲只動嘴唇。"
           }
         }
       }
@@ -7821,6 +8161,74 @@
         }
       }
     },
+    "Round complete!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Ronda completa!"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Ronda completa!"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Série terminée !"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本轮完成！"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本輪完成！"
+          }
+        }
+      }
+    },
+    "Round finished. Your results are at the top of the page.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ronda terminada. Tus resultados están arriba de la página."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ronda terminada. Tus resultados están arriba de la página."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Série terminée. Vos résultats sont en haut de la page."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本轮结束。结果在页面顶部。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本輪結束。結果在頁面頂端。"
+          }
+        }
+      }
+    },
     "Run local Whisper on %lld pending spoken takes": {
       "localizations": {
         "es": {
@@ -8021,6 +8429,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "已儲存的固定模型研究"
+          }
+        }
+      }
+    },
+    "Saving and checking your takes.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando y revisando tus tomas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando y revisando tus tomas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrement et vérification de vos prises."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在保存并检查你的录音。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在保存並檢查你的錄音。"
+          }
+        }
+      }
+    },
+    "Say it aloud": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dilo en voz alta"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dilo en voz alta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dites-le à voix haute"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出声说"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出聲說"
           }
         }
       }
@@ -9215,6 +9691,40 @@
         }
       }
     },
+    "Space or → start, finish or next  ·  ← redo  ·  Esc stop": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espacio o →: empezar, terminar o siguiente  ·  ←: repetir  ·  Esc: detener"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espacio o →: empezar, terminar o siguiente  ·  ←: repetir  ·  Esc: detener"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espace ou → : commencer, terminer ou suivant  ·  ← : refaire  ·  Échap : arrêter"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空格或 →：开始、结束或下一个  ·  ←：重录  ·  Esc：停止"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空白鍵或 →：開始、結束或下一個  ·  ←：重錄  ·  Esc：停止"
+          }
+        }
+      }
+    },
     "Spanish": {
       "localizations": {
         "es": {
@@ -9759,6 +10269,40 @@
         }
       }
     },
+    "Stop and Save (Esc)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detener y guardar (Esc)"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detener y guardar (Esc)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrêter et enregistrer (Échap)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止并保存（Esc）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止並保存（Esc）"
+          }
+        }
+      }
+    },
     "Stop and save": {
       "localizations": {
         "es": {
@@ -9929,6 +10473,40 @@
         }
       }
     },
+    "Take %lld of %lld. %@: ": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toma %lld de %lld. %@: "
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toma %lld de %lld. %@: "
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prise %lld sur %lld. %@ : "
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第 %lld/%lld 次。%@："
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第 %lld/%lld 次。%@："
+          }
+        }
+      }
+    },
     "Take saved. Press Space for the next one, or redo any mistake.": {
       "localizations": {
         "es": {
@@ -9959,6 +10537,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "這次錄音已儲存。按空白鍵繼續下一個，有錯也可以重來。"
+          }
+        }
+      }
+    },
+    "Take saved. Space for the next one, left arrow to redo.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toma guardada. Espacio para la siguiente, flecha izquierda para repetir."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toma guardada. Espacio para la siguiente, flecha izquierda para repetir."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prise enregistrée. Espace pour la suivante, flèche gauche pour refaire."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已保存。按空格到下一个，按左箭头重录。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已保存。按空白鍵到下一個，按左方向鍵重錄。"
           }
         }
       }
@@ -10163,6 +10775,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "這個詞語基準使用的是估計的邊界。實驗性的句子解碼及其單獨評估，在「進階 → 句子模型」中。"
+          }
+        }
+      }
+    },
+    "Today's goal done": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meta de hoy cumplida"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meta de hoy cumplida"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectif du jour atteint"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天的目标完成了"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天的目標完成了"
+          }
+        }
+      }
+    },
+    "Today's goal done. %lld days in a row.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meta de hoy cumplida. %lld días seguidos."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meta de hoy cumplida. %lld días seguidos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectif du jour atteint. %lld jours de suite."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天的目标完成了。连续 %lld 天。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天的目標完成了。連續 %lld 天。"
           }
         }
       }
@@ -10435,6 +11115,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "試用模型"
+          }
+        }
+      }
+    },
+    "Turn Off Sound Cues": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar las señales sonoras"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar las señales sonoras"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver les signaux sonores"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭提示音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關閉提示音"
+          }
+        }
+      }
+    },
+    "Turn On Sound Cues": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activar las señales sonoras"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activar las señales sonoras"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer les signaux sonores"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开提示音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟提示音"
           }
         }
       }
@@ -11863,6 +12611,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "⌘↩"
+          }
+        }
+      }
+    },
+    "⌘↩ start · ⌘1–6 pages · ⌥⌘1–6 language": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘↩ empezar · ⌘1–6 páginas · ⌥⌘1–6 idioma"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘↩ empezar · ⌘1–6 páginas · ⌥⌘1–6 idioma"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘↩ commencer · ⌘1–6 pages · ⌥⌘1–6 langue"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘↩ 开始 · ⌘1–6 页面 · ⌥⌘1–6 语言"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘↩ 開始 · ⌘1–6 頁面 · ⌥⌘1–6 語言"
           }
         }
       }

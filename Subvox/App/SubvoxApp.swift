@@ -24,6 +24,10 @@ struct SubvoxApp: App {
                     let defaults = UserDefaults.standard
                     defaults.set(!(defaults.object(forKey: "practice.showIPA") as? Bool ?? true), forKey: "practice.showIPA")
                 }.keyboardShortcut("i", modifiers: .command)
+                Button(UserDefaults.standard.object(forKey: "ui.soundCues") as? Bool ?? true ? "Turn Off Sound Cues" : "Turn On Sound Cues") {
+                    let defaults = UserDefaults.standard
+                    defaults.set(!(defaults.object(forKey: "ui.soundCues") as? Bool ?? true), forKey: "ui.soundCues")
+                }
                 Menu("Practise Language") {
                     ForEach(Array(AppLanguage.allCases.enumerated()), id: \.offset) { index, language in
                         Button(language.name) { model.language = language }

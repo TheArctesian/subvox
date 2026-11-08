@@ -606,7 +606,7 @@
   "en": {
    "i": {
     "name": "i long",
-    "guide": "comme le i français, mais plus long et tendu (« eat » n« est pas  »it')",
+    "guide": "comme le i français, mais plus long et tendu (« eat » n’est pas « it »)",
     "tip": "lèvres étirées en sourire, mâchoire presque fermée"
    },
    "ɪ": {
@@ -672,12 +672,12 @@
    "aʊ": {
     "name": "aou",
     "guide": "a ouvert qui glisse vers un ou bref ; absent du français",
-    "tip": "mâchoire basse, lèvres qui s'arrondissent à la fin"
+    "tip": "mâchoire basse, lèvres qui s’arrondissent à la fin"
    },
    "eɪ": {
     "name": "éï",
     "guide": "é long qui glisse vers i ; en français é reste pur ; absent du français",
-    "tip": "mâchoire mi-fermée qui monte, lèvres s'étirent à la fin"
+    "tip": "mâchoire mi-fermée qui monte, lèvres s’étirent à la fin"
    },
    "oʊ": {
     "name": "o-ou",
@@ -687,16 +687,16 @@
    "ɔɪ": {
     "name": "oï",
     "guide": "o ouvert qui glisse vers i, comme « oy » de « boycott »",
-    "tip": "lèvres arrondies qui s'étirent vers le i"
+    "tip": "lèvres arrondies qui s’étirent vers le i"
    },
    "p": {
     "name": "p aspiré",
-    "guide": "comme le p français, avec un souffle d'air en début de syllabe accentuée",
-    "tip": "lèvres closes qui s« ouvrent en jet d »air ; test : feuille de papier"
+    "guide": "comme le p français, avec un souffle d’air en début de syllabe accentuée",
+    "tip": "lèvres closes qui s’ouvrent en jet d’air ; test : feuille de papier"
    },
    "b": {
     "name": "b",
-    "guide": "comme le b français ; la voix démarre dès l'ouverture des lèvres",
+    "guide": "comme le b français ; la voix démarre dès l’ouverture des lèvres",
     "tip": "lèvres closes, voix dès le début"
    },
    "t": {
@@ -711,7 +711,7 @@
    },
    "k": {
     "name": "k aspiré",
-    "guide": "comme le k français, avec souffle d'air en début de syllabe accentuée",
+    "guide": "comme le k français, avec souffle d’air en début de syllabe accentuée",
     "tip": "arrière de la langue contre le voile, relâché avec souffle"
    },
    "ɡ": {
@@ -731,7 +731,7 @@
    },
    "θ": {
     "name": "th sourd",
-    "guide": "la langue entre les dents, on souffle doucement (ni « s » ni « f ») ; absent du français",
+    "guide": "la langue entre les dents, on souffle doucement (ni « s » ni « f ») ; absent du français",
     "tip": "pointe de la langue entre les dents, souffle sans voix"
    },
    "ð": {
@@ -762,7 +762,7 @@
    "h": {
     "name": "h expiré",
     "guide": "simple souffle expiré, comme un soupir ; absent du français",
-    "tip": "bouche déjà prête pour la voyelle ; l'air sort de la gorge"
+    "tip": "bouche déjà prête pour la voyelle ; l’air sort de la gorge"
    },
    "tʃ": {
     "name": "ch",
@@ -791,13 +791,13 @@
    },
    "l": {
     "name": "l",
-    "guide": "plus sombre qu« en français, surtout en fin de mot ( »full')",
-    "tip": "pointe sur la gencive ; en fin de mot, l'arrière se recule"
+    "guide": "plus sombre qu’en français, surtout en fin de mot (« full »)",
+    "tip": "pointe sur la gencive ; en fin de mot, l’arrière se recule"
    },
    "ɹ": {
     "name": "r anglais",
     "guide": "pas le r français : pointe de langue recourbée sans toucher ; absent du français",
-    "tip": "pointe recourbée vers l'arrière sans toucher, lèvres arrondies"
+    "tip": "pointe recourbée vers l’arrière sans toucher, lèvres arrondies"
    },
    "j": {
     "name": "y",
@@ -807,7 +807,7 @@
    "w": {
     "name": "w",
     "guide": "comme « ou » de « oui », lèvres arrondies",
-    "tip": "lèvres très arrondies qui s'ouvrent vite vers la voyelle"
+    "tip": "lèvres très arrondies qui s’ouvrent vite vers la voyelle"
    }
   },
   "es": {
@@ -839,7 +839,7 @@
    "p": {
     "name": "p",
     "guide": "comme le p français, sans souffle",
-    "tip": "lèvres closes qui s« ouvrent sans jet d »air"
+    "tip": "lèvres closes qui s’ouvrent sans jet d’air"
    },
    "b": {
     "name": "b",
@@ -878,7 +878,7 @@
    },
    "ɣ": {
     "name": "g doux",
-    "guide": "un g sans fermeture, proche d'un r français léger, plus avancé ; absent du français",
+    "guide": "un g sans fermeture, proche d’un r français léger, plus avancé ; absent du français",
     "tip": "arrière de la langue près du voile sans le toucher, voix"
    },
    "f": {
@@ -892,7 +892,7 @@
     "tip": "dents presque jointes, air qui siffle"
    },
    "θ": {
-    "name": "z d'Espagne",
+    "name": "z d’Espagne",
     "guide": "comme th anglais sourd (« think »), langue entre les dents ; absent du français",
     "tip": "pointe de la langue entre les dents, souffle sans voix"
    },
@@ -954,7 +954,7 @@
    "w": {
     "name": "w",
     "guide": "comme « ou » de « oui »",
-    "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
+    "tip": "lèvres arrondies qui s’ouvrent vite vers la voyelle"
    }
   },
   "zh": {
@@ -1006,7 +1006,7 @@
    "ɚ": {
     "name": "er",
     "guide": "e faible avec la pointe de la langue recourbée ; absent du français",
-    "tip": "langue recourbée vers l'arrière sans toucher, lèvres neutres"
+    "tip": "langue recourbée vers l’arrière sans toucher, lèvres neutres"
    },
    "ɹ̩": {
     "name": "voyelle de zi",
@@ -1016,7 +1016,7 @@
    "ɻ̩": {
     "name": "voyelle de zhi",
     "guide": "bourdonnement avec voix après zh, ch, sh, r, langue recourbée ; absent du français",
-    "tip": "pointe de la langue recourbée vers l'arrière sans toucher"
+    "tip": "pointe de la langue recourbée vers l’arrière sans toucher"
    },
    "ʊ": {
     "name": "ong",
@@ -1031,21 +1031,21 @@
    "w": {
     "name": "w",
     "guide": "comme « ou » de « oui »",
-    "tip": "lèvres arrondies qui s'ouvrent vite vers la voyelle"
+    "tip": "lèvres arrondies qui s’ouvrent vite vers la voyelle"
    },
    "ɥ": {
     "name": "ü glissé",
     "guide": "comme « ui » de « huit » avant voyelle (« yue »)",
-    "tip": "lèvres en petit cercle, langue avancée, s'ouvrent vite"
+    "tip": "lèvres en petit cercle, langue avancée, s’ouvrent vite"
    },
    "p": {
     "name": "b · sans souffle",
     "guide": "comme le p français, sans souffle ; en pinyin écrit b, pas le b français",
-    "tip": "lèvres closes qui s« ouvrent sans expulser d »air"
+    "tip": "lèvres closes qui s’ouvrent sans expulser d’air"
    },
    "pʰ": {
     "name": "p · soufflé",
-    "guide": "p français suivi d« un fort jet d »air ; absent du français",
+    "guide": "p français suivi d’un fort jet d’air ; absent du français",
     "tip": "lèvres closes relâchées avec souffle ; test : feuille de papier"
    },
    "m": {
@@ -1065,7 +1065,7 @@
    },
    "tʰ": {
     "name": "t · soufflé",
-    "guide": "t français suivi d« un fort jet d »air ; absent du français",
+    "guide": "t français suivi d’un fort jet d’air ; absent du français",
     "tip": "pointe de la langue derrière les dents, relâchée avec souffle"
    },
    "n": {
@@ -1085,13 +1085,13 @@
    },
    "kʰ": {
     "name": "k · soufflé",
-    "guide": "k français suivi d« un fort jet d »air ; absent du français",
+    "guide": "k français suivi d’un fort jet d’air ; absent du français",
     "tip": "arrière de la langue contre le voile, relâché avec souffle"
    },
    "x": {
     "name": "h",
-    "guide": "raclement léger de gorge, proche d'un r français sourd, plus en avant ; absent du français",
-    "tip": "arrière de la langue près du voile, l'air frotte"
+    "guide": "raclement léger de gorge, proche d’un r français sourd, plus en avant ; absent du français",
+    "tip": "arrière de la langue près du voile, l’air frotte"
    },
    "ŋ": {
     "name": "ng",
@@ -1105,7 +1105,7 @@
    },
    "tɕʰ": {
     "name": "q",
-    "guide": "comme j mais avec un jet d'air ; absent du français",
+    "guide": "comme j mais avec un jet d’air ; absent du français",
     "tip": "pointe de la langue en bas, lèvres étirées, relâche avec souffle"
    },
    "ɕ": {
@@ -1120,7 +1120,7 @@
    },
    "tsʰ": {
     "name": "c",
-    "guide": "comme « ts » avec un jet d'air ; absent du français",
+    "guide": "comme « ts » avec un jet d’air ; absent du français",
     "tip": "dents presque jointes, langue plate, relâché avec souffle"
    },
    "s": {
@@ -1135,18 +1135,18 @@
    },
    "ʈʂʰ": {
     "name": "ch",
-    "guide": "comme zh mais avec un jet d'air ; absent du français",
+    "guide": "comme zh mais avec un jet d’air ; absent du français",
     "tip": "pointe de la langue recourbée vers le palais, relâche avec souffle"
    },
    "ʂ": {
     "name": "sh",
     "guide": "comme « ch » de « chat » avec la pointe de la langue recourbée ; absent du français",
-    "tip": "pointe de la langue recourbée vers l'arrière sans toucher, lèvres neutres"
+    "tip": "pointe de la langue recourbée vers l’arrière sans toucher, lèvres neutres"
    },
    "ʐ": {
     "name": "r",
     "guide": "comme j français, avec la langue recourbée ; pas le r français ; absent du français",
-    "tip": "pointe de la langue recourbée vers l'arrière, voix qui vibre"
+    "tip": "pointe de la langue recourbée vers l’arrière, voix qui vibre"
    },
    "˥": {
     "name": "ton 1 (haut)",
@@ -1156,7 +1156,7 @@
    "˧˥": {
     "name": "ton 2 (montant)",
     "guide": "monte comme en posant une question : « vraiment ? » ; absent du français",
-    "tip": "mâchoire détendue ; la voix monte du moyen vers l'aigu"
+    "tip": "mâchoire détendue ; la voix monte du moyen vers l’aigu"
    },
    "˨˩˦": {
     "name": "ton 3 (descendant-montant)",

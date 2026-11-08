@@ -32,6 +32,16 @@ extension Font {
     static func ipa(_ size: CGFloat, relativeTo style: Font.TextStyle) -> Font { .custom("Charis SIL", size: size, relativeTo: style) }
 }
 
+/// The last choice on each practice page, per practice language, so a session resumes where it left off.
+enum SavedSelection {
+    static func get(_ page: String, _ language: AppLanguage) -> String? {
+        UserDefaults.standard.string(forKey: "practice.selection.\(page).\(language.tag)")
+    }
+    static func set(_ page: String, _ language: AppLanguage, _ id: String?) {
+        UserDefaults.standard.set(id, forKey: "practice.selection.\(page).\(language.tag)")
+    }
+}
+
 enum PageMetrics {
     static let contentWidth: CGFloat = 820
     static let padding: CGFloat = 24
@@ -104,9 +114,12 @@ struct PracticePage<Controls: View, Content: View>: View {
                     if let blocker, !motionReady {
                         Button(blocker + " ›") { model.screen = .devices }.buttonStyle(.link).font(.callout)
                             .accessibilityLabel(blocker + ". " + String(localized: "Opens Devices."))
+                    } else if let blocker, !model.localWhisper.isConfigured {
+                        Button(blocker + " ›") { showWhisperSetup = true }.buttonStyle(.link).font(.callout)
                     } else if !groups.isEmpty {
-                        Text(cost + "  ·  ⌘↩").font(.callout).foregroundStyle(.secondary)
+                        Text(cost).font(.callout).foregroundStyle(.secondary)
                     }
+                    Text("⌘↩ start · ⌘1–6 pages · ⌥⌘1–6 language").font(.callout).foregroundStyle(.secondary)
                 }
             }
         } content: {
@@ -141,15 +154,44 @@ struct ProgressStrip: View {
     @Environment(AppModel.self) private var model
     var body: some View {
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
+        let goal = PracticeProgress.dailyGoal
         HStack(spacing: 14) {
-            if progress.today > 0 {
-                Label(progress.today == 1 ? "1 try today" : "\(progress.today) tries today", systemImage: "checkmark.circle")
+            // A daily goal that fills up; it's the one number that tells you you're done for today.
+            HStack(spacing: 6) {
+                Gauge(value: Double(min(progress.today, goal)), in: 0...Double(goal)) { EmptyView() }
+                    .gaugeStyle(.accessoryCircularCapacity).tint(progress.today >= goal ? .green : .accentColor)
+                    .scaleEffect(0.55).frame(width: 30, height: 30)
+                Text(progress.today >= goal ? "Today's goal done" : "\(progress.today) of \(goal) today")
             }
             if progress.streak > 0 {
                 Label(progress.streak == 1 ? "1 day in a row" : "\(progress.streak) days in a row", systemImage: "flame").foregroundStyle(.orange)
             }
         }
-        .font(.callout)
+        .font(.callout).fixedSize()
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// A short, celebratory line at the end of a round: the day's goal and streak, not training data.
+struct RoundCelebration: View {
+    @Environment(AppModel.self) private var model
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var shown = false
+    var body: some View {
+        let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
+        HStack(spacing: 12) {
+            Image(systemName: progress.today >= PracticeProgress.dailyGoal ? "trophy.fill" : "party.popper.fill")
+                .font(.system(size: 34)).foregroundStyle(.orange)
+                .scaleEffect(shown || reduceMotion ? 1 : 0.4)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Round complete!").font(.title2.weight(.bold))
+                Text(progress.today >= PracticeProgress.dailyGoal ? "Today's goal done. \(progress.streak) days in a row."
+                     : "\(progress.today) of \(PracticeProgress.dailyGoal) today · \(progress.streak) days in a row")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .onAppear { withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.5)) { shown = true } }
         .accessibilityElement(children: .combine)
     }
 }
@@ -160,7 +202,7 @@ struct IPAToggle: View {
     @State private var explain = false
     var body: some View {
         HStack(spacing: 4) {
-            Toggle("Show IPA", isOn: $isOn).help("⌘I")
+            Toggle("Show IPA", isOn: $isOn).help("⌘I").fixedSize()
             Button("What are these symbols?") { explain.toggle() }
                 .buttonStyle(.link).font(.callout)
                 .popover(isPresented: $explain) {
@@ -195,6 +237,7 @@ struct PracticeFeedback: View {
     @Environment(AppModel.self) private var model
     var mode: SentencePromptKind
     var again: () -> Void
+    @AccessibilityFocusState private var focusResults: Bool
 
     private var pairs: [SentencePair] {
         let ids = model.sentenceTraining.lastPracticePairIDs
@@ -225,8 +268,10 @@ struct PracticeFeedback: View {
     var body: some View {
         if !pairs.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
+                RoundCelebration()
                 HStack {
                     Text("Last round: \(summary)").font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                        .accessibilityFocused($focusResults)
                     Spacer()
                     Button("Done") { model.sentenceTraining.clearPracticeResults() }
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
@@ -235,16 +280,23 @@ struct PracticeFeedback: View {
             }
             .padding(16)
             .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 10))
+            .onAppear { focusResults = true }  // VoiceOver lands on the results after a round
 
         }
     }
 
     private func row(_ pair: SentencePair) -> some View {
         let verdict = Self.verdict(pair)
+        let heardRight: Bool? = pair.transcriptMatchRate.map { $0 >= SentenceTrainingWorkflow.freeTextAgreement }
         return VStack(alignment: .leading, spacing: 6) {
             HStack(alignment: .firstTextBaseline) {
-                Image(systemName: verdict.symbol).foregroundStyle(verdict.color).accessibilityHidden(true)
-                Text(pair.text).font(.title3)
+                Image(systemName: heardRight == nil ? "clock" : heardRight! ? "checkmark.circle.fill" : "arrow.uturn.backward.circle.fill")
+                    .foregroundStyle(heardRight == nil ? Color.secondary : heardRight! ? Color.green : Color.orange).accessibilityHidden(true)
+                Text(PracticeLineView.spoken(pair.text, AppLanguage(rawValue: pair.language ?? "en") ?? .en)).font(.title3)
+            }
+            // First what you'll care about as a learner, then what happens to the take.
+            if let heardRight {
+                Text(heardRight ? "Heard as written" : "Heard something different — try it again").font(.body.weight(.medium))
             }
             Text(verdict.text).font(.callout).foregroundStyle(.secondary)
             Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 4) {
@@ -378,7 +430,9 @@ struct SpeechPracticeView: View {
                 }
             }
         }
-        .onChange(of: model.language) { selection = nil }
+        .onAppear { if selection == nil { selection = SavedSelection.get("speech", model.language) } }
+        .onChange(of: selection) { SavedSelection.set("speech", model.language, selection) }
+        .onChange(of: model.language) { selection = SavedSelection.get("speech", model.language) }
     }
 
     private func pieceRow(_ p: PracticeCorpus.Piece, selected: Bool) -> some View {
@@ -404,10 +458,14 @@ struct LanguagePracticeView: View {
     @AppStorage("practice.showIPA") private var showIPA = true
 
     private var drills: [PracticeCorpus.Drill] { model.practice.drills.filter { $0.language == model.language.corpus && model.language.shows(region: $0.region) } }
-    private var drill: PracticeCorpus.Drill? { drills.first { $0.id == selection } ?? drills.first }
+    private var drill: PracticeCorpus.Drill? { drills.first { $0.id == selection } ?? drills.first { $0.topic == "Everyday life" } ?? drills.first }
     /// Spain-only phrases (vosotros) are left out of Español (México).
     private var phrases: [PracticeCorpus.Line] { (drill?.phrases ?? []).filter { model.language.shows(region: $0.region) } }
-    private var topics: [String] { drills.compactMap(\.topic).reduce(into: []) { if !$0.contains($1) { $0.append($1) } } }
+    /// Everyday phrases first: what a returning learner needs most, then the grammar topics.
+    private var topics: [String] {
+        let all = drills.compactMap(\.topic).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
+        return all.filter { $0 == "Everyday life" } + all.filter { $0 != "Everyday life" }
+    }
 
     var body: some View {
         let language = model.language
@@ -449,7 +507,9 @@ struct LanguagePracticeView: View {
                 ContentUnavailableView("No drills in \(language.localizedName) yet", systemImage: "character.bubble", description: Text("Choose another language from the toolbar."))
             }
         }
-        .onChange(of: model.language) { selection = nil }
+        .onAppear { if selection == nil { selection = SavedSelection.get("drill", model.language) } }
+        .onChange(of: selection) { SavedSelection.set("drill", model.language, selection) }
+        .onChange(of: model.language) { selection = SavedSelection.get("drill", model.language) }
     }
 }
 
@@ -464,10 +524,13 @@ struct MinimalPairsView: View {
 
     /// Contrasts that are tricky for the learner's own language come first.
     private var sets: [PracticeCorpus.MinimalPairs] {
-        let tricky = Set(TrickySounds.ipa(practising: model.language.corpus, speaker: model.nativeLanguage))
+        // Ordered by how high the contrast's sounds rank in the speaker's tricky list (b/v before p/b/m).
+        let tricky = TrickySounds.ipa(practising: model.language.corpus, speaker: model.nativeLanguage)
+        func rank(_ set: PracticeCorpus.MinimalPairs) -> Int {
+            set.contrast.split(separator: " ").compactMap { tricky.firstIndex(of: String($0)) }.min() ?? Int.max
+        }
         let all = model.practice.minimalPairs.filter { $0.language == model.language.corpus }
-        return all.filter { !Set($0.contrast.split(separator: " ").map(String.init)).isDisjoint(with: tricky) }
-            + all.filter { Set($0.contrast.split(separator: " ").map(String.init)).isDisjoint(with: tricky) }
+        return all.enumerated().sorted { (rank($0.element), $0.offset) < (rank($1.element), $1.offset) }.map(\.element)
     }
     private var contrast: PracticeCorpus.MinimalPairs? { sets.first { $0.id == selection } ?? sets.first }
 
@@ -519,7 +582,9 @@ struct MinimalPairsView: View {
             }
         }
         .onAppear { if round.isEmpty { shuffle() } }
-        .onChange(of: model.language) { selection = nil; shuffle() }
+        .onAppear { if selection == nil { selection = SavedSelection.get("pairs", model.language) } }
+        .onChange(of: selection) { SavedSelection.set("pairs", model.language, selection) }
+        .onChange(of: model.language) { selection = SavedSelection.get("pairs", model.language); shuffle() }
     }
 
     private func shuffle() {
@@ -641,14 +706,15 @@ struct SoundsView: View {
                         Text("\(sounds.filter { progress.practised($0, language: language) }.count) of \(sounds.count) sounds practised")
                             .font(.headline)
                         let tricky = TrickySounds.ipa(practising: language.corpus, speaker: model.nativeLanguage).compactMap { ipa in sounds.first { $0.ipa == ipa } }
+                        let trickyIDs = Set(tricky.map(\.id))
                         if !tricky.isEmpty {
                             Text("Start here: tricky for \(LanguageMenu.nativeName(model.nativeLanguage)) speakers").font(.headline).foregroundStyle(.orange)
                                 .accessibilityAddTraits(.isHeader)
                             chips(tricky, progress: progress, language: language, prefix: String(localized: "Tricky: "))
                         }
-                        ForEach(groups, id: \.self) { group in
+                        ForEach(groups.filter { group in sounds.contains { $0.group == group && !trickyIDs.contains($0.id) } }, id: \.self) { group in
                             Text(LocalizedStringKey(group)).font(.headline).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
-                            chips(sounds.filter { $0.group == group }, progress: progress, language: language)
+                            chips(sounds.filter { $0.group == group && !trickyIDs.contains($0.id) }, progress: progress, language: language)
                         }
                         Text("Broad IPA. English sounds follow General American.").font(.callout).foregroundStyle(.secondary)
                     }.padding(.trailing, 8) }.frame(width: 370)
@@ -657,14 +723,16 @@ struct SoundsView: View {
                 }
             }
         }
-        .onChange(of: model.language) { selection = nil }
+        .onAppear { if selection == nil { selection = SavedSelection.get("sounds", model.language) } }
+        .onChange(of: selection) { SavedSelection.set("sounds", model.language, selection) }
+        .onChange(of: model.language) { selection = SavedSelection.get("sounds", model.language) }
         .onChange(of: selection) {
             if let sound { AccessibilityNotification.Announcement(String(localized: "Selected \(sound.text(for: model.nativeLanguage).name). \(sound.text(for: model.nativeLanguage).guide)")).post() }
         }
     }
 
     private func chips(_ list: [PracticeCorpus.Sound], progress: PracticeProgress, language: AppLanguage, prefix: String = "") -> some View {
-                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 76), spacing: 6)], alignment: .leading, spacing: 6) {
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 82), spacing: 6)], alignment: .leading, spacing: 6) {
                                 ForEach(list) { s in
                                     Button { selection = s.id; Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
                                         VStack(spacing: 1) {
@@ -676,10 +744,10 @@ struct SoundsView: View {
                                                     }
                                                 }
                                             if s.text(for: model.nativeLanguage).name != s.ipa {
-                                                Text(s.text(for: model.nativeLanguage).name).font(.caption).foregroundStyle(.secondary).lineLimit(2).multilineTextAlignment(.center)
+                                                Text(s.text(for: model.nativeLanguage).name).font(.callout).foregroundStyle(.primary.opacity(0.8)).lineLimit(2).minimumScaleFactor(0.85).multilineTextAlignment(.center)
                                             }
                                         }
-                                        .frame(width: 72, height: 62).padding(.horizontal, 2)
+                                        .frame(width: 78, height: 68).padding(.horizontal, 2)
                                         .background(s.id == sound?.id ? AnyShapeStyle(.tint.opacity(0.25)) : AnyShapeStyle(.quaternary.opacity(0.35)),
                                                     in: RoundedRectangle(cornerRadius: 8))
                                     }
@@ -700,9 +768,16 @@ struct SoundsView: View {
                     Text(local.guide).foregroundStyle(.secondary)
                 }
             }
-            Button { Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
-                Label("Hear the Sound", systemImage: "speaker.wave.2.fill")
-            }.controlSize(.large)
+            HStack {
+                Button { Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
+                    Label("Hear the Sound", systemImage: "speaker.wave.2.fill")
+                }.controlSize(.large)
+                Button { model.startPractice(s.examples.map { [SentencePrompt($0, kind: .sound, language: language)] }) } label: {
+                    Label("Practise This Sound", systemImage: "record.circle")
+                }.controlSize(.large).buttonStyle(.borderedProminent)
+                .disabled(model.motion.status != .streaming || !model.localWhisper.isConfigured || model.sentenceTraining.isBusy)
+                .help("Records the \(s.examples.count) example words: each one aloud, then mouthed.")
+            }
             if let tip = local.tip { Label(tip, systemImage: "mouth").font(.body) }
             Divider()
             Text("Examples").font(.headline).accessibilityAddTraits(.isHeader)

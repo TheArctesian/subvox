@@ -233,6 +233,8 @@ extension PracticeCorpus {
 /// Progress that's visible on every practice page: takes today, a day streak, and which sounds
 /// have been practised. Counted from saved pairs with a mouthed take, so abandoned attempts don't count.
 struct PracticeProgress: Equatable {
+    /// Words or phrases (spoken and mouthed) a day; about ten minutes of practice.
+    static let dailyGoal = 10
     var today = 0
     var streak = 0
     var practisedTexts: Set<String> = []

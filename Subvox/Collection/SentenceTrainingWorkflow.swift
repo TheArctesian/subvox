@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 import Observation
+import SwiftUI
 
 /// Paired acquisition, annotation review, coverage repairs and word validation.
 @MainActor @Observable
@@ -17,15 +18,20 @@ final class SentenceTrainingWorkflow {
     /// VoiceOver cues, only at moments outside the recorded cue window: before a take starts
     /// (ready), after it is saved (ended), and when the round has been processed (finished).
     private func announce(_ phase: Phase) {
-        let text: String? = switch phase {
-        case .ready: "Take \(min(index + 1, total)) of \(total). \(currentCondition == .normal ? "Say it aloud" : "Mouth it silently, lips only"): \(currentText). Press Space to start."
-        case .ended: "Take saved. Space for the next one, left arrow to redo."
-        case .finished: lastPracticePairIDs.isEmpty ? "Recording finished." : "Round finished. Your results are at the top of the page."
-        default: nil
+        var text: AttributedString
+        switch phase {
+        case .ready:
+            let instruction = currentCondition == .normal ? String(localized: "Say it aloud") : String(localized: "Mouth it silently, lips only")
+            text = AttributedString(String(localized: "Take \(min(index + 1, total)) of \(total). \(instruction): "))
+            var prompt = AttributedString(currentText)
+            prompt.languageIdentifier = currentLanguage  // read in its own language
+            text += prompt + AttributedString(String(localized: ". Press Space to start; a tone marks the start."))
+        case .ended: text = AttributedString(String(localized: "Take saved. Space for the next one, left arrow to redo."))
+        case .processing: text = AttributedString(String(localized: "Saving and checking your takes."))
+        case .finished: text = AttributedString(lastPracticePairIDs.isEmpty ? String(localized: "Recording finished.") : String(localized: "Round finished. Your results are at the top of the page."))
+        default: return
         }
-        guard let text, let window = NSApp?.mainWindow ?? NSApp?.windows.first else { return }
-        NSAccessibility.post(element: window, notification: .announcementRequested,
-                             userInfo: [.announcement: text, .priority: NSAccessibilityPriorityLevel.high.rawValue])
+        AccessibilityNotification.Announcement(text).post()
     }
     private(set) var error: String?
     private(set) var storageReady = true
@@ -33,6 +39,8 @@ final class SentenceTrainingWorkflow {
     private(set) var currentCondition: SpeechCondition = .normal
     /// The practice mode of the take being recorded (nil for Reading), for the recording screen's title.
     private(set) var currentKind: SentencePromptKind?
+    /// The language tag of the take being recorded, for VoiceOver.
+    private(set) var currentLanguage: String?
     private(set) var index = 0
     private(set) var total = 0
     private(set) var secondsRemaining = 0.0
@@ -353,7 +361,15 @@ final class SentenceTrainingWorkflow {
         try persist()
     }
 
+    /// Short tones mark the start and end of a take, so it can be done without watching the screen.
+    /// The start tone ends before the cue window opens, so it is never part of the take.
+    var soundCues: Bool { !SubvoxApp.isTestHost && (UserDefaults.standard.object(forKey: "ui.soundCues") as? Bool ?? true) }
+
     func captureTake(condition: SpeechCondition, maximumDuration: Double) async throws -> SentenceRecording {
+        if soundCues, let tone = NSSound(named: condition == .normal ? "Tink" : "Morse") {
+            tone.play()
+            try await Task.sleep(for: .milliseconds(350))
+        }
         let start = ProcessInfo.processInfo.systemUptime
         activeCueStart = start; requestedCueEnd = nil; redoRequested = false
         phase = condition == .normal ? .speak : .mouth
@@ -362,6 +378,7 @@ final class SentenceTrainingWorkflow {
         try Task.checkCancellation()
         if redoRequested { throw CaptureControl.redo }
         let end = requestedCueEnd ?? ProcessInfo.processInfo.systemUptime
+        if soundCues { NSSound(named: "Pop")?.play() }  // after the cue window has closed
         // The timer resumes on its next tick. Samples after the user's press are not speech.
         return SentenceRecording(condition: condition, samples: buffer.filter { $0.t <= end }, cueStart: start, cueEnd: end,
                                  wordFocusGuide:guidedRecording ? .comfortable:nil)
@@ -479,7 +496,7 @@ final class SentenceTrainingWorkflow {
                     if practiceMode { lastPracticePairIDs.append(pair.id) }
                     for condition in conditions {
                         try Task.checkCancellation()
-                        currentText = pair.text; currentCondition = condition; currentKind = group.first.flatMap { $0.kind.isPractice ? $0.kind : nil }
+                        currentText = pair.text; currentCondition = condition; currentKind = group.first.flatMap { $0.kind.isPractice ? $0.kind : nil }; currentLanguage = group.first?.language ?? "en"
                         if condition == .normal, let first = group.first, [.drill, .sound, .minimalPair].contains(first.kind), let playReference {
                             await playReference(pair.text, first.language ?? "en")
                         }
