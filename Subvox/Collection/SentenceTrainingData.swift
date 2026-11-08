@@ -29,7 +29,9 @@ enum SentenceReference {
     }
 }
 
-enum SentencePromptKind: String, Codable, Sendable { case sentence, wordRepair }
+/// `community` and `calibration` prompts come from the public-domain reading corpus. Every
+/// existing scheduler filters on `.sentence`, so they never enter the personal split or its final-test quota.
+enum SentencePromptKind: String, Codable, Sendable { case sentence, wordRepair, community, calibration }
 
 struct SentencePrompt: Codable, Identifiable, Hashable, Sendable {
     var text: String
@@ -269,6 +271,21 @@ struct SentenceTrainingData: Codable, Sendable {
             prompts.append(prompt)
         }
     }
+
+    /// Community prompts are training material for the shared dataset (held-out text is never
+    /// assigned), so they join as training without touching the final-test or validation quotas.
+    mutating func addCommunity(_ incoming: [SentencePrompt]) {
+        guard reservedUnlockedAt == nil else { return }
+        var known = Set(prompts.map(\.id))
+        for prompt in incoming where (prompt.kind == .community || prompt.kind == .calibration) && !known.contains(prompt.id) {
+            roles[prompt.id] = .training
+            prompts.append(prompt)
+            known.insert(prompt.id)
+        }
+    }
+
+    /// Prompt IDs with a saved mouthed take.
+    var mouthedPromptIDs: Set<String> { Set(pairs.filter { $0.silent != nil }.flatMap(\.promptIDs)) }
 
     func derivedWords(role: DataRole, lexicon: Lexicon) -> [Template] {
         guard role != .finalTest else { return [] }

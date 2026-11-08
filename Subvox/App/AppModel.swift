@@ -153,7 +153,7 @@ final class AppModel {
     }
 
     func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil) {
-        guard motion.status == .streaming, localWhisper.isConfigured, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
+        guard motion.status == .streaming, localWhisper.isConfigured || sentenceTraining.readingSource == .community, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
         sentenceTraining.start(audio: audio, recorder: recorder, whisper: localWhisper,
             canRecord: { [weak self] in self?.motion.status == .streaming }, repairs: repairs, retry: retry)
     }

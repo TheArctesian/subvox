@@ -67,7 +67,31 @@ final class SentenceTrainingWorkflow {
     var coverage: [String: Int] { data.coverage(lexicon: .bundled) }
     var fittingWords: [Template] { data.derivedWords(role: .training, lexicon: .bundled) }
     var repairWords: [String] { data.repairWords(lexicon: .bundled) }
+    enum ReadingSource: String, CaseIterable, Identifiable { case banks = "Sentence banks", community = "Community passages"; var id: String { rawValue } }
+    var readingSource: ReadingSource = .banks
+    /// Community mode only: skip the spoken half (pairs still make phone alignment possible, so off by default).
+    var mouthedOnly = false
+    var communityPassageCount = 3
+    let community: CommunityCorpus
+    private(set) var currentPromptIDs: [String] = []
+    var currentPassageLabel: String? {
+        guard let first = currentPromptIDs.first, let prompt = community.prompt(first) else { return nil }
+        return prompt.passageID == nil ? "Calibration · read by every contributor" : "\(prompt.title) — \(prompt.author)"
+    }
+    var calibrationRemaining: [CommunityPrompt] {
+        let done = data.mouthedPromptIDs
+        return community.calibration.filter { !done.contains($0.promptID) }
+    }
+    /// Calibration first; then passages that fill this person's diphone gaps, each in source order.
+    var communityPlan: [[SentencePrompt]] {
+        let done = data.mouthedPromptIDs
+        if !calibrationRemaining.isEmpty { return calibrationRemaining.map { [$0.sentencePrompt] } }
+        let finished = Set(community.passages.filter { $0.prompts.allSatisfy { done.contains($0.promptID) } }.map(\.id))
+        return community.assign(counts: community.counts(recordedPromptIDs: done), recordedPassages: finished, count: communityPassageCount)
+            .flatMap { $0.prompts.filter { !done.contains($0.promptID) }.map { [$0.sentencePrompt] } }
+    }
     var plan: [[SentencePrompt]] {
+        if readingSource == .community { return communityPlan }
         if variedSentences {
             return data.variedSentences(role:collectionRole ?? .training,limit:sentenceCount,excluding:excludedCollectionGroups).map {[$0]}
         }
@@ -81,7 +105,8 @@ final class SentenceTrainingWorkflow {
     }
     var estimatedSeconds: Double { plan.reduce(0) { $0 + 2 * (pace.baseline + cueDuration($1.map(\.text).joined(separator: " ")) + pace.recovery) } }
 
-    init(storeURL: URL? = nil, corpus: [SentencePrompt]? = nil) {
+    init(storeURL: URL? = nil, corpus: [SentencePrompt]? = nil, community: CommunityCorpus = .bundled) {
+        self.community = community
         self.storeURL = storeURL ?? SentenceStore.url
         do {
             data = try SentenceStore.load(from: self.storeURL)
@@ -329,9 +354,15 @@ final class SentenceTrainingWorkflow {
 
     func start(audio: AudioService, recorder: SessionRecorder, whisper: LocalWhisper,
                canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil) {
+        let communityMode = readingSource == .community && retry == nil && !repairs
         guard !isBusy, storageReady, data.reservedUnlockedAt == nil, !recorder.isRecording,
-              whisper.isConfigured, canRecord() else { return }
+              whisper.isConfigured || communityMode, canRecord() else { return }
         var planned = plan
+        if communityMode {
+            data.addCommunity(planned.flatMap { $0 })
+            guard save() else { return }
+        }
+        let conditions: [SpeechCondition] = communityMode && mouthedOnly ? [.silent] : [.normal, .silent]
         if let retry, let pair = data.pairs.first(where: { $0.id == retry }) {
             planned = [data.prompts.filter { pair.promptIDs.contains($0.id) }]
         } else if repairs {
@@ -349,14 +380,14 @@ final class SentenceTrainingWorkflow {
         var batch: [[SentencePrompt]] = []
         var duration = 0.0
         for group in planned {
-            let added = 2 * (pace.baseline + cueDuration(group.map(\.text).joined(separator: " ")) + pace.recovery)
+            let added = Double(conditions.count) * (pace.baseline + cueDuration(group.map(\.text).joined(separator: " ")) + pace.recovery)
             guard duration + added < 840 else { break }
             batch.append(group); duration += added
         }
         guard !batch.isEmpty else { error = "This batch is too long. Choose fewer sentences."; return }
         let timing = pace
         let cueTimes = batch.map { cueDuration($0.map(\.text).joined(separator: " ")) }
-        phase = .preparing; error = nil; index = 0; total = batch.count * 2
+        phase = .preparing; error = nil; index = 0; total = batch.count * conditions.count
         task = Task {
             defer {if activeRecordingID==nil {camera.stop();cameraRecorder=nil;cameraReadings=[]}}
             if captureCameraPoints {
@@ -387,8 +418,8 @@ final class SentenceTrainingWorkflow {
                 for (groupIndex, group) in batch.enumerated() {
                     guard canRecord() else { throw Failure.disconnected }
                     let pair = try beginPair(prompts: group, visit: visit, session: recordingSession)
-                    pairIDs.append(pair.id)
-                    for condition in [SpeechCondition.normal, .silent] {
+                    pairIDs.append(pair.id); currentPromptIDs = pair.promptIDs
+                    for condition in conditions {
                         try Task.checkCancellation()
                         currentText = pair.text; currentCondition = condition
                         try await collectTake(condition: condition, maximumDuration: cueTimes[groupIndex],
@@ -414,10 +445,12 @@ final class SentenceTrainingWorkflow {
             if ownedAudio, !recorder.isRecording { audio.stop() }
             finishVisit(session: finished)
             guard save(), !isTerminating else { phase = .finished; return }
+            currentPromptIDs = []
             phase = .processing
             // A fresh unstructured task processes saved complete pairs even after Stop.
+            // Community takes need no local Whisper; alignment can run later or elsewhere.
             await Task { @MainActor in
-                for id in pairIDs {
+                for id in pairIDs where whisper.isConfigured {
                     await self.process(id, whisper: whisper)
                 }
             }.value

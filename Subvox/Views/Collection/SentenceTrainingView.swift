@@ -88,8 +88,36 @@ struct SentenceTrainingView: View {
     private var attentionCount: Int { model.sentenceTraining.pairUses.values.filter(\.needsAttention).count }
 
     private var canStart: Bool {
-        model.motion.status == .streaming && model.localWhisper.isConfigured && model.sentenceTraining.storageReady
+        model.motion.status == .streaming && (model.localWhisper.isConfigured || model.sentenceTraining.readingSource == .community) && model.sentenceTraining.storageReady
             && !model.sentenceTraining.isBusy && !model.recorder.isRecording && !model.sequenceLearning.isBusy
+    }
+
+    private var communitySetup: some View {
+        @Bindable var workflow = model.sentenceTraining
+        let calibration = workflow.calibrationRemaining.count
+        let plan = workflow.communityPlan
+        let titles = plan.compactMap { $0.first.flatMap { workflow.community.prompt($0.id) } }
+            .reduce(into: [String]()) { names, prompt in
+                let name = prompt.passageID == nil ? "Calibration" : "\(prompt.title) — \(prompt.author)"
+                if names.last != name { names.append(name) }
+            }
+        return VStack(alignment: .leading, spacing: 10) {
+            Text("Short sentences from public-domain books, poems and speeches, chosen to be easy to say. Passages are read in order and picked to cover the sounds you haven't recorded yet.")
+                .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+            if calibration > 0 {
+                Label("First, \(calibration) calibration sentences that every contributor reads once.", systemImage: "scope").font(.callout)
+            } else {
+                Stepper("\(workflow.communityPassageCount) passages per session", value: $workflow.communityPassageCount, in: 1...10).frame(maxWidth: 260)
+            }
+            Toggle("Mouthed only (skip the spoken half)", isOn: $workflow.mouthedOnly)
+            Text(workflow.mouthedOnly ? "Faster, but without a spoken take these can't be phone-aligned." : "Each sentence is spoken, then mouthed; the spoken take makes phone alignment possible.")
+                .font(.caption).foregroundStyle(.secondary)
+            if !titles.isEmpty {
+                Text("Next: " + titles.prefix(4).joined(separator: " · ")).font(.caption).foregroundStyle(.secondary)
+            }
+            Text("Recordings stay on this Mac. Sharing to the community dataset is a separate, opt-in step.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
     }
 
     private var setup: some View {
@@ -115,11 +143,15 @@ struct SentenceTrainingView: View {
             if model.motion.status != .streaming {
                 Label("Connect your AirPods to start.", systemImage: "headphones").foregroundStyle(.orange)
             }
-            if !model.localWhisper.isConfigured {
+            if !model.localWhisper.isConfigured && workflow.readingSource == .banks {
                 Label("Choose a local Whisper model in recording settings.", systemImage: "exclamationmark.triangle")
                     .foregroundStyle(.orange)
             }
-            if workflow.variedSentences {
+            Picker("Read from", selection: $workflow.readingSource) {
+                ForEach(SentenceTrainingWorkflow.ReadingSource.allCases) { Text($0.rawValue).tag($0) }
+            }.pickerStyle(.segmented).frame(maxWidth: 460)
+            if workflow.readingSource == .community { communitySetup }
+            if workflow.variedSentences && workflow.readingSource == .banks {
                 Picker("This recording session",selection:Binding(get:{workflow.collectionRole ?? .training},set:{workflow.collectionRole=$0})) {
                     Text("Training sentences").tag(DataRole.training)
                     Text("Development sentences").tag(DataRole.validation)
@@ -209,6 +241,9 @@ struct SentenceTrainingView: View {
                 RecordingPromptPanel(color:color) {
                     VStack(spacing:18) {
                         RecordingCueStatus(timer: workflow.phase == .ready ? "When you’re ready" : String(format: "%.1f s", workflow.secondsRemaining), title: status, color: color)
+                        if let passage = workflow.currentPassageLabel {
+                            Text(passage).font(.callout.italic()).foregroundStyle(.secondary)
+                        }
                         Label(workflow.currentCondition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.currentCondition == .normal ? "speaker.wave.2":"mouth")
                             .font(.title3.weight(.medium)).foregroundStyle(color)
                         WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
