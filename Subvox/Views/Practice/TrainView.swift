@@ -44,13 +44,13 @@ enum PageMetrics {
 /// and the practice text.
 struct PracticePage<Controls: View, Content: View>: View {
     @Environment(AppModel.self) private var model
-    var title: String
-    var subtitle: String
-    var startTitle: String
+    var title: LocalizedStringKey
+    var subtitle: LocalizedStringKey
+    var startTitle: LocalizedStringKey
     var groups: [[SentencePrompt]]
     var mode: SentencePromptKind
     /// What one take is ("words", "phrases", "parts", "sentences"), for the cost line under Start.
-    var unit = "takes"
+    var unit: LocalizedStringResource = "takes"
     /// Pages with their own scrolling panes (Sounds) turn the page scroll off.
     var scrolls = true
     @ViewBuilder var controls: () -> Controls
@@ -66,13 +66,13 @@ struct PracticePage<Controls: View, Content: View>: View {
     private var cost: String {
         let pace = workflow.pace
         let seconds = groups.reduce(0.0) { $0 + 2 * (pace.baseline + workflow.cueDuration($1.map(\.text).joined(separator: " ")) + pace.recovery) }
-        return "\(groups.count) \(unit) · about \(max(1, Int((seconds / 60).rounded()))) min"
+        return String(localized: "\(groups.count) \(String(localized: unit)) · about \(max(1, Int((seconds / 60).rounded()))) min")
     }
     /// Why Start is disabled, in the words of the thing to fix.
     private var blocker: String? {
-        if !motionReady { return model.motion.status == .waiting ? "Needs AirPods with head tracking" : model.motion.statusText }
-        if !model.localWhisper.isConfigured { return "Needs speech recognition set up" }
-        if groups.isEmpty { return "Nothing to practise yet" }
+        if !motionReady { return model.motion.status == .waiting ? String(localized: "Needs AirPods with head tracking") : model.motion.statusText }
+        if !model.localWhisper.isConfigured { return String(localized: "Needs speech recognition set up") }
+        if groups.isEmpty { return String(localized: "Nothing to practise yet") }
         return nil
     }
 
@@ -99,11 +99,11 @@ struct PracticePage<Controls: View, Content: View>: View {
                     Button { model.startPractice(groups) } label: { Label(startTitle, systemImage: "record.circle") }
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .disabled(!canStart)
-                        .help(blocker ?? "Shows each one; you say it aloud, then mouth it. ⌘↩")
-                        .accessibilityHint(blocker ?? "Shows each one; you say it aloud, then mouth it silently. Command Return.")
+                        .help(blocker ?? String(localized: "Shows each one; you say it aloud, then mouth it. ⌘↩"))
+                        .accessibilityHint(blocker ?? String(localized: "Shows each one; you say it aloud, then mouth it silently. Command Return."))
                     if let blocker, !motionReady {
                         Button(blocker + " ›") { model.screen = .devices }.buttonStyle(.link).font(.callout)
-                            .accessibilityLabel(blocker + ". Opens Devices.")
+                            .accessibilityLabel(blocker + ". " + String(localized: "Opens Devices."))
                     } else if !groups.isEmpty {
                         Text(cost + "  ·  ⌘↩").font(.callout).foregroundStyle(.secondary)
                     }
@@ -202,26 +202,26 @@ struct PracticeFeedback: View {
     }
     private var summary: String {
         let kept = pairs.filter { Self.verdict($0).kept }.count
-        return "\(kept) of \(pairs.count) kept for training"
+        return String(localized: "\(kept) of \(pairs.count) kept for training")
     }
 
     /// The decision stored with the pair, in words: kept, practice only, or not used and why.
     static func verdict(_ pair: SentencePair) -> (symbol: String, color: Color, text: String, kept: Bool) {
         let rate = pair.transcriptMatchRate.map { Int(($0 * 100).rounded()) }
-        let recognised = rate.map { " · \($0)% of words recognised" } ?? ""
-        if pair.transcript == nil && pair.error == nil { return ("clock", .secondary, "Waiting for speech recognition", false) }
-        if pair.error == nil && pair.alignment != nil { return ("checkmark.circle.fill", .green, "Kept for training" + recognised, true) }
+        let recognised = rate.map { String(localized: " · \($0)% of words recognised") } ?? ""
+        if pair.transcript == nil && pair.error == nil { return ("clock", .secondary, String(localized: "Waiting for speech recognition"), false) }
+        if pair.error == nil && pair.alignment != nil { return ("checkmark.circle.fill", .green, String(localized: "Kept for training") + recognised, true) }
         if pair.practiceMode == .freeText, let rate, Double(rate) < SentenceTrainingWorkflow.freeTextAgreement * 100 {
-            return ("pencil.circle.fill", .orange, "Practice only\(recognised); typed text needs 85%", false)
+            return ("pencil.circle.fill", .orange, String(localized: "Practice only") + recognised + String(localized: "; typed text needs 85%"), false)
         }
-        return ("xmark.circle.fill", .orange, "Not used for training\(recognised) · " + (pair.error ?? "word timing was missing"), false)
+        return ("xmark.circle.fill", .orange, String(localized: "Not used for training") + recognised + " · " + (pair.error ?? String(localized: "word timing was missing")), false)
     }
 
     var body: some View {
         if !pairs.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("Last round: " + summary).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                    Text("Last round: \(summary)").font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
                     Spacer()
                     Button("Done") { model.sentenceTraining.clearPracticeResults() }
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
@@ -547,7 +547,9 @@ struct FreePracticeView: View {
                         }
                     }
                     .accessibilityLabel("Practice text")
-                Text(sentences.isEmpty ? "Each sentence becomes one take." : "\(sentences.count) sentence\(sentences.count == 1 ? "" : "s"). A take trains only when Whisper agrees with at least 85% of it; otherwise it stays practice.")
+                Text(sentences.isEmpty ? "Each sentence becomes one take."
+                     : sentences.count == 1 ? "1 sentence. A take trains only when Whisper agrees with at least 85% of it; otherwise it stays practice."
+                     : "\(sentences.count) sentences. A take trains only when Whisper agrees with at least 85% of it; otherwise it stays practice.")
                     .font(.caption).foregroundStyle(.secondary)
                 if !sentences.isEmpty && (showIPA || language.isChinese) {
                     VStack(alignment: .leading, spacing: 8) {
@@ -607,7 +609,7 @@ struct SoundsView: View {
                         if !tricky.isEmpty {
                             Text("Start here: tricky for \(LanguageMenu.nativeName(model.nativeLanguage)) speakers").font(.headline).foregroundStyle(.orange)
                                 .accessibilityAddTraits(.isHeader)
-                            chips(tricky, progress: progress, language: language, prefix: "Tricky: ")
+                            chips(tricky, progress: progress, language: language, prefix: String(localized: "Tricky: "))
                         }
                         ForEach(groups, id: \.self) { group in
                             Text(group).font(.headline).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
@@ -622,7 +624,7 @@ struct SoundsView: View {
         }
         .onChange(of: model.language) { selection = nil }
         .onChange(of: selection) {
-            if let sound { AccessibilityNotification.Announcement("Selected \(sound.name). \(sound.guide)").post() }
+            if let sound { AccessibilityNotification.Announcement(String(localized: "Selected \(sound.name). \(sound.guide)")).post() }
         }
     }
 
@@ -647,7 +649,7 @@ struct SoundsView: View {
                                                     in: RoundedRectangle(cornerRadius: 8))
                                     }
                                     .buttonStyle(.plain)
-                                    .accessibilityLabel(prefix + "\(s.name), \(s.guide)" + (progress.practised(s, language: language) ? ", practised" : ""))
+                                    .accessibilityLabel(prefix + "\(s.name), \(s.guide)" + (progress.practised(s, language: language) ? String(localized: ", practised") : ""))
                                     .accessibilityAddTraits(s.id == sound?.id ? .isSelected : [])
                                 }
                             }

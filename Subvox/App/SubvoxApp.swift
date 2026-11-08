@@ -32,7 +32,7 @@ struct SubvoxApp: App {
                 }
                 Divider()
                 ForEach(TrainMode.allCases) { mode in
-                    Button(mode.rawValue) { if mode != model.trainMode { model.closeOverlays() }; model.screen = .train; model.trainMode = mode }
+                    Button(mode.title) { if mode != model.trainMode { model.closeOverlays() }; model.screen = .train; model.trainMode = mode }
                         .keyboardShortcut(KeyEquivalent(mode.shortcut), modifiers: .command)
                 }
             }

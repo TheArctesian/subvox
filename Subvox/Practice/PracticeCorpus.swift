@@ -16,6 +16,17 @@ enum TrainMode: String, CaseIterable, Identifiable {
         }
     }
     var shortcut: Character { Character(String((TrainMode.allCases.firstIndex(of: self) ?? 0) + 1)) }
+    /// The mode's name in the interface language.
+    var title: String {
+        switch self {
+        case .reading: String(localized: "Reading")
+        case .sounds: String(localized: "Sounds")
+        case .speech: String(localized: "Speech & Poetry")
+        case .language: String(localized: "Language")
+        case .minimalPairs: String(localized: "Minimal Pairs")
+        case .free: String(localized: "Free Practice")
+        }
+    }
 }
 
 /// The practice language, chosen once for the whole app from the toolbar. Simplified and

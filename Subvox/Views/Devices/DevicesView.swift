@@ -17,6 +17,12 @@ struct DevicesView: View {
                 }
 
                 GroupBox("Live motion (last 8 s)") {
+                  if motion.history.isEmpty {
+                    // Empty charts with axis labels only look broken; say what to do instead.
+                    ContentUnavailableView("No motion yet", systemImage: "airpods",
+                        description: Text("Put in your AirPods, play something in Music or Safari, and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar."))
+                        .frame(maxWidth: .infinity, minHeight: 220)
+                  } else {
                     VStack(spacing: 12) {
                         SignalPlot(title: "User acceleration (g)", samples: motion.history,
                                    channels: SignalPlot.acceleration, span: span, minScale: 0.01)
@@ -26,6 +32,7 @@ struct DevicesView: View {
                                    channels: SignalPlot.attitude, span: span, minScale: 0.1)
                     }
                     .padding(6)
+                  }
                 }
 
             }

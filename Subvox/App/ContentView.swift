@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct ContentView: View {
@@ -15,12 +16,12 @@ struct ContentView: View {
             List(selection: selection) {
                 Section("Train") {
                     ForEach(TrainMode.allCases) { mode in
-                        Label(mode.rawValue, systemImage: mode.symbol).tag(SidebarItem.train(mode))
+                        Label(mode.title, systemImage: mode.symbol).tag(SidebarItem.train(mode))
                     }
                 }
                 Section {
                     ForEach(model.visibleScreens.filter { $0 != .train }) { screen in
-                        Label(screen.rawValue, systemImage: screen.symbol).tag(SidebarItem.screen(screen))
+                        Label(LocalizedStringKey(screen.rawValue), systemImage: screen.symbol).tag(SidebarItem.screen(screen))
                     }
                 }
             }
@@ -75,6 +76,13 @@ struct LanguageMenu: View {
             Picker("I speak", selection: $model.nativeLanguage) {
                 ForEach(["en", "fr", "es", "zh"], id: \.self) { Text(Self.nativeName($0)).tag($0) }
             }.pickerStyle(.inline)
+            Menu("App language") {
+                ForEach(Self.interfaceLanguages, id: \.code) { option in
+                    Button { Self.setInterface(option.code) } label: {
+                        if Self.currentInterface == option.code { Label(option.name, systemImage: "checkmark") } else { Text(option.name) }
+                    }
+                }
+            }
         } label: {
             Label("Practising \(model.language.name)", systemImage: "globe")
                 .labelStyle(.titleAndIcon)
@@ -83,8 +91,29 @@ struct LanguageMenu: View {
         .accessibilityLabel("Practising \(model.language.name); you speak \(Self.nativeName(model.nativeLanguage))")
     }
 
+    /// The interface language, separate from the practice language. macOS reads it at launch,
+    /// so changing it relaunches the app.
+    static let interfaceLanguages: [(code: String, name: String)] = [
+        ("", String(localized: "Same as the Mac")), ("en", "English"), ("fr", "Français"), ("es", "Español"),
+        ("zh-Hans", "简体中文"), ("zh-Hant", "繁體中文")]
+    static var currentInterface: String { (UserDefaults.standard.array(forKey: "AppleLanguages") as? [String])?.first.flatMap { code in
+        interfaceLanguages.first { !$0.code.isEmpty && code.hasPrefix($0.code) }?.code } ?? "" }
+    static func setInterface(_ code: String) {
+        if code.isEmpty { UserDefaults.standard.removeObject(forKey: "AppleLanguages") } else { UserDefaults.standard.set([code], forKey: "AppleLanguages") }
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.createsNewApplicationInstance = true
+        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { _, _ in
+            DispatchQueue.main.async { NSApp.terminate(nil) }
+        }
+    }
+
     static func nativeName(_ code: String) -> String {
-        ["en": "English", "fr": "French", "es": "Spanish", "zh": "Chinese"][code] ?? code
+        switch code {
+        case "fr": String(localized: "French")
+        case "es": String(localized: "Spanish")
+        case "zh": String(localized: "Chinese")
+        default: String(localized: "English")
+        }
     }
 }
 

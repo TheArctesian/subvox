@@ -2,8 +2,8 @@ import SwiftUI
 
 /// Shared page hierarchy; the window chrome and system colours stay native.
 struct AppPageHeading: View {
-    var title: String
-    var subtitle: String
+    var title: LocalizedStringKey
+    var subtitle: LocalizedStringKey
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title).font(.largeTitle.weight(.semibold)).accessibilityAddTraits(.isHeader)
