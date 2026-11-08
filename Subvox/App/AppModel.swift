@@ -35,7 +35,9 @@ final class AppModel {
     var showNonSpeechCollection = false
     let observability = ObservabilityWorkflow()
     var showObservability = false
-    let huggingFace = HuggingFaceAccount()
+    // As a unit-test host the app never reads the Keychain: a rebuilt (re-signed) app would get a
+    // Keychain password prompt there, and the test runner would wait on it forever.
+    let huggingFace = HuggingFaceAccount(store: SubvoxApp.isTestHost ? EphemeralTokenStore() : KeychainTokenStore())
     let contribution = ContributionSettings()
     let uploader = CommunityUploader()
     var showContribute = false

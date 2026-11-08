@@ -104,6 +104,14 @@ protocol TokenStore: Sendable {
     func delete()
 }
 
+/// Holds nothing between launches; used when the app is a unit-test host.
+final class EphemeralTokenStore: TokenStore, @unchecked Sendable {
+    private var data: Data?
+    func load() -> Data? { data }
+    func save(_ data: Data) throws { self.data = data }
+    func delete() { data = nil }
+}
+
 struct KeychainTokenStore: TokenStore {
     var service = "org.subvox.huggingface"
     var account = "oauth-token"
