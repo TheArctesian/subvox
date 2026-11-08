@@ -55,11 +55,14 @@ final class SentenceTrainingWorkflow {
     /// Seconds left in the word highlighting, or nil once every word has been shown (the take
     /// then waits for Done/Space; `secondsRemaining` is only the safety timeout).
     var guideSecondsRemaining: Double? {
+        // Reading the countdown (updated every 50 ms) makes views that show this redraw as time passes.
+        _ = secondsRemaining
         guard let activeCueStart, phase == .speak || phase == .mouth else { return nil }
         let left = WordFocusGuide.comfortable.duration(count: WordFocusGuide.words(in: currentText).count) - (ProcessInfo.processInfo.systemUptime - activeCueStart)
         return left > 0 ? left : nil
     }
     var activeWordIndex:Int? {
+        _ = secondsRemaining  // ticks every 50 ms while recording, so the highlight advances
         guard let activeCueStart,phase == .speak || phase == .mouth else {return nil}
         return WordFocusGuide.comfortable.wordIndex(elapsed:ProcessInfo.processInfo.systemUptime-activeCueStart,count:WordFocusGuide.words(in:currentText).count)
     }
@@ -591,6 +594,7 @@ final class SentenceTrainingWorkflow {
         try SentenceStore.save(data, to: storeURL)
         refreshPairUses()
     }
+    func tickForTesting() { secondsRemaining += 0.05 }
     private func countdown(_ seconds: Double, allowsAdvance: Bool = false, allowsRedo: Bool = false) async throws {
         let end = ProcessInfo.processInfo.systemUptime + seconds
         while ProcessInfo.processInfo.systemUptime < end {

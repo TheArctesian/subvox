@@ -30,3 +30,17 @@ final class WordFocusGuideDurationTests: XCTestCase {
         XCTAssertEqual(guide.duration(count: 0), 0.4)
     }
 }
+
+final class WordFocusObservationTests: XCTestCase {
+    /// The recording screen redraws only for observed changes. The highlight and the cue timer are
+    /// computed from the clock, so they must observe the 50 ms countdown or they freeze on screen.
+    @MainActor func testHighlightAndTimerObserveTheTickingCountdown() {
+        let workflow = SentenceTrainingWorkflow(storeURL: FileManager.default.temporaryDirectory.appending(path: "focus-\(UUID()).json"))
+        for read in [{ _ = workflow.activeWordIndex }, { _ = workflow.guideSecondsRemaining }] {
+            let changed = expectation(description: "redraw")
+            withObservationTracking(read) { changed.fulfill() }
+            workflow.tickForTesting()
+            wait(for: [changed], timeout: 1)
+        }
+    }
+}
