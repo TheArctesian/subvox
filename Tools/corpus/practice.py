@@ -110,8 +110,9 @@ def traditional(text):
 
 
 def traditional_title(title, meta):
-    # OpenCC can't tell the measure word 隻 from the adverb 只 out of context.
-    hant = traditional(title)
+    # OpenCC can't tell the measure word 隻 from the adverb 只 out of context, and keeps the
+    # aspect particle as 着 where Traditional text (and these drills' phrases) write 著.
+    hant = traditional(title).replace("着", "著")
     return hant.replace("只", "隻") if meta.get("topic") == "Measure words" else hant
 
 
