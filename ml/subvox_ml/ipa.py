@@ -50,8 +50,10 @@ _ESPEAK_FOLD = {
     "es": {"ɛ": "e", "ɔ": "o", "ʒ": "ʝ", "ʃ": "tʃ", "v": "β", "ɟ": "ʝ"},
 }
 
-# Character-level folds inside clusters (Spanish diphthongs come out of espeak as aɪ, eʊ...).
-_CHAR_FOLD = {"es": {"ɪ": "i", "ʊ": "u"}, "fr": {}, "en": {}}
+# Character-level folds inside clusters. espeak writes Spanish falling diphthongs as oɪ, aɪ, eɪ,
+# aʊ, eʊ; the second half is a glide (soy /soj/, causa /kawsa/), never a full vowel. It only
+# writes ɪ and ʊ inside these clusters for Spanish; syllabic i and u come out as i and u.
+_CHAR_FOLD = {"es": {"ɪ": "j", "ʊ": "w"}, "fr": {}, "en": {}}
 
 
 def _split(token, language):

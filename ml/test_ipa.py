@@ -22,6 +22,14 @@ class EspeakLanguages(unittest.TestCase):
         self.assertEqual(ipa.phones("el perro", "es"), ["e", "l", "p", "e", "r", "o"])
         self.assertEqual(ipa.phones("ñandú", "es"), ["ɲ", "a", "n", "d", "u"])
 
+    def test_spanish_diphthongs_have_glides(self):
+        self.assertEqual(ipa.phones("soy", "es"), ["s", "o", "j"])
+        self.assertEqual(ipa.phones("hay", "es"), ["a", "j"])
+        self.assertEqual(ipa.phones("causa", "es"), ["k", "a", "w", "s", "a"])
+        self.assertEqual(ipa.phones("bueno", "es"), ["b", "w", "e", "n", "o"])
+        self.assertEqual(ipa.phones("piano", "es"), ["p", "j", "a", "n", "o"])
+        self.assertEqual(ipa.phones("Europa", "es"), ["e", "w", "ɾ", "o", "p", "a"])
+
     def test_english_fallback_lands_in_the_shared_set(self):
         self.assertEqual(ipa.phones("the cat sat", "en"), ["ð", "ə", "k", "æ", "t", "s", "æ", "t"])
         for text in ("thinking about you", "bird father", "she measures the church judge"):
