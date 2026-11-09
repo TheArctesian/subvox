@@ -161,6 +161,7 @@ struct PracticePage<Controls: View, Content: View>: View {
 /// Daily practice progress for the window toolbar.
 struct PracticeProgressBadge: View {
     @Environment(AppModel.self) private var model
+    @State private var showsDetails = false
 
     var body: some View {
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
@@ -170,18 +171,28 @@ struct PracticeProgressBadge: View {
             if visible {
                 let streak = progress.streak == 1 ? String(localized: "1 day in a row")
                     : String(localized: "\(progress.streak) days in a row")
-                // A count of takes held: the digit rolls to its new value, never through the ones between.
-                Label {
-                    Text("\(progress.today) of \(goal) today · \(streak)")
-                        .contentTransition(.numericText(value: Double(progress.today)))
-                } icon: {
-                    Image(systemName: progress.today >= goal ? "trophy.fill" : "party.popper.fill")
-                        .foregroundStyle(.orange)
-                        .contentTransition(.symbolEffect(.replace))
-                        .accessibilityHidden(true)
+                let details = String(localized: "\(progress.today) of \(goal) today · \(streak)")
+                Button {
+                    showsDetails.toggle()
+                } label: {
+                    Label {
+                        Text("\(progress.today)/\(goal)")
+                            .contentTransition(.numericText(value: Double(progress.today)))
+                    } icon: {
+                        Image(systemName: progress.today >= goal ? "trophy.fill" : "party.popper.fill")
+                            .foregroundStyle(.orange)
+                            .contentTransition(.symbolEffect(.replace))
+                    }
+                    .font(.callout)
+                    .labelStyle(.titleAndIcon)
+                    .fixedSize()
                 }
-                .font(.callout)
-                .labelStyle(.titleAndIcon)
+                .help(details)
+                .accessibilityLabel(details)
+                .accessibilityHint("Shows practice progress")
+                .popover(isPresented: $showsDetails, arrowEdge: .top) {
+                    Text(details).padding(12)
+                }
                 .transition(.stateFade)
             }
         }
