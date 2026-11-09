@@ -2959,6 +2959,40 @@
         }
       }
     },
+    "Download word alignment model (1.26 GB)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargar el modelo de alineación de palabras (1,26 GB)"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargar el modelo de alineación de palabras (1.26 GB)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Télécharger le modèle d’alignement des mots (1,26 Go)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载词语对齐模型（1.26 GB）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載詞語對齊模型（1.26 GB）"
+          }
+        }
+      }
+    },
     "Draft wording pending a data-protection review.": {
       "localizations": {
         "es": {
@@ -4761,6 +4795,40 @@
         }
       }
     },
+    "Kept for training (words matched to your audio)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservada para el entrenamiento (palabras alineadas con tu grabación)"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservada para el entrenamiento (palabras alineadas con tu grabación)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservée pour l’entraînement (mots alignés sur votre enregistrement)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已保留用于训练（词语已与录音对齐）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已保留供訓練使用（詞語已與錄音對齊）"
+          }
+        }
+      }
+    },
     "Language": {
       "localizations": {
         "es": {
@@ -4791,6 +4859,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "句型練習"
+          }
+        }
+      }
+    },
+    "Last round": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última ronda"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última ronda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière série"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上一轮"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上一輪"
           }
         }
       }
@@ -5301,6 +5403,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "將這些音素估計標為已檢查"
+          }
+        }
+      }
+    },
+    "Matches the words you read to your audio on this Mac. Requires uv and eSpeak NG.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alinea las palabras que lees con tu grabación en este Mac. Requiere uv y eSpeak NG."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alinea las palabras que lees con tu grabación en esta Mac. Requiere uv y eSpeak NG."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Associe les mots lus à votre enregistrement sur ce Mac. Nécessite uv et eSpeak NG."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在这台 Mac 上将你朗读的词语与录音对齐。需要 uv 和 eSpeak NG。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在這部 Mac 上將你朗讀的詞語與錄音對齊。需要 uv 和 eSpeak NG。"
+          }
+        }
+      }
+    },
+    "Matching words to the audio…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alineando las palabras con la grabación…"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alineando las palabras con la grabación…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alignement des mots sur l’enregistrement…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在将词语与录音对齐…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在將詞語與錄音對齊…"
           }
         }
       }
@@ -6563,6 +6733,40 @@
         }
       }
     },
+    "Part": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parte"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partie"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段落"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段落"
+          }
+        }
+      }
+    },
     "Paste": {
       "localizations": {
         "es": {
@@ -6593,6 +6797,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "貼上"
+          }
+        }
+      }
+    },
+    "Personal library": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biblioteca personal"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biblioteca personal"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bibliothèque personnelle"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "个人文库"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "個人文庫"
           }
         }
       }
@@ -6661,6 +6899,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "詩"
+          }
+        }
+      }
+    },
+    "Poetry": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poesía"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poesía"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poésie"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "诗歌"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詩歌"
           }
         }
       }
@@ -7481,6 +7753,40 @@
         }
       }
     },
+    "Re-align saved takes": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver a alinear las tomas guardadas"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver a alinear las tomas guardadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réaligner les prises enregistrées"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新对齐已保存的录音"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新對齊已儲存的錄音"
+          }
+        }
+      }
+    },
     "Re-record": {
       "localizations": {
         "es": {
@@ -7583,6 +7889,40 @@
         }
       }
     },
+    "Read a speech or poem at your own pace. The words highlight as you go.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee un discurso o poema a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee un discurso o poema a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisez un discours ou un poème à votre rythme. Les mots se surlignent au fil de la lecture."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的节奏朗读演讲或诗歌，词语会随进度高亮。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的節奏朗讀演講或詩歌，詞語會隨進度醒目顯示。"
+          }
+        }
+      }
+    },
     "Read as": {
       "localizations": {
         "es": {
@@ -7613,6 +7953,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "朗讀語言"
+          }
+        }
+      }
+    },
+    "Read at your own pace. The words highlight as you go.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisez à votre rythme. Les mots se surlignent au fil de la lecture."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的节奏朗读，词语会随进度高亮。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的節奏朗讀，詞語會隨進度醒目顯示。"
           }
         }
       }
@@ -8433,6 +8807,40 @@
         }
       }
     },
+    "Recovered %lld of %lld saved takes.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se han recuperado %lld de %lld tomas guardadas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se recuperaron %lld de %lld tomas guardadas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld prises récupérées sur %lld prises enregistrées."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已恢复 %lld 条，共 %lld 条已保存的录音。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已復原 %lld 筆，共 %lld 筆已儲存的錄音。"
+          }
+        }
+      }
+    },
     "Redo": {
       "localizations": {
         "es": {
@@ -9147,6 +9555,40 @@
         }
       }
     },
+    "Saving…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando…"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrement…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在保存…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在儲存…"
+          }
+        }
+      }
+    },
     "Say it aloud": {
       "localizations": {
         "es": {
@@ -9653,6 +10095,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "設定 Whisper…"
+          }
+        }
+      }
+    },
+    "Setting up local word alignment…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurando la alineación local de palabras…"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurando la alineación local de palabras…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuration de l’alignement local des mots…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在设置本地词语对齐…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在設定本機詞語對齊…"
           }
         }
       }
@@ -10231,6 +10707,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "暫時略過"
+          }
+        }
+      }
+    },
+    "Some words had no usable interval in the mouthed take.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algunas palabras no tenían un intervalo utilizable en la toma sin voz."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algunas palabras no tenían un intervalo utilizable en la toma sin voz."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certains mots n’avaient pas d’intervalle utilisable dans la prise sans voix."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有些词语在无声录音中没有可用的时间区间。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有些詞語在無聲錄製中沒有可用的時間區間。"
           }
         }
       }
@@ -11557,6 +12067,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "這一輪會以隨機順序播放這些詞。"
+          }
+        }
+      }
+    },
+    "The word alignment model download could not be verified.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido verificar la descarga del modelo de alineación de palabras."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo verificar la descarga del modelo de alineación de palabras."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de vérifier le téléchargement du modèle d’alignement des mots."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法验证下载的词语对齐模型。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法驗證下載的詞語對齊模型。"
           }
         }
       }
@@ -13023,6 +13567,40 @@
         }
       }
     },
+    "Word alignment returned invalid timing.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La alineación devolvió tiempos de palabras no válidos."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La alineación devolvió tiempos de palabras no válidos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’alignement a renvoyé des temps de mots non valides."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "词语对齐返回了无效的时间。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詞語對齊傳回了無效的時間。"
+          }
+        }
+      }
+    },
     "Words recognised": {
       "localizations": {
         "es": {
@@ -13427,6 +14005,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "約 %@ 年"
+          }
+        }
+      }
+    },
+    "part": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "parte"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "parte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "partie"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段"
           }
         }
       }

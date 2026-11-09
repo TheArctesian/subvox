@@ -110,12 +110,16 @@ struct PhoneAlignment: Codable, Identifiable, Sendable {
     var phones: [PhoneBoundary]
     var provenance: PhoneAlignmentProvenance
     var reviewed = false
+    // Additional labels in subvox_ml.ipa.INVENTORY. Boundary validation
+    // needs the label set, independent of the English gesture priors.
+    private static let additionalIPA = Set("ɲ ʁ ɥ y ø œ ɛ̃ ɑ̃ ɔ̃ œ̃ β x ɣ ʎ ʝ pʰ tʰ kʰ tɕ tɕʰ ɕ ʈʂ ʈʂʰ ʂ ʐ ts tsʰ ɤ ɹ̩ ɻ̩ ɻ".split(separator: " ").map(String.init))
+
     func validate(in range: ClosedRange<Double>) throws {
         guard range.lowerBound.isFinite,range.upperBound.isFinite,
               provenance.method != .localAcousticAlignment || condition == .normal,
               provenance.method != .cameraWarpFromAcoustic || (condition == .silent && provenance.sourceAlignmentID != nil && provenance.warpCost?.isFinite == true),
               !phones.isEmpty, phones.count <= 1000,
-              phones.allSatisfy({ ArticulatoryInventory.byIPA[$0.ipa] != nil && $0.start.isFinite && $0.end.isFinite &&
+              phones.allSatisfy({ (ArticulatoryInventory.byIPA[$0.ipa] != nil || Self.additionalIPA.contains($0.ipa)) && $0.start.isFinite && $0.end.isFinite &&
                   $0.end > $0.start && $0.start >= range.lowerBound && $0.end <= range.upperBound &&
                   ($0.confidence.map { $0.isFinite && (0...1).contains($0) } ?? true) && ($0.backendScore?.isFinite ?? true) }),
               zip(phones,phones.dropFirst()).allSatisfy({ $1.start >= $0.end - 1e-7 }) else { throw LinguisticFailure.alignment }

@@ -20,7 +20,7 @@ struct LocalWhisperTranscript: Codable, Hashable, Sendable {
 }
 
 /// Offline Whisper adapter. Each transcription owns a temporary loopback-only server;
-/// it never attaches to an existing OpenWhispr process or supplies the expected prompt.
+/// it can take an initial prompt for known-text recordings with independent acoustic alignment.
 @MainActor @Observable
 final class LocalWhisper {
     var modelPath: String { didSet { defaults.set(modelPath, forKey: "LocalWhisper.modelPath") } }
@@ -92,7 +92,7 @@ final class LocalWhisper {
         return true
     }
 
-    func transcribe(audioURL: URL, outputDirectory: URL, timeRange: ClosedRange<Double>? = nil, language: String = "en") async throws -> LocalWhisperTranscript {
+    func transcribe(audioURL: URL, outputDirectory: URL, timeRange: ClosedRange<Double>? = nil, language: String = "en", initialPrompt: String? = nil) async throws -> LocalWhisperTranscript {
         guard !isTranscribing else { throw Failure.busy }
         guard isAvailable else { error = Failure.unavailable.localizedDescription; throw Failure.unavailable }
         isTranscribing = true
@@ -137,6 +137,7 @@ final class LocalWhisper {
             child.arguments = ["--model", model, "--host", "127.0.0.1", "--port", String(port),
                                "--inference-path", "/inference", "--language", language,
                                "--dtw", preset, "--no-flash-attn"]
+            if let initialPrompt { child.arguments? += ["--prompt", initialPrompt] }
             child.currentDirectoryURL = outputDirectory
             child.standardOutput = logHandle
             child.standardError = logHandle
@@ -146,7 +147,7 @@ final class LocalWhisper {
             return try await withTaskCancellationHandler {
                 try await waitForServer(child, port: port, session: session)
                 try Task.checkCancellation()
-                status = "Transcribing locally (no expected-word hints)…"
+                status = "Transcribing locally…"
                 let request = try Self.inferenceRequest(port: port, wav: Data(contentsOf: wav))
                 let (data, response) = try await session.data(for: request)
                 try Task.checkCancellation()
@@ -211,7 +212,7 @@ final class LocalWhisper {
         throw Failure.timeout
     }
 
-    /// Testable request construction: no endpoint parameter or expected-transcript prompt.
+    /// The inference request stays on loopback. The server process receives any initial prompt at launch.
     nonisolated static func inferenceRequest(port: Int, wav: Data, boundary: String = UUID().uuidString) throws -> URLRequest {
         guard (1...65535).contains(port), !boundary.isEmpty,
               boundary.utf8.allSatisfy({ (48...57).contains($0) || (65...90).contains($0) || (97...122).contains($0) || $0 == 45 }) else {

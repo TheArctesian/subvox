@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// Train: the five practice modes, chosen from the sidebar (docs/macos-ui-checklist.md). The paired
+/// Train: the practice modes, chosen from the sidebar (docs/macos-ui-checklist.md). The paired
 /// recording screen takes the whole page while recording; Reading's own full-page views (sharing,
 /// research tools) show only while Reading is the selected mode.
 struct TrainView: View {
@@ -17,7 +17,7 @@ struct TrainView: View {
             switch model.trainMode {
             case .reading: SentenceTrainingView()
             case .sounds: SoundsView()
-            case .speech: SpeechPracticeView()
+            case .speech, .poetry: LiteraturePracticeView(tab: model.trainMode).id(model.trainMode)
             case .language: LanguagePracticeView()
             case .minimalPairs: MinimalPairsView()
             case .free: FreePracticeView()
@@ -94,7 +94,9 @@ struct PracticePage<Controls: View, Content: View>: View {
                                 Button("Set Up Whisper…") { showWhisperSetup = true }
                             }
                         }
+                        if mode.isLiterature { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
                         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
+                        TrainingProcessingStatus(workflow: workflow)
                         PracticeFeedback(mode: mode, again: { model.startPractice(groups) })
                         HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
                         content()
@@ -122,7 +124,7 @@ struct PracticePage<Controls: View, Content: View>: View {
                 }
             }
         } content: {
-            if workflow.isBusy {
+            if workflow.phase == .preparing {
                 VStack(spacing: 14) {
                     ProgressView()
                     Text(workflow.phase == .preparing ? "Starting…" : workflow.processingText.isEmpty ? "Saving…" : workflow.processingText)
@@ -214,6 +216,27 @@ struct IPAToggle: View {
     }
 }
 
+struct ForcedAlignerSetup: View {
+    var aligner: ForcedAligner
+
+    var body: some View {
+        if !aligner.isInstalled {
+            if aligner.isInstalling {
+                ProgressView("Setting up local word alignment…").controlSize(.small)
+            } else {
+                Button("Download word alignment model (1.26 GB)") {
+                    Task { await aligner.install() }
+                }
+                Text("Matches the words you read to your audio on this Mac. Requires uv and eSpeak NG.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            if let error = aligner.installError {
+                Label(error, systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+            }
+        }
+    }
+}
+
 struct WhisperSetupSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
@@ -252,9 +275,14 @@ struct PracticeFeedback: View {
     /// The decision stored with the pair, in words: kept, practice only, or not used and why.
     static func verdict(_ pair: SentencePair) -> (symbol: String, color: Color, text: String, kept: Bool) {
         let recognised = pair.transcriptMatchRate.map { String(localized: " · \(Int(($0 * 100).rounded(.down)))% of words recognised") } ?? ""
-        if pair.transcript == nil && pair.error == nil { return ("clock", .secondary, String(localized: "Waiting for speech recognition"), false) }
+        if pair.transcript == nil && pair.error == nil && pair.wordTimingSource == nil { return ("clock", .secondary, String(localized: "Waiting for speech recognition"), false) }
         // The same rule the training data uses (SentencePair.usesAlignedWords), not a guess from the view.
-        if pair.usesAlignedWords { return ("checkmark.circle.fill", .green, String(localized: "Kept for training") + recognised, true) }
+        if pair.usesAlignedWords {
+            let label = pair.wordTimingSource == .forcedAlignment && (pair.transcriptMatchRate ?? 0) < 0.8
+                ? String(localized: "Kept for training (words matched to your audio)")
+                : String(localized: "Kept for training") + recognised
+            return ("checkmark.circle.fill", .green, label, true)
+        }
         if pair.error == SentenceTrainingWorkflow.Failure.practiceOnly.localizedDescription {
             return ("pencil.circle.fill", .orange, String(localized: "Practice only") + recognised + String(localized: "; typed text needs 85%"), false)
         }
@@ -268,14 +296,16 @@ struct PracticeFeedback: View {
 
     var body: some View {
         if !pairs.isEmpty {
+            let processing = model.sentenceTraining.phase == .processing
             VStack(alignment: .leading, spacing: 12) {
-                RoundCelebration()
+                if !processing { RoundCelebration() }
                 HStack {
-                    Text("Last round: \(summary)").font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                    (processing ? Text("Last round") : Text("Last round: \(summary)")).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
                         .accessibilityFocused($focusResults)
                     Spacer()
                     Button("Done") { model.sentenceTraining.clearPracticeResults() }
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
+                        .disabled(model.sentenceTraining.isBusy)
                 }
                 ForEach(pairs) { row($0) }
                 Text("Speech recognition guesses what you meant, so it can accept sounds that aren't quite right. Use it to check you were understood, not to judge each sound. For a persistent difficulty, a teacher or speech and language therapist can hear what the app can't.")
@@ -353,7 +383,9 @@ struct PracticeLineView: View {
 
 extension SentencePrompt {
     init(_ line: PracticeCorpus.Line, kind: SentencePromptKind, language: AppLanguage) {
-        self.init(text: line.text(language), kind: kind, language: language.tag)
+        self.init(text: line.text(language), kind: kind, language: language.tag,
+                  englishTranslation: language == .en ? nil : line.gloss,
+                  pinyin: language.isChinese ? line.pinyin : nil)
     }
 }
 
@@ -388,20 +420,39 @@ struct PortraitCircle: View {
     }
 }
 
-struct SpeechPracticeView: View {
+struct LiteraturePracticeView: View {
+    var tab: TrainMode
+    private var kind: SentencePromptKind { tab == .poetry ? .poetry : .speech }
+    private var selectionKey: String { kind.rawValue }
     @Environment(AppModel.self) private var model
     @State private var selection: String?
+    @State private var selectedPart = 0
     @AppStorage("practice.showIPA") private var showIPA = true
 
-    private var pieces: [PracticeCorpus.Piece] { model.practice.pieces.filter { $0.language == model.language.corpus } }
+    private var pieces: [PracticeCorpus.Piece] {
+        (model.practice.pieces + model.personalPracticePieces).filter {
+            $0.language == model.language.corpus && $0.practiceKind == kind
+        }
+    }
     private var piece: PracticeCorpus.Piece? { pieces.first { $0.id == selection } ?? pieces.first }
 
     var body: some View {
         let language = model.language
-        PracticePage(title: "Speech & Poetry", subtitle: "Read a public-domain speech or poem at your own pace. The words highlight as you go.",
+        let parts = piece.map { $0.parts(language: language) } ?? []
+        let partIndex = parts.indices.contains(selectedPart) ? selectedPart : 0
+        let lines = parts.isEmpty ? [] : parts[partIndex]
+        return PracticePage(title: tab == .poetry ? "Poetry" : "Speech",
+                     subtitle: "Read at your own pace. The words highlight as you go.",
                      startTitle: "Start Reading",
-                     groups: piece.map { p in PracticeCorpus.takes(p.lines, language: language).map { $0.map { SentencePrompt($0, kind: .speech, language: language) } } } ?? [],
-                     mode: .speech, unit: "parts", scrolls: false) {
+                     groups: lines.isEmpty ? [] : [lines.map { SentencePrompt($0, kind: kind, language: language) }],
+                     mode: kind, unit: "part", scrolls: false) {
+            if parts.count > 1 {
+                Picker("Part", selection: $selectedPart) {
+                    ForEach(parts.indices, id: \.self) { index in
+                        Text("\(index + 1) of \(parts.count)").tag(index)
+                    }
+                }.fixedSize()
+            }
             IPAToggle(isOn: $showIPA)
         } content: {
             if pieces.isEmpty {
@@ -418,8 +469,12 @@ struct SpeechPracticeView: View {
                     if let piece {
                         ScrollView { VStack(alignment: .leading, spacing: 12) {
                             Text("\(piece.author(language)) · \(piece.when)").font(.headline).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
-                            ForEach(piece.lines, id: \.self) { PracticeLineView(line: $0, language: language, showIPA: showIPA) }
-                            Text("Public domain in the UK and US.").font(.caption).foregroundStyle(.secondary)
+                            ForEach(lines.indices, id: \.self) { index in
+                                PracticeLineView(line: lines[index], language: language, showIPA: showIPA)
+                            }
+                            Text(model.personalPracticePieces.contains(where: { $0.id == piece.id })
+                                 ? "Personal library" : "Public domain in the UK and US.")
+                                .font(.caption).foregroundStyle(.secondary)
                             Text("Read it aloud, then mouth it, a few lines at a time. Speech recognition on this Mac checks how much it understood.")
                                 .font(.callout).foregroundStyle(.secondary)
                         }.frame(maxWidth: .infinity, alignment: .leading) }
@@ -427,9 +482,13 @@ struct SpeechPracticeView: View {
                 }
             }
         }
-        .onAppear { if selection == nil { selection = SavedSelection.get("speech", model.language) } }
-        .onChange(of: selection) { SavedSelection.set("speech", model.language, selection) }
-        .onChange(of: model.language) { selection = SavedSelection.get("speech", model.language) }
+        .onAppear { if selection == nil { selection = SavedSelection.get(selectionKey, model.language) } }
+        .onChange(of: selection) { SavedSelection.set(selectionKey, model.language, selection) }
+        .onChange(of: piece?.id) { selectedPart = 0 }
+        .onChange(of: model.language) {
+            selection = SavedSelection.get(selectionKey, model.language)
+            selectedPart = 0
+        }
     }
 
     private func pieceRow(_ p: PracticeCorpus.Piece, selected: Bool) -> some View {
@@ -624,7 +683,10 @@ struct FreePracticeView: View {
         let sentences = Self.sentences(text)
         PracticePage(title: "Free Practice", subtitle: "Type or paste anything you want to memorise.",
                      startTitle: "Start Practice",
-                     groups: sentences.map { [SentencePrompt(text: $0, kind: .freeText, language: language.tag)] },
+                     groups: sentences.map { sentence in
+                         [SentencePrompt(text: sentence, kind: .freeText, language: language.tag,
+                                         pinyin: language.isChinese ? readings[language.tag + sentence]?.pinyin : nil)]
+                     },
                      mode: .freeText, unit: "sentences") {
             IPAToggle(isOn: $showIPA)
         } content: {

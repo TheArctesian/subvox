@@ -466,8 +466,19 @@ def main():
     p=sub.add_parser("prepare-teachers");p.add_argument("--dataset",required=True);p.add_argument("--base-run",required=True);p.add_argument("--output",required=True)
     p=sub.add_parser("phones");p.add_argument("--text",required=True);p.add_argument("--language",required=True);p.add_argument("--output")
     p=sub.add_parser("phone-check");p.add_argument("--text",required=True);p.add_argument("--language",required=True);p.add_argument("--whisper-text",required=True);p.add_argument("--phone-intervals");p.add_argument("--output")
+    p = sub.add_parser("align")
+    p.add_argument("--audio", required=True)
+    p.add_argument("--start", type=float, required=True)
+    p.add_argument("--end", type=float, required=True)
+    p.add_argument("--text", required=True)
+    p.add_argument("--language", required=True)
+    p.add_argument("--output", required=True)
     args=parser.parse_args()
-    if args.command=="phones":
+    if args.command == "align":
+        from .forced_align import align
+        result = align(args.audio, args.start, args.end, args.text, args.language)
+        atomic_json(Path(args.output), result)
+    elif args.command=="phones":
         from . import ipa
         language=ipa.validate_language_tag(args.language)
         result=dict(language=language,words=ipa.phonemize(args.text,language,ipa.accent_of(args.language)))

@@ -18,7 +18,7 @@ import Foundation
     private var process: Process?
     init(root: URL) { self.root = root }
 
-    func project() throws -> URL {
+    func project(copy: Bool = true) throws -> URL {
         let bundled = Bundle.main.resourceURL!.appending(path: "SequenceRuntime")
         // This file sits at Subvox/Sequence/, so three levels up is the repository root.
         let development = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appending(path: "ml")
@@ -33,7 +33,7 @@ import Foundation
         for (file, url) in files { hash.update(data: Data(file.utf8)); hash.update(data: try Data(contentsOf: url)) }
         let identity = hash.finalize().map { String(format: "%02x", $0) }.joined()
         let destination = root.appending(path: "Runtime/\(identity)")
-        if !FileManager.default.fileExists(atPath: destination.path) {
+        if copy && !FileManager.default.fileExists(atPath: destination.path) {
             for directory in ["subvox_ml", "Corpus"] { try FileManager.default.createDirectory(at: destination.appending(path: directory), withIntermediateDirectories: true) }
             for (file, url) in files { try FileManager.default.copyItem(at: url, to: destination.appending(path: file)) }
         }
@@ -42,7 +42,7 @@ import Foundation
 
     /// Runs `subvox-ml <arguments>`. `environment` is added to the app's own (secrets go here, never
     /// in arguments, which other processes can read). `status` receives the latest log line.
-    func run(_ arguments: [String], environment: [String: String] = [:], status: (String) -> Void = { _ in }) async throws {
+    func run(_ arguments: [String], environment: [String: String] = [:], offline: Bool = false, status: (String) -> Void = { _ in }) async throws {
         let uv = ["/opt/homebrew/bin/uv", "/usr/local/bin/uv"].first { FileManager.default.isExecutableFile(atPath: $0) }
         guard let uv else { throw Failure.runtime }
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -50,7 +50,7 @@ import Foundation
         FileManager.default.createFile(atPath: log.path, contents: nil)
         let handle = try FileHandle(forWritingTo: log); defer { try? handle.close() }
         child.executableURL = URL(fileURLWithPath: uv)
-        child.arguments = ["run", "--frozen", "--project", project.path, "subvox-ml"] + arguments
+        child.arguments = ["run", "--frozen"] + (offline ? ["--offline"] : []) + ["--project", project.path, "subvox-ml"] + arguments
         if !environment.isEmpty { child.environment = ProcessInfo.processInfo.environment.merging(environment) { $1 } }
         child.standardOutput = handle; child.standardError = handle
         try child.run(); process = child

@@ -19,11 +19,11 @@ struct SimpleTrainingView: View {
                 Button { model.startSentenceTraining() } label: {
                     Label(calibrationLeft > 0 ? "Start Recording" : "Record Next Passages", systemImage: "record.circle")
                 }
-                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty)
+                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty || workflow.isBusy)
                 .help("⌘↩")
             }
         } content: {
-            if workflow.isBusy {
+            if workflow.phase == .preparing {
                 VStack(spacing: 14) {
                     ProgressView()
                     Text(workflow.phase == .preparing ? "Starting…" : workflow.processingText.isEmpty ? "Saving…" : workflow.processingText)
@@ -32,6 +32,7 @@ struct SimpleTrainingView: View {
             } else {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 28) {
+                        TrainingProcessingStatus(workflow: workflow)
                         checklist
                         progress
                         VStack(alignment: .leading, spacing: 8) {

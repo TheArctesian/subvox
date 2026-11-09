@@ -59,6 +59,7 @@ final class AppModel {
         showSequenceLearning = false; showRepresentation = false; showSignalCheck = false
     }
     let practice = PracticeCorpus.bundled
+    let personalPracticePieces = PracticeCorpus.personalPieces()
     @ObservationIgnored lazy var practiceChecker = PracticeChecker()
     @ObservationIgnored let referenceSpeaker = ReferenceSpeaker()
     /// Off for new installs: the Train page shows one recording path. Research tools (sentence
@@ -206,7 +207,7 @@ final class AppModel {
     private func checkPhones(_ id: UUID) async {
         guard let pair = sentenceTraining.data.pairs.first(where: { $0.id == id }), let heard = pair.transcript?.text else { return }
         let result = await practiceChecker.check(text: pair.text, language: pair.language ?? "en", heard: heard)
-        sentenceTraining.setPhoneCheck(result, for: id)
+        await sentenceTraining.setPhoneCheck(result, for: id)
     }
 
     func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil) {

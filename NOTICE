@@ -44,3 +44,10 @@ with Reserved Font Names "Charis" and "SIL", licensed under the SIL Open Font Li
 
 Speaker and author portraits in Corpus/practice/portraits are public-domain works from
 Wikimedia Commons; each file, creator and licence is listed in Corpus/practice/portraits/SOURCES.tsv.
+
+The optional local word aligner downloads Meta AI's Wav2Vec2 XLSR-53 eSpeak
+Common Voice checkpoint, revision 2c733782da5604684829819a5eb744c193fe9398,
+licensed under Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).
+https://huggingface.co/facebook/wav2vec2-xlsr-53-espeak-cv-ft
+Model paper: Qiantong Xu, Alexei Baevski, and Michael Auli,
+Simple and Effective Zero-shot Cross-lingual Phoneme Recognition (2021).

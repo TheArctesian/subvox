@@ -62,6 +62,21 @@ final class LinguisticRepresentationTests:XCTestCase {
         var gap=mouth;gap.removeSubrange(10...30)
         XCTAssertThrowsError(try CameraPhoneAlignment.transfer(source,spoken:spoken,mouthed:gap,profileHash:"profile"))
     }
+    func testCameraWarpKeepsShortMultilingualPhonesWithObservedBoundaries() throws {
+        let frames = (0...30).map { i in
+            CameraPhoneAlignment.Frame(time: 100 + Double(i) / 30, shape: [Double(i), 1, 1])
+        }
+        let mouthed = frames.map { CameraPhoneAlignment.Frame(time: $0.time + 100, shape: $0.shape) }
+        let source = PhoneAlignment(condition: .normal, phones: [
+            .init(ipa: "ʁ", start: 99.99, end: 100.02),
+            .init(ipa: "y", start: 100.201, end: 100.209),
+        ], provenance: provenance())
+        let warped = try CameraPhoneAlignment.transfer(source, spoken: frames, mouthed: mouthed,
+                                                        profileHash: "profile", allowPartial: true)
+        XCTAssertEqual(warped.phones.map(\.ipa), ["y"])
+        XCTAssertEqual(warped.phones[0].start, 200.201, accuracy: 1e-9)
+        XCTAssertEqual(warped.phones[0].end, 200.209, accuracy: 1e-9)
+    }
     func testMFAExportsAllSpeakerVariantsAndRefusesUnknownPhoneMappings() throws {
         var profile=PronunciationProfile();try profile.set(word:"pack",ipaLines:"p æ k\np ɑː k")
         let dict=try LocalPhonemeAligner.dictionary(text:"pack",profile:profile,lexicon:lexicon,map:["P":"p","AE1":"æ","AA1":"ɑː","K":"k"])

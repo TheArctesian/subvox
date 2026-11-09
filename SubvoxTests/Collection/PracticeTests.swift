@@ -54,6 +54,46 @@ final class PracticeTests: XCTestCase {
         XCTAssertTrue([["rue", "roue"], ["tu", "tout"], ["vu", "vous"]].filter { texts.isSuperset(of: $0) }.count == 2, "Both members of each set")
     }
 
+    func testSpeechAndPoetryKeepDistinctPracticeKinds() throws {
+        let pieces = PracticeCorpus.bundled.pieces
+        let speech = try XCTUnwrap(pieces.first { $0.id == "gettysburg" })
+        let poem = try XCTUnwrap(pieces.first { $0.id == "invictus" })
+        XCTAssertEqual(speech.practiceKind, .speech)
+        XCTAssertEqual(poem.practiceKind, .poetry)
+
+        var data = SentenceTrainingData()
+        let prompt = SentencePrompt(poem.lines[0], kind: poem.practiceKind, language: .en)
+        data.addPractice([prompt])
+        XCTAssertEqual(data.roles[prompt.id], .training)
+    }
+
+    func testGettysburgOpeningHasTwoSelectableParts() throws {
+        let piece = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == "gettysburg" })
+        let opening = Array(piece.lines.prefix(2))
+        let parts = PracticeCorpus.takes(piece.lines, language: .en)
+        XCTAssertEqual(Array(parts.prefix(2)), opening.map { [$0] })
+    }
+
+    func testBundledGageAccountIncludesTheWholeSpeechInReadableParts() throws {
+        let piece = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == "aint-i-a-woman" })
+        let parts = piece.parts(language: .en)
+        XCTAssertEqual(piece.year, 1863)
+        XCTAssertEqual(piece.lines.count, 28)
+        XCTAssertEqual(parts.flatMap { $0 }, piece.lines)
+        XCTAssertTrue(parts.allSatisfy { $0.reduce(0) { $0 + $1.text.split(whereSeparator: \.isWhitespace).count } <= 24 })
+    }
+
+    func testBundledPoemsPreserveExplicitPartBoundaries() throws {
+        for (id, lengths) in [("invictus", [4, 4, 4, 4]), ("ozymandias", [4, 4, 3, 3]),
+                              ("a-fairy-song", [4, 4, 4, 2]), ("holy-sonnet-10", [4, 4, 4, 2]),
+                              ("tyger", [4, 4, 4, 4, 4, 4]), ("sonnet-18", [4, 4, 4, 2])] {
+            let piece = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == id })
+            let parts = piece.parts(language: .en)
+            XCTAssertEqual(parts.map(\.count), lengths)
+            XCTAssertEqual(parts.flatMap { $0 }, piece.lines)
+        }
+    }
+
     func testLongPiecesAreSplitIntoReadableTakes() {
         let corpus = PracticeCorpus.bundled
         for piece in corpus.pieces {
@@ -92,6 +132,37 @@ final class PracticeTests: XCTestCase {
         XCTAssertFalse(PracticeFeedback.verdict(pair).kept, "82% passes processing but not admission (85%)")
         pair.review = .excluded
         XCTAssertFalse(PracticeFeedback.verdict(pair).kept)
+    }
+
+    func testForcedAlignmentKeepsKnownTextAt55PercentWhisperAgreement() {
+        let pair = alignmentPair(coverage: 0.8)
+        XCTAssertTrue(pair.usesAlignedWords)
+        XCTAssertTrue(PracticeFeedback.verdict(pair).kept)
+    }
+
+    func testLowWhisperAndForcedCoverageRejectThePair() {
+        XCTAssertFalse(alignmentPair(coverage: 0.79).usesAlignedWords)
+    }
+
+    func testForcedCoverageCannotRescueFreePractice() {
+        var pair = alignmentPair(coverage: 1)
+        pair.practiceMode = .freeText
+        XCTAssertFalse(pair.usesAlignedWords)
+    }
+
+    private func alignmentPair(coverage: Double) -> SentencePair {
+        let samples = [MotionSample(t: 0, accel: (0, 0, 0), rotation: (0, 0, 0))]
+        var pair = SentencePair(visitID: UUID(), promptIDs: [], text: "a bee", role: .training)
+        pair.spoken = .init(condition: .normal, samples: samples, cueStart: 0, cueEnd: 1)
+        pair.silent = .init(condition: .silent, samples: samples, cueStart: 0, cueEnd: 1)
+        pair.transcript = LocalWhisperTranscript(text: "a b", words: [])
+        pair.transcriptMatchRate = 0.55
+        pair.timedWordCoverage = coverage
+        pair.wordTimingSource = .forcedAlignment
+        pair.alignment = .init(normalizedCost: 0, durationRatio: 1, path: [],
+                               words: [.init(word: "bee", voicedStart: 0, voicedEnd: 1, silentStart: 0, silentEnd: 1)],
+                               warnings: [])
+        return pair
     }
 
     func testPhoneCheckDecodesThePythonOutput() throws {
