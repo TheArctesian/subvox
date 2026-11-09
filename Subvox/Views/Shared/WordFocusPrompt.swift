@@ -28,15 +28,29 @@ struct WordFocusPrompt: View {
         return result
     }
 
+    private func wordsJoinedAfterDash(in fragments: [String]) -> Set<Int> {
+        var joined: Set<Int> = []
+        var wordIndex = 0
+        for (index, fragment) in fragments.enumerated() where !fragment.allSatisfy(\.isWhitespace) {
+            if index > 0, fragments[index - 1].hasSuffix("—") {
+                joined.insert(wordIndex)
+            }
+            wordIndex += 1
+        }
+        return joined
+    }
+
     var body: some View {
-        let words = WordFocusGuide.words(in: text)
+        let fragments = WordFocusGuide.fragments(in: displayText)
+        let words = fragments.filter { !$0.allSatisfy(\.isWhitespace) }
         let hasPinyin = pinyin.count == words.count && pinyin.contains(where: { $0 != nil })
         let compactSpacing = words.contains { $0.unicodeScalars.contains { $0.properties.isIdeographic } }
         Group {
             if hasPinyin || !verseLines.isEmpty {
                 PromptRows(lineLengths: verseLines.map { WordFocusGuide.words(in: $0).count },
                            lineIndents: verseLines.map { CGFloat($0.prefix(while: { $0 == " " }).count) * 12 },
-                           viewportHeight: viewportHeight, spacing: compactSpacing ? 4 : 12) {
+                           viewportHeight: viewportHeight, spacing: compactSpacing ? 4 : 12,
+                           joinedAfterDash: wordsJoinedAfterDash(in: fragments)) {
                     ForEach(words.indices, id: \.self) { index in
                         VStack(spacing: 0) {
                             if hasPinyin {
@@ -68,6 +82,9 @@ private struct PromptRows: Layout {
     var lineIndents: [CGFloat]
     var viewportHeight: CGFloat
     var spacing: CGFloat
+    var joinedAfterDash: Set<Int>
+
+    private func gap(before index: Int) -> CGFloat { joinedAfterDash.contains(index) ? 0 : spacing }
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let rows = rows(for: subviews, width: proposal.width ?? .infinity)
         return CGSize(width: proposal.width ?? rows.map(\.width).max() ?? 0,
@@ -84,7 +101,7 @@ private struct PromptRows: Layout {
                 let proposal = ProposedViewSize(width: max(1, bounds.width - (lineIndents.max() ?? 0)), height: nil)
                 let size = subviews[index].sizeThatFits(proposal)
                 subviews[index].place(at: CGPoint(x: x, y: y), anchor: .topLeading, proposal: proposal)
-                x += size.width + (spacing + (row.coupletBreak == index + 1 ? row.coupletGap : 0))
+                x += size.width + gap(before: index + 1) + (row.coupletBreak == index + 1 ? row.coupletGap : 0)
             }
             y += row.height + 8
         }
@@ -125,12 +142,12 @@ private struct PromptRows: Layout {
             var start = line.lowerBound
             var used: CGFloat = 0
             for cell in line {
-                if cell > start, indent + used + spacing + sizes[cell].width > width {
+                if cell > start, indent + used + gap(before: cell) + sizes[cell].width > width {
                     result.append(Row(indices: start..<cell, width: used + indent, height: lineHeight, indent: indent))
                     start = cell
                     used = 0
                 }
-                used += sizes[cell].width + (cell == start ? 0 : spacing)
+                used += sizes[cell].width + (cell == start ? 0 : gap(before: cell))
             }
             if start < line.upperBound {
                 result.append(Row(indices: start..<line.upperBound, width: used + indent, height: lineHeight, indent: indent))
@@ -141,7 +158,7 @@ private struct PromptRows: Layout {
     }
 
     private func rowWidth(_ range: Range<Int>, sizes: [CGSize]) -> CGFloat {
-        sizes[range].reduce(0) { $0 + $1.width } + spacing * CGFloat(max(0, range.count - 1))
+        sizes[range].reduce(0) { $0 + $1.width } + range.dropFirst().reduce(0) { $0 + gap(before: $1) }
     }
 
     private struct Row {

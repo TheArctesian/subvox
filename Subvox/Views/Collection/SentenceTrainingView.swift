@@ -51,7 +51,7 @@ struct SentenceTrainingView: View {
         } content: {
             Group {
               VStack(spacing: 0) {
-                TrainingProcessingStatus(workflow: workflow).padding(.top, 12)
+                RecordingPreparationStatus(workflow: workflow).padding(.top, 12)
                 Picker("Training section", selection: $section) {
                     Text("Record").tag(Section.record)
                     Text("Review" + (attentionCount > 0 ? " (\(attentionCount))" : "")).tag(Section.review)
@@ -591,16 +591,16 @@ struct SentenceTrainingView: View {
 
 
 /// Processing stays local while the recording pages remain available.
-struct TrainingProcessingStatus: View {
+struct RecordingPreparationStatus: View {
     var workflow: SentenceTrainingWorkflow
 
     var body: some View {
-        if workflow.phase == .processing || workflow.phase == .preparing || workflow.isCheckingRecordings {
+        if workflow.phase == .preparing {
             HStack(spacing: 8) {
                 ProgressView().controlSize(.small)
-                Text(workflow.phase == .preparing ? "Preparing recording…" : workflow.processingText.isEmpty ? "Saving on this Mac…" : workflow.processingText)
+                Text("Preparing recording…")
                     .font(.callout)
-                if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
+                Button("Cancel", action: workflow.stop)
             }
             .foregroundStyle(.secondary)
             .accessibilityElement(children: .combine)

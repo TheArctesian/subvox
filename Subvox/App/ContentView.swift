@@ -26,6 +26,23 @@ struct ContentView: View {
                 }
             }
             .disabled(model.navigationLocked)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if let activity = model.backgroundActivity {
+                    VStack(spacing: 0) {
+                        Divider()
+                        HStack(alignment: .top, spacing: 8) {
+                            ProgressView().controlSize(.small).accessibilityHidden(true)
+                            Text(activity).font(.caption).foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer(minLength: 0)
+                        }
+                        .padding(12)
+                    }
+                    .background(.bar)
+                    .transition(.stateFade)
+                }
+            }
+            .motion(.state, value: model.backgroundActivity != nil)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
         } detail: {
             switch model.screen {
@@ -48,18 +65,6 @@ struct ContentView: View {
             }
             ToolbarItem(placement: .primaryAction) { LanguageMenu() }
             ToolbarItem(placement: .primaryAction) { SharingAccountMenu() }
-            // The slot stays put so neighbouring status items never shift; only the spinner fades.
-            ToolbarItem(placement: .status) {
-                ZStack {
-                    if let activity = model.backgroundActivity {
-                        ProgressView().controlSize(.small)
-                            .help(activity).accessibilityLabel(activity)
-                            .transition(.stateFade)
-                    }
-                }
-                .frame(width: 18, height: 18)
-                .motion(.state, value: model.backgroundActivity != nil)
-            }
         }
         // Each page carries its own large heading, so the window title would only repeat it.
         .navigationTitle(model.screen == .train ? model.trainMode.rawValue : model.screen.rawValue)

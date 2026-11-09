@@ -24,6 +24,13 @@ final class WordFocusGuideTests: XCTestCase {
         XCTAssertEqual(WordFocusGuide.pinyinByWord(in: "你在哪兒？", pinyin: "nǐ zài nǎr"), ["nǐ", "zài", "nǎr", nil])
     }
 
+    func testEmDashSeparatesAdjacentWordsWithoutChangingTheSource() {
+        let text = "Forbid it, Almighty God!—I know"
+        XCTAssertEqual(WordFocusGuide.fragments(in: text).joined(), text)
+        XCTAssertEqual(WordFocusGuide.words(in: text), ["Forbid", "it,", "Almighty", "God!—", "I", "know"])
+        XCTAssertEqual(WordFocusGuide.words(in: "A well-known word"), ["A", "well-known", "word"])
+    }
+
     func testDisplayedWordTokensRetainPunctuationAndMatchAcrossWhitespace() {
         XCTAssertEqual(WordFocusGuide.words(in: "Her favourite\n song\tplayed softly."), ["Her", "favourite", "song", "played", "softly."])
         XCTAssertEqual(WordFocusGuide.words(in: "Don't rush."), ["Don't", "rush."])

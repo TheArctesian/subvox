@@ -27,6 +27,10 @@ struct WordFocusGuide: Codable, Equatable, Sendable {
                 }
                 word = ""
                 afterHan = isHan
+            } else if character == "—", !word.isEmpty {
+                word.append(character)
+                result.append(word)
+                word = ""
             } else if afterHan && character.isPunctuation {
                 result[result.count - 1].append(character)
             } else {
