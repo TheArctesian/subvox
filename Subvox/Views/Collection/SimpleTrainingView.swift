@@ -26,7 +26,6 @@ struct SimpleTrainingView: View {
             Group {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 28) {
-                        RecordingPreparationStatus(workflow: workflow)
                         checklist
                         progress
                         LocalRecordingHistory()

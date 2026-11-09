@@ -51,7 +51,6 @@ struct SentenceTrainingView: View {
         } content: {
             Group {
               VStack(spacing: 0) {
-                RecordingPreparationStatus(workflow: workflow).padding(.top, 12)
                 Picker("Training section", selection: $section) {
                     Text("Record").tag(Section.record)
                     Text("Review" + (attentionCount > 0 ? " (\(attentionCount))" : "")).tag(Section.review)
@@ -586,25 +585,5 @@ struct SentenceTrainingView: View {
         let reserved = sentences.filter { data.roles[$0.id] == .finalTest }
         return Label("\(reserved.count) of \(sentences.count) sentences reserved for the final test", systemImage: "lock.fill")
             .font(.callout).foregroundStyle(.secondary)
-    }
-}
-
-
-/// Processing stays local while the recording pages remain available.
-struct RecordingPreparationStatus: View {
-    var workflow: SentenceTrainingWorkflow
-
-    var body: some View {
-        if workflow.phase == .preparing {
-            HStack(spacing: 8) {
-                ProgressView().controlSize(.small)
-                Text("Preparing recording…")
-                    .font(.callout)
-                Button("Cancel", action: workflow.stop)
-            }
-            .foregroundStyle(.secondary)
-            .accessibilityElement(children: .combine)
-            .transition(.stateFade)
-        }
     }
 }
