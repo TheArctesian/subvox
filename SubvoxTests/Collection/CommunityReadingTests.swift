@@ -43,6 +43,47 @@ final class CommunityReadingTests: XCTestCase {
         XCTAssertEqual(later.map { data.roles[$0.id] }, later.map { control.roles[$0.id] }, "Final/validation quotas count personal sentences only")
     }
 
+    @MainActor func testSavedChecksResumeWithoutBlockingTheNextRecording() async throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "queued-checks-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        let store = root.appending(path: "sentences.json")
+        let model = root.appending(path: "ggml-base.bin")
+        try Data([1]).write(to: model)
+        let suite = "subvox-queued-checks-\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let whisper = LocalWhisper(defaults: defaults)
+        whisper.modelPath = model.path
+        whisper.executablePath = "/usr/bin/true"
+        XCTAssertTrue(whisper.isConfigured)
+
+        var data = SentenceTrainingData()
+        var pair = SentencePair(visitID: UUID(), promptIDs: [], text: "Saved take", role: .training)
+        pair.spoken = SentenceRecording(condition: .normal, samples: [], cueStart: 0, cueEnd: 1)
+        pair.practiceMode = .freeText
+        pair.needsBackgroundCheck = true
+        data.pairs.append(pair)
+        try SentenceStore.save(data, to: store)
+
+        let workflow = SentenceTrainingWorkflow(storeURL: store)
+        let checked = expectation(description: "Saved check resumed")
+        workflow.onPracticeProcessed = { id in
+            XCTAssertEqual(id, pair.id)
+            XCTAssertTrue(workflow.isCheckingRecordings)
+            XCTAssertTrue(workflow.canStartRecording)
+            checked.fulfill()
+        }
+        workflow.resumeBackgroundChecks(whisper: whisper)
+        XCTAssertTrue(workflow.canStartRecording)
+        XCTAssertTrue(workflow.checkingPairIDs.contains(pair.id))
+        await fulfillment(of: [checked], timeout: 5)
+
+        let reloaded = SentenceTrainingWorkflow(storeURL: store)
+        XCTAssertNil(reloaded.data.pairs.first?.needsBackgroundCheck)
+        XCTAssertNotNil(reloaded.data.pairs.first?.error, "The fixture has no audio clock and should show a review result.")
+    }
+
     @MainActor func testCommunityPlanRecordsCalibrationFirstThenPassagesInOrder() throws {
         let root = FileManager.default.temporaryDirectory.appending(path: "community-\(UUID())")
         defer { try? FileManager.default.removeItem(at: root) }

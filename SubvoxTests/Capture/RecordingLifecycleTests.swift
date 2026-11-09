@@ -21,6 +21,8 @@ final class RecordingLifecycleTests: XCTestCase {
         XCTAssertNotEqual(original.id, replacement.id)
         XCTAssertNil(recorder.stop(sessionID: original.id))
         XCTAssertNil(try recorder.checkpoint(sessionID: original.id))
+        let staleCheckpoint = try await recorder.checkpointCompletedTake(sessionID: original.id)
+        XCTAssertNil(staleCheckpoint)
         XCTAssertEqual(recorder.activeSessionID, replacement.id)
     }
 
@@ -57,7 +59,8 @@ final class RecordingLifecycleTests: XCTestCase {
         buffer.frameLength = 256
         for i in 0..<256 { buffer.floatChannelData![0][i] = 0.1 * sin(Float(i) / 7) }
         sink.dispatch(buffer, AVAudioTime(hostTime: AVAudioTime.hostTime(forSeconds: session.startUptime + 0.25)))
-        let clock = try XCTUnwrap(try recorder.checkpoint(sessionID: session.id))
+        let checkpoint = try await recorder.checkpointCompletedTake(sessionID: session.id)
+        let clock = try XCTUnwrap(checkpoint)
         XCTAssertEqual(try XCTUnwrap(clock.audioOffset), 0.25, accuracy: 1e-6)
         let samples = (0..<51).map { MotionSample(t: session.startUptime + 1 + Double($0) / 50, rotation: (0.1, 0, 0)) }
         let spoken = SentenceRecording(condition: .normal, samples: samples, cueStart: session.startUptime + 1, cueEnd: session.startUptime + 2)

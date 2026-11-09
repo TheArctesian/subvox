@@ -1,4 +1,5 @@
 import AppKit
+import AVFoundation
 import SwiftUI
 
 struct ContributeView: View {
@@ -206,24 +207,144 @@ struct ContributeView: View {
 struct LocalRecordingHistory: View {
     @Environment(AppModel.self) private var model
     @State var expanded = false
+    @State private var player: AVPlayer?
+    @State private var playing: UUID?
+    @State private var playbackError: String?
 
     var body: some View {
         DisclosureGroup("Saved on this Mac", isExpanded: $expanded) {
-            let pairs = model.sentenceTraining.data.pairs.reversed().filter { $0.spoken != nil || $0.silent != nil }
+            if expanded { recordings }
+        }
+        .onChange(of: expanded) { if !expanded { stopPlayback() } }
+        .onChange(of: model.sentenceTraining.canStartRecording) {
+            if !model.sentenceTraining.canStartRecording { stopPlayback() }
+        }
+        .onDisappear(perform: stopPlayback)
+        .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { notification in
+            if notification.object as? AVPlayerItem === player?.currentItem { stopPlayback() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemFailedToPlayToEndTime)) { notification in
+            if notification.object as? AVPlayerItem === player?.currentItem {
+                stopPlayback()
+                playbackError = String(localized: "The saved audio could not be played.")
+            }
+        }
+    }
+
+    private var recordings: some View {
+        let workflow = model.sentenceTraining
+        let pairs = workflow.data.pairs.reversed().filter { $0.spoken != nil || $0.silent != nil }
+        let uploads = Dictionary(model.uploader.items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        return VStack(alignment: .leading, spacing: 8) {
             if pairs.isEmpty { Text("Your saved takes will appear here.").foregroundStyle(.secondary) }
+            if let playbackError { Text(playbackError).font(.caption).foregroundStyle(.orange) }
             ForEach(pairs.prefix(30)) { pair in
+                let title = title(for: pair)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(pair.text).lineLimit(2)
-                    Text(pair.createdAt.formatted(date: .abbreviated, time: .shortened))
-                        .font(.caption).foregroundStyle(.secondary)
-                    if pair.practiceMode != nil {
-                        Text("Practice recording · local only").font(.caption).foregroundStyle(.secondary)
+                    HStack {
+                        Text(title ?? pair.text).font(.headline).lineLimit(2)
+                        Spacer()
+                        if let clip = spokenClip(for: pair) {
+                            Button(playing == pair.id ? "Stop" : "Play spoken take",
+                                   systemImage: playing == pair.id ? "stop.fill" : "play.fill") {
+                                if playing == pair.id { stopPlayback() }
+                                else { play(clip.url, range: clip.range, id: pair.id) }
+                            }
+                            .disabled(!workflow.canStartRecording)
+                        }
                     }
-                }.padding(.vertical, 3)
+                    if title != nil { Text(pair.text).lineLimit(2) }
+                    Text(pair.createdAt.formatted(date: .abbreviated, time: .shortened))
+                    Text(status(for: pair, uploads: uploads))
+                }
+                .font(.caption).padding(.vertical, 4)
             }
             if pairs.count > 30 { Text("Showing the 30 most recent recordings.").font(.caption).foregroundStyle(.secondary) }
             Text("Only eligible community readings appear in the upload queue.").font(.callout).foregroundStyle(.secondary)
         }
+    }
+
+    private func title(for pair: SentencePair) -> String? {
+        if pair.practiceMode?.isLiterature == true {
+            let language = AppLanguage(rawValue: pair.language ?? "en") ?? .en
+            for piece in model.practice.pieces + model.personalPracticePieces
+            where piece.practiceKind == pair.practiceMode && piece.language == language.corpus {
+                let parts = piece.parts(language: language)
+                if let index = parts.firstIndex(where: {
+                    $0.map { $0.text(language) }.joined(separator: " ") == pair.text
+                }) {
+                    return parts.count == 1 ? piece.title(language)
+                        : String(localized: "\(piece.title(language)) · Part \(index + 1) of \(parts.count)")
+                }
+            }
+        }
+        guard pair.practiceMode == nil, pair.promptIDs.count == 1,
+              let prompt = model.sentenceTraining.community.prompt(pair.promptIDs[0]) else { return nil }
+        return prompt.passageID == nil ? String(localized: "Community calibration") : prompt.title
+    }
+
+    private func status(for pair: SentencePair, uploads: [String: CommunityUpload]) -> String {
+        let checking: String
+        if model.sentenceTraining.checkingPairIDs.contains(pair.id) {
+            checking = String(localized: "Checking")
+        } else if pair.needsBackgroundCheck == true {
+            checking = String(localized: "Check pending")
+        } else if pair.error != nil {
+            checking = String(localized: "Needs review")
+        } else if pair.transcript != nil || pair.alignment != nil {
+            checking = String(localized: "Checked")
+        } else {
+            checking = String(localized: "Saved")
+        }
+        guard pair.practiceMode == nil, pair.role != .finalTest, pair.promptIDs.count == 1,
+              model.sentenceTraining.community.prompt(pair.promptIDs[0]) != nil,
+              let session = pair.recordingSessionID else {
+            return String(localized: "\(checking) · Local only")
+        }
+        let upload = uploads[CommunityUploader.publicSessionID(session)]
+        switch upload?.status {
+        case .uploaded: return String(localized: "\(checking) · Session submitted")
+        case .uploading: return String(localized: "\(checking) · Session uploading")
+        case .failed: return String(localized: "\(checking) · Session upload failed")
+        case .review: return String(localized: "\(checking) · Session in sharing queue")
+        case nil: return String(localized: "\(checking) · Community session")
+        }
+    }
+
+    private func spokenClip(for pair: SentencePair) -> (url: URL, range: ClosedRange<Double>)? {
+        guard let spoken = pair.spoken, let directory = pair.directory,
+              let sessionStart = pair.sessionStartUptime, let audioOffset = pair.audioOffset else { return nil }
+        let origin = sessionStart + audioOffset
+        let start = spoken.cueStart - origin
+        let end = spoken.cueEnd - origin
+        let url = URL(fileURLWithPath: directory).appending(path: "audio.caf")
+        guard start.isFinite, end.isFinite, start >= 0, end > start,
+              FileManager.default.isReadableFile(atPath: url.path) else { return nil }
+        return (url, start...end)
+    }
+
+    private func play(_ url: URL, range: ClosedRange<Double>, id: UUID) {
+        stopPlayback()
+        playbackError = nil
+        let item = AVPlayerItem(url: url)
+        item.forwardPlaybackEndTime = CMTime(seconds: range.upperBound, preferredTimescale: 600)
+        let next = AVPlayer(playerItem: item)
+        player = next
+        playing = id
+        next.seek(to: CMTime(seconds: range.lowerBound, preferredTimescale: 600),
+                  toleranceBefore: .zero, toleranceAfter: .zero) { finished in
+            Task { @MainActor in
+                guard player === next else { return }
+                if finished { next.play() }
+                else { stopPlayback(); playbackError = String(localized: "The saved audio could not be played.") }
+            }
+        }
+    }
+
+    private func stopPlayback() {
+        player?.pause()
+        player = nil
+        playing = nil
     }
 }
 

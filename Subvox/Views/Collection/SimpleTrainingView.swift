@@ -19,7 +19,7 @@ struct SimpleTrainingView: View {
                 Button { model.startSentenceTraining() } label: {
                     Label(calibrationLeft > 0 ? "Start Recording" : "Record Next Passages", systemImage: "record.circle")
                 }
-                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty || workflow.isBusy || !workflow.storageReady || workflow.data.reservedUnlockedAt != nil)
+                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty || !workflow.canStartRecording || !workflow.storageReady || workflow.data.reservedUnlockedAt != nil)
                 .help("⌘↩")
             }
         } content: {
@@ -29,6 +29,7 @@ struct SimpleTrainingView: View {
                         TrainingProcessingStatus(workflow: workflow)
                         checklist
                         progress
+                        LocalRecordingHistory()
                         VStack(alignment: .leading, spacing: 8) {
                             if let error = workflow.error { Text(error).font(.callout).foregroundStyle(.orange) }
                         }
