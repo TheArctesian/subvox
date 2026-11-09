@@ -2,6 +2,7 @@ import math
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 import numpy as np
 from subvox_ml import camera
 from subvox_ml.data import resample
@@ -120,6 +121,46 @@ class CameraInputTests(unittest.TestCase):
                 self.assertEqual(len(e["camera"]), len(e["raw"]))
                 self.assertGreater(camera.coverage(e["camera"]), .95)
             self.assertTrue(all("camera_readings" not in e for e in examples))
+
+    def test_evaluation_scores_only_the_camera_experiment_cohort(self):
+        from subvox_ml.cli import EXPERIMENTS, FUSION_EXPERIMENTS, evaluate_model
+
+        condition = "Silent mouthing"
+        camera_grid = np.zeros((5, camera.RAW_WIDTH))
+        camera_grid[:4, camera.MOUTH_MASK] = 1
+        partial_camera_grid = camera_grid.copy()
+        partial_camera_grid[3, camera.MOUTH_MASK] = 0
+        training = dict(id="training", condition=condition, fold_roles=["training"],
+                        activity=1, raw=[[0]], targets=[["a"]], camera=camera_grid.tolist())
+        covered = dict(training, id="covered", session="development", groups=["held-out"],
+                       text="a", fold_roles=["validation"], camera=camera_grid.tolist())
+        low_coverage = dict(covered, id="low-coverage", camera=partial_camera_grid.tolist())
+        no_camera = dict(covered, id="no-camera", camera=[])
+        excluded = dict(id="excluded", reason="Invalid motion recording", text=covered["text"],
+                        session=covered["session"], groups=covered["groups"], condition=condition,
+                        fold_roles=covered["fold_roles"])
+        examples = [training, covered, low_coverage, no_camera]
+        language = dict(entries={"a": [dict(ipa=["a"], speakerConfirmed=True)]})
+        manifest = dict(training_groups=["training"], training_sessions=["training"], training_ids=["training"])
+        prediction = dict(phonemes=["a"], text="a", text_with_lm="a", accepted=True)
+
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            patch("subvox_ml.cli.load_dataset", return_value=(examples, language, {"excluded": [excluded]})),
+            patch("subvox_ml.cli.prediction", return_value=prediction),
+            patch("subvox_ml.cli.ranking_fields", return_value={}),
+        ):
+            for experiment in (*FUSION_EXPERIMENTS, "plain"):
+                with self.subTest(experiment=experiment):
+                    checkpoint = dict(tokens=["a"], coverage=["a"], lm_training_text=[["a"]],
+                                      config=dict(EXPERIMENTS[experiment], condition=condition, name=experiment))
+                    output = Path(tmp) / f"{experiment}.json"
+                    with patch("subvox_ml.network.load_model", return_value=(None, checkpoint, manifest, language)):
+                        report = evaluate_model(Path(tmp) / "model", Path(tmp) / "dataset", 0, output=output)
+                    expected = ["covered", "low-coverage", "no-camera", "excluded"] if experiment == "plain" else ["covered"]
+                    self.assertEqual([r["id"] for r in report["rows"]], expected)
+                    self.assertEqual(report["dataset_sizes"]["development"], len(expected))
+                    self.assertEqual([r["id"] for r in report["quality_exclusions"]], ["excluded"])
 
     def test_fused_and_camera_models_fit_load_and_run_without_a_face(self):
         from subvox_ml.network import fit, load_model, emission

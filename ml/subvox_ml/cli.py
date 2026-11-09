@@ -120,7 +120,10 @@ def evaluate_model(model_path, dataset_path, fold, output=None, which="selected"
     output=Path(output) if output else Path(model_path)/name
     if output.exists():raise ValueError("Evaluation output already saved; choose a new output to preserve the frozen report")
     model,checkpoint,manifest,language=load_model(model_path,which)
+    config = checkpoint["config"]
+    camera_only = config.get("cohort") == "camera"
     examples,_,dataset_manifest=load_dataset(dataset_path)
+    examples = _experiment_cohort(examples, config)
     from .network import attach_baselines
     training,validation=fold_split(examples,fold)
     validation=attach_baselines(validation,examples)
@@ -149,7 +152,10 @@ def evaluate_model(model_path, dataset_path, fold, output=None, which="selected"
                          lm_word_errors=edit_alignment(expected,words(guessed["text_with_lm"]))[0],
                          **guessed,**extra))
     excluded=[e for e in dataset_manifest["excluded"] if e["fold_roles"][fold]=="validation" and (shared or e["condition"]==checkpoint["config"]["condition"])]
-    for missing in excluded:
+    # Excluded rows have no camera coverage on the resampled motion grid, so
+    # cohort eligibility cannot be established. Retain them for diagnostics only.
+    scored_exclusions = [] if camera_only else excluded
+    for missing in scored_exclusions:
         # Invalid non-speech clips cannot establish successful rejection. They
         # remain in quality_exclusions, outside the scored false-accept rate.
         if not words(missing["text"]):continue
@@ -170,6 +176,8 @@ def evaluate_model(model_path, dataset_path, fold, output=None, which="selected"
                 quality_exclusions=excluded,
                 reference_provenance="Recorded prompts/user corrections; pronunciation proposals can be wrong for this mixed-accent speaker",
                 missing_training_phones=sorted({p for r in validation for path in r["targets"] for p in path if p!="|" and p not in checkpoint["coverage"]}))
+    if camera_only:
+        report["quality_exclusion_policy"] = "Diagnostic only: excluded recordings have no measured camera coverage on the motion grid."
     training_words={w for text in checkpoint["lm_training_text"] for w in text}
     development_words={w for r in rows if r["activity"] for w in words(r["reference_text"])}
     report["vocabulary"]=dict(training_word_types=len(training_words),development_word_types=len(development_words),
@@ -263,6 +271,10 @@ def camera_cohort(examples):
     return [r for r in examples if r.get("camera") and coverage(r["camera"])>=CAMERA_COVERAGE]
 
 
+def _experiment_cohort(examples, config):
+    return camera_cohort(examples) if config.get("cohort") == "camera" else examples
+
+
 def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented","activity")):
     """Per experiment and condition: one model per cross-validation fold (selected on that fold's
     development rows), their validation rows pooled into one report, then a final refit on every
@@ -287,9 +299,8 @@ def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented"
             raise ValueError("Unknown ablation")
         # A shared model fits both conditions at once; its scores are still reported per condition.
         conditions=(("shared","shared"),) if EXPERIMENTS[experiment].get("shared") else (("Normal speech","spoken"),("Silent mouthing","mouthed"))
-        rows=examples
+        rows = _experiment_cohort(examples, EXPERIMENTS[experiment])
         if EXPERIMENTS[experiment].get("cohort")=="camera":
-            rows=camera_cohort(examples)
             cohorts["camera"]=dict(rows=len(rows),utterances={c:sum(r["condition"]==c and r["activity"] for r in rows) for c in ("Normal speech","Silent mouthing")},
                                    min_coverage=CAMERA_COVERAGE,interpretation="imu, camera and fused arms share these recordings, folds and settings; only the inputs differ")
         for condition,slug in conditions:
