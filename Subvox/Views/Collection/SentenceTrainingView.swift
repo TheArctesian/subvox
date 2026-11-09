@@ -285,8 +285,8 @@ struct SentenceTrainingView: View {
                                 Text(translation).font(.title3).foregroundStyle(.secondary).multilineTextAlignment(.center)
                             }
                         }
-                        if let error = workflow.error {
-                            Label(error, systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+                        if let warning = workflow.error ?? workflow.takeWarning {
+                            Label(warning, systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
                         }
                         Text(resting ? "Relax your mouth. Wait for the recording cue."
                              : workflow.phase == .ready ? "Press Space when you’re ready to begin."

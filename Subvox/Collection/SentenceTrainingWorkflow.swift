@@ -40,6 +40,7 @@ final class SentenceTrainingWorkflow {
     }
     private(set) var lastPracticePlan: [[SentencePrompt]] = []
     private(set) var error: String?
+    private(set) var takeWarning: String?
     private(set) var storageReady = true
     private(set) var currentText = ""
     private(set) var currentEnglishTranslation: String?
@@ -296,7 +297,7 @@ final class SentenceTrainingWorkflow {
         if !isSavingTake && (phase == .relax || phase == .speak || phase == .mouth) {
             if guidedRecording,(phase == .speak || phase == .mouth),let previous=buffer.last,
                sample.t<=previous.t || sample.t-previous.t>0.12 || sample.sensorLocation != previous.sensorLocation {
-                error="Motion source changed or capture has a gap. The interrupted attempt is discarded; start again when motion is stable."
+                takeWarning = String(localized: "Motion source changed or capture has a gap. The interrupted attempt is discarded; start again when motion is stable.")
                 redoRequested=true
             }
             buffer.append(sample)
@@ -352,13 +353,14 @@ final class SentenceTrainingWorkflow {
             currentVerseLines = []
         }
         currentCondition=condition
-        defer { retryableTake = nil; redoRequested = false; pendingRedoCleanup = nil }
+        defer { retryableTake = nil; redoRequested = false; pendingRedoCleanup = nil; takeWarning = nil }
         while true {
             try Task.checkCancellation()
             buffer = []; retryableTake = nil; redoRequested = false
             pendingRedoCleanup = { try onRedo(self.retryableTake) }
             do {
                 if guidedRecording {try await waitForAdvance(.ready)}
+                takeWarning = nil
                 try await rest(.relax, seconds: baselineSeconds)
                 guard canRecord() else { throw Failure.disconnected }
                 let recording = try await captureTake(condition: condition, maximumDuration: maximumDuration)

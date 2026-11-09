@@ -94,6 +94,37 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
+    func testMotionWarningClearsWhenRetryBegins() async throws {
+        let (workflow, root) = try fixture()
+        defer { try? FileManager.default.removeItem(at: root) }
+        workflow.guidedRecording = true
+        let take = Task {
+            try await workflow.collectTake(condition: .normal, maximumDuration: 30,
+                                           baselineSeconds: 0, recoverySeconds: 0,
+                                           onCompleted: { _ in }, onRedo: { _ in })
+        }
+        defer { take.cancel() }
+        try await waitFor(.ready, in: workflow)
+        XCTAssertTrue(workflow.advance())
+        try await waitFor(.speak, in: workflow)
+
+        let now = ProcessInfo.processInfo.systemUptime
+        workflow.ingest(MotionSample(t: now - 0.2, rotation: (0, 0, 0)))
+        workflow.ingest(MotionSample(t: now, rotation: (0, 0, 0)))
+        try await waitFor(.ready, in: workflow)
+        XCTAssertNotNil(workflow.takeWarning)
+        XCTAssertNil(workflow.error)
+
+        XCTAssertTrue(workflow.advance())
+        try await waitFor(.speak, in: workflow)
+        XCTAssertNil(workflow.takeWarning)
+        XCTAssertTrue(workflow.finishCurrentTake())
+        try await waitFor(.ended, in: workflow)
+        XCTAssertTrue(workflow.advance())
+        try await take.value
+    }
+
+    @MainActor
     func testAdvanceCannotShortenRelaxOrRecovery() async throws {
         for phase in [SentenceTrainingWorkflow.Phase.relax, .recovery] {
             let (workflow, root) = try fixture()
