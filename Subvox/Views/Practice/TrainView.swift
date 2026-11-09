@@ -498,8 +498,7 @@ struct LiteraturePracticeView: View {
     private var selectionKey: String { kind.rawValue }
     @Environment(AppModel.self) private var model
     @State private var selection: String?
-    @AppStorage("practice.literature.parts") private var savedParts: Data = Data()
-    @State private var speechStartPart = 0
+    @State private var startPart = 0
     @State private var search = ""
     @State private var showHistory = false
     @AppStorage("practice.showIPA") private var showIPA = true
@@ -516,35 +515,24 @@ struct LiteraturePracticeView: View {
         let isSpeech = kind == .speech
         let parts = piece.map { $0.parts(language: language) } ?? []
         let partKey = "\(language.tag)/\(piece?.id ?? "")"
-        let partChoices = (try? JSONDecoder().decode([String: Int].self, from: savedParts)) ?? [:]
-        let savedPart = isSpeech ? speechStartPart : partChoices[partKey, default: 0]
-        let partIndex = parts.indices.contains(savedPart) ? savedPart : 0
-        let selectedPart = Binding(get: { partIndex }, set: { value in
-            if isSpeech {
-                speechStartPart = value
-                return
-            }
-            var choices = partChoices
-            choices[partKey] = value
-            if let encoded = try? JSONEncoder().encode(choices) { savedParts = encoded }
-        })
+        let partIndex = parts.indices.contains(startPart) ? startPart : 0
         let visiblePieces = search.isEmpty ? pieces : pieces.filter {
             $0.title(language).localizedStandardContains(search) || $0.author(language).localizedStandardContains(search)
         }
-        let selectedLines = parts.isEmpty ? [] : parts[partIndex]
-        let sessionParts = isSpeech ? Array(parts.dropFirst(partIndex)) : parts.isEmpty ? [] : [selectedLines]
-        let previewLines = isSpeech ? (piece?.lines ?? []) : selectedLines
-        let groups = sessionParts.map { part in
+        let previewLines = piece?.lines ?? []
+        let groups = parts.dropFirst(partIndex).map { part in
             part.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }
         }
+        let startTitle: LocalizedStringKey = partIndex == 0
+            ? (isSpeech ? "Start Speech" : "Start Poem") : "Start at Part \(partIndex + 1)"
         return PracticePage(title: isSpeech ? "Speech" : "Poetry",
                      subtitle: isSpeech ? "Practise the speech in one session. Read each section aloud, then mouth it silently."
-                         : "Read a section aloud, then mouth it silently. The pacing guide highlights the text at a steady rate.",
-                     startTitle: isSpeech ? (partIndex == 0 ? "Start Speech" : "Start at Part \(partIndex + 1)") : "Start Reading",
+                         : "Practise the poem in one session. Read each section aloud, then mouth it silently.",
+                     startTitle: startTitle,
                      groups: groups,
                      mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false) {
             if parts.count > 1 {
-                Picker(isSpeech ? "Start at" : "Part", selection: selectedPart) {
+                Picker("Start at", selection: $startPart) {
                     ForEach(parts.indices, id: \.self) { index in
                         Text("\(index + 1) of \(parts.count) · \(String(parts[index].first?.text(language).prefix(30) ?? ""))").tag(index)
                     }
@@ -578,7 +566,7 @@ struct LiteraturePracticeView: View {
                             Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
                             ReferenceButton(text: previewLines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false,
-                                            subject: isSpeech ? String(localized: "the full text") : String(localized: "this part"))
+                                            subject: String(localized: "the full text"))
                             ForEach(previewLines.indices, id: \.self) { index in
                                 PracticeLineView(line: previewLines[index], language: language, showIPA: showIPA)
                             }
@@ -594,7 +582,7 @@ struct LiteraturePracticeView: View {
             }
         }
         .onAppear { if selection == nil { selection = SavedSelection.get(selectionKey, model.language) } }
-        .onChange(of: partKey) { speechStartPart = 0 }
+        .onChange(of: partKey) { startPart = 0 }
         .onChange(of: selection) { SavedSelection.set(selectionKey, model.language, selection) }
         .onChange(of: model.language) {
             selection = SavedSelection.get(selectionKey, model.language)

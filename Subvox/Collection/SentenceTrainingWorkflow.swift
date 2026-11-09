@@ -488,13 +488,13 @@ final class SentenceTrainingWorkflow {
               planned.allSatisfy({ group in group.allSatisfy {
                   data.roles[$0.id] == .training || data.roles[$0.id] == .validation
               } }) else { return }
-        // Speech visits can run to the end because recognition converts one cue at a time.
-        let fullSpeech = practiceMode && planned.first?.first?.kind == .speech
+        // Literature visits can run to the end because recognition converts one cue at a time.
+        let fullPiece = practiceMode && planned.first?.first?.kind.isLiterature == true
         var batch: [[SentencePrompt]] = []
         var duration = 0.0
         for group in planned {
             let added = Double(conditions.count) * (pace.baseline + cueDuration(group.map(\.text).joined(separator: " ")) + pace.recovery)
-            guard fullSpeech || duration + added < 840 else { break }
+            guard fullPiece || duration + added < 840 else { break }
             batch.append(group); duration += added
         }
         guard !batch.isEmpty else { error = "This batch is too long. Choose fewer sentences."; return }
