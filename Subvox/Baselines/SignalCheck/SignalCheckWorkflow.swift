@@ -494,11 +494,11 @@ final class SignalCheckWorkflow {
         guard let snapshot = run else { return }
         pendingWrites += 1
         let url = storeURL
-        saveQueue.async {
+        saveQueue.async { [weak self] in
             let result = Result {
                 // Persist the take even if a raw recording checkpoint fails.
                 let checkpointResult = Result { try checkpoint?() }
-                try Self.write(snapshot, to: url)
+                try SignalCheckWorkflow.write(snapshot, to: url)
                 try checkpointResult.get()
             }
             Task { @MainActor [weak self] in
