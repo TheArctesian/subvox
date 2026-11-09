@@ -48,11 +48,17 @@ struct ContentView: View {
             ToolbarItem(placement: .status) { PracticeProgressBadge() }
             ToolbarItem(placement: .primaryAction) { LanguageMenu() }
             ToolbarItem(placement: .primaryAction) { SharingAccountMenu() }
-            if let activity = model.backgroundActivity {
-                ToolbarItem(placement: .status) {
-                    ProgressView().controlSize(.small)
-                        .help(activity).accessibilityLabel(activity)
+            // The slot stays put so neighbouring status items never shift; only the spinner fades.
+            ToolbarItem(placement: .status) {
+                ZStack {
+                    if let activity = model.backgroundActivity {
+                        ProgressView().controlSize(.small)
+                            .help(activity).accessibilityLabel(activity)
+                            .transition(.stateFade)
+                    }
                 }
+                .frame(width: 18, height: 18)
+                .motion(.state, value: model.backgroundActivity != nil)
             }
         }
         // Each page carries its own large heading, so the window title would only repeat it.

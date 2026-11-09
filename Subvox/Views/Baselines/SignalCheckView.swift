@@ -6,9 +6,9 @@ struct SignalCheckView: View {
     @Environment(\.colorScheme) private var scheme
     @State private var channel = MotionPlotChannel.rotation
     private var workflow: SignalCheckWorkflow { model.signalCheck }
-    private var green: Color { scheme == .dark ? Color(red: 0.34, green: 0.83, blue: 0.52) : Color(red: 0.10, green: 0.46, blue: 0.30) }
-    private var blue: Color { scheme == .dark ? Color(red: 0.45, green: 0.67, blue: 1) : Color(red: 0.19, green: 0.37, blue: 0.78) }
-    private var amber: Color { scheme == .dark ? Color(red: 1, green: 0.74, blue: 0.35) : Color(red: 0.62, green: 0.39, blue: 0.08) }
+    private var green: Color { PhaseColor.speak(scheme) }
+    private var blue: Color { PhaseColor.mouth(scheme) }
+    private var amber: Color { PhaseColor.relax(scheme) }
     private var cueColor: Color {
         workflow.phase == .relax ? amber : workflow.current?.condition == .normal ? green : blue
     }
@@ -63,7 +63,7 @@ struct SignalCheckView: View {
                         if workflow.run?.report != nil || workflow.reference != nil || workflow.referenceError != nil { referenceControls }
                         instructions
                         if let comparison = workflow.comparison {
-                            DisclosureGroup("Latest controlled comparison") { ControlledSignalResultsView(comparison: comparison) }
+                            MotionDisclosure("Latest controlled comparison") { ControlledSignalResultsView(comparison: comparison) }
                         }
                         if let error = workflow.error { Text(error).foregroundStyle(.orange) }
                         if let run = workflow.run { results(run) }
@@ -164,7 +164,7 @@ struct SignalCheckView: View {
                         WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.isPaced ? workflow.activeWordIndex : nil,color:cueColor)
                         Text(captureHelp).font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
                         if phase == .ended, let take = workflow.latestTake {
-                            DisclosureGroup("View saved motion") { markedPlot(take.recording, title: "Saved take") }
+                            MotionDisclosure("View saved motion") { markedPlot(take.recording, title: "Saved take") }
                         }
                         if let error=workflow.error {Text(error).font(.caption).foregroundStyle(.orange)}
                     }

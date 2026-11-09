@@ -95,7 +95,7 @@ struct DecodeView: View {
     }
 
     private var predictionDetails: some View {
-        DisclosureGroup("Last word details") {
+        MotionDisclosure("Last word details") {
             if let prediction = model.decoded.last?.prediction {
                 ForEach(prediction.ranked) { candidate in
                     HStack {
@@ -113,7 +113,7 @@ struct DecodeView: View {
     private var advanced: some View {
         @Bindable var model = model
         @Bindable var capture = model.capture
-        return DisclosureGroup("Recognition settings") {
+        return MotionDisclosure("Recognition settings") {
             VStack(alignment: .leading, spacing: 14) {
                 Text(model.decodeSettings.method.title).font(.headline)
                 if let decoder = model.decoder {

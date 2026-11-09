@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ObservabilityView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.colorScheme) private var colorScheme
     private var workflow: ObservabilityWorkflow { model.observability }
 
     var body: some View {
@@ -141,7 +142,8 @@ struct ObservabilityView: View {
 
     private var cueColor: Color {
         if workflow.takeIssue != nil { return .orange }
-        return switch workflow.phase { case .relax: .orange; case .recording: .purple; case .ended: .green; default: .cyan }
+        // Silent gestures share the recording screen's palette: relax amber, mouthing blue.
+        return workflow.phase == .relax ? PhaseColor.relax(colorScheme) : PhaseColor.mouth(colorScheme)
     }
     private var stage: String {
         if workflow.takeIssue != nil { return "Redo required" }

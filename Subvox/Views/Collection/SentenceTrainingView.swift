@@ -4,9 +4,9 @@ import SwiftUI
 struct SentenceTrainingView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.colorScheme) private var colorScheme
-    private var speak: Color { colorScheme == .dark ? Color(red: 0.34, green: 0.83, blue: 0.52) : Color(red: 0.10, green: 0.46, blue: 0.30) }
-    private var mouth: Color { colorScheme == .dark ? Color(red: 0.45, green: 0.67, blue: 1) : Color(red: 0.19, green: 0.37, blue: 0.78) }
-    private var relax: Color { colorScheme == .dark ? Color(red: 1, green: 0.74, blue: 0.35) : Color(red: 0.62, green: 0.39, blue: 0.08) }
+    private var speak: Color { PhaseColor.speak(colorScheme) }
+    private var mouth: Color { PhaseColor.mouth(colorScheme) }
+    private var relax: Color { PhaseColor.relax(colorScheme) }
     @State private var channel = MotionPlotChannel.rotation
     @State private var promptViewportHeight: CGFloat = 0
     @State private var confirmStop = false
@@ -215,7 +215,7 @@ struct SentenceTrainingView: View {
                 Text("Next batch: \(workflow.plan.count) paired prompts, about \(max(1, Int(ceil(workflow.estimatedSeconds / 60)))) minutes.")
                     .font(.callout).foregroundStyle(.secondary)
             }
-            DisclosureGroup("Recording settings") {
+            MotionDisclosure("Recording settings") {
                 VStack(alignment: .leading, spacing: 12) {
                     Stepper("Up to \(workflow.sentenceCount) training sentences per batch", value: $workflow.sentenceCount, in: 2...8, step: 2)
                     Text(workflow.variedSentences ? "Each batch uses fresh sentences from the selected role." : "Validation sentences are added separately; passages join up to three sentences.")
@@ -227,7 +227,7 @@ struct SentenceTrainingView: View {
                     Text("Use the Mac microphone to keep AirPods in their normal audio mode.").font(.caption).foregroundStyle(.secondary)
                     TextField("Session notes: fit, posture or pronunciation", text: $workflow.notes).textFieldStyle(.roundedBorder)
                     PhoneAlignmentSettingsView(workflow: workflow)
-                    DisclosureGroup("Local transcription" + (whisper.isConfigured ? " · ready" : " · setup needed")) {
+                    MotionDisclosure("Local transcription" + (whisper.isConfigured ? " · ready" : " · setup needed")) {
                         TextField("Whisper model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
                         TextField("Whisper server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
                         Text("Existing local model files are reused; no download is required.").font(.caption).foregroundStyle(.secondary)
@@ -235,7 +235,7 @@ struct SentenceTrainingView: View {
                 }.padding(.top, 8)
             }
             if !workflow.plan.isEmpty {
-                DisclosureGroup("Preview next batch") {
+                MotionDisclosure("Preview next batch") {
                     ForEach(workflow.plan.indices, id: \.self) { i in
                         Text(workflow.plan[i].map(\.text).joined(separator: " ")).padding(.vertical, 4)
                     }
@@ -276,6 +276,8 @@ struct SentenceTrainingView: View {
                         Label(resting ? "REST" : workflow.currentCondition == .normal ? "SPEAK ALOUD" : "MOUTH SILENTLY",
                               systemImage: resting ? "pause.circle" : workflow.currentCondition == .normal ? "speaker.wave.2.fill" : "mouth.fill")
                             .font(.title2.weight(.bold)).foregroundStyle(color)
+                            .contentTransition(.symbolEffect(.replace))
+                            .motion(.state, value: resting ? 0 : workflow.currentCondition == .normal ? 1 : 2)
                         VStack(spacing: 6) {
                             WordFocusPrompt(text: workflow.currentText, activeWordIndex: showPacingGuide ? workflow.activeWordIndex : nil,
                                             color: color, pinyin: workflow.currentPinyin,
@@ -300,8 +302,19 @@ struct SentenceTrainingView: View {
             VStack(spacing:10) {
                 HStack(spacing:14) {
                     Button {workflow.redoCurrentTake()} label: {Label("Redo",systemImage:"arrow.counterclockwise").frame(minWidth:90)}.disabled(!workflow.canRedoTake)
+                    // One button carries the press, the wait and the confirmation without changing size.
                     Button {workflow.advance()} label: {
-                        Label(workflow.phase == .ready ? "Start take" : workflow.phase == .ended ? workflow.continueTitle : "Finish take",systemImage:workflow.phase == .speak || workflow.phase == .mouth ? "checkmark":"chevron.right").frame(minWidth:200)
+                        ZStack {
+                            Label(workflow.phase == .ready ? "Start take" : workflow.phase == .ended ? workflow.continueTitle : "Finish take",systemImage:workflow.phase == .speak || workflow.phase == .mouth ? "checkmark":"chevron.right")
+                                .contentTransition(.symbolEffect(.replace))
+                                .opacity(workflow.isSavingTake ? 0 : 1)
+                            if workflow.isSavingTake {
+                                HStack(spacing: 6) { ProgressView().controlSize(.small); Text("Saving…") }.transition(.opacity)
+                            }
+                        }
+                        .frame(minWidth:200)
+                        .motion(.state, value: workflow.isSavingTake)
+                        .motion(.state, value: workflow.phase)
                     }.buttonStyle(.borderedProminent).disabled(!workflow.canAdvance)
                 }.controlSize(.large).frame(maxWidth:.infinity)
                 HStack(spacing:16) {
@@ -381,7 +394,7 @@ struct SentenceTrainingView: View {
                 ForEach(included) { pairCard($0) }
             }
             if !other.isEmpty {
-                DisclosureGroup("Excluded or reserved recordings (\(other.count))") {
+                MotionDisclosure("Excluded or reserved recordings (\(other.count))") {
                     ForEach(other) { pairCard($0) }
                 }
             }
@@ -409,7 +422,7 @@ struct SentenceTrainingView: View {
                 }
             }.font(.caption).foregroundStyle(.secondary)
             if pair.spoken != nil || pair.silent != nil {
-                DisclosureGroup("Inspect recorded motion") {
+                MotionDisclosure("Inspect recorded motion") {
                     if let spoken = pair.spoken {
                         SignalPlot(title: "Spoken", samples: spoken.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
                         qualityLabel(spoken)
@@ -423,12 +436,12 @@ struct SentenceTrainingView: View {
             if let transcript = pair.transcript {
                 Text("Heard: " + transcript.text).font(.callout)
                 if pair.review != .excluded,let match=pair.transcriptMatchRate,match>=0.85 {
-                    DisclosureGroup("Transcript agreement: \(Int(match*100))%") {
+                    MotionDisclosure("Transcript agreement: \(Int(match*100))%") {
                         Text("Sentence training can include this recording automatically even if word alignment failed. Motion quality and pronunciation coverage are checked separately. Transcript agreement does not measure motion accuracy.")
                     }.font(.caption).foregroundStyle(.secondary)
                 }
                 if let directory = pair.directory, transcript.timingReview != nil {
-                    DisclosureGroup("Check word times against audio") {
+                    MotionDisclosure("Check word times against audio") {
                         AudioTimingView(transcript: transcript, audioURL: URL(fileURLWithPath: directory).appending(path: "audio.caf"))
                     }
                 }
@@ -444,7 +457,7 @@ struct SentenceTrainingView: View {
             if let error = pair.error { Text("Word alignment: " + error).font(.caption).foregroundStyle(.secondary) }
             if let note = pair.phoneAlignmentNote { Text(note).font(.caption).foregroundStyle(.secondary) }
             if pair.spokenPhones != nil {
-                DisclosureGroup("Phoneme alignment estimates · review before supervision") {
+                MotionDisclosure("Phoneme alignment estimates · review before supervision") {
                     ForEach([SpeechCondition.normal,.silent]) { condition in
                         let alignment = condition == .normal ? pair.spokenPhones : pair.mouthedPhones
                         if let alignment {
@@ -462,7 +475,7 @@ struct SentenceTrainingView: View {
                     Button("Mark these phone estimates reviewed") { model.sentenceTraining.reviewPhoneAlignment(pair.id) }
                 }
             }
-            DisclosureGroup("Recording details") {
+            MotionDisclosure("Recording details") {
                 if let transfer = pair.alignment {
                     Text(String(format: "%d aligned words · cost %.3f · duration ratio %.2f", transfer.words.count, transfer.normalizedCost, transfer.durationRatio))
                     ForEach(transfer.warnings, id: \.self) { Text($0) }
@@ -518,7 +531,7 @@ struct SentenceTrainingView: View {
         let repairs = workflow.repairWords
         return VStack(alignment: .leading, spacing: 12) {
             Divider()
-            DisclosureGroup("Sound coverage: \(covered) of \(Phoneme.all.count) units at the collection target") {
+            MotionDisclosure("Sound coverage: \(covered) of \(Phoneme.all.count) units at the collection target") {
                 Text("Four dictionary occurrences per sound. Coverage measures collected examples, not recognition accuracy; your pronunciation may differ.")
                     .font(.caption).foregroundStyle(.secondary)
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], alignment: .leading, spacing: 10) {
@@ -557,7 +570,7 @@ struct SentenceTrainingView: View {
             }
             Text("This word baseline uses estimated boundaries. Experimental sentence decoding and its separate evaluation are under Advanced → Sentence models.")
                 .font(.caption).foregroundStyle(.secondary)
-            DisclosureGroup("Model settings") {
+            MotionDisclosure("Model settings") {
                 Picker("Learning method", selection: $workflow.learningMethod) {
                     ForEach(LearningMethod.allCases) { Text($0.title).tag($0) }
                 }
@@ -591,6 +604,7 @@ struct TrainingProcessingStatus: View {
             }
             .foregroundStyle(.secondary)
             .accessibilityElement(children: .combine)
+            .transition(.stateFade)
         }
     }
 }

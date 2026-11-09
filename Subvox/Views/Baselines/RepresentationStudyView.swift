@@ -51,7 +51,7 @@ struct RepresentationStudyView:View {
                                     .font(.callout).foregroundStyle(.secondary)
                                 CameraPoseGuide(camera:workflow.camera,allowsMovement:true)
                                 startButtons
-                                DisclosureGroup("Sentence groups") {
+                                MotionDisclosure("Sentence groups") {
                                     ForEach(study.training) {Text("A · "+$0.text)}
                                     ForEach(study.evaluation) {Text("B · "+$0.text)}
                                 }
@@ -71,7 +71,7 @@ struct RepresentationStudyView:View {
         }
     }
     private var pronunciationEditor:some View {
-        DisclosureGroup("Your pronunciation variants · IPA") {
+        MotionDisclosure("Your pronunciation variants · IPA") {
             VStack(alignment:.leading,spacing:10) {
                 Text("Enter space-separated IPA units, one pronunciation per line. Multiple lines remain alternatives; your family’s accents do not choose a default. Saved changes apply to future pilots, never a frozen model.")
                     .font(.caption).foregroundStyle(.secondary)
@@ -181,13 +181,13 @@ struct RepresentationStudyView:View {
             Text("\(fallback) evaluations used the invariant fallback for an unseen AirPod side. Missing/ambiguous outputs count as incorrect. Score margins are uncalibrated, not probabilities.")
                 .font(.caption).foregroundStyle(.secondary)
             Text("\(study.sourceEvents?.count ?? 0) reported AirPod source transitions saved with timestamps and capture gaps.").font(.caption).foregroundStyle(.secondary)
-            DisclosureGroup("Ranked alternatives and source identity") {
+            MotionDisclosure("Ranked alternatives and source identity") {
                 ForEach(Array((study.predictions ?? []).enumerated()),id:\.offset) {_,p in
                     Text(p.arm.label+" · source \(p.source ?? 0)"+(p.invariantFallback ? " · invariant fallback":"")+" · "+(p.reason ?? p.ranked.first?.text ?? "unmatched"))
                         .font(.caption)
                 }
             }
-            DisclosureGroup("Targeted additional examples") {
+            MotionDisclosure("Targeted additional examples") {
                 ForEach(Array(study.requests(lexicon:.bundled).enumerated()),id:\.offset) {_,request in
                     Text(request.text).font(.headline)
                     Text(request.reason).font(.caption).foregroundStyle(.secondary)
@@ -198,7 +198,7 @@ struct RepresentationStudyView:View {
             if let reference=study.reference {
                 Text(reference.heads.contains {$0.frameLinguistic != nil} ? "Linguistic supervision includes reviewed time-local phone estimates." : "No reviewed time-local phone estimates were available: linguistic supervision used sentence-level gesture/transition summaries only.")
                     .font(.caption).foregroundStyle(.secondary)
-                DisclosureGroup("Learned sensor overlap · exploratory") {
+                MotionDisclosure("Learned sensor overlap · exploratory") {
                     if reference.sensorOverlaps.isEmpty {
                         Text("No phoneme-level overlap estimates yet. Need reviewed phone alignment in at least two sentence contexts with three examples per sound. Dictionary gesture priors are not learned sensor classes.").font(.caption)
                     }
@@ -216,7 +216,7 @@ struct RepresentationStudyView:View {
         let phones=Set(graphs.flatMap {$0.phonemeCoverage.keys})
         let pairs=Set(graphs.flatMap {$0.diphoneCoverage.keys.map(\.key)})
         let words=Dictionary(grouping:graphs.flatMap(\.words),by:\.word)
-        return DisclosureGroup("Linguistic annotation plan · \(phones.count) IPA units · \(pairs.count) diphones") {
+        return MotionDisclosure("Linguistic annotation plan · \(phones.count) IPA units · \(pairs.count) diphones") {
             Text("Counts describe expected annotations, not sounds the sensors can distinguish. Alternatives have equal weight until better speaker-specific evidence is available.")
                 .font(.caption).foregroundStyle(.secondary)
             ForEach(words.keys.sorted(),id:\.self) {word in
@@ -234,7 +234,7 @@ struct PhoneAlignmentSettingsView:View {
         @Bindable var aligner=workflow.phoneAligner
         VStack(alignment: .leading, spacing: 10) {
           Toggle("Collect numeric camera points", isOn: $workflow.captureCameraPoints).disabled(workflow.isBusy)
-          DisclosureGroup("Local phoneme alignment (optional)") {
+          MotionDisclosure("Local phoneme alignment (optional)") {
             VStack(alignment:.leading,spacing:10) {
                 Text("Whisper supplies word estimates. Phoneme boundaries require a separate local acoustic model and an explicit model-phone → IPA mapping. No model is downloaded. Leave these empty to keep phone timings unavailable.")
                     .font(.caption).foregroundStyle(.secondary)

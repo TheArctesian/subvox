@@ -5,6 +5,7 @@ struct SequenceLearningView:View {
     var collectionOnly=false
     @State private var previewMovement=NonSpeechMovement.nodAndTurn
     @Environment(AppModel.self) private var model
+    @Environment(\.colorScheme) private var colorScheme
     private var workflow:SequenceLearningWorkflow {model.sequenceLearning}
     var body:some View {
         if workflow.isAcquiring {recordingScreen} else {regularBody}
@@ -90,7 +91,7 @@ struct SequenceLearningView:View {
                 .font(.callout).foregroundStyle(.secondary)
             Text("Fusion trains three models on the paired recordings that have camera lip and jaw points: AirPods only, camera only, and both together. Comparing them shows what each sensor adds. Prepare a new snapshot first so it includes the camera points.")
                 .font(.callout).foregroundStyle(.secondary)
-            DisclosureGroup("Model methods and local runtime") {
+            MotionDisclosure("Model methods and local runtime") {
                 Text("Compares plain CTC, diphone context, train-only augmentation, and activity supervision. PyTorch runs locally on CPU; the first run prepares a pinned runtime. Original recordings and frozen baselines stay intact.")
                     .font(.caption).foregroundStyle(.secondary)
             }
@@ -186,7 +187,7 @@ struct SequenceLearningView:View {
         }.disabled(!canCollect)
     }
     private var teachers:some View {
-        DisclosureGroup("Second stage · reviewed camera and voice teachers") {
+        MotionDisclosure("Second stage · reviewed camera and voice teachers") {
             VStack(alignment:.leading,spacing:10) {
                 Text("Run the real-data neural comparisons first. This separate stage adds a camera-shape auxiliary loss on training frames while retaining motion-only inference. Local Whisper proposals, optional acoustic phone alignment and review remain fallible annotations; no word-duration phone boundaries are used.")
                     .font(.caption).foregroundStyle(.secondary)
@@ -208,7 +209,7 @@ struct SequenceLearningView:View {
     }
     private var corrections:some View {
         @Bindable var workflow=workflow
-        return DisclosureGroup("Review/correct transcript labels") {
+        return MotionDisclosure("Review/correct transcript labels") {
             Text("Use an example ID from the dataset manifest to correct its text. Changes are sidecar annotations used only by a new dataset/run; recordings and existing models are unchanged. Pronunciation variants remain editable in Representation pilot.")
                 .font(.caption).foregroundStyle(.secondary)
             TextField("Example ID",text:$workflow.correctionID)
@@ -236,7 +237,7 @@ struct SequenceLearningView:View {
             }
             Text("WER includes rejected/missing output as errors. Small repeated phrase sets have weak uncertainty estimates; open the report for sentence-group counts, confusions, exclusions, negative false accepts and coverage. Fresh same-fit/reseated tests remain necessary.")
                 .font(.caption).foregroundStyle(.secondary)
-            DisclosureGroup("Fold, transition, homophone and rejection details") {
+            MotionDisclosure("Fold, transition, homophone and rejection details") {
                 ForEach(Array(report.comparisons.enumerated()),id:\.offset) {_,row in
                     Text("\(row.condition) · \(row.experiment): \(row.folds ?? 0) folds · refit \(row.refitEpochs ?? 0) epochs · homophone-merged WER \(percent(row.wordErrorRateNoLmHomophonesMerged)) · transition WER \(percent(row.wordErrorRateTransitions)) · \(row.negativeExamples) scored negatives · false accepts \(percent(row.falseAcceptRate))")
                         .font(.caption).textSelection(.enabled)
@@ -256,11 +257,10 @@ struct SequenceLearningView:View {
         }
     }
     private var cueColor:Color {
-        if workflow.phase == .relax {return .orange}
         if workflow.requiresRedo {return .orange}
-        if workflow.phase == .ended {return .green}
+        if workflow.phase == .relax {return PhaseColor.relax(colorScheme)}
         if workflow.recordingNonSpeech {return workflow.phase == .ready ? .cyan:.purple}
-        return workflow.condition == .normal ? .green:.blue
+        return workflow.condition == .normal ? PhaseColor.speak(colorScheme):PhaseColor.mouth(colorScheme)
     }
     private var captureHelp:String {
         switch workflow.phase {

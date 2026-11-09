@@ -65,6 +65,8 @@ struct PracticePage<Controls: View, Content: View>: View {
     @ViewBuilder var controls: () -> Controls
     @ViewBuilder var content: () -> Content
     @State private var showWhisperSetup = false
+    /// IPA lines reveal on the disclosure role whether toggled here or with ⌘I.
+    @AppStorage("practice.showIPA") private var showIPA = true
 
     private var workflow: SentenceTrainingWorkflow { model.sentenceTraining }
     private var motionReady: Bool { model.motion.status == .streaming }
@@ -88,6 +90,12 @@ struct PracticePage<Controls: View, Content: View>: View {
         return nil
     }
 
+    /// Rows that enter or leave the page flow (busy row, result card); the content below follows them.
+    private var arrivalKey: [Bool] {
+        [workflow.phase == .processing || workflow.phase == .preparing || workflow.isCheckingRecordings,
+         !workflow.lastPracticePairIDs.isEmpty, workflow.error != nil]
+    }
+
     @ViewBuilder private var pageBody: some View {
         if !model.localWhisper.isConfigured {
             HStack {
@@ -102,7 +110,7 @@ struct PracticePage<Controls: View, Content: View>: View {
         HStack(spacing: 16) { controls(); Spacer() }
         content()
         if mode.isLiterature {
-            DisclosureGroup("Word alignment settings") { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
+            MotionDisclosure("Word alignment settings") { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
                 .font(.callout).foregroundStyle(.secondary)
         }
     }
@@ -130,7 +138,7 @@ struct PracticePage<Controls: View, Content: View>: View {
             }
         } content: {
             if !scrolls {
-                VStack(alignment: .leading, spacing: 16) { pageBody }
+                VStack(alignment: .leading, spacing: 16) { pageBody }.motion(.arrive, value: arrivalKey).motion(.disclosure, value: showIPA)
                     .frame(maxWidth: PageMetrics.contentWidth + 120, maxHeight: .infinity, alignment: .topLeading)
                     .padding(PageMetrics.padding).frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
@@ -138,6 +146,8 @@ struct PracticePage<Controls: View, Content: View>: View {
                     VStack(alignment: .leading, spacing: 20) {
                         pageBody
                     }
+                    .motion(.arrive, value: arrivalKey)
+                    .motion(.disclosure, value: showIPA)
                     .frame(maxWidth: PageMetrics.contentWidth, alignment: .leading)
                     .padding(PageMetrics.padding).frame(maxWidth: .infinity)
                 }
@@ -155,19 +165,28 @@ struct PracticeProgressBadge: View {
     var body: some View {
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
         let goal = PracticeProgress.dailyGoal
-        if progress.today > 0 || progress.streak > 0 {
-            let streak = progress.streak == 1 ? String(localized: "1 day in a row")
-                : String(localized: "\(progress.streak) days in a row")
-            Label {
-                Text("\(progress.today) of \(goal) today · \(streak)")
-            } icon: {
-                Image(systemName: progress.today >= goal ? "trophy.fill" : "party.popper.fill")
-                    .foregroundStyle(.orange)
-                    .accessibilityHidden(true)
+        let visible = progress.today > 0 || progress.streak > 0
+        ZStack {
+            if visible {
+                let streak = progress.streak == 1 ? String(localized: "1 day in a row")
+                    : String(localized: "\(progress.streak) days in a row")
+                // A count of takes held: the digit rolls to its new value, never through the ones between.
+                Label {
+                    Text("\(progress.today) of \(goal) today · \(streak)")
+                        .contentTransition(.numericText(value: Double(progress.today)))
+                } icon: {
+                    Image(systemName: progress.today >= goal ? "trophy.fill" : "party.popper.fill")
+                        .foregroundStyle(.orange)
+                        .contentTransition(.symbolEffect(.replace))
+                        .accessibilityHidden(true)
+                }
+                .font(.callout)
+                .labelStyle(.titleAndIcon)
+                .transition(.stateFade)
             }
-            .font(.callout)
-            .labelStyle(.titleAndIcon)
         }
+        .motion(.state, value: progress.today)
+        .motion(.state, value: visible)
     }
 }
 
@@ -232,9 +251,19 @@ private struct ReferenceButton: View {
             if compact {
                 Image(systemName: active ? "stop.fill" : "speaker.wave.2").frame(minWidth: 28, minHeight: 28)
             } else {
-                Label(active ? "Stop reference" : "Listen", systemImage: active ? "stop.fill" : "speaker.wave.2")
+                // Both titles share one width so neighbours don't shift when playback starts.
+                Label {
+                    ZStack {
+                        Text("Listen").opacity(active ? 0 : 1)
+                        Text("Stop").opacity(active ? 1 : 0)
+                    }
+                } icon: {
+                    Image(systemName: active ? "stop.fill" : "speaker.wave.2")
+                }
             }
         }
+        .contentTransition(.symbolEffect(.replace))
+        .motion(.state, value: active)
         .help(active ? "Stop reference" : "Listen to reference")
         .accessibilityLabel(active ? "Stop reference" : "Listen to \(subject ?? text)")
     }
@@ -321,14 +350,16 @@ struct PracticeFeedback: View {
             let processing = pairs.contains { model.sentenceTraining.checkingPairIDs.contains($0.id) }
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
+                    // The summary cross-fades in when checking ends; it never counts up.
                     (processing ? Text("Last round") : Text("Last round: \(summary)")).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                        .contentTransition(.opacity)
                         .accessibilityFocused($focusResults)
                     Spacer()
                     Button("Done") { model.sentenceTraining.clearPracticeResults() }
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
                         .disabled(!model.sentenceTraining.canStartRecording || model.motion.status != .streaming || !model.localWhisper.isConfigured || model.sentenceTraining.lastPracticePlan.isEmpty)
                 }
-                DisclosureGroup("Take feedback") {
+                MotionDisclosure("Take feedback") {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 10) { ForEach(pairs) { row($0) } }
                     }.frame(maxHeight: 200)
@@ -339,6 +370,8 @@ struct PracticeFeedback: View {
             }
             .padding(16)
             .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 10))
+            .transition(.asymmetric(insertion: .opacity.combined(with: .move(edge: .top)), removal: .opacity))
+            .motion(.state, value: processing)
             .onAppear { focusResults = true }  // VoiceOver lands on the results after a round
 
         }
@@ -358,7 +391,7 @@ struct PracticeFeedback: View {
                 Text(heardRight ? "Words recognised" : "Some words weren't recognised. Background noise or unclear speech can cause this; try once more, a little slower.")
                     .font(.body.weight(.medium)).fixedSize(horizontal: false, vertical: true)
             }
-            Text(verdict.text).font(.callout).foregroundStyle(.secondary)
+            Text(verdict.text).font(.callout).foregroundStyle(.secondary).contentTransition(.opacity).motion(.state, value: verdict.text)
             Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 4) {
                 if let transcript = pair.transcript {
                     GridRow { Text("Recognised").foregroundStyle(.secondary); Text(transcript.text.trimmingCharacters(in: .whitespaces)) }
@@ -661,10 +694,10 @@ struct MinimalPairsView: View {
                      startTitle: "Start Pairs",
                      groups: round.map { [SentencePrompt($0, kind: .minimalPair, language: language, translationLanguage: model.nativeLanguage)] },
                      mode: .minimalPair, unit: "words") {
-            Picker("Sounds", selection: Binding(get: { contrast?.id }, set: { selection = $0; shuffle() })) {
+            Picker("Sounds", selection: Binding(get: { contrast?.id }, set: { selection = $0; withMotion(.reorder) { shuffle() } })) {
                 ForEach(sets) { Text($0.title).font(.ipa(15, relativeTo: .body)).tag(Optional($0.id)) }
             }.fixedSize()
-            Button("Shuffle", systemImage: "shuffle", action: shuffle).disabled(contrast == nil)
+            Button("Shuffle", systemImage: "shuffle") { withMotion(.reorder) { shuffle() } }.disabled(contrast == nil)
             IPAToggle(isOn: $showIPA)
         } content: {
             if contrast == nil {
@@ -672,9 +705,10 @@ struct MinimalPairsView: View {
             } else {
                 VStack(alignment: .leading, spacing: 12) {
                     // Each row is one contrast set, side by side, so the difference is easy to see and hear.
-                    ForEach(Array(roundSets.enumerated()), id: \.offset) { _, set in
+                    // Rows are identified by their words, so a shuffle moves them rather than rewriting them in place.
+                    ForEach(roundSets, id: \.self) { set in
                         HStack(alignment: .top, spacing: 10) {
-                            ForEach(Array(set.enumerated()), id: \.offset) { index, line in
+                            ForEach(Array(set.enumerated()), id: \.element) { index, line in
                                 if index > 0 { Image(systemName: "arrow.left.arrow.right").foregroundStyle(.tertiary).padding(.top, 14).accessibilityHidden(true) }
                                 VStack(alignment: .leading, spacing: 8) {
                                     PracticeLineView(line: line, language: language, showIPA: showIPA)
@@ -682,8 +716,11 @@ struct MinimalPairsView: View {
                                 }
                                 .padding(12).frame(maxWidth: .infinity, alignment: .leading)
                                 .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
+                                // Opaque ground, so rows passing each other mid-shuffle don't show through.
+                                .background(Color(nsColor: .windowBackgroundColor), in: RoundedRectangle(cornerRadius: 8))
                             }
                         }
+                        .transition(.fadeInAfterReorder)
                     }
                     // What each contrasted sound is, in words, so the difference doesn't rest on the symbols alone.
                     let guide = (model.practice.sounds[language.corpus] ?? [])
@@ -825,6 +862,8 @@ struct SoundsView: View {
     @Environment(AppModel.self) private var model
     @State private var selection: String?
     @AppStorage("practice.showIPA") private var showIPA = true
+    /// One selection highlight travels between tiles instead of two tiles swapping colour.
+    @Namespace private var selectionSpace
 
     private var sounds: [PracticeCorpus.Sound] { (model.practice.sounds[model.language.corpus] ?? []).filter { !model.language.absentSounds.contains($0.ipa) } }
     private var sound: PracticeCorpus.Sound? { sounds.first { $0.id == selection } ?? sounds.first }
@@ -862,7 +901,15 @@ struct SoundsView: View {
                             .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                     }.padding(.trailing, 8) }.frame(width: 345)
                     // The selected sound stays in view while the grid scrolls.
-                    if let sound { ScrollView { detail(sound, language: language) } }
+                    if let sound {
+                        ScrollView {
+                            ZStack(alignment: .topLeading) {
+                                detail(sound, language: language).id(sound.id)
+                                    .transition(.asymmetric(insertion: .opacity.combined(with: .offset(y: 4)), removal: .opacity))
+                            }
+                        }
+                        .motion(.state, value: sound.id)
+                    }
                 }
             }
         }
@@ -877,7 +924,7 @@ struct SoundsView: View {
     private func chips(_ list: [PracticeCorpus.Sound], progress: PracticeProgress, language: AppLanguage, prefix: String = "") -> some View {
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 76), spacing: 6)], alignment: .leading, spacing: 6) {
                                 ForEach(list) { s in
-                                    Button { selection = s.id; model.referenceSpeaker.stop() } label: {
+                                    Button { withMotion(.reorder) { selection = s.id }; model.referenceSpeaker.stop() } label: {
                                         VStack(spacing: 1) {
                                             Text(s.ipa).font(.ipa(24, relativeTo: .title2))
                                                 .overlay(alignment: .topTrailing) {
@@ -891,8 +938,15 @@ struct SoundsView: View {
                                             }
                                         }
                                         .frame(width: 74, height: 66)
-                                        .background(s.id == sound?.id ? AnyShapeStyle(.tint.opacity(0.25)) : AnyShapeStyle(.quaternary.opacity(0.35)),
-                                                    in: RoundedRectangle(cornerRadius: 8))
+                                        .background {
+                                            ZStack {
+                                                RoundedRectangle(cornerRadius: 8).fill(.quaternary.opacity(0.35))
+                                                if s.id == sound?.id {
+                                                    RoundedRectangle(cornerRadius: 8).fill(.tint.opacity(0.25))
+                                                        .matchedGeometryEffect(id: "soundSelection", in: selectionSpace)
+                                                }
+                                            }
+                                        }
                                     }
                                     .buttonStyle(.plain)
                                     .accessibilityLabel(prefix + "\(s.text(for: model.nativeLanguage).name), \(s.text(for: model.nativeLanguage).guide)" + (progress.practised(s, language: language) ? String(localized: ", practised") : ""))

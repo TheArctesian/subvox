@@ -94,7 +94,7 @@ struct ContributeView: View {
             }
             ForEach(unsent) { item in sessionRow(item) }
             if !uploader.shared.isEmpty {
-                DisclosureGroup("Sent pull requests (\(uploader.shared.count))") {
+                MotionDisclosure("Sent pull requests (\(uploader.shared.count))") {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Open a pull request on Hugging Face to edit its details or close it.")
                             .font(.caption).foregroundStyle(.secondary)
@@ -224,7 +224,7 @@ struct LocalRecordingHistory: View {
     @State private var playbackError: String?
 
     var body: some View {
-        DisclosureGroup("Saved on this Mac", isExpanded: $expanded) {
+        DisclosureGroup("Saved on this Mac", isExpanded: $expanded.motion(.disclosure)) {
             if expanded { recordings }
         }
         .onChange(of: expanded) { if !expanded { stopPlayback() } }

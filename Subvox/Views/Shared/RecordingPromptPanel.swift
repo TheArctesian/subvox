@@ -117,11 +117,11 @@ struct NonSpeechMovementGuide:View {
 
 /// Geometry assigns real space to every section. Large prompt content can
 /// scroll, but cannot push controls or the live trace beyond the window.
-struct RecordingViewport<Header:View,Prompt:View,Actions:View,Motion:View>:View {
+struct RecordingViewport<Header:View,Prompt:View,Actions:View,Trace:View>:View {
     @ViewBuilder var header:()->Header
     @ViewBuilder var prompt:()->Prompt
     @ViewBuilder var actions:()->Actions
-    @ViewBuilder var motion:()->Motion
+    @ViewBuilder var motion:()->Trace
     var showsMotion = true
     func withMotionVisibility(_ visible: Bool) -> Self {
         var viewport = self

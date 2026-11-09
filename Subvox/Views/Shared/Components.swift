@@ -19,12 +19,15 @@ struct RecordingCueStatus: View {
     var body: some View {
         VStack(spacing: 8) {
             Text(timer).font(.system(size: 20, weight: .medium).monospacedDigit()).foregroundStyle(.primary)
+            // Only the pill cross-fades on a phase change; the timer above is a reading and stays direct.
             HStack(spacing: 7) {
                 Circle().fill(color).frame(width: 9, height: 9)
-                Text(title).font(.system(size: 17, weight: .semibold))
+                Text(title).font(.system(size: 17, weight: .semibold)).contentTransition(.opacity)
             }
             .padding(.horizontal, 13).padding(.vertical, 7)
             .background(color.opacity(0.12), in: Capsule())
+            .motion(.state, value: title)
+            .motion(.state, value: color)
         }
     }
 }
@@ -145,7 +148,6 @@ struct SignalPlot: View {
 }
 
 struct LevelMeter: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var value: Double
     var marker: Double?
     var tint: Color = .green
@@ -164,7 +166,7 @@ struct LevelMeter: View {
             }
         }
         .frame(height: 8)
-        .animation(reduceMotion ? nil : .linear(duration: 0.08), value: value)
+        .motion(.meter, value: value)
     }
 }
 

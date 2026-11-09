@@ -108,7 +108,7 @@ struct ControlledSignalResultsView: View {
                             }
                         }
                     } else { Text("No fixed-model score was completed for this block.").foregroundStyle(.orange) }
-                    DisclosureGroup("Pose, pacing and recordings") {
+                    MotionDisclosure("Pose, pacing and recordings") {
                         ForEach(run.takes.filter { !$0.discarded }) { take in
                             let q = quality.first { $0.takeID == take.id }
                             HStack {
