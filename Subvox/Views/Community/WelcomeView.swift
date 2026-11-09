@@ -85,7 +85,7 @@ struct WelcomeView: View {
                         Text("Recordings stay on this Mac until you finish setting up sharing.").font(.callout).foregroundStyle(.secondary)
                     }
                 }
-                Text("You can change sharing any time with Share Recordings… on the Reading page.").font(.callout).foregroundStyle(.secondary)
+                Text("You can change sharing any time in Subvox Settings.").font(.callout).foregroundStyle(.secondary)
             }.frame(maxWidth: 680, alignment: .leading).padding(40).frame(maxWidth: .infinity)
         }
         .background(Color(nsColor: .windowBackgroundColor))

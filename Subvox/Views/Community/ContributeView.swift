@@ -33,15 +33,11 @@ struct ContributeView: View {
 
     var body: some View {
         AppPageLayout(showsMotion: false) {
-            HStack {
-                AppPageHeading(title: "Share recordings", subtitle: "Help build an open dataset for silent speech. Choose how new community sessions are shared.")
-                Spacer()
-                Button("Back to training") { model.showContribute = false }
-            }
+            AppPageHeading(title: "Sharing Settings", subtitle: "Manage your Hugging Face account and the recordings you submit.")
         } content: {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    SharingSetupView()
+                    SharingSetupView(showsDataset: true)
                     LocalRecordingHistory()
                     if let sendError { Label(sendError, systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
                     if canShare || model.automaticSharingGrant != nil || !uploader.unsent.isEmpty || !uploader.shared.isEmpty { queueSection }
@@ -74,46 +70,56 @@ struct ContributeView: View {
     }
 
     private var queueSection: some View {
-        @Bindable var settings = settings
-        let pending = uploader.pending.filter { belongsToCurrentAccount($0) }
+        let unsent = uploader.unsent.filter(belongsToCurrentAccount)
+        let pending = unsent.filter { $0.takes > $0.dropped.count }
         return VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text(model.automaticSharingGrant == nil ? "Ready to send" : "Community submissions").font(.title3.weight(.semibold))
                 Spacer()
-                Button { refresh() } label: { Label("Check again", systemImage: "arrow.clockwise").labelStyle(.iconOnly).frame(minWidth: 28, minHeight: 28) }.buttonStyle(.borderless).help("Check for new sessions").disabled(working || !canShare)
-                Button("Review all (\(pending.count))") { prepareReview(pending) }.buttonStyle(.borderedProminent).disabled(working || !canShare || pending.isEmpty)
+                if canShare {
+                    Button("Check for sessions", systemImage: "arrow.clockwise", action: refresh)
+                        .disabled(working)
+                    Button("Review all (\(pending.count))") { prepareReview(pending) }
+                        .buttonStyle(.borderedProminent).disabled(working || pending.isEmpty)
+                }
             }
             if !uploader.status.isEmpty { Text(uploader.status).font(.callout).foregroundStyle(.secondary) }
             if let error = uploader.error { Text(error).font(.callout).foregroundStyle(.orange).textSelection(.enabled) }
             if canShare && pending.isEmpty && !working && uploader.status.isEmpty {
                 Text("Nothing new to send. Record more community passages and they'll appear here.").font(.callout).foregroundStyle(.secondary)
             }
-            ForEach(uploader.unsent) { item in sessionRow(item) }
+            if model.automaticSharingGrant != nil {
+                Text("Turn off automatic sharing above to choose which takes go into future pull requests.")
+                    .font(.callout).foregroundStyle(.secondary)
+            }
+            ForEach(unsent) { item in sessionRow(item) }
             if !uploader.shared.isEmpty {
-                DisclosureGroup("Already shared (\(uploader.shared.count))") {
-                    VStack(alignment: .leading, spacing: 6) {
+                DisclosureGroup("Sent pull requests (\(uploader.shared.count))") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Open a pull request on Hugging Face to edit its details or close it.")
+                            .font(.caption).foregroundStyle(.secondary)
                         ForEach(uploader.shared) { item in
                             HStack {
                                 Label("Session \(item.id.prefix(8)) · \(item.month) · \(item.takes - item.dropped.count) takes", systemImage: "checkmark.circle.fill")
                                     .foregroundStyle(.secondary)
                                 Spacer()
-                                if let url = item.prURL.flatMap(URL.init(string:)) { Link("Pull request #\(item.prNumber ?? 0)", destination: url) }
+                                if let url = item.prURL.flatMap(URL.init(string:)) {
+                                    Link(destination: url) {
+                                        Label(item.prNumber.map { String(localized: "Open PR #\($0)") } ?? String(localized: "Open pull request"),
+                                              systemImage: "arrow.up.right")
+                                    }
+                                }
                             }.font(.callout)
                         }
                     }.padding(.top, 6)
                 }
             }
-            DisclosureGroup("Dataset") {
-                TextField("Dataset", text: $settings.repo).textFieldStyle(.roundedBorder).frame(maxWidth: 360).disabled(working).padding(.top, 4)
-            }.font(.callout)
         }
-        .task(id: "\(account.username ?? "")|\(settings.hasConsent)") {
-            if model.automaticSharingGrant == nil { refresh() }
-        }
+        .task(id: canShare ? account.username : nil) { refresh() }
     }
 
     private func refresh() {
-        guard let name = account.username, settings.hasConsent, !uploader.busy else { return }
+        guard let name = account.username, canShare, !working else { return }
         Task { await uploader.prepare(contributor: name) }
     }
 
@@ -153,7 +159,9 @@ struct ContributeView: View {
                         expanded = expanded == item.id ? nil : item.id
                         expandedTakes = expanded == nil ? [] : uploader.takes(item)
                     }
-                    if item.takes == item.dropped.count {
+                    if model.automaticSharingGrant != nil {
+                        if item.status == .failed { Text("Will retry").foregroundStyle(.secondary) }
+                    } else if item.takes == item.dropped.count {
                         Button("Restore all") { uploader.restoreTakes(in: item.id) }.disabled(working)
                     } else {
                         Button(item.status == .failed ? "Review retry" : "Review upload") { prepareReview([item]) }
@@ -172,8 +180,10 @@ struct ContributeView: View {
                         }
                     }
                 }
-                .disabled(working)
-                Text("Untick any take you don't want to share. Dropped takes are left out of the upload; your local recording isn't changed.")
+                .disabled(working || model.automaticSharingGrant != nil)
+                Text(model.automaticSharingGrant == nil
+                     ? "Untick any take you don't want to share. Dropped takes are left out of the upload; your local recording isn't changed."
+                     : "Turn off automatic sharing to change which takes are included.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
@@ -196,7 +206,9 @@ struct ContributeView: View {
                     sendError = "The queue changed. Review these takes again before sending."
                     return
                 }
-                await uploader.sendReviewed(selection.sessions.map(\.id), repo: selection.repo, token: token)
+                await uploader.sendReviewed(selection.sessions.map(\.id), repo: selection.repo, token: token) {
+                    canShare && account.username == selection.username && settings.repo == selection.repo
+                }
             } catch {
                 sendError = "Sign in again to send your reviewed sessions. Your queue is still here."
             }
@@ -348,9 +360,10 @@ struct LocalRecordingHistory: View {
     }
 }
 
-/// Sharing mode, Hugging Face sign-in and consent. Shown on first launch and on the Share page.
+/// Sharing mode, Hugging Face sign-in and consent. Shown on first launch and in Settings.
 struct SharingSetupView: View {
     @Environment(AppModel.self) private var model
+    var showsDataset = false
     @State private var adult = false
     @State private var publicData = false
     @State private var linkedName = false
@@ -363,11 +376,12 @@ struct SharingSetupView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             modeSection
-            if settings.mode == .huggingFace {
-                accountSection
-                if account.username != nil {
-                    automaticSharingSection
-                    DisclosureGroup("Manual sharing options") { consentSection }
+            if showsDataset || settings.mode == .huggingFace { accountSection }
+            if settings.mode == .huggingFace, account.username != nil {
+                if showsDataset { datasetSection }
+                automaticSharingSection
+                if model.automaticSharingGrant == nil {
+                    DisclosureGroup("Set up manual review") { consentSection }
                 }
             }
         }
@@ -403,7 +417,7 @@ struct SharingSetupView: View {
                 HStack {
                     Label("Signed in as \(name)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
                     Spacer()
-                    Button("Sign out") { model.stopAutomaticSharing(); account.signOut() }.disabled(uploader.busy)
+                    Button("Sign out", action: model.signOutOfHuggingFace).disabled(uploader.busy)
                 }
             case .signingIn:
                 HStack { ProgressView().controlSize(.small); Text("Finish signing in in your browser…") }
@@ -421,12 +435,27 @@ struct SharingSetupView: View {
                     Text(link.absoluteString).font(.caption.monospaced()).foregroundStyle(.tertiary).lineLimit(2).truncationMode(.middle).textSelection(.enabled)
                 }
             case .signedOut:
+                Text("Signed out").font(.callout).foregroundStyle(.secondary)
                 Button { Task { await account.signIn() } } label: { Label("Sign in with Hugging Face", systemImage: "person.badge.key") }
                     .buttonStyle(.borderedProminent).controlSize(.large)
                 Text("Opens huggingface.co in your browser. Subvox asks only to read your public profile and open pull requests on your behalf; it can't change your repositories or settings.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             if let error = account.error { Text(error).font(.callout).foregroundStyle(.orange) }
+        }
+    }
+
+    private var datasetSection: some View {
+        @Bindable var settings = settings
+        return VStack(alignment: .leading, spacing: 8) {
+            Text("Pull request destination").font(.title3.weight(.semibold))
+            TextField("Dataset", text: $settings.repo, prompt: Text("owner/dataset"))
+                .textFieldStyle(.roundedBorder).frame(maxWidth: 360)
+                .disabled(uploader.busy || model.automaticSharingGrant != nil)
+            if model.automaticSharingGrant != nil {
+                Text("Turn off automatic sharing to change the destination.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
         }
     }
 
@@ -438,7 +467,7 @@ struct SharingSetupView: View {
                     Spacer()
                     Button("Turn off automatic sharing", action: model.stopAutomaticSharing)
                 }
-                Text("New community reading sessions are submitted to \(grant.repo) after you finish recording. Turning this off stops future submissions. A submission already in progress may finish.")
+                Text("New community reading and calibration sessions are submitted to \(grant.repo) after you finish recording. Turn this off to review recordings before sending them. A submission already in progress may finish.")
                     .font(.callout).foregroundStyle(.secondary)
             } else if let username = account.username {
                 Text("Share future sessions automatically").font(.title3.weight(.semibold))
@@ -453,7 +482,7 @@ struct SharingSetupView: View {
                     confirmAutomatic = false
                     Task { await model.sendAutomaticContributions() }
                 }.buttonStyle(.borderedProminent).disabled(!adult || !confirmAutomatic || uploader.busy)
-                Text("You can turn this off in Share Recordings. Copies others have downloaded can’t be recalled.")
+                Text("You can turn this off in Subvox Settings. Copies others have downloaded can’t be recalled.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

@@ -15,7 +15,7 @@ struct SimpleTrainingView: View {
             HStack {
                 AppPageHeading(title: "Reading", subtitle: "Read a short sentence aloud, then mouth it silently. About ten minutes a session.")
                 Spacer()
-                Button("Share Recordings…", systemImage: "square.and.arrow.up") { model.showContribute = true }.disabled(model.navigationLocked)
+                SettingsLink { Label("Sharing Settings…", systemImage: "square.and.arrow.up") }
                 Button { model.startSentenceTraining() } label: {
                     Label(calibrationLeft > 0 ? "Start Recording" : "Record Next Passages", systemImage: "record.circle")
                 }
