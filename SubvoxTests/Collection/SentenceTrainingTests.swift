@@ -61,6 +61,19 @@ final class SentenceTrainingTests: XCTestCase {
         XCTAssertEqual(restored.derivedWords(role: .training, lexicon: lexicon).count, 2)
     }
 
+    func testWordTemplatesRespectBothCueAndWordBoundaries() throws {
+        var item = automaticPair()
+        item.silent?.samples.insert(MotionSample(t: 199.98), at: 0)
+        item.alignment?.words[0].silentStart = 199.97
+        let prompt = SentencePrompt(text: item.text)
+        let data = SentenceTrainingData(prompts: [prompt], roles: [prompt.id: .training], pairs: [item])
+        let templates = data.derivedWords(role: .training, lexicon: lexicon)
+
+        XCTAssertEqual(templates.map(\.label), ["bee", "bob"])
+        XCTAssertEqual(templates.map { $0.samples.first?.t }, [200, 201])
+        XCTAssertEqual(templates.map { $0.samples.last?.t }, [201, 202])
+    }
+
     func testWordTimingFailureStillAdmitsSentenceTakesAutomatically() {
         var item = automaticPair()
         item.alignment = nil; item.error = "Too few words have usable audio-aligned times."

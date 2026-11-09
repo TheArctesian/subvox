@@ -337,12 +337,13 @@ struct SentenceTrainingData: Codable, Sendable {
             guard pair.canAccept, !pair.promptIDs.isEmpty,
                   pair.promptIDs.allSatisfy({ roles[$0] == role }), let silent = pair.silent,
                   let transfer = pair.alignment else { return [] }
+            let cueSamples = silent.cueSamples
             return transfer.words.enumerated().compactMap { index, word in
                 guard lexicon.phones(word.word) != nil else { return nil }
                 guard word.silentStart >= silent.cueStart - 0.04,
                       word.silentEnd <= silent.cueEnd + 0.04,
                       word.silentEnd > word.silentStart else { return nil }
-                let samples = silent.cueSamples.filter { $0.t >= word.silentStart && $0.t <= word.silentEnd }
+                let samples = cueSamples.filter { $0.t >= word.silentStart && $0.t <= word.silentEnd }
                 guard samples.count >= 3, !TakeQuality.inspect(samples).invalid else { return nil }
                 return Template(id: Self.wordID(pair: pair.id, index: index), label: word.word, samples: samples, createdAt: pair.createdAt, sessionID: pair.visitID,
                                 sourceSentenceID: pair.promptIDs.joined(separator: ","), sourcePairID: pair.id)
