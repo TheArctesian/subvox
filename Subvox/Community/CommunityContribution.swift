@@ -1,7 +1,7 @@
+import CryptoKit
 import Foundation
 
-/// How (and whether) this Mac shares community recordings. Local only is the default; nothing is
-/// ever uploaded without the user reviewing a session and choosing Send.
+/// Local only is the default. Automatic sharing requires a separate account and dataset grant.
 @MainActor @Observable final class ContributionSettings {
     enum Mode: String, CaseIterable, Identifiable {
         case local = "Local only", anonymous = "Anonymous", huggingFace = "Hugging Face"
@@ -9,14 +9,33 @@ import Foundation
     }
     /// Bump when the consent text changes; contributors then confirm again before uploading.
     static let consentVersion = "consent-v1-draft"
+    static let automaticConsentVersion = "consent-v2-automatic"
+    struct AutomaticGrant: Codable, Equatable {
+        let id: UUID
+        let username: String
+        let repo: String
+        let version: String
+    }
     static let defaultRepo = "stephenokita/subvox-community-test"
     /// Where contributors ask for their shared data to be removed.
     static let removalContact = "me@stephenokita.com"
 
     @ObservationIgnored private let defaults: UserDefaults
-    var mode: Mode { didSet { defaults.set(mode.rawValue, forKey: "contribution.mode") } }
-    var repo: String { didSet { defaults.set(repo, forKey: "contribution.repo") } }
+    var mode: Mode {
+        didSet {
+            defaults.set(mode.rawValue, forKey: "contribution.mode")
+            if mode != .huggingFace { stopAutomaticSharing() }
+        }
+    }
+    var repo: String {
+        didSet {
+            defaults.set(repo, forKey: "contribution.repo")
+            if repo != oldValue { stopAutomaticSharing() }
+        }
+    }
     private(set) var consentedVersion: String?
+
+    private(set) var automaticGrant: AutomaticGrant?
 
     var hasConsent: Bool { consentedVersion == Self.consentVersion }
 
@@ -25,10 +44,36 @@ import Foundation
         mode = Mode(rawValue: defaults.string(forKey: "contribution.mode") ?? "") ?? .local
         repo = defaults.string(forKey: "contribution.repo") ?? Self.defaultRepo
         consentedVersion = defaults.string(forKey: "contribution.consent")
+        automaticGrant = defaults.data(forKey: "contribution.automaticGrant").flatMap {
+            try? JSONDecoder().decode(AutomaticGrant.self, from: $0)
+        }
     }
 
     func giveConsent() { consentedVersion = Self.consentVersion; defaults.set(Self.consentVersion, forKey: "contribution.consent") }
-    func withdrawConsent() { consentedVersion = nil; defaults.removeObject(forKey: "contribution.consent") }
+    func withdrawConsent() {
+        stopAutomaticSharing()
+        consentedVersion = nil
+        defaults.removeObject(forKey: "contribution.consent")
+    }
+
+    func activeAutomaticGrant(for username: String?) -> AutomaticGrant? {
+        guard mode == .huggingFace, let grant = automaticGrant, grant.username == username,
+              grant.repo == repo, grant.version == Self.automaticConsentVersion else { return nil }
+        return grant
+    }
+
+    func enableAutomaticSharing(for username: String) {
+        guard mode == .huggingFace, !username.isEmpty, !repo.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        let grant = AutomaticGrant(id: UUID(), username: username, repo: repo, version: Self.automaticConsentVersion)
+        guard let data = try? JSONEncoder().encode(grant) else { return }
+        automaticGrant = grant
+        defaults.set(data, forKey: "contribution.automaticGrant")
+    }
+
+    func stopAutomaticSharing() {
+        automaticGrant = nil
+        defaults.removeObject(forKey: "contribution.automaticGrant")
+    }
 }
 
 /// One exported session waiting for review, or already sent as a pull request.
@@ -83,10 +128,24 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
     private var queueURL: URL { root.appending(path: "queue.json") }
     private var exportRoot: URL { root.appending(path: "export") }
 
+    private var queueReadable = true
+
     func load() {
-        items = (try? JSONDecoder().decode([CommunityUpload].self, from: Data(contentsOf: queueURL))) ?? []
+        do {
+            items = try JSONDecoder().decode([CommunityUpload].self, from: Data(contentsOf: queueURL))
+            for index in items.indices where items[index].status == .uploading {
+                items[index].status = .failed
+                items[index].error = "The previous upload was interrupted."
+            }
+        } catch let failure as NSError where failure.domain == NSCocoaErrorDomain && failure.code == NSFileReadNoSuchFileError {
+            items = []
+        } catch {
+            queueReadable = false
+            self.error = "The sharing queue could not be read. Uploads are paused."
+        }
     }
     private func save() {
+        guard queueReadable else { return }
         do {
             try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
             try JSONEncoder().encode(items).write(to: queueURL, options: .atomic)
@@ -95,33 +154,57 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
 
     static var promptsDirectory: URL? { Bundle.main.resourceURL?.appending(path: "Corpus/community") }
 
-    /// Re-exports every community session and adds new ones to the review queue. Already-sent
-    /// sessions keep their status: session IDs are stable hashes.
-    func prepare(contributor: String) async {
-        guard !busy else { return }
+    /// Exported IDs match the Python dataset schema and never expose the local session UUID.
+    static func publicSessionID(_ id: UUID) -> String {
+        SHA256.hash(data: Data("subvox-community:session:\(id.uuidString)".utf8))
+            .prefix(16).map { String(format: "%02x", $0) }.joined()
+    }
+
+    /// Re-exports community sessions. Automatic runs consume only the current export manifest.
+    @discardableResult
+    func prepare(contributor: String, automatic grant: ContributionSettings.AutomaticGrant? = nil) async -> [CommunityUpload]? {
+        guard !busy, queueReadable else { return nil }
         busy = true; error = nil; status = "Looking for new sessions…"
         defer { busy = false }
+        let output = grant.map { exportRoot.appending(path: $0.id.uuidString) } ?? exportRoot
+        let manifest = root.appending(path: "export-\(UUID()).json")
+        defer { try? FileManager.default.removeItem(at: manifest) }
         do {
-            var arguments = ["export-community", "--root", SentenceStore.directory.path, "--output", exportRoot.path,
-                             "--contributor", contributor, "--consent-version", ContributionSettings.consentVersion]
+            var arguments = ["export-community", "--root", SentenceStore.directory.path, "--output", output.path,
+                             "--contributor", contributor, "--consent-version", grant?.version ?? ContributionSettings.consentVersion]
             if let prompts = Self.promptsDirectory { arguments += ["--prompts-dir", prompts.path] }
-            let shared = items.filter { $0.status == .uploaded }.map(\.id)
+            let shared = self.shared.map(\.id)
             if !shared.isEmpty { arguments += ["--skip", shared.joined(separator: ",")] }
-            try await runtime.run(arguments) { _ in }
-            merge(scan(contributor: contributor))
-            status = items.isEmpty ? "No community recordings yet. Record community passages first." : ""
-        } catch { self.error = error.localizedDescription; status = "" }
+            if let grant { arguments += ["--automatic-grant", grant.id.uuidString, "--manifest", manifest.path] }
+            try await runtime.run(arguments)
+            let found: [CommunityUpload]
+            if grant != nil {
+                let paths = try JSONDecoder().decode([String].self, from: Data(contentsOf: manifest))
+                found = paths.compactMap { loadSession(URL(fileURLWithPath: $0)) }
+            } else {
+                found = scan(contributor: contributor)
+            }
+            merge(found)
+            status = found.isEmpty ? "No new community recordings to send." : ""
+            return found
+        } catch {
+            self.error = error.localizedDescription
+            status = ""
+            return nil
+        }
     }
 
     func scan(contributor: String) -> [CommunityUpload] {
         let folder = exportRoot.appending(path: "data/\(contributor)")
         let sessions = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)) ?? []
-        return sessions.compactMap { url in
-            guard let data = try? Data(contentsOf: url.appending(path: "session.json")),
-                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                  let id = json["session_id"] as? String else { return nil }
-            return CommunityUpload(id: id, folder: url.path, takes: json["takes"] as? Int ?? 0, month: json["month"] as? String ?? "")
-        }.sorted { $0.id < $1.id }
+        return sessions.compactMap(loadSession).sorted { $0.id < $1.id }
+    }
+
+    private func loadSession(_ url: URL) -> CommunityUpload? {
+        guard let data = try? Data(contentsOf: url.appending(path: "session.json")),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let id = json["session_id"] as? String else { return nil }
+        return CommunityUpload(id: id, folder: url.path, takes: json["takes"] as? Int ?? 0, month: json["month"] as? String ?? "")
     }
 
     func merge(_ found: [CommunityUpload]) {
@@ -158,13 +241,14 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
     }
 
     /// Sends one reviewed session as a pull request. A retry after a failure adds to the same PR.
-    private func send(_ id: String, repo: String, token: String) async {
-        guard !busy, let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded, items[i].takes > items[i].dropped.count else { return }
+    private func send(_ id: String, repo: String, token: String, automatic: Bool) async {
+        guard !busy, queueReadable, let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded, items[i].takes > items[i].dropped.count else { return }
         busy = true; error = nil; items[i].status = .uploading; items[i].error = nil; save()
         defer { busy = false }
         let item = items[i]
         let output = root.appending(path: "upload-\(UUID()).json")
         var arguments = ["upload-community", "--session", item.folder, "--repo", repo, "--output", output.path]
+        if automatic { arguments.append("--automatic") }
         if !item.dropped.isEmpty { arguments += ["--drop", item.dropped.joined(separator: ",")] }
         if let pr = item.prNumber { arguments += ["--pr", String(pr)] }
         if let prompts = Self.promptsDirectory { arguments += ["--prompts-dir", prompts.path] }
@@ -189,15 +273,19 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
     var pending: [CommunityUpload] { unsent.filter { $0.takes > $0.dropped.count } }
     var shared: [CommunityUpload] { items.filter { $0.status == .uploaded } }
 
-    func sendReviewed(_ ids: [String], repo: String, token: String) async {
+    func sendReviewed(_ ids: [String], repo: String, token: String, automatic: Bool = false,
+                      canContinue: () -> Bool = { true }) async {
         guard !busy else { return }
         var sent = 0
         var failed = 0
         for id in ids {
-            await send(id, repo: repo, token: token)
+            guard canContinue(), !Task.isCancelled else { break }
+            await send(id, repo: repo, token: token, automatic: automatic)
             if shared.contains(where: { $0.id == id }) { sent += 1 } else { failed += 1 }
         }
-        error = failed == 0 ? nil : "Some sessions could not be sent. Review the failed sessions and retry."
+        error = failed == 0 ? nil : automatic
+            ? "Some sessions could not be sent. Subvox will retry while automatic sharing is on."
+            : "Some sessions could not be sent. Review the failed sessions and retry."
         status = "\(sent) sent · \(failed) failed"
     }
 

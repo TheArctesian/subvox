@@ -267,6 +267,7 @@ struct SentenceVisit: Codable, Identifiable, Sendable {
     var presentation: String?
     var motionRate: Double?
     var recordingSessionID: UUID?
+    var automaticContributionID: UUID?
     /// Headphone model, product ID and firmware; absent in older visits.
     var motionDevice: MotionDeviceInfo?
 }

@@ -55,6 +55,30 @@ class Fixture(unittest.TestCase):
 
 class CommunityExportTests(Fixture):
 
+    def test_automatic_export_requires_the_current_grant_and_finished_visit(self):
+        path = self.root / "sentence-training.json"
+        data = json.loads(path.read_text())
+        grant = str(uuid.uuid4())
+        visit = data["visits"][0]
+        visit.update(automaticContributionID=grant, recordingSessionID=self.session)
+        def write():
+            path.write_text(json.dumps(data))
+
+        def automatic(current):
+            return export_sessions(self.root, self.out, "anon-7f3a", "consent-v2-automatic", self.prompts,
+                                   automatic_grant=current)
+
+        write()
+        self.assertEqual(automatic(grant), [])
+        visit["endedAt"] = 815709500
+        data["pairs"][1]["review"] = "Excluded"
+        data["pairs"].append(dict(data["pairs"][0], spoken=None, silent=None))
+        write()
+        self.assertEqual(automatic(str(uuid.uuid4())), [])
+        [folder] = automatic(grant)
+        takes = [json.loads(line) for line in (folder / "takes.jsonl").read_text().splitlines()]
+        self.assertEqual([take["prompt_id"] for take in takes], [prompt_identity(COMMUNITY)] * 2)
+
     def test_exports_only_community_and_calibration_takes_in_the_dataset_layout(self):
         [folder] = self.export()
         self.assertEqual(folder.parent.name, "anon-7f3a")
@@ -137,6 +161,25 @@ class UploadTests(Fixture):
         self.assertEqual(call["repo_type"], "dataset")
         self.assertEqual(sorted(call["files"]), sorted(f"data/anon-7f3a/{folder.name}/{n}" for n in ("camera.parquet", "motion.parquet", "session.json", "takes.jsonl")))
         self.assertEqual((result["pr_num"], result["takes"]), (7, 4))
+
+    def test_automatic_retry_recovers_the_existing_pr(self):
+        from types import SimpleNamespace
+        from subvox_ml.community_export import upload_session
+
+        [folder] = self.export()
+
+        class Hub(FakeHub):
+            def get_repo_discussions(self, repo, **filters):
+                self.filters = filters
+                if self.calls:
+                    yield SimpleNamespace(title=self.calls[0]["commit_message"], url="https://hub.test/pr/7", num=7)
+
+        hub = Hub()
+        for _ in range(2):
+            result = upload_session(folder, "owner/dataset", "token", prompts_dir=self.prompts, api=hub, automatic=True)
+            self.assertEqual(result["pr_num"], 7)
+        self.assertEqual(len(hub.calls), 1)
+        self.assertEqual(hub.filters["author"], "anon-7f3a")
 
     def test_resume_adds_to_the_existing_pr_instead_of_opening_another(self):
         from subvox_ml.community_export import upload_session

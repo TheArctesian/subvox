@@ -248,13 +248,21 @@ final class LoopbackRedirect: @unchecked Sendable {
         guard var token = stored() else { state = .signedOut; throw HuggingFaceOAuth.Failure.needsSignIn }
         if !token.expired(at: now) { return token.accessToken }
         guard let refresh = token.refreshToken else { signOut(); throw HuggingFaceOAuth.Failure.needsSignIn }
+        let originalAccessToken = token.accessToken
         do {
             let renewed = try HuggingFaceOAuth.token(from: try await send(HuggingFaceOAuth.refresh(refresh)), now: now)
+            guard stored()?.accessToken == originalAccessToken else { throw HuggingFaceOAuth.Failure.needsSignIn }
             token = HuggingFaceToken(accessToken: renewed.accessToken, refreshToken: renewed.refreshToken ?? refresh,
                                      expiresAt: renewed.expiresAt, scope: renewed.scope ?? token.scope, username: token.username)
             try store.save(try JSONEncoder().encode(token))
             return token.accessToken
-        } catch { signOut(); throw HuggingFaceOAuth.Failure.needsSignIn }
+        } catch let failure as HuggingFaceOAuth.Failure {
+            if case .http(let status, _) = failure, [400, 401, 403].contains(status) {
+                if stored()?.accessToken == originalAccessToken { signOut() }
+                throw HuggingFaceOAuth.Failure.needsSignIn
+            }
+            throw failure
+        }
     }
 
     private func username(_ access: String) async throws -> String? {

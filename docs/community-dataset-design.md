@@ -46,7 +46,7 @@ The mode can be changed at any time in Settings. Changing it doesn't move data t
 - Abuse is the main risk. Rate limits come first. Device attestation is worth investigating if spam appears.
 
 ### Shared by both modes
-- **Review queue:** a finished session is never uploaded automatically. The user sees the takes and can drop any before sending.
+- **Review queue:** manual contributors can review and drop takes before sending. Hugging Face contributors can separately opt into one automatic pull request per future community recording session. The opt-in is tied to the signed-in account and destination dataset. Earlier recordings and personal practice are outside automatic sharing.
 - **Upload queue:** a local queue that persists across restarts and retries failed uploads.
 - **Validation and auto-merge:** a Hugging Face webhook calls a validator Space for every new PR. It checks schema version, file sizes, sample rates, coverage and the eligibility rules, comments on the PR, and auto-merges clean ones. It also keeps the contributor list and hours on the dataset card up to date.
 

@@ -72,6 +72,7 @@ final class SentenceTrainingWorkflow {
     var collectionRole:DataRole?
     @ObservationIgnored private var cameraReadings: [CameraPoseReading] = []
     @ObservationIgnored private weak var cameraRecorder: SessionRecorder?
+    var onCommunitySessionSaved: (() -> Void)?
     var onTrainingChanged: (() -> Void)?
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var buffer: [MotionSample] = []
@@ -210,9 +211,10 @@ final class SentenceTrainingWorkflow {
 
     @discardableResult
     func beginVisit(session: RecordingSession, audioDevice: String?, timing: TrainingPace,
-                    presentation: Presentation, persistImmediately: Bool = true) throws -> SentenceVisit {
+                    presentation: Presentation, persistImmediately: Bool = true, automaticContributionID: UUID? = nil) throws -> SentenceVisit {
         let visit = SentenceVisit(notes: notes, directory: session.directory.path, audioDevice: audioDevice,
-                                  pace: timing.rawValue, presentation: presentation.rawValue, recordingSessionID: session.id)
+                                  pace: timing.rawValue, presentation: presentation.rawValue, recordingSessionID: session.id,
+                                  automaticContributionID: automaticContributionID)
         activeVisitID = visit.id; activeRecordingID = session.id
         data.visits.append(visit)
         if persistImmediately { try persist() }
@@ -451,7 +453,7 @@ final class SentenceTrainingWorkflow {
     }
 
     func start(audio: AudioService, recorder: SessionRecorder, whisper: LocalWhisper,
-               canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil) {
+               canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil, automaticContributionID: UUID? = nil) {
         let practiceMode = practicePlan != nil && retry == nil && !repairs
         let communityMode = !practiceMode && readingSource == .community && retry == nil && !repairs
         guard !isBusy, storageReady, data.reservedUnlockedAt == nil, !recorder.isRecording,
@@ -523,7 +525,8 @@ final class SentenceTrainingWorkflow {
             let device = await MotionDeviceInfo.probe()
             do {
                 let visit = try beginVisit(session: recordingSession, audioDevice: audio.activeDeviceName,
-                                           timing: timing, presentation: presentation, persistImmediately: false)
+                                           timing: timing, presentation: presentation, persistImmediately: false,
+                                           automaticContributionID: communityMode ? automaticContributionID : nil)
                 if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].motionDevice = device }
                 try await persistInBackground()
                 for (groupIndex, group) in batch.enumerated() {
@@ -574,6 +577,7 @@ final class SentenceTrainingWorkflow {
             currentPromptIDs = []
             phase = .processing
             guard !isTerminating, await saveInBackground() else { phase = .finished; return }
+            if communityMode && automaticContributionID != nil { onCommunitySessionSaved?() }
             // A fresh unstructured task processes saved complete pairs even after Stop.
             // Community takes need no local Whisper; alignment can run later or elsewhere.
             await Task { @MainActor in
