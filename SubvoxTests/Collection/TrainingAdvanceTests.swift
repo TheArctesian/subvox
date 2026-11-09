@@ -105,7 +105,7 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
-    func testMotionWarningClearsWhenRetryBegins() async throws {
+    func testMotionGapRetriesWithoutSettingASessionError() async throws {
         let (workflow, root) = try fixture()
         defer { try? FileManager.default.removeItem(at: root) }
         workflow.guidedRecording = true
@@ -123,12 +123,11 @@ final class TrainingAdvanceTests: XCTestCase {
         workflow.ingest(MotionSample(t: now - 0.2, rotation: (0, 0, 0)))
         workflow.ingest(MotionSample(t: now, rotation: (0, 0, 0)))
         try await waitFor(.ready, in: workflow)
-        XCTAssertNotNil(workflow.takeWarning)
         XCTAssertNil(workflow.error)
 
         XCTAssertTrue(workflow.advance())
         try await waitFor(.speak, in: workflow)
-        XCTAssertNil(workflow.takeWarning)
+        XCTAssertNil(workflow.error)
         XCTAssertTrue(workflow.finishCurrentTake())
         try await waitFor(.ended, in: workflow)
         XCTAssertTrue(workflow.advance())

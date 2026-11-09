@@ -22,7 +22,7 @@ final class SentenceTrainingWorkflow {
         switch phase {
         case .ready:
             let instruction = currentCondition == .normal ? String(localized: "Say it aloud") : String(localized: "Mouth it silently, lips only")
-            text = AttributedString((error ?? takeWarning).map { $0 + " " } ?? "")
+            text = AttributedString(error.map { $0 + " " } ?? "")
             text += AttributedString(String(localized: "Take \(min(index + 1, total)) of \(total). \(instruction): "))
             var prompt = AttributedString(currentText)
             prompt.languageIdentifier = currentLanguage  // read in its own language
@@ -45,7 +45,6 @@ final class SentenceTrainingWorkflow {
     private(set) var recordsLiteratureInPasses = false
     private(set) var lastPracticePlan: [[SentencePrompt]] = []
     private(set) var error: String?
-    private(set) var takeWarning: String?
     private(set) var storageReady = true
     private(set) var currentText = ""
     private(set) var currentEnglishTranslation: String?
@@ -304,7 +303,6 @@ final class SentenceTrainingWorkflow {
         if !isSavingTake && (phase == .relax || phase == .speak || phase == .mouth) {
             if guidedRecording,(phase == .speak || phase == .mouth),let previous=buffer.last,
                sample.t<=previous.t || sample.t-previous.t>0.12 || sample.sensorLocation != previous.sensorLocation {
-                takeWarning = String(localized: "Motion source changed or capture has a gap. The interrupted attempt is discarded; start again when motion is stable.")
                 redoRequested=true
             }
             buffer.append(sample)
@@ -360,14 +358,13 @@ final class SentenceTrainingWorkflow {
             currentVerseLines = []
         }
         currentCondition=condition
-        defer { retryableTake = nil; redoRequested = false; pendingRedoCleanup = nil; takeWarning = nil }
+        defer { retryableTake = nil; redoRequested = false; pendingRedoCleanup = nil }
         while true {
             try Task.checkCancellation()
             buffer = []; retryableTake = nil; redoRequested = false
             pendingRedoCleanup = { try onRedo(self.retryableTake) }
             do {
                 if guidedRecording {try await waitForAdvance(.ready)}
-                takeWarning = nil
                 try await rest(.relax, seconds: baselineSeconds)
                 guard canRecord() else { throw Failure.disconnected }
                 let recording = try await captureTake(condition: condition, maximumDuration: maximumDuration)
