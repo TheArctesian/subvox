@@ -94,6 +94,47 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
+    func testLiteratureCompletesTheSilentPassBeforeStartingTheSpokenPass() {
+        let literature = SentenceTrainingWorkflow.takeOrder(groupCount: 3, conditions: [.normal, .silent], fullPiece: true)
+        XCTAssertEqual(literature.map(\.group), [0, 1, 2, 0, 1, 2])
+        XCTAssertEqual(literature.map(\.condition), [.silent, .silent, .silent, .normal, .normal, .normal])
+
+        let drill = SentenceTrainingWorkflow.takeOrder(groupCount: 2, conditions: [.normal, .silent], fullPiece: false)
+        XCTAssertEqual(drill.map(\.group), [0, 0, 1, 1])
+        XCTAssertEqual(drill.map(\.condition), [.normal, .silent, .normal, .silent])
+    }
+
+    @MainActor
+    func testMotionGapRetriesWithoutSettingASessionError() async throws {
+        let (workflow, root) = try fixture()
+        defer { try? FileManager.default.removeItem(at: root) }
+        workflow.guidedRecording = true
+        let take = Task {
+            try await workflow.collectTake(condition: .normal, maximumDuration: 30,
+                                           baselineSeconds: 0, recoverySeconds: 0,
+                                           onCompleted: { _ in }, onRedo: { _ in })
+        }
+        defer { take.cancel() }
+        try await waitFor(.ready, in: workflow)
+        XCTAssertTrue(workflow.advance())
+        try await waitFor(.speak, in: workflow)
+
+        let now = ProcessInfo.processInfo.systemUptime
+        workflow.ingest(MotionSample(t: now - 0.2, rotation: (0, 0, 0)))
+        workflow.ingest(MotionSample(t: now, rotation: (0, 0, 0)))
+        try await waitFor(.ready, in: workflow)
+        XCTAssertNil(workflow.error)
+
+        XCTAssertTrue(workflow.advance())
+        try await waitFor(.speak, in: workflow)
+        XCTAssertNil(workflow.error)
+        XCTAssertTrue(workflow.finishCurrentTake())
+        try await waitFor(.ended, in: workflow)
+        XCTAssertTrue(workflow.advance())
+        try await take.value
+    }
+
+    @MainActor
     func testAdvanceCannotShortenRelaxOrRecovery() async throws {
         for phase in [SentenceTrainingWorkflow.Phase.relax, .recovery] {
             let (workflow, root) = try fixture()

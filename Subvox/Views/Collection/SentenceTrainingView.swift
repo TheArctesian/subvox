@@ -255,6 +255,10 @@ struct SentenceTrainingView: View {
                     Spacer()
                     Toggle("Pacing guide", isOn: $showPacingGuide).toggleStyle(.switch).controlSize(.small)
                         .focused($pacingFocused)
+                    if workflow.recordsLiteratureInPasses {
+                        Text(workflow.currentCondition == .silent ? "Silent pass" : "Spoken pass")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                    }
                     Text("\(min(workflow.index + 1, workflow.total)) of \(workflow.total)")
                         .font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
                 }
