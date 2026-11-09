@@ -4863,6 +4863,40 @@
         }
       }
     },
+    "Last round": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última ronda"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última ronda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière série"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上一轮"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上一輪"
+          }
+        }
+      }
+    },
     "Last round: %@": {
       "localizations": {
         "es": {
@@ -6699,6 +6733,40 @@
         }
       }
     },
+    "Part": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parte"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partie"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段落"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段落"
+          }
+        }
+      }
+    },
     "Paste": {
       "localizations": {
         "es": {
@@ -6729,6 +6797,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "貼上"
+          }
+        }
+      }
+    },
+    "Personal library": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biblioteca personal"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biblioteca personal"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bibliothèque personnelle"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "个人文库"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "個人文庫"
           }
         }
       }
@@ -6797,6 +6899,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "詩"
+          }
+        }
+      }
+    },
+    "Poetry": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poesía"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poesía"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poésie"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "诗歌"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詩歌"
           }
         }
       }
@@ -7753,6 +7889,40 @@
         }
       }
     },
+    "Read a speech or poem at your own pace. The words highlight as you go.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee un discurso o poema a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee un discurso o poema a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisez un discours ou un poème à votre rythme. Les mots se surlignent au fil de la lecture."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的节奏朗读演讲或诗歌，词语会随进度高亮。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的節奏朗讀演講或詩歌，詞語會隨進度醒目顯示。"
+          }
+        }
+      }
+    },
     "Read as": {
       "localizations": {
         "es": {
@@ -7783,6 +7953,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "朗讀語言"
+          }
+        }
+      }
+    },
+    "Read at your own pace. The words highlight as you go.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee a tu ritmo. Las palabras se resaltan a medida que avanzas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisez à votre rythme. Les mots se surlignent au fil de la lecture."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的节奏朗读，词语会随进度高亮。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按自己的節奏朗讀，詞語會隨進度醒目顯示。"
           }
         }
       }
@@ -9347,6 +9551,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在保存並檢查你的錄音。"
+          }
+        }
+      }
+    },
+    "Saving…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando…"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardando…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrement…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在保存…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在儲存…"
           }
         }
       }
@@ -13767,6 +14005,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "約 %@ 年"
+          }
+        }
+      }
+    },
+    "part": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "parte"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "parte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "partie"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "段"
           }
         }
       }

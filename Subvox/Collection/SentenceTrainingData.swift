@@ -34,8 +34,9 @@ enum SentenceReference {
 enum SentencePromptKind: String, Codable, Sendable {
     case sentence, wordRepair, community, calibration
     /// Train tabs: public-domain speeches and poems, shadowing drills, minimal pairs, the user's own text.
-    case speech, drill, minimalPair, freeText, sound
-    var isPractice: Bool { [.speech, .drill, .minimalPair, .freeText, .sound].contains(self) }
+    case speech, poetry, drill, minimalPair, freeText, sound
+    var isLiterature: Bool { self == .speech || self == .poetry }
+    var isPractice: Bool { isLiterature || [.drill, .minimalPair, .freeText, .sound].contains(self) }
 }
 
 struct SentencePrompt: Codable, Identifiable, Hashable, Sendable {
@@ -43,6 +44,8 @@ struct SentencePrompt: Codable, Identifiable, Hashable, Sendable {
     var kind: SentencePromptKind = .sentence
     /// BCP-47 base language ("en", "fr", "es", "zh"); nil means English (older prompts).
     var language: String? = nil
+    var englishTranslation: String? = nil
+    var pinyin: String? = nil
     /// Punctuation/case variants have the same persistent identity.
     var id: String { Self.identity(text) }
     static func identity(_ text: String) -> String {

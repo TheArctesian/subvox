@@ -8,6 +8,7 @@ struct SentenceTrainingView: View {
     private var mouth: Color { colorScheme == .dark ? Color(red: 0.45, green: 0.67, blue: 1) : Color(red: 0.19, green: 0.37, blue: 0.78) }
     private var relax: Color { colorScheme == .dark ? Color(red: 1, green: 0.74, blue: 0.35) : Color(red: 0.62, green: 0.39, blue: 0.08) }
     @State private var channel = MotionPlotChannel.rotation
+    @State private var promptViewportHeight: CGFloat = 0
     private enum Section: String, CaseIterable { case record = "Record", review = "Review", progress = "Progress" }
     @State private var section = Section.record
     /// VoiceOver starts on the recording screen's title when a round begins and at each new take.
@@ -45,7 +46,7 @@ struct SentenceTrainingView: View {
                 }
             }
         } content: {
-            if workflow.isBusy {
+            if workflow.phase == .preparing {
                 VStack(spacing: 16) {
                     ProgressView()
                     Text(workflow.phase == .preparing ? "Starting recording…" : workflow.processingText).font(.title3)
@@ -54,6 +55,9 @@ struct SentenceTrainingView: View {
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
               VStack(spacing: 0) {
+                if workflow.phase == .processing {
+                    TrainingProcessingStatus(workflow: workflow).padding(.top, 12)
+                }
                 Picker("Training section", selection: $section) {
                     Text("Record").tag(Section.record)
                     Text("Review" + (attentionCount > 0 ? " (\(attentionCount))" : "")).tag(Section.review)
@@ -67,7 +71,7 @@ struct SentenceTrainingView: View {
                         if let error = workflow.error { Text(error).foregroundStyle(.red) }
                         switch section {
                         case .record:
-                            setup
+                            setup.disabled(workflow.isBusy)
                             if attentionCount > 0 {
                                 HStack {
                                     Label("\(attentionCount) pairs need attention; usable recordings are included automatically", systemImage: "waveform.path")
@@ -249,7 +253,7 @@ struct SentenceTrainingView: View {
         let workflow=model.sentenceTraining
         let resting=workflow.phase == .relax || workflow.phase == .recovery
         let color=resting ? relax:workflow.currentCondition == .normal ? speak:mouth
-        let status=workflow.phase == .ready ? "Ready":resting ? "Relax":workflow.phase == .ended ? "Saved":"Recording"
+        let status=workflow.isSavingTake ? String(localized: "Saving…") : workflow.phase == .ready ? "Ready":resting ? "Relax":workflow.phase == .ended ? "Saved":"Recording"
         return RecordingViewport {
             VStack(spacing:8) {
                 HStack {Text(recordingTitle).font(.headline).accessibilityAddTraits(.isHeader).accessibilityFocused($focusRecording);Spacer();Text("\(min(workflow.index+1,workflow.total)) of \(workflow.total)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)}
@@ -270,11 +274,19 @@ struct SentenceTrainingView: View {
                         Label(resting ? "REST" : workflow.currentCondition == .normal ? "SPEAK ALOUD" : "MOUTH SILENTLY",
                               systemImage: resting ? "pause.circle" : workflow.currentCondition == .normal ? "speaker.wave.2.fill" : "mouth.fill")
                             .font(.title2.weight(.bold)).foregroundStyle(color)
-                        WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.activeWordIndex,color:color)
+                        VStack(spacing: 6) {
+                            WordFocusPrompt(text: workflow.currentText, activeWordIndex: workflow.activeWordIndex,
+                                            color: color, pinyin: workflow.currentPinyin,
+                                            verseLines: workflow.currentVerseLines, viewportHeight: promptViewportHeight)
+                            if let translation = workflow.currentEnglishTranslation {
+                                Text(translation).font(.title3).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                            }
+                        }
                         Text(resting ? "Relax your mouth. Wait for the recording cue.":workflow.phase == .ended ? "Take saved. Press Space for the next one, or redo any mistake.":workflow.guideSecondsRemaining == nil ? "Finished? Press Space." : "Follow the highlighted words.")
                             .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
                 }
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { promptViewportHeight = $0 }
             }
         } actions: {
             VStack(spacing:10) {
@@ -298,6 +310,7 @@ struct SentenceTrainingView: View {
         switch model.sentenceTraining.currentKind {
         case .sound: TrainMode.sounds.title
         case .speech: TrainMode.speech.title
+        case .poetry: TrainMode.poetry.title
         case .drill: TrainMode.language.title
         case .minimalPair: TrainMode.minimalPairs.title
         case .freeText: TrainMode.free.title
@@ -531,5 +544,23 @@ struct SentenceTrainingView: View {
         let reserved = sentences.filter { data.roles[$0.id] == .finalTest }
         return Label("\(reserved.count) of \(sentences.count) sentences reserved for the final test", systemImage: "lock.fill")
             .font(.callout).foregroundStyle(.secondary)
+    }
+}
+
+
+/// Processing stays local while the recording pages remain available.
+struct TrainingProcessingStatus: View {
+    var workflow: SentenceTrainingWorkflow
+
+    var body: some View {
+        if workflow.phase == .processing {
+            HStack(spacing: 8) {
+                ProgressView().controlSize(.small)
+                Text(workflow.processingText.isEmpty ? String(localized: "Saving…") : workflow.processingText)
+                    .font(.callout)
+            }
+            .foregroundStyle(.secondary)
+            .accessibilityElement(children: .combine)
+        }
     }
 }

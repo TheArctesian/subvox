@@ -36,6 +36,10 @@ final class SentenceTrainingWorkflow {
     private(set) var error: String?
     private(set) var storageReady = true
     private(set) var currentText = ""
+    private(set) var currentEnglishTranslation: String?
+    private(set) var currentPinyin: [String?] = []
+    private(set) var currentVerseLines: [String] = []
+    private(set) var isSavingTake = false
     private(set) var currentCondition: SpeechCondition = .normal
     /// The practice mode of the take being recorded (nil for Reading), for the recording screen's title.
     private(set) var currentKind: SentencePromptKind?
@@ -66,6 +70,7 @@ final class SentenceTrainingWorkflow {
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var buffer: [MotionSample] = []
     @ObservationIgnored private let storeURL: URL
+    @ObservationIgnored private let storeWrites = DispatchQueue(label: "Subvox.sentence-store", qos: .userInitiated)
     @ObservationIgnored private var activeVisitID: UUID?
     @ObservationIgnored private var activeRecordingID: UUID?
     @ObservationIgnored private var isTerminating = false
@@ -140,10 +145,10 @@ final class SentenceTrainingWorkflow {
 
     func clearPracticeResults() { lastPracticePairIDs = [] }
 
-    func setPhoneCheck(_ result: PhoneCheckResult?, for id: UUID) {
+    func setPhoneCheck(_ result: PhoneCheckResult?, for id: UUID) async {
         guard let i = data.pairs.firstIndex(where: { $0.id == id }) else { return }
         data.pairs[i].phoneCheck = result
-        save()
+        await saveInBackground()
     }
 
     var plan: [[SentencePrompt]] {
@@ -194,16 +199,16 @@ final class SentenceTrainingWorkflow {
 
     @discardableResult
     func beginVisit(session: RecordingSession, audioDevice: String?, timing: TrainingPace,
-                    presentation: Presentation) throws -> SentenceVisit {
+                    presentation: Presentation, persistImmediately: Bool = true) throws -> SentenceVisit {
         let visit = SentenceVisit(notes: notes, directory: session.directory.path, audioDevice: audioDevice,
                                   pace: timing.rawValue, presentation: presentation.rawValue, recordingSessionID: session.id)
         activeVisitID = visit.id; activeRecordingID = session.id
         data.visits.append(visit)
-        try persist()
+        if persistImmediately { try persist() }
         return visit
     }
 
-    func beginPair(prompts: [SentencePrompt], visit: SentenceVisit, session: RecordingSession) throws -> SentencePair {
+    func beginPair(prompts: [SentencePrompt], visit: SentenceVisit, session: RecordingSession, persistImmediately: Bool = true) throws -> SentencePair {
         guard session.id == activeRecordingID, visit.id == activeVisitID,
               let first = prompts.first, let role = data.roles[first.id], role != .finalTest,
               prompts.allSatisfy({ data.roles[$0.id] == role }) else { throw Failure.split }
@@ -215,11 +220,11 @@ final class SentenceTrainingWorkflow {
         data.pairs[data.pairs.count - 1].practiceMode = first.kind.isPractice ? first.kind : nil
         data.pairs[data.pairs.count - 1].pronunciationProfile = try PronunciationProfile.load()
         if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].pairIDs.append(pair.id) }
-        try persist()
+        if persistImmediately { try persist() }
         return pair
     }
 
-    func saveCompletedHalf(_ recording: SentenceRecording, pairID: UUID, session: RecordingSession) throws {
+    func saveCompletedHalf(_ recording: SentenceRecording, pairID: UUID, session: RecordingSession, persistImmediately: Bool = true) throws {
         guard let i = data.pairs.firstIndex(where: { $0.id == pairID }),
               data.pairs[i].recordingSessionID == session.id, session.id == activeRecordingID else { throw Failure.ownership }
         if recording.condition == .normal { data.pairs[i].spoken = recording }
@@ -228,7 +233,7 @@ final class SentenceTrainingWorkflow {
         data.pairs[i].directory = session.directory.path
         data.pairs[i].sessionStartUptime = session.startUptime
         data.pairs[i].audioOffset = session.audioOffset
-        try persist()
+        if persistImmediately { try persist() }
     }
 
     private func finishVisit(session: RecordingSession?) {
@@ -268,7 +273,7 @@ final class SentenceTrainingWorkflow {
     }
 
     func ingest(_ sample: MotionSample) {
-        if phase == .relax || phase == .speak || phase == .mouth {
+        if !isSavingTake && (phase == .relax || phase == .speak || phase == .mouth) {
             if guidedRecording,(phase == .speak || phase == .mouth),let previous=buffer.last,
                sample.t<=previous.t || sample.t-previous.t>0.12 || sample.sensorLocation != previous.sensorLocation {
                 error="Motion source changed or capture has a gap. The interrupted attempt is discarded; start again when motion is stable."
@@ -318,9 +323,14 @@ final class SentenceTrainingWorkflow {
 
     /// Retries only this half. A recovery-time redo first removes the saved, unwanted half.
     func collectTake(condition: SpeechCondition, maximumDuration: Double, baselineSeconds: Double,
-                     recoverySeconds: Double,text:String?=nil, canRecord: () -> Bool = { true }, onCompleted: (SentenceRecording) throws -> Void,
+                     recoverySeconds: Double,text:String?=nil, canRecord: () -> Bool = { true }, onCompleted: (SentenceRecording) async throws -> Void,
                      onRedo: @escaping (SentenceRecording?) throws -> Void) async throws {
-        if let text {currentText=text}
+        if let text {
+            currentText = text
+            currentEnglishTranslation = nil
+            currentPinyin = []
+            currentVerseLines = []
+        }
         currentCondition=condition
         defer { retryableTake = nil; redoRequested = false; pendingRedoCleanup = nil }
         while true {
@@ -333,7 +343,11 @@ final class SentenceTrainingWorkflow {
                 guard canRecord() else { throw Failure.disconnected }
                 let recording = try await captureTake(condition: condition, maximumDuration: maximumDuration)
                 retryableTake = recording
-                try onCompleted(recording)
+                do {
+                    isSavingTake = true
+                    defer { isSavingTake = false }
+                    try await onCompleted(recording)
+                }
                 if guidedRecording {try await waitForAdvance(.ended)}
                 else {try await rest(.recovery, seconds: recoverySeconds)}
                 if redoRequested { throw CaptureControl.redo }
@@ -430,11 +444,9 @@ final class SentenceTrainingWorkflow {
         var planned = plan
         if practiceMode {
             data.addPractice(planned.flatMap { $0 })
-            guard save() else { return }
         }
         if communityMode {
             data.addCommunity(planned.flatMap { $0 })
-            guard save() else { return }
         }
         if practiceMode { lastPracticePairIDs = [] }
         let conditions: [SpeechCondition] = communityMode && mouthedOnly ? [.silent] : [.normal, .silent]
@@ -465,6 +477,9 @@ final class SentenceTrainingWorkflow {
         phase = .preparing; error = nil; index = 0; total = batch.count * conditions.count
         task = Task {
             defer {if activeRecordingID==nil {camera.stop();cameraRecorder=nil;cameraReadings=[]}}
+            if practiceMode || communityMode {
+                guard await saveInBackground(), !Task.isCancelled else { phase = .setup; return }
+            }
             if captureCameraPoints {
                 // Acquisition owns this camera; an early microphone/recorder
                 // failure must also release the preview and numeric callback.
@@ -490,16 +505,27 @@ final class SentenceTrainingWorkflow {
             let device = await MotionDeviceInfo.probe()
             do {
                 let visit = try beginVisit(session: recordingSession, audioDevice: audio.activeDeviceName,
-                                           timing: timing, presentation: presentation)
-                if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].motionDevice = device; try persist() }
+                                           timing: timing, presentation: presentation, persistImmediately: false)
+                if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].motionDevice = device }
+                try await persistInBackground()
                 for (groupIndex, group) in batch.enumerated() {
+                    try Task.checkCancellation()
                     guard canRecord() else { throw Failure.disconnected }
-                    let pair = try beginPair(prompts: group, visit: visit, session: recordingSession)
+                    let pair = try beginPair(prompts: group, visit: visit, session: recordingSession, persistImmediately: false)
+                    try await persistInBackground()
                     pairIDs.append(pair.id); currentPromptIDs = pair.promptIDs
                     if practiceMode { lastPracticePairIDs.append(pair.id) }
+                    let translations = group.compactMap(\.englishTranslation)
+                    currentEnglishTranslation = translations.count == group.count ? translations.joined(separator: " ") : nil
+                    currentPinyin = group.flatMap { WordFocusGuide.pinyinByWord(in: $0.text, pinyin: $0.pinyin) }
+                    currentText = pair.text
+                    currentVerseLines = group.first?.kind.isLiterature == true
+                        ? group.map(\.text) : []
+                    currentKind = group.first.flatMap { $0.kind.isPractice ? $0.kind : nil }
+                    currentLanguage = group.first?.language ?? "en"
                     for condition in conditions {
                         try Task.checkCancellation()
-                        currentText = pair.text; currentCondition = condition; currentKind = group.first.flatMap { $0.kind.isPractice ? $0.kind : nil }; currentLanguage = group.first?.language ?? "en"
+                        currentCondition = condition
                         if condition == .normal, let first = group.first, [.drill, .sound, .minimalPair].contains(first.kind), let playReference {
                             await playReference(pair.text, first.language ?? "en")
                         }
@@ -508,7 +534,9 @@ final class SentenceTrainingWorkflow {
                             onCompleted: { recording in
                                 guard canRecord() else { throw Failure.disconnected }
                                 guard let checkpoint = try recorder.checkpoint(sessionID: recordingSession.id) else { throw Failure.ownership }
-                                try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint)
+                                try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint, persistImmediately: false)
+                                try await persistInBackground()
+                                try Task.checkCancellation()
                                 recorder.logEvent(recording.samples, kind: condition == .normal ? "sentence-spoken" : "sentence-silent",
                                                   label: pair.text, confidence: nil)
                             }, onRedo: { discarded in
@@ -525,9 +553,9 @@ final class SentenceTrainingWorkflow {
             let finished = recorder.stop(sessionID: recordingSession.id)
             if ownedAudio, !recorder.isRecording { audio.stop() }
             finishVisit(session: finished)
-            guard save(), !isTerminating else { phase = .finished; return }
             currentPromptIDs = []
             phase = .processing
+            guard !isTerminating, await saveInBackground() else { phase = .finished; return }
             // A fresh unstructured task processes saved complete pairs even after Stop.
             // Community takes need no local Whisper; alignment can run later or elsewhere.
             await Task { @MainActor in
@@ -721,7 +749,7 @@ final class SentenceTrainingWorkflow {
             pair.error = error.localizedDescription
         }
         if let current = data.pairs.firstIndex(where: { $0.id == id }) { data.pairs[current] = pair }
-        save(notify: true)
+        await saveInBackground(notify: true)
     }
 
     func validate() {
@@ -755,9 +783,34 @@ final class SentenceTrainingWorkflow {
     }
     func use(for pair: SentencePair) -> SentencePairUse { pairUses[pair.id] ?? pair.automaticUse }
     private func persist() throws {
-        try SentenceStore.save(data, to: storeURL)
+        try storeWrites.sync { try SentenceStore.save(data, to: storeURL) }
         refreshPairUses()
     }
+
+    private func persistInBackground() async throws {
+        let snapshot = data
+        let url = storeURL
+        // Enqueue on the main actor so the synchronous termination save is ordered after this snapshot.
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            storeWrites.async {
+                continuation.resume(with: Result { try SentenceStore.save(snapshot, to: url) })
+            }
+        }
+        refreshPairUses()
+    }
+
+    @discardableResult private func saveInBackground(notify: Bool = false) async -> Bool {
+        do {
+            try await persistInBackground()
+            if notify { onTrainingChanged?() }
+            return true
+        } catch {
+            storageReady = false
+            self.error = error.localizedDescription
+            return false
+        }
+    }
+
     func tickForTesting() { secondsRemaining += 0.05 }
     private func countdown(_ seconds: Double, allowsAdvance: Bool = false, allowsRedo: Bool = false) async throws {
         let end = ProcessInfo.processInfo.systemUptime + seconds

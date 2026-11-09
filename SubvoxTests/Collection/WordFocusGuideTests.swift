@@ -15,6 +15,15 @@ final class WordFocusGuideTests: XCTestCase {
         XCTAssertNil(guide.wordIndex(elapsed: 1, count: 0))
     }
 
+    func testHanCharactersHaveIndividualBeatsAndMatchingPinyin() {
+        let text = "「你好，世界！」"
+        XCTAssertEqual(WordFocusGuide.fragments(in: text).joined(), text)
+        XCTAssertEqual(WordFocusGuide.words(in: text), ["「你", "好，", "世", "界！」"])
+        XCTAssertEqual(WordFocusGuide.pinyinByWord(in: text, pinyin: "nǐ hǎo shì jiè"), ["nǐ", "hǎo", "shì", "jiè"])
+        XCTAssertEqual(WordFocusGuide.pinyinByWord(in: text, pinyin: "nǐ hǎo"), [nil, nil, nil, nil])
+        XCTAssertEqual(WordFocusGuide.pinyinByWord(in: "你在哪兒？", pinyin: "nǐ zài nǎr"), ["nǐ", "zài", "nǎr", nil])
+    }
+
     func testDisplayedWordTokensRetainPunctuationAndMatchAcrossWhitespace() {
         XCTAssertEqual(WordFocusGuide.words(in: "Her favourite\n song\tplayed softly."), ["Her", "favourite", "song", "played", "softly."])
         XCTAssertEqual(WordFocusGuide.words(in: "Don't rush."), ["Don't", "rush."])

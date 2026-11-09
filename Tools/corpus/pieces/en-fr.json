@@ -397,6 +397,183 @@
    "source_url": "https://fr.wikisource.org/wiki/Po%C3%A9sies_in%C3%A9dites_(Marceline_Desbordes-Valmore)/Les_Roses_de_Saadi",
    "portrait": "File:Marceline Desbordes-Valmore.jpg",
    "portrait_license": "Public domain"
+  },
+  {
+   "id": "invictus",
+   "language": "en",
+   "kind": "poem",
+   "title": "Invictus",
+   "author": "William Ernest Henley",
+   "year": 1888,
+   "died": 1903,
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    16
+   ],
+   "source_url": "https://www.poetryfoundation.org/poems/51642/invictus",
+   "lines": [
+    "Out of the night that covers me,",
+    "  Black as the pit from pole to pole,",
+    "I thank whatever gods may be",
+    "  For my unconquerable soul.",
+    "In the fell clutch of circumstance",
+    "  I have not winced nor cried aloud.",
+    "Under the bludgeonings of chance",
+    "  My head is bloody, but unbowed.",
+    "Beyond this place of wrath and tears",
+    "  Looms but the Horror of the shade,",
+    "And yet the menace of the years",
+    "  Finds and shall find me unafraid.",
+    "It matters not how strait the gate,",
+    "  How charged with punishments the scroll,",
+    "I am the master of my fate,",
+    "  I am the captain of my soul."
+   ]
+  },
+  {
+   "id": "ozymandias",
+   "language": "en",
+   "kind": "poem",
+   "title": "Ozymandias",
+   "author": "Percy Bysshe Shelley",
+   "year": 1818,
+   "died": 1822,
+   "stanza_ends": [
+    4,
+    8,
+    11,
+    14
+   ],
+   "source_url": "https://anthology.lib.virginia.edu/work/ShelleyP/shelley-ozymandias",
+   "lines": [
+    "I met a traveller from an antique land",
+    "Who said: ‘Two vast and trunkless legs of stone",
+    "Stand in the desert. Near them, on the sand,",
+    "Half sunk, a shattered visage lies, whose frown,",
+    "And wrinkled lip, and sneer of cold command,",
+    "Tell that its sculptor well those passions read",
+    "Which yet survive, stamped on these lifeless things,",
+    "The hand that mocked them and the heart that fed.",
+    "And on the pedestal these words appear —",
+    "“My name is Ozymandias, king of kings:",
+    "Look on my works, ye Mighty, and despair!”",
+    "Nothing beside remains. Round the decay",
+    "Of that colossal wreck, boundless and bare",
+    "The lone and level sands stretch far away.’"
+   ]
+  },
+  {
+   "id": "a-fairy-song",
+   "language": "en",
+   "kind": "poem",
+   "title": "A Fairy Song",
+   "author": "William Shakespeare",
+   "year": 1600,
+   "died": 1616,
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    14
+   ],
+   "source_url": "https://www.folger.edu/explore/shakespeares-works/a-midsummer-nights-dream/read/2/1/",
+   "lines": [
+    "Over hill, over dale,",
+    "Thorough bush, thorough brier,",
+    "Over park, over pale,",
+    "Thorough flood, thorough fire!",
+    "I do wander everywhere,",
+    "Swifter than the moon’s sphere;",
+    "And I serve the Fairy Queen,",
+    "To dew her orbs upon the green;",
+    "The cowslips tall her pensioners be;",
+    "In their gold coats spots you see;",
+    "Those be rubies, fairy favours;",
+    "In those freckles live their savours;",
+    "I must go seek some dewdrops here,",
+    "And hang a pearl in every cowslip’s ear."
+   ]
+  },
+  {
+   "id": "holy-sonnet-10",
+   "language": "en",
+   "kind": "poem",
+   "title": "Holy Sonnet 10: Death, Be Not Proud",
+   "author": "John Donne",
+   "year": 1633,
+   "died": 1631,
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    14
+   ],
+   "source_url": "https://poets.org/poem/death-be-not-proud-holy-sonnet-10",
+   "lines": [
+    "Death, be not proud, though some have called thee",
+    "Mighty and dreadful, for thou art not so;",
+    "For those whom thou think’st thou dost overthrow",
+    "Die not, poor Death, nor yet canst thou kill me.",
+    "From rest and sleep, which but thy pictures be,",
+    "Much pleasure; then from thee much more must flow,",
+    "And soonest our best men with thee do go,",
+    "Rest of their bones, and soul’s delivery.",
+    "Thou art slave to fate, chance, kings, and desperate men,",
+    "And dost with poison, war, and sickness dwell,",
+    "And poppy or charms can make us sleep as well",
+    "And better than thy stroke; why swell’st thou then?",
+    "One short sleep past, we wake eternally",
+    "And death shall be no more; Death, thou shalt die."
+   ]
+  },
+  {
+   "id": "once-i-passd-through-a-populous-city",
+   "language": "en",
+   "kind": "poem",
+   "title": "Once I Pass'd Through a Populous City",
+   "author": "Walt Whitman",
+   "year": 1871,
+   "died": 1892,
+   "source_url": "https://whitmanarchive.org/about/archive/wwa-2000-to-2007/published/LG/1871/poems/28.html",
+   "stanza_ends": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7
+   ],
+   "lines": [
+    "ONCE I pass'd through a populous city, imprinting my brain, for future use, with its shows, architecture, customs, and traditions;",
+    "Yet now, of all that city, I remember only a woman I casually met there, who detained me for love of me;",
+    "Day by day and night by night we were together,—All else has long been forgotten by me;",
+    "I remember, I say, only that woman who passionately clung to me;",
+    "Again we wander—we love—we separate again;",
+    "Again she holds me by the hand—I must not go!",
+    "I see her close beside me, with silent lips, sad and tremulous."
+   ]
+  },
+  {
+   "id": "song-of-myself-section-7",
+   "language": "en",
+   "kind": "poem",
+   "title": "Song of Myself, Section 7 (excerpt)",
+   "author": "Walt Whitman",
+   "year": 1892,
+   "died": 1892,
+   "date": "1891–92",
+   "source_url": "https://whitmanarchive.org/about/archive/wwha-1995-to-2000/works/leaves/1891/text/fulltext.html",
+   "stanza_ends": [
+    2,
+    3
+   ],
+   "lines": [
+    "Undrape! you are not guilty to me, nor stale nor discarded,",
+    "I see through the broadcloth and gingham whether or no,",
+    "And am around, tenacious, acquisitive, tireless, and cannot be shaken away."
+   ]
   }
  ]
 }

@@ -3,25 +3,30 @@ import Foundation
 /// The Train tabs (docs/next-phase-plan.md, item 3). Every tab records through the same paired
 /// interface: the text is shown first, spoken aloud, then mouthed.
 enum TrainMode: String, CaseIterable, Identifiable {
-    case reading = "Reading", sounds = "Sounds", speech = "Speech & Poetry", language = "Language", minimalPairs = "Minimal Pairs", free = "Free Practice"
+    case reading = "Reading", sounds = "Sounds", speech = "Speech", poetry = "Poetry", language = "Language", minimalPairs = "Minimal Pairs", free = "Free Practice"
     var id: String { rawValue }
     var symbol: String {
         switch self {
         case .reading: "book"
         case .sounds: "waveform"
         case .speech: "text.quote"
+        case .poetry: "text.alignleft"
         case .language: "character.bubble"
         case .minimalPairs: "circle.grid.2x1"
         case .free: "square.and.pencil"
         }
     }
-    var shortcut: Character { Character(String((TrainMode.allCases.firstIndex(of: self) ?? 0) + 1)) }
+    var shortcut: Character {
+        let order: [Self] = [.reading, .sounds, .speech, .language, .minimalPairs, .free, .poetry]
+        return Character(String((order.firstIndex(of: self) ?? 0) + 1))
+    }
     /// The mode's name in the interface language.
     var title: String {
         switch self {
         case .reading: String(localized: "Reading")
         case .sounds: String(localized: "Sounds")
-        case .speech: String(localized: "Speech & Poetry")
+        case .speech: String(localized: "Speech")
+        case .poetry: String(localized: "Poetry")
         case .language: String(localized: "Language")
         case .minimalPairs: String(localized: "Minimal Pairs")
         case .free: String(localized: "Free Practice")
@@ -81,11 +86,13 @@ struct PracticeCorpus: Decodable {
     struct Piece: Decodable, Identifiable, Hashable {
         var id: String; var language: String; var kind: String
         var title: String; var titleHant: String?; var author: String; var authorHant: String?
-        var year: Int; var date: String?; var lines: [Line]
+        var year: Int?; var date: String?; var lines: [Line]
+        var stanzaEnds: [Int]?
         enum CodingKeys: String, CodingKey {
             case id, language, kind, title, author, year, date, lines
-            case titleHant = "title_hant", authorHant = "author_hant"
+            case titleHant = "title_hant", authorHant = "author_hant", stanzaEnds = "stanza_ends"
         }
+        var practiceKind: SentencePromptKind { kind == "poem" ? .poetry : .speech }
         func title(_ language: AppLanguage) -> String { language == .zhHant ? (titleHant ?? title) : title }
         func author(_ language: AppLanguage) -> String { language == .zhHant ? (authorHant ?? author) : author }
         /// "Speech · 19 November 1863" or "Poem · 1609", in the interface language.
@@ -98,7 +105,21 @@ struct PracticeCorpus: Decodable {
             case "manifesto": String(localized: "Manifesto")
             default: kind.capitalized
             }
-            return "\(kindName) · \(Self.localizedDate(date, year: year))"
+            return year.map { "\(kindName) · \(Self.localizedDate(date, year: $0))" } ?? kindName
+        }
+
+        func parts(language: AppLanguage) -> [[Line]] {
+            guard let stanzaEnds, stanzaEnds.last == lines.count else {
+                return PracticeCorpus.takes(lines, language: language)
+            }
+            var start = 0
+            var parts: [[Line]] = []
+            for end in stanzaEnds {
+                guard end > start, end <= lines.count else { return PracticeCorpus.takes(lines, language: language) }
+                parts.append(Array(lines[start..<end]))
+                start = end
+            }
+            return parts
         }
 
         static func localizedDate(_ date: String?, year: Int) -> String {
@@ -165,6 +186,12 @@ struct PracticeCorpus: Decodable {
 
     static let empty = PracticeCorpus(version: 0, pieces: [], drills: [], minimalPairs: [])
 
+    static func personalPieces() -> [Piece] {
+        let file = SentenceStore.directory.appending(path: "Practice/personal-pieces.json")
+        guard let data = try? Data(contentsOf: file) else { return [] }
+        return (try? JSONDecoder().decode([Piece].self, from: data)) ?? []
+    }
+
     static let bundled: PracticeCorpus = {
         guard let url = Bundle.main.url(forResource: "practice-v1", withExtension: "json", subdirectory: "Corpus/practice"),
               let data = try? Data(contentsOf: url) else { return .empty }
@@ -174,8 +201,9 @@ struct PracticeCorpus: Decodable {
 
 extension PracticeCorpus {
     /// A piece split into takes of whole lines, each short enough to read on the recording screen
-    /// in one go (about 30 words, or 40 characters of Chinese).
-    static func takes(_ lines: [Line], language: AppLanguage, limit: Int = 30) -> [[Line]] {
+    /// in one go (about 24 words, or 40 characters of Chinese).
+    static func takes(_ lines: [Line], language: AppLanguage) -> [[Line]] {
+        let limit = language.isChinese ? 30 : 24
         func size(_ line: Line) -> Int {
             language.isChinese ? line.text(language).count * 3 / 4 : line.text(language).split(whereSeparator: \.isWhitespace).count
         }
@@ -183,6 +211,9 @@ extension PracticeCorpus {
         for line in lines {
             if !current.isEmpty && words + size(line) > limit { takes.append(current); current = []; words = 0 }
             current.append(line); words += size(line)
+            if !language.isChinese, let last = line.text(language).last, ".?!".contains(last) {
+                takes.append(current); current = []; words = 0
+            }
         }
         return current.isEmpty ? takes : takes + [current]
     }

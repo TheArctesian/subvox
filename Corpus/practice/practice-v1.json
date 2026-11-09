@@ -141,13 +141,82 @@
    "id": "aint-i-a-woman",
    "language": "en",
    "kind": "speech",
-   "title": "Ain't I a Woman?",
-   "title_hant": "Ain't I a Woman?",
+   "title": "Ain't I a Woman? (Gage's 1863 account)",
+   "title_hant": "Ain't I a Woman? (Gage's 1863 account)",
    "author": "Sojourner Truth",
    "author_hant": "Sojourner Truth",
-   "year": 1851,
+   "year": 1863,
    "date": "29 May 1851",
    "lines": [
+    {
+     "text": "Well, children, where there is so much racket there must be something out of kilter.",
+     "ipa": [
+      "wɛl",
+      "tʃɪldɹən",
+      "wɛɹ",
+      "ðɛɹ",
+      "ɪz",
+      "soʊ",
+      "mʌtʃ",
+      "ɹækɪt",
+      "ðɛɹ",
+      "mʌst",
+      "bi",
+      "sʌmθɪŋ",
+      "aʊtəv",
+      "kɪltɚ"
+     ]
+    },
+    {
+     "text": "I think that 'twixt the negroes of the South and the women at the North,",
+     "ipa": [
+      "aɪ",
+      "θɪŋk",
+      "ðæt",
+      "twɪkst",
+      "ðə",
+      "niɡɹoʊz",
+      "ʌvðə",
+      "saʊθ",
+      "ænd",
+      "ðə",
+      "wɪmɪn",
+      "æt",
+      "ðə",
+      "nɔɹθ"
+     ]
+    },
+    {
+     "text": "all talking about rights, the white men will be in a fix pretty soon.",
+     "ipa": [
+      "ɔl",
+      "tɔkɪŋ",
+      "əbaʊt",
+      "ɹaɪts",
+      "ðə",
+      "waɪt",
+      "mɛn",
+      "wɪl",
+      "bi",
+      "ɪn",
+      "ə",
+      "fɪks",
+      "pɹɪti",
+      "sun"
+     ]
+    },
+    {
+     "text": "But what's all this here talking about?",
+     "ipa": [
+      "bʌt",
+      "wʌts",
+      "ɔl",
+      "ðɪs",
+      "hɪɹ",
+      "tɔkɪŋ",
+      "əbaʊt"
+     ]
+    },
     {
      "text": "That man over there says that women need to be helped into carriages,",
      "ipa": [
@@ -179,6 +248,385 @@
       "bɛst",
       "pleɪs",
       "ɛvɹɪwɛɹ"
+     ]
+    },
+    {
+     "text": "Nobody ever helps me into carriages, or over mud-puddles, or gives me any best place!",
+     "ipa": [
+      "noʊbɑdi",
+      "ɛvɚ",
+      "hɛlps",
+      "mi",
+      "ɪntʊ",
+      "kæɹɪdʒɪz",
+      "ɔɹ",
+      "oʊvɚ",
+      "mʌdpʌdəlz",
+      "ɔɹ",
+      "ɡɪvz",
+      "mi",
+      "ɛni",
+      "bɛst",
+      "pleɪs"
+     ]
+    },
+    {
+     "text": "And ain't I a woman?",
+     "ipa": [
+      "ænd",
+      "eɪnt",
+      "aɪ",
+      "ə",
+      "wʊmən"
+     ]
+    },
+    {
+     "text": "Look at me! Look at my arm!",
+     "ipa": [
+      "lʊk",
+      "æt",
+      "mi",
+      "lʊk",
+      "æt",
+      "maɪ",
+      "ɑɹm"
+     ]
+    },
+    {
+     "text": "I have ploughed and planted, and gathered into barns, and no man could head me!",
+     "ipa": [
+      "aɪ",
+      "hæv",
+      "plaʊd",
+      "ænd",
+      "plæntɪd",
+      "ænd",
+      "ɡæðɚd",
+      "ɪntʊ",
+      "bɑɹnz",
+      "ænd",
+      "noʊ",
+      "mæn",
+      "kʊd",
+      "hɛd",
+      "mi"
+     ]
+    },
+    {
+     "text": "And ain't I a woman?",
+     "ipa": [
+      "ænd",
+      "eɪnt",
+      "aɪ",
+      "ə",
+      "wʊmən"
+     ]
+    },
+    {
+     "text": "I could work as much and eat as much as a man — when I could get it —",
+     "ipa": [
+      "aɪ",
+      "kʊd",
+      "wɝk",
+      "æz",
+      "mʌtʃ",
+      "ænd",
+      "it",
+      "æz",
+      "mʌtʃ",
+      "æz",
+      "ə",
+      "mæn",
+      "wɛn",
+      "aɪ",
+      "kʊd",
+      "ɡɛt",
+      "ɪt"
+     ]
+    },
+    {
+     "text": "and bear the lash as well! And ain't I a woman?",
+     "ipa": [
+      "ænd",
+      "bɛɹ",
+      "ðə",
+      "læʃ",
+      "æz",
+      "wɛl",
+      "ænd",
+      "eɪnt",
+      "aɪ",
+      "ə",
+      "wʊmən"
+     ]
+    },
+    {
+     "text": "I have borne thirteen children, and seen most all sold off to slavery,",
+     "ipa": [
+      "aɪ",
+      "hæv",
+      "bɔɹn",
+      "θɝtin",
+      "tʃɪldɹən",
+      "ænd",
+      "sin",
+      "moʊst",
+      "ɔl",
+      "soʊld",
+      "ɔf",
+      "tə",
+      "sleɪvɚɹi"
+     ]
+    },
+    {
+     "text": "and when I cried out with my mother's grief, none but Jesus heard me!",
+     "ipa": [
+      "ænd",
+      "wɛn",
+      "aɪ",
+      "kɹaɪd",
+      "aʊt",
+      "wɪð",
+      "maɪ",
+      "mʌðɚz",
+      "ɡɹif",
+      "nʌn",
+      "bʌt",
+      "dʒizəs",
+      "hɝd",
+      "mi"
+     ]
+    },
+    {
+     "text": "And ain't I a woman?",
+     "ipa": [
+      "ænd",
+      "eɪnt",
+      "aɪ",
+      "ə",
+      "wʊmən"
+     ]
+    },
+    {
+     "text": "Then they talk about this thing in the head; what's this they call it?",
+     "ipa": [
+      "ðɛn",
+      "ðeɪ",
+      "tɔk",
+      "əbaʊt",
+      "ðɪs",
+      "θɪŋ",
+      "ɪnðə",
+      "hɛd",
+      "wʌts",
+      "ðɪs",
+      "ðeɪ",
+      "kɔl",
+      "ɪt"
+     ]
+    },
+    {
+     "text": "That's it, honey. What's that got to do with women's rights or negroes' rights?",
+     "ipa": [
+      "ðætsɪt",
+      "hʌni",
+      "wʌts",
+      "ðæt",
+      "ɡɑt",
+      "tə",
+      "du",
+      "wɪð",
+      "wɪmɪnz",
+      "ɹaɪts",
+      "ɔɹ",
+      "niɡɹoʊz",
+      "ɹaɪts"
+     ]
+    },
+    {
+     "text": "If my cup won't hold but a pint, and yours holds a quart,",
+     "ipa": [
+      "ɪf",
+      "maɪ",
+      "kʌp",
+      "woʊnt",
+      "hoʊld",
+      "bʌt",
+      "ə",
+      "paɪnt",
+      "ænd",
+      "jɔɹz",
+      "hoʊldz",
+      "ə",
+      "kwɔɹt"
+     ]
+    },
+    {
+     "text": "wouldn't you be mean not to let me have my little half measure full?",
+     "ipa": [
+      "wʊdənt",
+      "ju",
+      "bi",
+      "min",
+      "nɑt",
+      "tə",
+      "lɛt",
+      "mi",
+      "hæv",
+      "maɪ",
+      "lɪtəl",
+      "hæf",
+      "mɛʒɚ",
+      "fʊl"
+     ]
+    },
+    {
+     "text": "Then that little man in black there, he says women can't have as much rights as men,",
+     "ipa": [
+      "ðɛn",
+      "ðæt",
+      "lɪtəl",
+      "mæn",
+      "ɪn",
+      "blæk",
+      "ðɛɹ",
+      "hi",
+      "sɛz",
+      "wɪmɪn",
+      "kæntəv",
+      "æz",
+      "mʌtʃ",
+      "ɹaɪts",
+      "æz",
+      "mɛn"
+     ]
+    },
+    {
+     "text": "'cause Christ wasn't a woman!",
+     "ipa": [
+      "kɔz",
+      "kɹaɪst",
+      "wʌznt",
+      "ə",
+      "wʊmən"
+     ]
+    },
+    {
+     "text": "Where did your Christ come from? Where did your Christ come from?",
+     "ipa": [
+      "wɛɹ",
+      "dɪd",
+      "jʊɹ",
+      "kɹaɪst",
+      "kʌm",
+      "fɹʌm",
+      "wɛɹ",
+      "dɪd",
+      "jʊɹ",
+      "kɹaɪst",
+      "kʌm",
+      "fɹʌm"
+     ]
+    },
+    {
+     "text": "From God and a woman! Man had nothing to do with Him.",
+     "ipa": [
+      "fɹʌm",
+      "ɡɑd",
+      "ænd",
+      "ə",
+      "wʊmən",
+      "mæn",
+      "hæd",
+      "nʌθɪŋ",
+      "tə",
+      "du",
+      "wɪð",
+      "hɪm"
+     ]
+    },
+    {
+     "text": "If the first woman God ever made was strong enough to turn the world upside down all alone,",
+     "ipa": [
+      "ɪf",
+      "ðə",
+      "fɝst",
+      "wʊmən",
+      "ɡɑd",
+      "ɛvɚ",
+      "meɪd",
+      "wʌz",
+      "stɹɔŋ",
+      "ɪnʌf",
+      "tə",
+      "tɝn",
+      "ðə",
+      "wɝld",
+      "ʌpsaɪd",
+      "daʊn",
+      "ɔl",
+      "əloʊn"
+     ]
+    },
+    {
+     "text": "these women together ought to be able to turn it back, and get it right side up again!",
+     "ipa": [
+      "ðiz",
+      "wɪmɪn",
+      "təɡɛðɚɹ",
+      "ɔt",
+      "təbi",
+      "eɪbəl",
+      "tə",
+      "tɝn",
+      "ɪt",
+      "bæk",
+      "ænd",
+      "ɡɛt",
+      "ɪt",
+      "ɹaɪt",
+      "saɪd",
+      "ʌp",
+      "əɡɛn"
+     ]
+    },
+    {
+     "text": "And now they is asking to do it, the men better let them.",
+     "ipa": [
+      "ænd",
+      "naʊ",
+      "ðeɪ",
+      "ɪz",
+      "æskɪŋ",
+      "tə",
+      "du",
+      "ɪt",
+      "ðə",
+      "mɛn",
+      "bɛtɚ",
+      "lɛt",
+      "ðɛm"
+     ]
+    },
+    {
+     "text": "Obliged to you for hearing me, and now old Sojourner ain't got nothing more to say.",
+     "ipa": [
+      "əblaɪdʒd",
+      "tə",
+      "ju",
+      "fɔɹ",
+      "hɪɹɪŋ",
+      "mi",
+      "ænd",
+      "naʊ",
+      "oʊld",
+      "soʊdʒɝnɚɹ",
+      "eɪnt",
+      "ɡɑt",
+      "nʌθɪŋ",
+      "mɔɹ",
+      "tə",
+      "seɪ"
      ]
     }
    ]
@@ -234,7 +682,7 @@
      ]
     },
     {
-     "text": "And summer's lease hath all too short a date.",
+     "text": "And summer's lease hath all too short a date:",
      "ipa": [
       "ænd",
       "sʌmɚz",
@@ -246,7 +694,144 @@
       "ə",
       "deɪt"
      ]
+    },
+    {
+     "text": "Sometime too hot the eye of heaven shines,",
+     "ipa": [
+      "sʌmtaɪm",
+      "tu",
+      "hɑt",
+      "ðɪ",
+      "aɪ",
+      "ʌv",
+      "hɛvən",
+      "ʃaɪnz"
+     ]
+    },
+    {
+     "text": "And often is his gold complexion dimm'd;",
+     "ipa": [
+      "ænd",
+      "ɔfən",
+      "ɪz",
+      "hɪz",
+      "ɡoʊld",
+      "kəmplɛkʃən",
+      "dɪmd"
+     ]
+    },
+    {
+     "text": "And every fair from fair sometime declines,",
+     "ipa": [
+      "ænd",
+      "ɛvɹi",
+      "fɛɹ",
+      "fɹʌm",
+      "fɛɹ",
+      "sʌmtaɪm",
+      "dɪklaɪnz"
+     ]
+    },
+    {
+     "text": "By chance, or nature's changing course, untrimm'd;",
+     "ipa": [
+      "baɪ",
+      "tʃæns",
+      "ɔɹ",
+      "neɪtʃɚz",
+      "tʃeɪndʒɪŋ",
+      "kɔɹs",
+      "ʌntɹɪmd"
+     ]
+    },
+    {
+     "text": "But thy eternal summer shall not fade",
+     "ipa": [
+      "bʌt",
+      "ðaɪ",
+      "ɪtɝnəl",
+      "sʌmɚ",
+      "ʃæl",
+      "nɑt",
+      "feɪd"
+     ]
+    },
+    {
+     "text": "Nor lose possession of that fair thou ow'st;",
+     "ipa": [
+      "nɔɹ",
+      "luz",
+      "pəzɛʃən",
+      "ʌv",
+      "ðæt",
+      "fɛɹ",
+      "ðaʊ",
+      "oʊst"
+     ]
+    },
+    {
+     "text": "Nor shall Death brag thou wander'st in his shade,",
+     "ipa": [
+      "nɔɹ",
+      "ʃæl",
+      "dɛθ",
+      "bɹæɡ",
+      "ðaʊ",
+      "wɔndɚst",
+      "ɪn",
+      "hɪz",
+      "ʃeɪd"
+     ]
+    },
+    {
+     "text": "When in eternal lines to time thou grow'st;",
+     "ipa": [
+      "wɛn",
+      "ɪn",
+      "ɪtɝnəl",
+      "laɪnz",
+      "tə",
+      "taɪm",
+      "ðaʊ",
+      "ɡɹoʊst"
+     ]
+    },
+    {
+     "text": "So long as men can breathe or eyes can see,",
+     "ipa": [
+      "soʊ",
+      "lɔŋ",
+      "æz",
+      "mɛn",
+      "kæn",
+      "bɹið",
+      "ɔɹ",
+      "aɪz",
+      "kæn",
+      "si"
+     ]
+    },
+    {
+     "text": "So long lives this, and this gives life to thee.",
+     "ipa": [
+      "soʊ",
+      "lɔŋ",
+      "laɪvz",
+      "ðɪs",
+      "ænd",
+      "ðɪs",
+      "ɡɪvz",
+      "laɪf",
+      "tə",
+      "ði"
+     ]
     }
+   ],
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    14
    ]
   },
   {
@@ -297,7 +882,236 @@
       "fɪɹfəl",
       "sɪmətɹi"
      ]
+    },
+    {
+     "text": "In what distant deeps or skies",
+     "ipa": [
+      "ɪn",
+      "wʌt",
+      "dɪstənt",
+      "dips",
+      "ɔɹ",
+      "skaɪz"
+     ]
+    },
+    {
+     "text": "Burnt the fire of thine eyes?",
+     "ipa": [
+      "bɝnt",
+      "ðə",
+      "faɪɚɹ",
+      "ʌv",
+      "ðaɪn",
+      "aɪz"
+     ]
+    },
+    {
+     "text": "On what wings dare he aspire?",
+     "ipa": [
+      "ɔn",
+      "wʌt",
+      "wɪŋz",
+      "dɛɹ",
+      "hi",
+      "əspaɪɚ"
+     ]
+    },
+    {
+     "text": "What the hand, dare seize the fire?",
+     "ipa": [
+      "wʌt",
+      "ðə",
+      "hænd",
+      "dɛɹ",
+      "siz",
+      "ðə",
+      "faɪɚ"
+     ]
+    },
+    {
+     "text": "And what shoulder, and what art,",
+     "ipa": [
+      "ænd",
+      "wʌt",
+      "ʃoʊldɚ",
+      "ænd",
+      "wʌt",
+      "ɑɹt"
+     ]
+    },
+    {
+     "text": "Could twist the sinews of thy heart?",
+     "ipa": [
+      "kʊd",
+      "twɪst",
+      "ðə",
+      "sɪnjuz",
+      "ʌv",
+      "ðaɪ",
+      "hɑɹt"
+     ]
+    },
+    {
+     "text": "And when thy heart began to beat,",
+     "ipa": [
+      "ænd",
+      "wɛn",
+      "ðaɪ",
+      "hɑɹt",
+      "bɪɡæn",
+      "tə",
+      "bit"
+     ]
+    },
+    {
+     "text": "What dread hand? and what dread feet?",
+     "ipa": [
+      "wʌt",
+      "dɹɛd",
+      "hænd",
+      "ænd",
+      "wʌt",
+      "dɹɛd",
+      "fit"
+     ]
+    },
+    {
+     "text": "What the hammer? what the chain,",
+     "ipa": [
+      "wʌt",
+      "ðə",
+      "hæmɚ",
+      "wʌt",
+      "ðə",
+      "tʃeɪn"
+     ]
+    },
+    {
+     "text": "In what furnace was thy brain?",
+     "ipa": [
+      "ɪn",
+      "wʌt",
+      "fɝnɪs",
+      "wʌz",
+      "ðaɪ",
+      "bɹeɪn"
+     ]
+    },
+    {
+     "text": "What the anvil? what dread grasp,",
+     "ipa": [
+      "wʌt",
+      "ðɪ",
+      "ænvəl",
+      "wʌt",
+      "dɹɛd",
+      "ɡɹæsp"
+     ]
+    },
+    {
+     "text": "Dare its deadly terrors clasp!",
+     "ipa": [
+      "dɛɹ",
+      "ɪts",
+      "dɛdli",
+      "tɛɹɚz",
+      "klæsp"
+     ]
+    },
+    {
+     "text": "When the stars threw down their spears",
+     "ipa": [
+      "wɛn",
+      "ðə",
+      "stɑɹz",
+      "θɹu",
+      "daʊn",
+      "ðɛɹ",
+      "spɪɹz"
+     ]
+    },
+    {
+     "text": "And water'd heaven with their tears:",
+     "ipa": [
+      "ænd",
+      "wɔtɚd",
+      "hɛvən",
+      "wɪð",
+      "ðɛɹ",
+      "tɪɹz"
+     ]
+    },
+    {
+     "text": "Did he smile his work to see?",
+     "ipa": [
+      "dɪd",
+      "hi",
+      "smaɪl",
+      "hɪz",
+      "wɝk",
+      "tə",
+      "si"
+     ]
+    },
+    {
+     "text": "Did he who made the Lamb make thee?",
+     "ipa": [
+      "dɪd",
+      "hi",
+      "hu",
+      "meɪd",
+      "ðə",
+      "læm",
+      "meɪk",
+      "ði"
+     ]
+    },
+    {
+     "text": "Tyger Tyger, burning bright,",
+     "ipa": [
+      "taɪɡɚ",
+      "taɪɡɚ",
+      "bɝnɪŋ",
+      "bɹaɪt"
+     ]
+    },
+    {
+     "text": "In the forests of the night:",
+     "ipa": [
+      "ɪnðə",
+      "fɔɹɪsts",
+      "ʌvðə",
+      "naɪt"
+     ]
+    },
+    {
+     "text": "What immortal hand or eye,",
+     "ipa": [
+      "wʌt",
+      "ɪmɔɹtəl",
+      "hænd",
+      "ɔɹ",
+      "aɪ"
+     ]
+    },
+    {
+     "text": "Dare frame thy fearful symmetry?",
+     "ipa": [
+      "dɛɹ",
+      "fɹeɪm",
+      "ðaɪ",
+      "fɪɹfəl",
+      "sɪmətɹi"
+     ]
     }
+   ],
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24
    ]
   },
   {
@@ -2409,6 +3223,998 @@
       "ʁəvniʁ"
      ]
     }
+   ]
+  },
+  {
+   "id": "invictus",
+   "language": "en",
+   "kind": "poem",
+   "title": "Invictus",
+   "title_hant": "Invictus",
+   "author": "William Ernest Henley",
+   "author_hant": "William Ernest Henley",
+   "year": 1888,
+   "date": null,
+   "lines": [
+    {
+     "text": "Out of the night that covers me,",
+     "ipa": [
+      "aʊtəv",
+      "ðə",
+      "naɪt",
+      "ðæt",
+      "kʌvɚz",
+      "mi"
+     ]
+    },
+    {
+     "text": "  Black as the pit from pole to pole,",
+     "ipa": [
+      "blæk",
+      "æz",
+      "ðə",
+      "pɪt",
+      "fɹʌm",
+      "poʊl",
+      "tə",
+      "poʊl"
+     ]
+    },
+    {
+     "text": "I thank whatever gods may be",
+     "ipa": [
+      "aɪ",
+      "θæŋk",
+      "wʌtɛvɚ",
+      "ɡɑdz",
+      "meɪ",
+      "bi"
+     ]
+    },
+    {
+     "text": "  For my unconquerable soul.",
+     "ipa": [
+      "fɔɹ",
+      "maɪ",
+      "ʌŋkɑŋkɚɹəbəl",
+      "soʊl"
+     ]
+    },
+    {
+     "text": "In the fell clutch of circumstance",
+     "ipa": [
+      "ɪnðə",
+      "fɛl",
+      "klʌtʃ",
+      "ʌv",
+      "sɝkəmstæns"
+     ]
+    },
+    {
+     "text": "  I have not winced nor cried aloud.",
+     "ipa": [
+      "aɪ",
+      "həvnɑt",
+      "wɪnst",
+      "nɔɹ",
+      "kɹaɪd",
+      "əlaʊd"
+     ]
+    },
+    {
+     "text": "Under the bludgeonings of chance",
+     "ipa": [
+      "ʌndɚ",
+      "ðə",
+      "blʌdʒənɪŋz",
+      "ʌv",
+      "tʃæns"
+     ]
+    },
+    {
+     "text": "  My head is bloody, but unbowed.",
+     "ipa": [
+      "maɪ",
+      "hɛd",
+      "ɪz",
+      "blʌdi",
+      "bʌt",
+      "ʌnbaʊd"
+     ]
+    },
+    {
+     "text": "Beyond this place of wrath and tears",
+     "ipa": [
+      "bɪjɔnd",
+      "ðɪs",
+      "pleɪs",
+      "ʌv",
+      "ɹæθ",
+      "ænd",
+      "tɪɹz"
+     ]
+    },
+    {
+     "text": "  Looms but the Horror of the shade,",
+     "ipa": [
+      "lumz",
+      "bʌt",
+      "ðə",
+      "hɔɹɚɹ",
+      "ʌvðə",
+      "ʃeɪd"
+     ]
+    },
+    {
+     "text": "And yet the menace of the years",
+     "ipa": [
+      "ænd",
+      "jɛt",
+      "ðə",
+      "mɛnɪs",
+      "ʌvðə",
+      "jɪɹz"
+     ]
+    },
+    {
+     "text": "  Finds and shall find me unafraid.",
+     "ipa": [
+      "faɪndz",
+      "ænd",
+      "ʃæl",
+      "faɪnd",
+      "mi",
+      "ʌnəfɹeɪd"
+     ]
+    },
+    {
+     "text": "It matters not how strait the gate,",
+     "ipa": [
+      "ɪt",
+      "mætɚz",
+      "nɑt",
+      "haʊ",
+      "stɹeɪt",
+      "ðə",
+      "ɡeɪt"
+     ]
+    },
+    {
+     "text": "  How charged with punishments the scroll,",
+     "ipa": [
+      "haʊ",
+      "tʃɑɹdʒd",
+      "wɪð",
+      "pʌnɪʃmənts",
+      "ðə",
+      "skɹoʊl"
+     ]
+    },
+    {
+     "text": "I am the master of my fate,",
+     "ipa": [
+      "aɪəm",
+      "ðə",
+      "mæstɚɹ",
+      "ʌv",
+      "maɪ",
+      "feɪt"
+     ]
+    },
+    {
+     "text": "  I am the captain of my soul.",
+     "ipa": [
+      "aɪəm",
+      "ðə",
+      "kæptɪn",
+      "ʌv",
+      "maɪ",
+      "soʊl"
+     ]
+    }
+   ],
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    16
+   ]
+  },
+  {
+   "id": "ozymandias",
+   "language": "en",
+   "kind": "poem",
+   "title": "Ozymandias",
+   "title_hant": "Ozymandias",
+   "author": "Percy Bysshe Shelley",
+   "author_hant": "Percy Bysshe Shelley",
+   "year": 1818,
+   "date": null,
+   "lines": [
+    {
+     "text": "I met a traveller from an antique land",
+     "ipa": [
+      "aɪ",
+      "mɛt",
+      "ə",
+      "tɹævəlɚ",
+      "fɹʌm",
+      "ən",
+      "æntik",
+      "lænd"
+     ]
+    },
+    {
+     "text": "Who said: ‘Two vast and trunkless legs of stone",
+     "ipa": [
+      "hu",
+      "sɛd",
+      "tu",
+      "væst",
+      "ænd",
+      "tɹʌŋkləs",
+      "lɛɡz",
+      "ʌv",
+      "stoʊn"
+     ]
+    },
+    {
+     "text": "Stand in the desert. Near them, on the sand,",
+     "ipa": [
+      "stænd",
+      "ɪnðə",
+      "dɛzɚt",
+      "nɪɹ",
+      "ðɛm",
+      "ɔnðə",
+      "sænd"
+     ]
+    },
+    {
+     "text": "Half sunk, a shattered visage lies, whose frown,",
+     "ipa": [
+      "hæf",
+      "sʌŋk",
+      "ə",
+      "ʃætɚd",
+      "vɪzɪdʒ",
+      "laɪz",
+      "huz",
+      "fɹaʊn"
+     ]
+    },
+    {
+     "text": "And wrinkled lip, and sneer of cold command,",
+     "ipa": [
+      "ænd",
+      "ɹɪŋkəld",
+      "lɪp",
+      "ænd",
+      "snɪɹ",
+      "ʌv",
+      "koʊld",
+      "kəmænd"
+     ]
+    },
+    {
+     "text": "Tell that its sculptor well those passions read",
+     "ipa": [
+      "tɛl",
+      "ðæt",
+      "ɪts",
+      "skʌlptɚ",
+      "wɛl",
+      "ðoʊz",
+      "pæʃənz",
+      "ɹid"
+     ]
+    },
+    {
+     "text": "Which yet survive, stamped on these lifeless things,",
+     "ipa": [
+      "wɪtʃ",
+      "jɛt",
+      "sɚvaɪv",
+      "stæmpt",
+      "ɔn",
+      "ðiz",
+      "laɪfləs",
+      "θɪŋz"
+     ]
+    },
+    {
+     "text": "The hand that mocked them and the heart that fed.",
+     "ipa": [
+      "ðə",
+      "hænd",
+      "ðæt",
+      "mɑkt",
+      "ðɛm",
+      "ænd",
+      "ðə",
+      "hɑɹt",
+      "ðæt",
+      "fɛd"
+     ]
+    },
+    {
+     "text": "And on the pedestal these words appear —",
+     "ipa": [
+      "ænd",
+      "ɔnðə",
+      "pɛdɪstəl",
+      "ðiz",
+      "wɝdz",
+      "əpɪɹ"
+     ]
+    },
+    {
+     "text": "“My name is Ozymandias, king of kings:",
+     "ipa": [
+      "maɪ",
+      "neɪm",
+      "ɪz",
+      "ɑzɪmændiəz",
+      "kɪŋ",
+      "ʌv",
+      "kɪŋz"
+     ]
+    },
+    {
+     "text": "Look on my works, ye Mighty, and despair!”",
+     "ipa": [
+      "lʊk",
+      "ɔn",
+      "maɪ",
+      "wɝks",
+      "ji",
+      "maɪti",
+      "ænd",
+      "dɪspɛɹ"
+     ]
+    },
+    {
+     "text": "Nothing beside remains. Round the decay",
+     "ipa": [
+      "nʌθɪŋ",
+      "bɪsaɪd",
+      "ɹɪmeɪnz",
+      "ɹaʊnd",
+      "ðə",
+      "dɪkeɪ"
+     ]
+    },
+    {
+     "text": "Of that colossal wreck, boundless and bare",
+     "ipa": [
+      "ʌv",
+      "ðæt",
+      "kəlɔsəl",
+      "ɹɛk",
+      "baʊndləs",
+      "ænd",
+      "bɛɹ"
+     ]
+    },
+    {
+     "text": "The lone and level sands stretch far away.’",
+     "ipa": [
+      "ðə",
+      "loʊn",
+      "ænd",
+      "lɛvəl",
+      "sændz",
+      "stɹɛtʃ",
+      "fɑɹ",
+      "əweɪ"
+     ]
+    }
+   ],
+   "stanza_ends": [
+    4,
+    8,
+    11,
+    14
+   ]
+  },
+  {
+   "id": "a-fairy-song",
+   "language": "en",
+   "kind": "poem",
+   "title": "A Fairy Song",
+   "title_hant": "A Fairy Song",
+   "author": "William Shakespeare",
+   "author_hant": "William Shakespeare",
+   "year": 1600,
+   "date": null,
+   "lines": [
+    {
+     "text": "Over hill, over dale,",
+     "ipa": [
+      "oʊvɚ",
+      "hɪl",
+      "oʊvɚ",
+      "deɪl"
+     ]
+    },
+    {
+     "text": "Thorough bush, thorough brier,",
+     "ipa": [
+      "θʌɹoʊ",
+      "bʊʃ",
+      "θʌɹoʊ",
+      "bɹaɪɚ"
+     ]
+    },
+    {
+     "text": "Over park, over pale,",
+     "ipa": [
+      "oʊvɚ",
+      "pɑɹk",
+      "oʊvɚ",
+      "peɪl"
+     ]
+    },
+    {
+     "text": "Thorough flood, thorough fire!",
+     "ipa": [
+      "θʌɹoʊ",
+      "flʌd",
+      "θʌɹoʊ",
+      "faɪɚ"
+     ]
+    },
+    {
+     "text": "I do wander everywhere,",
+     "ipa": [
+      "aɪ",
+      "du",
+      "wɔndɚɹ",
+      "ɛvɹɪwɛɹ"
+     ]
+    },
+    {
+     "text": "Swifter than the moon’s sphere;",
+     "ipa": [
+      "swɪftɚ",
+      "ðən",
+      "ðə",
+      "munz",
+      "sfɪɹ"
+     ]
+    },
+    {
+     "text": "And I serve the Fairy Queen,",
+     "ipa": [
+      "ænd",
+      "aɪ",
+      "sɝv",
+      "ðə",
+      "fɛɹi",
+      "kwin"
+     ]
+    },
+    {
+     "text": "To dew her orbs upon the green;",
+     "ipa": [
+      "tə",
+      "du",
+      "hɝɹ",
+      "ɔɹbz",
+      "əpɑn",
+      "ðə",
+      "ɡɹin"
+     ]
+    },
+    {
+     "text": "The cowslips tall her pensioners be;",
+     "ipa": [
+      "ðə",
+      "kaʊslɪps",
+      "tɔl",
+      "hɝ",
+      "pɛnʃənɚz",
+      "bi"
+     ]
+    },
+    {
+     "text": "In their gold coats spots you see;",
+     "ipa": [
+      "ɪn",
+      "ðɛɹ",
+      "ɡoʊld",
+      "koʊts",
+      "spɑts",
+      "ju",
+      "si"
+     ]
+    },
+    {
+     "text": "Those be rubies, fairy favours;",
+     "ipa": [
+      "ðoʊz",
+      "bi",
+      "ɹubiz",
+      "fɛɹi",
+      "feɪvɚz"
+     ]
+    },
+    {
+     "text": "In those freckles live their savours;",
+     "ipa": [
+      "ɪn",
+      "ðoʊz",
+      "fɹɛkəlz",
+      "laɪv",
+      "ðɛɹ",
+      "seɪvɚz"
+     ]
+    },
+    {
+     "text": "I must go seek some dewdrops here,",
+     "ipa": [
+      "aɪ",
+      "mʌst",
+      "ɡoʊ",
+      "sik",
+      "sʌm",
+      "dudɹɑps",
+      "hɪɹ"
+     ]
+    },
+    {
+     "text": "And hang a pearl in every cowslip’s ear.",
+     "ipa": [
+      "ænd",
+      "hæŋ",
+      "ə",
+      "pɝl",
+      "ɪn",
+      "ɛvɹi",
+      "kaʊslɪps",
+      "ɪɹ"
+     ]
+    }
+   ],
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    14
+   ]
+  },
+  {
+   "id": "holy-sonnet-10",
+   "language": "en",
+   "kind": "poem",
+   "title": "Holy Sonnet 10: Death, Be Not Proud",
+   "title_hant": "Holy Sonnet 10: Death, Be Not Proud",
+   "author": "John Donne",
+   "author_hant": "John Donne",
+   "year": 1633,
+   "date": null,
+   "lines": [
+    {
+     "text": "Death, be not proud, though some have called thee",
+     "ipa": [
+      "dɛθ",
+      "bi",
+      "nɑt",
+      "pɹaʊd",
+      "ðoʊ",
+      "sʌm",
+      "hæv",
+      "kɔld",
+      "ði"
+     ]
+    },
+    {
+     "text": "Mighty and dreadful, for thou art not so;",
+     "ipa": [
+      "maɪti",
+      "ænd",
+      "dɹɛdfəl",
+      "fɔɹ",
+      "ðaʊ",
+      "ɑɹt",
+      "nɑt",
+      "soʊ"
+     ]
+    },
+    {
+     "text": "For those whom thou think’st thou dost overthrow",
+     "ipa": [
+      "fɔɹ",
+      "ðoʊz",
+      "hum",
+      "ðaʊ",
+      "θɪŋkst",
+      "ðaʊ",
+      "dɑst",
+      "oʊvɚθɹoʊ"
+     ]
+    },
+    {
+     "text": "Die not, poor Death, nor yet canst thou kill me.",
+     "ipa": [
+      "daɪ",
+      "nɑt",
+      "pʊɹ",
+      "dɛθ",
+      "nɔɹ",
+      "jɛt",
+      "kænst",
+      "ðaʊ",
+      "kɪl",
+      "mi"
+     ]
+    },
+    {
+     "text": "From rest and sleep, which but thy pictures be,",
+     "ipa": [
+      "fɹʌm",
+      "ɹɛst",
+      "ænd",
+      "slip",
+      "wɪtʃ",
+      "bʌt",
+      "ðaɪ",
+      "pɪktʃɚz",
+      "bi"
+     ]
+    },
+    {
+     "text": "Much pleasure; then from thee much more must flow,",
+     "ipa": [
+      "mʌtʃ",
+      "plɛʒɚ",
+      "ðɛn",
+      "fɹʌm",
+      "ði",
+      "mʌtʃ",
+      "mɔɹ",
+      "mʌst",
+      "floʊ"
+     ]
+    },
+    {
+     "text": "And soonest our best men with thee do go,",
+     "ipa": [
+      "ænd",
+      "sunɪst",
+      "aʊɚ",
+      "bɛst",
+      "mɛn",
+      "wɪð",
+      "ði",
+      "du",
+      "ɡoʊ"
+     ]
+    },
+    {
+     "text": "Rest of their bones, and soul’s delivery.",
+     "ipa": [
+      "ɹɛst",
+      "ʌv",
+      "ðɛɹ",
+      "boʊnz",
+      "ænd",
+      "soʊlz",
+      "dɪlɪvɚɹi"
+     ]
+    },
+    {
+     "text": "Thou art slave to fate, chance, kings, and desperate men,",
+     "ipa": [
+      "ðaʊ",
+      "ɑɹt",
+      "sleɪv",
+      "tə",
+      "feɪt",
+      "tʃæns",
+      "kɪŋz",
+      "ænd",
+      "dɛspɚɹət",
+      "mɛn"
+     ]
+    },
+    {
+     "text": "And dost with poison, war, and sickness dwell,",
+     "ipa": [
+      "ænd",
+      "dɑst",
+      "wɪð",
+      "pɔɪzən",
+      "wɔɹ",
+      "ænd",
+      "sɪknəs",
+      "dwɛl"
+     ]
+    },
+    {
+     "text": "And poppy or charms can make us sleep as well",
+     "ipa": [
+      "ænd",
+      "pɑpi",
+      "ɔɹ",
+      "tʃɑɹmz",
+      "kæn",
+      "meɪk",
+      "ʌs",
+      "slip",
+      "æz",
+      "wɛl"
+     ]
+    },
+    {
+     "text": "And better than thy stroke; why swell’st thou then?",
+     "ipa": [
+      "ænd",
+      "bɛtɚ",
+      "ðən",
+      "ðaɪ",
+      "stɹoʊk",
+      "waɪ",
+      "swɛlst",
+      "ðaʊ",
+      "ðɛn"
+     ]
+    },
+    {
+     "text": "One short sleep past, we wake eternally",
+     "ipa": [
+      "wʌn",
+      "ʃɔɹt",
+      "slip",
+      "pæst",
+      "wi",
+      "weɪk",
+      "ɪtɝnəli"
+     ]
+    },
+    {
+     "text": "And death shall be no more; Death, thou shalt die.",
+     "ipa": [
+      "ænd",
+      "dɛθ",
+      "ʃæl",
+      "bi",
+      "noʊmɔɹ",
+      "dɛθ",
+      "ðaʊ",
+      "ʃælt",
+      "daɪ"
+     ]
+    }
+   ],
+   "stanza_ends": [
+    4,
+    8,
+    12,
+    14
+   ]
+  },
+  {
+   "id": "once-i-passd-through-a-populous-city",
+   "language": "en",
+   "kind": "poem",
+   "title": "Once I Pass'd Through a Populous City",
+   "title_hant": "Once I Pass'd Through a Populous City",
+   "author": "Walt Whitman",
+   "author_hant": "Walt Whitman",
+   "year": 1871,
+   "date": null,
+   "lines": [
+    {
+     "text": "ONCE I pass'd through a populous city, imprinting my brain, for future use, with its shows, architecture, customs, and traditions;",
+     "ipa": [
+      "wʌns",
+      "aɪ",
+      "pæsd",
+      "θɹu",
+      "ə",
+      "pɑpjʊləs",
+      "sɪti",
+      "ɪmpɹɪntɪŋ",
+      "maɪ",
+      "bɹeɪn",
+      "fɔɹ",
+      "fjutʃɚ",
+      "jus",
+      "wɪð",
+      "ɪts",
+      "ʃoʊz",
+      "ɑɹkɪtɛktʃɚ",
+      "kʌstəmz",
+      "ænd",
+      "tɹədɪʃənz"
+     ]
+    },
+    {
+     "text": "Yet now, of all that city, I remember only a woman I casually met there, who detained me for love of me;",
+     "ipa": [
+      "jɛt",
+      "naʊ",
+      "ʌv",
+      "ɔl",
+      "ðæt",
+      "sɪti",
+      "aɪ",
+      "ɹɪmɛmbɚɹ",
+      "oʊnli",
+      "ə",
+      "wʊmən",
+      "aɪ",
+      "kæʒuəli",
+      "mɛt",
+      "ðɛɹ",
+      "hu",
+      "dɪteɪnd",
+      "mi",
+      "fɔɹ",
+      "lʌv",
+      "ʌv",
+      "mi"
+     ]
+    },
+    {
+     "text": "Day by day and night by night we were together,—All else has long been forgotten by me;",
+     "ipa": [
+      "deɪ",
+      "baɪ",
+      "deɪ",
+      "ænd",
+      "naɪt",
+      "baɪ",
+      "naɪt",
+      "wi",
+      "wɝ",
+      "təɡɛðɚɹ",
+      "ɔl",
+      "ɛls",
+      "həz",
+      "lɔŋ",
+      "bɪn",
+      "fɚɡɑtn",
+      "baɪ",
+      "mi"
+     ]
+    },
+    {
+     "text": "I remember, I say, only that woman who passionately clung to me;",
+     "ipa": [
+      "aɪ",
+      "ɹɪmɛmbɚɹ",
+      "aɪ",
+      "seɪ",
+      "oʊnli",
+      "ðæt",
+      "wʊmən",
+      "hu",
+      "pæʃənətli",
+      "klʌŋ",
+      "tə",
+      "mi"
+     ]
+    },
+    {
+     "text": "Again we wander—we love—we separate again;",
+     "ipa": [
+      "əɡɛn",
+      "wi",
+      "wɔndɚ",
+      "wi",
+      "lʌv",
+      "wi",
+      "sɛpɚɹeɪt",
+      "əɡɛn"
+     ]
+    },
+    {
+     "text": "Again she holds me by the hand—I must not go!",
+     "ipa": [
+      "əɡɛn",
+      "ʃi",
+      "hoʊldz",
+      "mi",
+      "baɪ",
+      "ðə",
+      "hænd",
+      "aɪ",
+      "mʌst",
+      "nɑt",
+      "ɡoʊ"
+     ]
+    },
+    {
+     "text": "I see her close beside me, with silent lips, sad and tremulous.",
+     "ipa": [
+      "aɪ",
+      "si",
+      "hɝ",
+      "kloʊs",
+      "bɪsaɪd",
+      "mi",
+      "wɪð",
+      "saɪlənt",
+      "lɪps",
+      "sæd",
+      "ænd",
+      "tɹɛmjʊləs"
+     ]
+    }
+   ],
+   "stanza_ends": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7
+   ]
+  },
+  {
+   "id": "song-of-myself-section-7",
+   "language": "en",
+   "kind": "poem",
+   "title": "Song of Myself, Section 7 (excerpt)",
+   "title_hant": "Song of Myself, Section 7 (excerpt)",
+   "author": "Walt Whitman",
+   "author_hant": "Walt Whitman",
+   "year": 1892,
+   "date": "1891–92",
+   "lines": [
+    {
+     "text": "Undrape! you are not guilty to me, nor stale nor discarded,",
+     "ipa": [
+      "ʌndɹeɪp",
+      "ju",
+      "ɑɹ",
+      "nɑt",
+      "ɡɪlti",
+      "tə",
+      "mi",
+      "nɔɹ",
+      "steɪl",
+      "nɔɹ",
+      "dɪskɑɹdɪd"
+     ]
+    },
+    {
+     "text": "I see through the broadcloth and gingham whether or no,",
+     "ipa": [
+      "aɪ",
+      "si",
+      "θɹu",
+      "ðə",
+      "bɹɔdklɔθ",
+      "ænd",
+      "dʒɪŋæm",
+      "wɛðɚ",
+      "ɔɹ",
+      "noʊ"
+     ]
+    },
+    {
+     "text": "And am around, tenacious, acquisitive, tireless, and cannot be shaken away.",
+     "ipa": [
+      "ænd",
+      "əm",
+      "ɚɹaʊnd",
+      "tɛneɪʃəs",
+      "əkwɪzɪtɪv",
+      "taɪɚləs",
+      "ænd",
+      "kænɑt",
+      "bi",
+      "ʃeɪkən",
+      "əweɪ"
+     ]
+    }
+   ],
+   "stanza_ends": [
+    2,
+    3
    ]
   },
   {

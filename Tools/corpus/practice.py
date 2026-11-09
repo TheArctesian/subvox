@@ -26,15 +26,59 @@ PIECES = [
     ("tilbury", "en", "speech", "Speech to the Troops at Tilbury", "Elizabeth I", 1588, 1603, [
         "I know I have the body of a weak and feeble woman;",
         "but I have the heart and stomach of a king, and of a king of England too."]),
-    ("aint-i-a-woman", "en", "speech", "Ain't I a Woman?", "Sojourner Truth", 1851, 1883, [
+    # The existing excerpt came from Gage’s 1863 recollection, in the NPS classroom transcription.
+    # https://www.nps.gov/teachers/classrooms/aint-i-a-woman.htm
+    ("aint-i-a-woman", "en", "speech", "Ain't I a Woman? (Gage's 1863 account)", "Sojourner Truth", 1863, 1883, [
+        "Well, children, where there is so much racket there must be something out of kilter.",
+        "I think that 'twixt the negroes of the South and the women at the North,",
+        "all talking about rights, the white men will be in a fix pretty soon.",
+        "But what's all this here talking about?",
         "That man over there says that women need to be helped into carriages,",
-        "and lifted over ditches, and to have the best place everywhere."]),
+        "and lifted over ditches, and to have the best place everywhere.",
+        "Nobody ever helps me into carriages, or over mud-puddles, or gives me any best place!",
+        "And ain't I a woman?",
+        "Look at me! Look at my arm!",
+        "I have ploughed and planted, and gathered into barns, and no man could head me!",
+        "And ain't I a woman?",
+        "I could work as much and eat as much as a man — when I could get it —",
+        "and bear the lash as well! And ain't I a woman?",
+        "I have borne thirteen children, and seen most all sold off to slavery,",
+        "and when I cried out with my mother's grief, none but Jesus heard me!",
+        "And ain't I a woman?",
+        "Then they talk about this thing in the head; what's this they call it?",
+        "That's it, honey. What's that got to do with women's rights or negroes' rights?",
+        "If my cup won't hold but a pint, and yours holds a quart,",
+        "wouldn't you be mean not to let me have my little half measure full?",
+        "Then that little man in black there, he says women can't have as much rights as men,",
+        "'cause Christ wasn't a woman!",
+        "Where did your Christ come from? Where did your Christ come from?",
+        "From God and a woman! Man had nothing to do with Him.",
+        "If the first woman God ever made was strong enough to turn the world upside down all alone,",
+        "these women together ought to be able to turn it back, and get it right side up again!",
+        "And now they is asking to do it, the men better let them.",
+        "Obliged to you for hearing me, and now old Sojourner ain't got nothing more to say."
+    ], "29 May 1851"),
     ("sonnet-18", "en", "poem", "Sonnet 18", "William Shakespeare", 1609, 1616, [
         "Shall I compare thee to a summer's day?", "Thou art more lovely and more temperate:",
-        "Rough winds do shake the darling buds of May,", "And summer's lease hath all too short a date."]),
+        "Rough winds do shake the darling buds of May,", "And summer's lease hath all too short a date:",
+        "Sometime too hot the eye of heaven shines,", "And often is his gold complexion dimm'd;",
+        "And every fair from fair sometime declines,", "By chance, or nature's changing course, untrimm'd;",
+        "But thy eternal summer shall not fade", "Nor lose possession of that fair thou ow'st;",
+        "Nor shall Death brag thou wander'st in his shade,", "When in eternal lines to time thou grow'st;",
+        "So long as men can breathe or eyes can see,", "So long lives this, and this gives life to thee."], None, [4, 8, 12, 14]),
     ("tyger", "en", "poem", "The Tyger", "William Blake", 1794, 1827, [
         "Tyger Tyger, burning bright,", "In the forests of the night;",
-        "What immortal hand or eye,", "Could frame thy fearful symmetry?"]),
+        "What immortal hand or eye,", "Could frame thy fearful symmetry?",
+        "In what distant deeps or skies", "Burnt the fire of thine eyes?",
+        "On what wings dare he aspire?", "What the hand, dare seize the fire?",
+        "And what shoulder, and what art,", "Could twist the sinews of thy heart?",
+        "And when thy heart began to beat,", "What dread hand? and what dread feet?",
+        "What the hammer? what the chain,", "In what furnace was thy brain?",
+        "What the anvil? what dread grasp,", "Dare its deadly terrors clasp!",
+        "When the stars threw down their spears", "And water'd heaven with their tears:",
+        "Did he smile his work to see?", "Did he who made the Lamb make thee?",
+        "Tyger Tyger, burning bright,", "In the forests of the night:",
+        "What immortal hand or eye,", "Dare frame thy fearful symmetry?"], None, [4, 8, 12, 16, 20, 24]),
     ("corbeau", "fr", "poem", "Le Corbeau et le Renard", "Jean de La Fontaine", 1668, 1695, [
         "Maître Corbeau, sur un arbre perché,", "Tenait en son bec un fromage.",
         "Maître Renard, par l'odeur alléché,", "Lui tint à peu près ce langage :"]),
@@ -240,7 +284,7 @@ def load_pieces():
                      for chunk in ([l] if isinstance(l, dict) else readable(l))]
             title = (p["title"], p.get("title_hant") or p["title"]) if p["language"] == "zh" else p["title"]
             author = (p["author"], p.get("author_hant") or p["author"]) if p["language"] == "zh" else p["author"]
-            extra.append((p["id"], p["language"], p["kind"], title, author, p["year"], p["died"], lines, p.get("date")))
+            extra.append((p["id"], p["language"], p["kind"], title, author, p["year"], p["died"], lines, p.get("date"), p.get("stanza_ends")))
     return extra
 
 
@@ -286,6 +330,11 @@ def build(year=2026):
         pieces.append(dict(id=pid, language=language, kind=kind, title=title, title_hant=title_hant, author=author,
                            author_hant=author_hant, year=published, date=date or (f"c. {published}" if published < 1000 else None),
                            lines=[entry(line, language) for line in lines]))
+        if len(rest) > 1 and rest[1]:
+            ends = rest[1]
+            if ends != sorted(set(ends)) or ends[0] < 1 or ends[-1] != len(lines):
+                raise ValueError(f"Invalid stanza boundaries for {title}")
+            pieces[-1]["stanza_ends"] = ends
     drills = [dict(id=did, language=language, title=title, title_hant=traditional_title(title, meta) if language == "zh" else None,
                    note_hant=traditional_title(meta.get("note") or "", meta) if language == "zh" and meta.get("note") else None,
                    # Tone-pair drills teach the full tone of each syllable (休息 as 1+2), so no neutral tones there.
