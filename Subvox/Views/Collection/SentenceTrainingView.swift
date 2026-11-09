@@ -16,6 +16,7 @@ struct SentenceTrainingView: View {
     @State private var section = Section.record
     /// VoiceOver starts on the recording screen's title when a round begins and at each new take.
     @AccessibilityFocusState private var focusRecording: Bool
+    @FocusState private var pacingFocused: Bool
 
     var body: some View {
         if model.showContribute { ContributeView() }
@@ -255,6 +256,7 @@ struct SentenceTrainingView: View {
                         .accessibilityFocused($focusRecording)
                     Spacer()
                     Toggle("Pacing guide", isOn: $showPacingGuide).toggleStyle(.switch).controlSize(.small)
+                        .focused($pacingFocused)
                     Text("\(min(workflow.index + 1, workflow.total)) of \(workflow.total)")
                         .font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
                 }
@@ -307,7 +309,10 @@ struct SentenceTrainingView: View {
                     Text("Space or → start, finish or next  ·  ← redo  ·  Esc stop").font(.callout).foregroundStyle(.secondary)
                     Button(showCaptureMotion ? "Hide motion" : "Show motion", systemImage: "waveform") { showCaptureMotion.toggle() }
                         .help("Show or hide the live AirPods signal")
-                    Button("Stop round…") { confirmStop = true }.keyboardShortcut(.cancelAction).font(.callout)
+                    Button("Stop round…") {
+                        model.captureShortcutsSuspended = true
+                        confirmStop = true
+                    }.keyboardShortcut(.cancelAction).font(.callout)
                 }
             }.frame(maxWidth:.infinity)
         } motion: { LiveMotionPanel(plotHeight: 44) }
@@ -319,6 +324,9 @@ struct SentenceTrainingView: View {
             Text("Finished takes stay on this Mac. An unfinished take is discarded.")
         }
         .onAppear { focusRecording = true }
+        .onChange(of: confirmStop) { model.captureShortcutsSuspended = confirmStop || pacingFocused }
+        .onChange(of: pacingFocused) { model.captureShortcutsSuspended = confirmStop || pacingFocused }
+        .onDisappear { model.captureShortcutsSuspended = false }
         .onChange(of: model.sentenceTraining.phase) { if model.sentenceTraining.phase == .ready { focusRecording = true } }
     }
 

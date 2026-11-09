@@ -77,6 +77,10 @@ final class TrainingAdvanceTests: XCTestCase {
             XCTAssertFalse(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false, modifiers: .command))
             XCTAssertFalse(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false, isEditingText: true))
             XCTAssertTrue(workflow.canFinishTake)
+            model.captureShortcutsSuspended = true
+            XCTAssertFalse(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false))
+            XCTAssertTrue(workflow.canFinishTake)
+            model.captureShortcutsSuspended = false
             XCTAssertTrue(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false))
             _ = try await capture.value
             // Holding the same key into the next cue must not finish the silent take.

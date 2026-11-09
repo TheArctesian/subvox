@@ -87,6 +87,8 @@ final class AppModel {
         if uploader.busy { return uploader.status.isEmpty ? "Preparing the sharing queue" : uploader.status }
         return nil
     }
+    var captureShortcutsSuspended = false
+
     var navigationLocked: Bool {
         sentenceTraining.isAcquiring || sentenceTraining.phase == .preparing ||
         signalCheck.showsCaptureCue || signalCheck.phase == .preparing ||
@@ -292,7 +294,7 @@ final class AppModel {
     /// Space and the forward arrows start, finish or continue; backward arrows redo. Held keys never carry into later takes.
     func handleTrainingArrowKey(keyCode: UInt16, isRepeat: Bool, modifiers: NSEvent.ModifierFlags = [],
                                   isEditingText: Bool = false) -> Bool {
-        guard screen == .train, ((showObservability && observability.isAcquiring) || sentenceTraining.isAcquiring || (showSignalCheck && signalCheck.showsCaptureCue) || (showRepresentation && representation.isAcquiring) || ((showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring)), !isEditingText,
+        guard screen == .train, ((showObservability && observability.isAcquiring) || sentenceTraining.isAcquiring || (showSignalCheck && signalCheck.showsCaptureCue) || (showRepresentation && representation.isAcquiring) || ((showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring)), !isEditingText, !captureShortcutsSuspended,
               [123, 124, 125, 126, 49].contains(keyCode),
               modifiers.intersection([.command, .control, .option, .shift]).isEmpty else { return false }
         let forward = keyCode == 124 || keyCode == 125 || keyCode == 49
