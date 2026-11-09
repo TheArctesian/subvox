@@ -35,6 +35,7 @@ struct ContentView: View {
             }
         }
         .toolbar {
+            ToolbarItem(placement: .navigation) { PracticeProgressBadge() }
             ToolbarItem(placement: .status) {
                 // The one AirPods status in the app; clicking it opens Devices to fix it.
                 Button { model.screen = .devices } label: {
@@ -45,7 +46,6 @@ struct ContentView: View {
                 .accessibilityLabel(model.motion.status == .streaming ? "AirPods connected" : "AirPods: " + model.motion.statusText)
                 .accessibilityHint("Opens Devices")
             }
-            ToolbarItem(placement: .status) { PracticeProgressBadge() }
             ToolbarItem(placement: .primaryAction) { LanguageMenu() }
             ToolbarItem(placement: .primaryAction) { SharingAccountMenu() }
             // The slot stays put so neighbouring status items never shift; only the spinner fades.
