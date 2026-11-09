@@ -183,6 +183,65 @@ final class CommunityUploaderTests: XCTestCase {
         XCTAssertEqual(attempted, ["first", "second", "first"])
     }
 
+    @MainActor func testAutomaticManifestResumesAfterInterruptedUploadAndStopsOnOptOut() async throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "automatic-uploader-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let suite = "subvox-test-\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let settings = ContributionSettings(defaults: defaults)
+        settings.mode = .huggingFace
+        settings.repo = "test/dataset"
+        settings.enableAutomaticSharing(for: "alice")
+        let grant = try XCTUnwrap(settings.activeAutomaticGrant(for: "alice"))
+        func argument(_ name: String, in arguments: [String]) throws -> String {
+            let index = try XCTUnwrap(arguments.firstIndex(of: name))
+            return arguments[index + 1]
+        }
+
+        var attempts: [String] = []
+        let uploader = CommunityUploader(root: root, runtimeRoot: root, export: { arguments in
+            XCTAssertEqual(try argument("--automatic-grant", in: arguments), grant.id.uuidString)
+            let output = URL(fileURLWithPath: try argument("--output", in: arguments))
+            let folders = try ["first", "second", "stale"].map { id in
+                let folder = output.appending(path: "data/alice/\(id)")
+                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+                let metadata = ["session_id": id, "month": "2026-11", "takes": 2] as [String: Any]
+                try JSONSerialization.data(withJSONObject: metadata).write(to: folder.appending(path: "session.json"))
+                return folder.path
+            }
+            let manifest = try argument("--manifest", in: arguments)
+            try JSONEncoder().encode(Array(folders.prefix(2))).write(to: URL(fileURLWithPath: manifest))
+        }, upload: { arguments, _ in
+            attempts.append(URL(fileURLWithPath: try argument("--session", in: arguments)).lastPathComponent)
+            throw URLError(.networkConnectionLost)
+        })
+        let exported = await uploader.prepare(contributor: "alice", automatic: grant)
+        let ids = try XCTUnwrap(exported).map(\.id)
+        XCTAssertEqual(ids, ["first", "second"], "A stale folder outside the manifest must stay out of the queue")
+        await uploader.sendReviewed(["first"], repo: grant.repo, token: "fixture", automatic: true)
+        XCTAssertEqual(uploader.pending.first?.status, .failed)
+
+        // Reopen the queue and simulate the Hub returning the existing PR after retry.
+        let restored = CommunityUploader(root: root, runtimeRoot: root) { arguments, token in
+            XCTAssertEqual(token, "fixture")
+            XCTAssertTrue(arguments.contains("--automatic"))
+            XCTAssertEqual(try argument("--repo", in: arguments), grant.repo)
+            attempts.append(URL(fileURLWithPath: try argument("--session", in: arguments)).lastPathComponent)
+            let receipt = try argument("--output", in: arguments)
+            try Data(#"{"pr_num":7,"pr_url":"https://hub.test/pr/7"}"#.utf8).write(to: URL(fileURLWithPath: receipt))
+            settings.stopAutomaticSharing()
+        }
+        XCTAssertEqual(restored.pending.first?.status, .failed)
+        await restored.sendReviewed(ids, repo: grant.repo, token: "fixture", automatic: true) {
+            settings.activeAutomaticGrant(for: "alice") == grant
+        }
+        XCTAssertEqual(attempts, ["first", "first"])
+        XCTAssertEqual(restored.shared.first?.prNumber, 7)
+        XCTAssertEqual(restored.pending.map(\.id), ["second"])
+        XCTAssertNil(ContributionSettings(defaults: defaults).activeAutomaticGrant(for: "alice"))
+    }
+
     @MainActor func testAutomaticSharingRequiresItsOwnAccountAndDatasetGrant() throws {
         let suite = "subvox-test-\(UUID())"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))

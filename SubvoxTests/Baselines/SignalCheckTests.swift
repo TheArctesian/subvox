@@ -83,7 +83,7 @@ final class SignalCheckTests: XCTestCase {
         XCTAssertTrue(try SignalCheckAnalysis.run(run).conditions.allSatisfy { $0.evaluated == 0 })
     }
 
-    @MainActor func testExplicitBoundariesExcludeLateSamplesAndRedoPersistsDiscardedAttempt() throws {
+    @MainActor func testExplicitBoundariesExcludeLateSamplesAndRedoPersistsDiscardedAttempt() async throws {
         let root = FileManager.default.temporaryDirectory.appending(path: "subvox-signal-\(UUID())")
         defer { try? FileManager.default.removeItem(at: root) }
         let recorder = SessionRecorder(root: root.appending(path: "raw"))
@@ -103,9 +103,11 @@ final class SignalCheckTests: XCTestCase {
         XCTAssertEqual(take.recording.cueEnd, start + 1)
         XCTAssertFalse(take.recording.samples.contains { $0.t > start + 1 })
         XCTAssertTrue(recorder.isRecording)
+        XCTAssertGreaterThan(workflow.pendingWrites, 0)
         workflow.redo()
         XCTAssertTrue(try XCTUnwrap(workflow.run?.takes.first).discarded)
         XCTAssertEqual(workflow.index, 0)
+        await workflow.waitForWrites()
         let restored = SignalCheckWorkflow(storeURL: store)
         XCTAssertEqual(restored.run?.audioDevice, "Fixture Mac microphone")
         XCTAssertTrue(try XCTUnwrap(restored.run?.takes.first).discarded)

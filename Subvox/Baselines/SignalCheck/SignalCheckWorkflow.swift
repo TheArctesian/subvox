@@ -33,6 +33,8 @@ final class SignalCheckWorkflow {
     var canPrepareReseat: Bool {
         !isBusy && storageReady && referenceError == nil && (reference != nil || (run?.endedAt != nil && run?.reference == nil))
     }
+    private(set) var pendingWrites = 0
+    @ObservationIgnored private let saveQueue = DispatchQueue(label: "Subvox.signal-check.store", qos: .userInitiated)
     @ObservationIgnored private let storeURL: URL
     @ObservationIgnored private let referenceURL: URL
     @ObservationIgnored private let comparisonURL: URL
@@ -309,11 +311,11 @@ final class SignalCheckWorkflow {
         let pacing = currentPacing
         run?.takes.append(.init(prompt: current, recording: recording, endReason: reason,pacing:pacing))
         recorder?.logMarker(uptime: time, kind: reason == .timeout ? "signal-timeout" : "signal-end", label: label(current))
-        checkpoint()
+        let checkpoint = run?.session.flatMap { recorder?.recordingFileFlush(sessionID: $0.id) }
         if let recordingError = recorder?.error { error = recordingError }
         cueStart = nil; buffer = []; secondsRemaining = 0
         phase = .ended
-        if !save() { closeRecording(); phase = .finished }
+        enqueueSave(checkpoint: checkpoint)
     }
 
     func redo() {
@@ -322,7 +324,7 @@ final class SignalCheckWorkflow {
         if phase == .ended, let i = run?.takes.indices.last { run?.takes[i].discarded = true }
         recorder?.logMarker(uptime: ProcessInfo.processInfo.systemUptime, kind: "signal-redo", label: label(current))
         cueStart = nil; buffer = []; phase = .ready
-        if !save() { closeRecording(); phase = .finished }
+        enqueueSave()
     }
 
     func next() {
@@ -343,22 +345,24 @@ final class SignalCheckWorkflow {
         if phase == .reseat { phase = .finished; return }
         if phase == .preparing { return }
         let captureTail = run?.control?.allowsMovement == true && phase == .ended && recorder?.isRecording == true
-        if !captureTail {
-            closeRecording()
-            guard run != nil, save() else { phase = .finished; return }
-        }
         phase = .processing
-        if captureTail { processingText = "Finishing camera capture…" }
+        processingText = captureTail ? "Finishing camera capture…" : "Saving the signal check…"
         task = Task {
             if captureTail {
-                // Vision arrives after its capture timestamp. Retain camera-only tail context
-                // for the centred derivative without changing the take's END or duration.
-                do { try await Task.sleep(for: .milliseconds(500)); try Task.checkCancellation() }
+                // Keep camera context for the centred derivative without changing the take's END.
+                do { try await Task.sleep(for: .milliseconds(500)) }
                 catch { return }
-                closeRecording()
-                guard run != nil, save() else { phase = .finished; return }
             }
-            await process(); phase = .finished; processingText = ""; finishControlledBlock()
+            await waitForWrites()
+            guard !Task.isCancelled else { return }
+            closeRecording()
+            guard run != nil, await saveInBackground(), !Task.isCancelled else {
+                if !Task.isCancelled { phase = .finished }
+                return
+            }
+            await process()
+            guard !Task.isCancelled else { return }
+            phase = .finished; processingText = ""; finishControlledBlock()
         }
     }
 
@@ -370,6 +374,7 @@ final class SignalCheckWorkflow {
         }
         if phase == .reseat { phase = .finished; return }
         task?.cancel()
+        saveQueue.sync {}
         closeRecording()
         _ = save(); phase = .finished
         if controlledActive, let run, run.control != nil {
@@ -379,20 +384,13 @@ final class SignalCheckWorkflow {
     }
 
     private func closeRecording() {
-        if phase == .recording, let current {
+        if cueStart != nil, let current {
             recorder?.logMarker(uptime: ProcessInfo.processInfo.systemUptime, kind: "signal-aborted", label: label(current))
         }
         if let id = run?.session?.id, let closed = recorder?.stop(sessionID: id) { run?.session = closed }
         if run?.endedAt == nil { run?.endedAt = Date() }
         if run?.control?.block == .unchanged { controlBreakDeadline = clock() + (comparison?.minimumBreakSeconds ?? 30) }
         buffer = []; cueStart = nil
-    }
-
-    private func checkpoint() {
-        guard let id = run?.session?.id else { return }
-        do {
-            if let current = try recorder?.checkpoint(sessionID: id) { run?.session = current }
-        } catch { self.error = error.localizedDescription }
     }
 
     private func process() async {
@@ -448,7 +446,7 @@ final class SignalCheckWorkflow {
                 if let scores = result.1 { comparison?.cameraScores = scores }
                 if let note = result.2 { comparison?.cameraAdjustmentNote = note }
             }
-            _ = save()
+            _ = await saveInBackground()
         } catch is CancellationError { }
         catch { self.error = error.localizedDescription }
     }
@@ -486,18 +484,71 @@ final class SignalCheckWorkflow {
         "sentence=\(prompt.sentence) repetition=\(prompt.repetition) condition=\(prompt.condition.rawValue) \(SignalCheckRun.sentences[prompt.sentence])"
     }
 
-    @discardableResult private func save() -> Bool {
-        guard let run else { return true }
-        do {
-            let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
-            let bytes = try encoder.encode(run)
-            try FileManager.default.createDirectory(at: storeURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-            // Save a permanent per-visit copy as well as the most recent check for the UI.
-            if let directory = run.session?.directory {
-                try bytes.write(to: directory.appending(path: "signal-check.json"), options: .atomic)
+    func waitForWrites() async {
+        await withCheckedContinuation { continuation in
+            saveQueue.async { continuation.resume() }
+        }
+    }
+
+    private func enqueueSave(checkpoint: (@Sendable () throws -> Void)? = nil) {
+        guard let snapshot = run else { return }
+        pendingWrites += 1
+        let url = storeURL
+        saveQueue.async { [weak self] in
+            let result = Result {
+                // Persist the take even if a raw recording checkpoint fails.
+                let checkpointResult = Result { try checkpoint?() }
+                try SignalCheckWorkflow.write(snapshot, to: url)
+                try checkpointResult.get()
             }
-            try bytes.write(to: storeURL, options: .atomic)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.pendingWrites -= 1
+                if case .failure(let failure) = result, self.run?.id == snapshot.id {
+                    self.error = failure.localizedDescription
+                    self.storageReady = false
+                    if self.showsCaptureCue {
+                        self.task?.cancel()
+                        self.phase = .processing
+                        self.task = Task { @MainActor in
+                            await self.waitForWrites()
+                            guard !Task.isCancelled else { return }
+                            self.closeRecording()
+                            self.phase = .finished
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @discardableResult private func saveInBackground() async -> Bool {
+        guard let snapshot = run else { return true }
+        let url = storeURL
+        do {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                saveQueue.async {
+                    continuation.resume(with: Result { try Self.write(snapshot, to: url) })
+                }
+            }
             return true
         } catch { self.error = error.localizedDescription; storageReady = false; return false }
+    }
+
+    @discardableResult private func save() -> Bool {
+        guard let run else { return true }
+        do { try saveQueue.sync { try Self.write(run, to: storeURL) }; return true }
+        catch { self.error = error.localizedDescription; storageReady = false; return false }
+    }
+
+    nonisolated private static func write(_ run: SignalCheckRun, to url: URL) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
+        let bytes = try encoder.encode(run)
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        if let directory = run.session?.directory {
+            try bytes.write(to: directory.appending(path: "signal-check.json"), options: .atomic)
+        }
+        try bytes.write(to: url, options: .atomic)
     }
 }

@@ -168,18 +168,28 @@ class UploadTests(Fixture):
 
         [folder] = self.export()
 
+        calls = []
+
         class Hub(FakeHub):
+            def __init__(self):
+                self.calls = calls
+
+            def create_commit(self, **kwargs):
+                super().create_commit(**kwargs)
+                raise ConnectionError("PR created, but its receipt was lost")
+
             def get_repo_discussions(self, repo, **filters):
                 self.filters = filters
-                if self.calls:
-                    yield SimpleNamespace(title=self.calls[0]["commit_message"], url="https://hub.test/pr/7", num=7)
+                if calls:
+                    yield SimpleNamespace(title=calls[0]["commit_message"], url="https://hub.test/pr/7", num=7)
 
-        hub = Hub()
-        for _ in range(2):
-            result = upload_session(folder, "owner/dataset", "token", prompts_dir=self.prompts, api=hub, automatic=True)
-            self.assertEqual(result["pr_num"], 7)
-        self.assertEqual(len(hub.calls), 1)
-        self.assertEqual(hub.filters["author"], "anon-7f3a")
+        with self.assertRaises(ConnectionError):
+            upload_session(folder, "owner/dataset", "token", prompts_dir=self.prompts, api=Hub(), automatic=True)
+        restarted = Hub()
+        result = upload_session(folder, "owner/dataset", "token", prompts_dir=self.prompts, api=restarted, automatic=True)
+        self.assertEqual(result["pr_num"], 7)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(restarted.filters["author"], "anon-7f3a")
 
     def test_resume_adds_to_the_existing_pr_instead_of_opening_another(self):
         from subvox_ml.community_export import upload_session
