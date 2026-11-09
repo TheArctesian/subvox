@@ -40,7 +40,6 @@ final class AppModel {
     let huggingFace = HuggingFaceAccount(store: SubvoxApp.isTestHost ? EphemeralTokenStore() : KeychainTokenStore())
     let contribution = ContributionSettings()
     let uploader = CommunityUploader()
-    var showContribute = false
     @ObservationIgnored private var automaticSharingTimer: Task<Void, Never>?
     @ObservationIgnored private var automaticSharingRunning = false
 
@@ -51,6 +50,11 @@ final class AppModel {
     func stopAutomaticSharing() {
         contribution.stopAutomaticSharing()
         if automaticSharingRunning { uploader.stop() }
+    }
+
+    func signOutOfHuggingFace() {
+        stopAutomaticSharing()
+        huggingFace.signOut()
     }
 
     func sendAutomaticContributions() async {
@@ -95,7 +99,7 @@ final class AppModel {
     }
     /// Leaves any Reading-only full-page view (sharing, research tools) when switching mode.
     func closeOverlays() {
-        showContribute = false; showObservability = false; showNonSpeechCollection = false
+        showObservability = false; showNonSpeechCollection = false
         showSequenceLearning = false; showRepresentation = false; showSignalCheck = false
     }
     let practice = PracticeCorpus.bundled

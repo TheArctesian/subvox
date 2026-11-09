@@ -2,13 +2,12 @@ import AppKit
 import SwiftUI
 
 /// Train: the practice modes, chosen from the sidebar (docs/macos-ui-checklist.md). The paired
-/// recording screen takes the whole page while recording; Reading's own full-page views (sharing,
-/// research tools) show only while Reading is the selected mode.
+/// recording screen takes the whole page while recording; Reading's research tools show only while Reading is the selected mode.
 struct TrainView: View {
     @Environment(AppModel.self) private var model
 
     private var readingOverlay: Bool {
-        model.showContribute || model.showObservability || model.showNonSpeechCollection || model.showSequenceLearning
+        model.showObservability || model.showNonSpeechCollection || model.showSequenceLearning
             || model.showRepresentation || model.showSignalCheck
     }
 

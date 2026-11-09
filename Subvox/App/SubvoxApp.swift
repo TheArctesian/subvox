@@ -44,5 +44,11 @@ struct SubvoxApp: App {
                 }
             }
         }
+        Settings {
+            ContributeView()
+                .environment(model)
+                .frame(minWidth: 650, idealWidth: 740, minHeight: 520, idealHeight: 660)
+        }
+        .windowResizability(.contentMinSize)
     }
 }

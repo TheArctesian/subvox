@@ -46,6 +46,7 @@ struct ContentView: View {
                 .accessibilityHint("Opens Devices")
             }
             ToolbarItem(placement: .primaryAction) { LanguageMenu() }
+            ToolbarItem(placement: .primaryAction) { SharingAccountMenu() }
             if let activity = model.backgroundActivity {
                 ToolbarItem(placement: .status) {
                     ProgressView().controlSize(.small)
@@ -70,6 +71,34 @@ struct ContentView: View {
                     case nil: break
                     }
                 })
+    }
+}
+
+private struct SharingAccountMenu: View {
+    @Environment(AppModel.self) private var model
+
+    var body: some View {
+        let username = model.huggingFace.username
+        Menu {
+            if let username {
+                Text("Signed in as \(username)")
+                Text(model.automaticSharingGrant == nil ? "Automatic sharing is off" : "Automatic sharing is on")
+            } else {
+                Text("Hugging Face · Signed out")
+            }
+            SettingsLink {
+                Label("Sharing Settings…", systemImage: "gearshape")
+            }
+            if username != nil {
+                Divider()
+                Button("Sign out", systemImage: "rectangle.portrait.and.arrow.right", action: model.signOutOfHuggingFace)
+                    .disabled(model.uploader.busy)
+            }
+        } label: {
+            Label(username ?? String(localized: "Sharing"), systemImage: username == nil ? "person.crop.circle" : "person.crop.circle.fill")
+                .labelStyle(.titleAndIcon)
+        }
+        .help(username.map { String(localized: "Hugging Face: signed in as \($0)") } ?? String(localized: "Hugging Face: signed out"))
     }
 }
 

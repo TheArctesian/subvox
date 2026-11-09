@@ -19,8 +19,7 @@ struct SentenceTrainingView: View {
     @FocusState private var pacingFocused: Bool
 
     var body: some View {
-        if model.showContribute { ContributeView() }
-        else if model.showObservability { ObservabilityView() }
+        if model.showObservability { ObservabilityView() }
         else if model.showNonSpeechCollection {SequenceLearningView(collectionOnly:true)}
         else if model.showSequenceLearning { SequenceLearningView() }
         else if model.showRepresentation { RepresentationStudyView() }
@@ -125,7 +124,7 @@ struct SentenceTrainingView: View {
             HStack {
                 Text("Recordings stay on this Mac. Sharing to the open community dataset is a separate, opt-in step.")
                     .font(.caption).foregroundStyle(.secondary)
-                Button("Share recordings…") { model.showContribute = true }.disabled(workflow.isBusy)
+                SettingsLink { Text("Sharing Settings…") }
             }
         }
     }
