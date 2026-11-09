@@ -99,7 +99,7 @@ struct PracticePage<Controls: View, Content: View>: View {
         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
         TrainingProcessingStatus(workflow: workflow)
         PracticeFeedback(mode: mode, again: { model.startPractice(workflow.lastPracticePlan) })
-        HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
+        HStack(spacing: 16) { controls(); Spacer() }
         content()
         if mode.isLiterature {
             DisclosureGroup("Word alignment settings") { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
@@ -148,52 +148,26 @@ struct PracticePage<Controls: View, Content: View>: View {
     }
 }
 
-/// Takes today and the day streak, the same line on every practice page.
-struct ProgressStrip: View {
+/// Daily practice progress for the window toolbar.
+struct PracticeProgressBadge: View {
     @Environment(AppModel.self) private var model
+
     var body: some View {
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
         let goal = PracticeProgress.dailyGoal
-        // One chip: the day's goal ring and the streak; nothing until there's something to show.
         if progress.today > 0 || progress.streak > 0 {
-            HStack(spacing: 6) {
-                Gauge(value: Double(min(progress.today, goal)), in: 0...Double(goal)) { EmptyView() }
-                    .gaugeStyle(.accessoryCircularCapacity).tint(progress.today >= goal ? .green : .accentColor)
-                    .scaleEffect(0.5).frame(width: 26, height: 26)
-                Text("\(progress.today)/\(goal)")
-                if progress.streak > 0 {
-                    Label("\(progress.streak)", systemImage: "flame").foregroundStyle(.orange)
-                        .help(progress.streak == 1 ? "1 day in a row" : "\(progress.streak) days in a row")
-                }
+            let streak = progress.streak == 1 ? String(localized: "1 day in a row")
+                : String(localized: "\(progress.streak) days in a row")
+            Label {
+                Text("\(progress.today) of \(goal) today · \(streak)")
+            } icon: {
+                Image(systemName: progress.today >= goal ? "trophy.fill" : "party.popper.fill")
+                    .foregroundStyle(.orange)
+                    .accessibilityHidden(true)
             }
-            .font(.callout).fixedSize()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(progress.today) of \(goal) today, \(progress.streak) days in a row")
+            .font(.callout)
+            .labelStyle(.titleAndIcon)
         }
-    }
-}
-
-/// A short, celebratory line at the end of a round: the day's goal and streak, not training data.
-struct RoundCelebration: View {
-    @Environment(AppModel.self) private var model
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var shown = false
-    var body: some View {
-        let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
-        HStack(spacing: 12) {
-            Image(systemName: progress.today >= PracticeProgress.dailyGoal ? "trophy.fill" : "party.popper.fill")
-                .font(.system(size: 34)).foregroundStyle(.orange)
-                .opacity(shown || reduceMotion ? 1 : 0)
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Round complete!").font(.title2.weight(.bold))
-                Text(progress.today >= PracticeProgress.dailyGoal ? "Today's goal done. \(progress.streak) days in a row."
-                     : "\(progress.today) of \(PracticeProgress.dailyGoal) today · \(progress.streak) days in a row")
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { shown = true } }
-        .accessibilityElement(children: .combine)
     }
 }
 
@@ -346,7 +320,6 @@ struct PracticeFeedback: View {
         if !pairs.isEmpty {
             let processing = pairs.contains { model.sentenceTraining.checkingPairIDs.contains($0.id) }
             VStack(alignment: .leading, spacing: 12) {
-                if !processing { RoundCelebration() }
                 HStack {
                     (processing ? Text("Last round") : Text("Last round: \(summary)")).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
                         .accessibilityFocused($focusResults)
@@ -482,6 +455,7 @@ struct LiteraturePracticeView: View {
     @Environment(AppModel.self) private var model
     @State private var selection: String?
     @AppStorage("practice.literature.parts") private var savedParts: Data = Data()
+    @State private var speechStartPart = 0
     @State private var search = ""
     @State private var showHistory = false
     @AppStorage("practice.showIPA") private var showIPA = true
@@ -495,12 +469,17 @@ struct LiteraturePracticeView: View {
 
     var body: some View {
         let language = model.language
+        let isSpeech = kind == .speech
         let parts = piece.map { $0.parts(language: language) } ?? []
         let partKey = "\(language.tag)/\(piece?.id ?? "")"
         let partChoices = (try? JSONDecoder().decode([String: Int].self, from: savedParts)) ?? [:]
-        let savedPart = partChoices[partKey, default: 0]
+        let savedPart = isSpeech ? speechStartPart : partChoices[partKey, default: 0]
         let partIndex = parts.indices.contains(savedPart) ? savedPart : 0
         let selectedPart = Binding(get: { partIndex }, set: { value in
+            if isSpeech {
+                speechStartPart = value
+                return
+            }
             var choices = partChoices
             choices[partKey] = value
             if let encoded = try? JSONEncoder().encode(choices) { savedParts = encoded }
@@ -508,14 +487,20 @@ struct LiteraturePracticeView: View {
         let visiblePieces = search.isEmpty ? pieces : pieces.filter {
             $0.title(language).localizedStandardContains(search) || $0.author(language).localizedStandardContains(search)
         }
-        let lines = parts.isEmpty ? [] : parts[partIndex]
-        return PracticePage(title: tab == .poetry ? "Poetry" : "Speech",
-                     subtitle: "Read a section aloud, then mouth it silently. The pacing guide highlights the text at a steady rate.",
-                     startTitle: "Start Reading",
-                     groups: lines.isEmpty ? [] : [lines.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }],
-                     mode: kind, unit: "part", scrolls: false) {
+        let selectedLines = parts.isEmpty ? [] : parts[partIndex]
+        let sessionParts = isSpeech ? Array(parts.dropFirst(partIndex)) : parts.isEmpty ? [] : [selectedLines]
+        let previewLines = isSpeech ? (piece?.lines ?? []) : selectedLines
+        let groups = sessionParts.map { part in
+            part.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }
+        }
+        return PracticePage(title: isSpeech ? "Speech" : "Poetry",
+                     subtitle: isSpeech ? "Practise the speech in one session. Read each section aloud, then mouth it silently."
+                         : "Read a section aloud, then mouth it silently. The pacing guide highlights the text at a steady rate.",
+                     startTitle: isSpeech ? (partIndex == 0 ? "Start Speech" : "Start at Part \(partIndex + 1)") : "Start Reading",
+                     groups: groups,
+                     mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false) {
             if parts.count > 1 {
-                Picker("Part", selection: selectedPart) {
+                Picker(isSpeech ? "Start at" : "Part", selection: selectedPart) {
                     ForEach(parts.indices, id: \.self) { index in
                         Text("\(index + 1) of \(parts.count) · \(String(parts[index].first?.text(language).prefix(30) ?? ""))").tag(index)
                     }
@@ -545,12 +530,13 @@ struct LiteraturePracticeView: View {
                         } }
                     }.frame(width: 255)
                     if let piece {
-                        ScrollView { VStack(alignment: .leading, spacing: 12) {
+                        ScrollView { LazyVStack(alignment: .leading, spacing: 12) {
                             Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
-                            ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false, subject: String(localized: "this part"))
-                            ForEach(lines.indices, id: \.self) { index in
-                                PracticeLineView(line: lines[index], language: language, showIPA: showIPA)
+                            ReferenceButton(text: previewLines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false,
+                                            subject: isSpeech ? String(localized: "the full text") : String(localized: "this part"))
+                            ForEach(previewLines.indices, id: \.self) { index in
+                                PracticeLineView(line: previewLines[index], language: language, showIPA: showIPA)
                             }
                             Text(model.personalPracticePieces.contains(where: { $0.id == piece.id })
                                  ? "Personal library" : "Public domain in the UK and US.")
@@ -558,11 +544,13 @@ struct LiteraturePracticeView: View {
                             Text("Read it aloud, then mouth it, a few lines at a time. Speech recognition on this Mac checks how much it understood.")
                                 .font(.callout).foregroundStyle(.secondary)
                         }.frame(maxWidth: .infinity, alignment: .leading) }
+                        .id(piece.id)
                     }
                 }
             }
         }
         .onAppear { if selection == nil { selection = SavedSelection.get(selectionKey, model.language) } }
+        .onChange(of: partKey) { speechStartPart = 0 }
         .onChange(of: selection) { SavedSelection.set(selectionKey, model.language, selection) }
         .onChange(of: model.language) {
             selection = SavedSelection.get(selectionKey, model.language)

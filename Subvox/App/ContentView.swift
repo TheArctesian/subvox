@@ -45,6 +45,7 @@ struct ContentView: View {
                 .accessibilityLabel(model.motion.status == .streaming ? "AirPods connected" : "AirPods: " + model.motion.statusText)
                 .accessibilityHint("Opens Devices")
             }
+            ToolbarItem(placement: .status) { PracticeProgressBadge() }
             ToolbarItem(placement: .primaryAction) { LanguageMenu() }
             ToolbarItem(placement: .primaryAction) { SharingAccountMenu() }
             if let activity = model.backgroundActivity {
