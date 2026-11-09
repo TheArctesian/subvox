@@ -5,6 +5,7 @@ import json
 import time
 from collections import Counter
 from pathlib import Path
+from tempfile import TemporaryDirectory
 import numpy as np
 from . import VERSION
 from .data import MIN_TRANSCRIPT_MATCH, prepare, load_dataset, atomic_json, digest, resample, features, words, pronunciations, group_id
@@ -355,19 +356,21 @@ def rank(run, output):
     if output.exists():raise ValueError("Rank output exists; choose a new path")
     dataset=json.loads((run/"comparison.json").read_text())["dataset"]
     groups={}
-    for model in sorted((run/"folds").glob("fold-*/*")):
-        manifest=json.loads((model/"model.json").read_text())
-        for which in ("selected","final-epoch"):
-            if which=="final-epoch" and "final_epoch_weights_sha256" not in manifest:continue
-            report=evaluate_model(model,dataset,manifest["config"]["fold"],output=output.parent/f".rank-{model.parent.name}-{model.name}-{which}.json",which=which)
-            groups.setdefault((model.name,which),[]).append(report)
+    with TemporaryDirectory(prefix="subvox-rank-") as scratch:
+        for model in sorted((run/"folds").glob("fold-*/*")):
+            manifest = json.loads((model/"model.json").read_text())
+            for which in ("selected", "final-epoch"):
+                if which == "final-epoch" and "final_epoch_weights_sha256" not in manifest:
+                    continue
+                report_path = Path(scratch) / f"{model.parent.name}-{model.name}-{which}.json"
+                report = evaluate_model(model, dataset, manifest["config"]["fold"], output=report_path, which=which)
+                groups.setdefault((model.name, which), []).append(report)
     result={}
     for (name,which),reports in sorted(groups.items()):
         tokens=[t for t in load_model(Path(reports[0]["model"]),which)[1]["tokens"] if t!="|"]
         rows=[row for r in reports for row in r["rows"]]
         result[f"{name}/{which}"]={k:v for k,v in full_summary(rows,tokens).items() if k not in ("phone_confusions","word_confusions")}
     atomic_json(output,dict(run=str(run),dataset=dataset,scores=result))
-    for path in output.parent.glob(".rank-*.json"):path.unlink()
     return result
 
 
