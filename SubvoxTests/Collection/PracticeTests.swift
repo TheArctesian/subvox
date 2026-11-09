@@ -94,6 +94,37 @@ final class PracticeTests: XCTestCase {
         XCTAssertFalse(PracticeFeedback.verdict(pair).kept)
     }
 
+    func testForcedAlignmentKeepsKnownTextAt55PercentWhisperAgreement() {
+        let pair = alignmentPair(coverage: 0.8)
+        XCTAssertTrue(pair.usesAlignedWords)
+        XCTAssertTrue(PracticeFeedback.verdict(pair).kept)
+    }
+
+    func testLowWhisperAndForcedCoverageRejectThePair() {
+        XCTAssertFalse(alignmentPair(coverage: 0.79).usesAlignedWords)
+    }
+
+    func testForcedCoverageCannotRescueFreePractice() {
+        var pair = alignmentPair(coverage: 1)
+        pair.practiceMode = .freeText
+        XCTAssertFalse(pair.usesAlignedWords)
+    }
+
+    private func alignmentPair(coverage: Double) -> SentencePair {
+        let samples = [MotionSample(t: 0, accel: (0, 0, 0), rotation: (0, 0, 0))]
+        var pair = SentencePair(visitID: UUID(), promptIDs: [], text: "a bee", role: .training)
+        pair.spoken = .init(condition: .normal, samples: samples, cueStart: 0, cueEnd: 1)
+        pair.silent = .init(condition: .silent, samples: samples, cueStart: 0, cueEnd: 1)
+        pair.transcript = LocalWhisperTranscript(text: "a b", words: [])
+        pair.transcriptMatchRate = 0.55
+        pair.timedWordCoverage = coverage
+        pair.wordTimingSource = .forcedAlignment
+        pair.alignment = .init(normalizedCost: 0, durationRatio: 1, path: [],
+                               words: [.init(word: "bee", voicedStart: 0, voicedEnd: 1, silentStart: 0, silentEnd: 1)],
+                               warnings: [])
+        return pair
+    }
+
     func testPhoneCheckDecodesThePythonOutput() throws {
         let json = #"{"language": "fr", "expected_phones": ["t", "y"], "produced_phones": ["t", "u"], "source": "whisper-words", "alignment": [{"op": "match", "expected": "t", "produced": "t"}, {"op": "sub", "expected": "y", "produced": "u"}], "word_agreement": 0.0, "phone_error_rate": 0.5, "trainable": false, "timing": null}"#
         let result = try JSONDecoder().decode(PhoneCheckResult.self, from: Data(json.utf8))

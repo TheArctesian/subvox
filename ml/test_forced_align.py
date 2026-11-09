@@ -60,8 +60,8 @@ def test_mandarin_keeps_written_script_and_does_not_split_erhua():
 CASES = [
     ("en", "Samantha (English (US))", "Shall I compare thee to a summer’s day? Thou art more lovely and more temperate."),
     ("fr", "Thomas", "Bonjour, nous parlons avec nos amis."),
-    ("es", "Mónica", "La casa tiene una puerta roja."),
-    ("es-MX", "Paulina", "La casa tiene una puerta roja."),
+    ("es", "Mónica", "La casa tiene una puerta roja cerca de la plaza."),
+    ("es-MX", "Paulina", "La casa tiene una puerta roja cerca de la plaza."),
     ("zh-Hans", "Tingting", "你好，我今天很忙。"),
     ("zh-Hant", "Meijia", "你好，我今天讀書。"),
 ]
