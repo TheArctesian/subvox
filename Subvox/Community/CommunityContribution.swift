@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 
-/// Local only is the default. Automatic sharing requires a separate account and dataset grant.
+/// Sharing goes through a Hugging Face account; the app requires an automatic sharing grant to record.
 @MainActor @Observable final class ContributionSettings {
     enum Mode: String, CaseIterable, Identifiable {
         case local = "Local only", anonymous = "Anonymous", huggingFace = "Hugging Face"
@@ -41,7 +41,7 @@ import Foundation
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        mode = Mode(rawValue: defaults.string(forKey: "contribution.mode") ?? "") ?? .local
+        mode = Mode(rawValue: defaults.string(forKey: "contribution.mode") ?? "") ?? .huggingFace
         repo = defaults.string(forKey: "contribution.repo") ?? Self.defaultRepo
         consentedVersion = defaults.string(forKey: "contribution.consent")
         automaticGrant = defaults.data(forKey: "contribution.automaticGrant").flatMap {

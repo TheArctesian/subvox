@@ -365,9 +365,8 @@ struct SharingSetupView: View {
     @Environment(AppModel.self) private var model
     var showsDataset = false
     @State private var adult = false
-    @State private var publicData = false
-    @State private var linkedName = false
     @State private var confirmAutomatic = false
+    @State private var confirmStop = false
 
     private var settings: ContributionSettings { model.contribution }
     private var uploader: CommunityUploader { model.uploader }
@@ -375,36 +374,10 @@ struct SharingSetupView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            modeSection
-            if showsDataset || settings.mode == .huggingFace { accountSection }
-            if settings.mode == .huggingFace, account.username != nil {
+            accountSection
+            if account.username != nil {
                 if showsDataset { datasetSection }
                 automaticSharingSection
-                if model.automaticSharingGrant == nil {
-                    DisclosureGroup("Set up manual review") { consentSection }
-                }
-            }
-        }
-    }
-
-    private var modeSection: some View {
-        @Bindable var settings = settings
-        return VStack(alignment: .leading, spacing: 10) {
-            Text("How to share").font(.title2.weight(.semibold))
-            Picker("Sharing", selection: $settings.mode) {
-                Text("Local only").tag(ContributionSettings.Mode.local)
-                Text("Anonymous (coming soon)").tag(ContributionSettings.Mode.anonymous)
-                Text("Hugging Face account").tag(ContributionSettings.Mode.huggingFace)
-            }.pickerStyle(.radioGroup).disabled(uploader.busy)
-            switch settings.mode {
-            case .local:
-                Text("Recordings stay on this Mac. You can still record community passages for your own use.").font(.callout).foregroundStyle(.secondary)
-            case .anonymous:
-                Text("Anonymous sharing needs a relay server that isn't running yet. Choose Local only or Hugging Face for now.")
-                    .font(.callout).foregroundStyle(.orange)
-            case .huggingFace:
-                Text("Contribute eligible community recordings as pull requests under your Hugging Face account.")
-                    .font(.callout).foregroundStyle(.secondary)
             }
         }
     }
@@ -412,12 +385,75 @@ struct SharingSetupView: View {
     private var accountSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Hugging Face account").font(.title3.weight(.semibold))
+            HuggingFaceSignInView()
+        }
+    }
+
+    private var datasetSection: some View {
+        @Bindable var settings = settings
+        return VStack(alignment: .leading, spacing: 8) {
+            Text("Pull request destination").font(.title3.weight(.semibold))
+            TextField("Dataset", text: $settings.repo, prompt: Text("owner/dataset"))
+                .textFieldStyle(.roundedBorder).frame(maxWidth: 360)
+                .disabled(uploader.busy || model.automaticSharingGrant != nil)
+            if model.automaticSharingGrant != nil {
+                Text("Turn off automatic sharing to change the destination.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var automaticSharingSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if let grant = model.automaticSharingGrant {
+                HStack {
+                    Label("Automatic sharing is on", systemImage: "arrow.up.circle.fill")
+                    Spacer()
+                    Button("Stop sharing…") { confirmStop = true }.disabled(model.navigationLocked)
+                }
+                Text("New community reading and calibration sessions are submitted to \(grant.repo) after you finish recording. Subvox collects recordings for research, so practice needs sharing on. A submission already in progress may finish.")
+                    .font(.callout).foregroundStyle(.secondary)
+            } else if let username = account.username {
+                Text("Share future sessions automatically").font(.title3.weight(.semibold))
+                Text("When you finish a new community reading or calibration session, Subvox will open one pull request on the public dataset \(settings.repo) under \(username). Previous recordings and personal practice stay outside automatic sharing.")
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("The submission includes AirPods motion, numeric lip and jaw points if recorded, prompt and training labels, headphone details, and the recording month. Audio, images, and video stay on this Mac.")
+                    .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                Toggle("I am 18 or older.", isOn: $adult)
+                Toggle("I understand these recordings can be publicly downloaded and reused under CC BY 4.0 and linked to my Hugging Face username.", isOn: $confirmAutomatic)
+                Button("Enable automatic sharing", systemImage: "arrow.up.circle") {
+                    settings.enableAutomaticSharing(for: username)
+                    confirmAutomatic = false
+                    Task { await model.sendAutomaticContributions() }
+                }.buttonStyle(.borderedProminent).disabled(!adult || !confirmAutomatic || uploader.busy)
+                Text("You can turn this off in Subvox Settings. Copies others have downloaded can’t be recalled.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .confirmationDialog("Stop sharing recordings?", isPresented: $confirmStop, titleVisibility: .visible) {
+            Button("Stop sharing", role: .destructive, action: model.stopAutomaticSharing)
+        } message: {
+            Text("Subvox will return to the welcome screen until you turn sharing back on. Recordings already shared stay in the public dataset.")
+        }
+        .onChange(of: account.username) { adult = false; confirmAutomatic = false }
+        .onChange(of: settings.repo) { confirmAutomatic = false }
+    }
+
+}
+
+/// Sign in to Hugging Face, including the browser hand-off. Used by Welcome and Sharing Settings.
+struct HuggingFaceSignInView: View {
+    @Environment(AppModel.self) private var model
+    private var account: HuggingFaceAccount { model.huggingFace }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
             switch account.state {
             case .signedIn(let name):
                 HStack {
                     Label("Signed in as \(name)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
                     Spacer()
-                    Button("Sign out", action: model.signOutOfHuggingFace).disabled(uploader.busy)
+                    Button("Sign out", action: model.signOutOfHuggingFace).disabled(model.uploader.busy || model.navigationLocked)
                 }
             case .signingIn:
                 HStack { ProgressView().controlSize(.small); Text("Finish signing in in your browser…") }
@@ -442,74 +478,6 @@ struct SharingSetupView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
             if let error = account.error { Text(error).font(.callout).foregroundStyle(.orange) }
-        }
-    }
-
-    private var datasetSection: some View {
-        @Bindable var settings = settings
-        return VStack(alignment: .leading, spacing: 8) {
-            Text("Pull request destination").font(.title3.weight(.semibold))
-            TextField("Dataset", text: $settings.repo, prompt: Text("owner/dataset"))
-                .textFieldStyle(.roundedBorder).frame(maxWidth: 360)
-                .disabled(uploader.busy || model.automaticSharingGrant != nil)
-            if model.automaticSharingGrant != nil {
-                Text("Turn off automatic sharing to change the destination.")
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-        }
-    }
-
-    private var automaticSharingSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            if let grant = model.automaticSharingGrant {
-                HStack {
-                    Label("Automatic sharing is on", systemImage: "arrow.up.circle.fill")
-                    Spacer()
-                    Button("Turn off automatic sharing", action: model.stopAutomaticSharing)
-                }
-                Text("New community reading and calibration sessions are submitted to \(grant.repo) after you finish recording. Turn this off to review recordings before sending them. A submission already in progress may finish.")
-                    .font(.callout).foregroundStyle(.secondary)
-            } else if let username = account.username {
-                Text("Share future sessions automatically").font(.title3.weight(.semibold))
-                Text("When you finish a new community reading or calibration session, Subvox will open one pull request on the public dataset \(settings.repo) under \(username). Previous recordings and personal practice stay outside automatic sharing.")
-                    .fixedSize(horizontal: false, vertical: true)
-                Text("The submission includes AirPods motion, numeric lip and jaw points if recorded, prompt and training labels, headphone details, and the recording month. Audio, images, and video stay on this Mac.")
-                    .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
-                Toggle("I am 18 or older.", isOn: $adult)
-                Toggle("I understand these recordings can be publicly downloaded and reused under CC BY 4.0 and linked to my Hugging Face username.", isOn: $confirmAutomatic)
-                Button("Enable automatic sharing", systemImage: "arrow.up.circle") {
-                    settings.enableAutomaticSharing(for: username)
-                    confirmAutomatic = false
-                    Task { await model.sendAutomaticContributions() }
-                }.buttonStyle(.borderedProminent).disabled(!adult || !confirmAutomatic || uploader.busy)
-                Text("You can turn this off in Subvox Settings. Copies others have downloaded can’t be recalled.")
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-        }
-        .onChange(of: account.username) { adult = false; confirmAutomatic = false }
-        .onChange(of: settings.repo) { confirmAutomatic = false }
-    }
-
-    private var consentSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Before you share").font(.title3.weight(.semibold))
-            if settings.hasConsent {
-                HStack {
-                    Label("You agreed to share (\(ContributionSettings.consentVersion)).", systemImage: "checkmark.circle")
-                    Spacer()
-                    Button("Withdraw agreement", action: settings.withdrawConsent).disabled(uploader.busy)
-                }
-                Text("Withdrawing stops future uploads. To remove data you've already shared, email \(ContributionSettings.removalContact). Copies others have downloaded can't be recalled.")
-                    .font(.caption).foregroundStyle(.secondary)
-            } else {
-                Text("What is shared: AirPods head-motion, numeric lip and jaw points from the camera, which sentence you read, your AirPods model and firmware, and the month. Never video, images, audio, file names, device names or exact times.")
-                    .fixedSize(horizontal: false, vertical: true)
-                Toggle("I am 18 or older.", isOn: $adult)
-                Toggle("I understand the dataset is public (CC BY 4.0): anyone can download and reuse what I share, and published copies can't be fully withdrawn.", isOn: $publicData)
-                Toggle("I understand my contributions are linked to my Hugging Face username.", isOn: $linkedName)
-                Button("I agree to share", action: settings.giveConsent).buttonStyle(.borderedProminent).disabled(!(adult && publicData && linkedName))
-                Text("Draft wording pending a data-protection review.").font(.caption).foregroundStyle(.secondary)
-            }
         }
     }
 }

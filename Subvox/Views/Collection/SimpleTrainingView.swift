@@ -112,7 +112,7 @@ struct PrivacySummary: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("What's saved, and where").font(.headline)
                         Text("On this Mac: your voice as audio, AirPods head motion, and numeric lip and jaw points from the camera. Never video or photos.")
-                        Text("Speech recognition and audio stay on this Mac. You control whether community sessions are submitted in Share Recordings.")
+                        Text("Speech recognition and audio stay on this Mac. Motion and lip points from community sessions are submitted to the public dataset; you can stop sharing in Subvox Settings.")
                         Text(SentenceStore.directory.path).font(.callout.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
                         Button("Show in Finder") { NSWorkspace.shared.activateFileViewerSelecting([SentenceStore.directory]) }
                     }

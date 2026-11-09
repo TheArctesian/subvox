@@ -263,10 +263,10 @@ final class CommunityUploaderTests: XCTestCase {
         XCTAssertNil(settings.activeAutomaticGrant(for: "alice"))
     }
 
-    @MainActor func testSharingDefaultsToLocalAndConsentIsVersioned() {
+    @MainActor func testSharingDefaultsToHuggingFaceAndConsentIsVersioned() {
         let defaults = UserDefaults(suiteName: "subvox-test-\(UUID())")!
         let settings = ContributionSettings(defaults: defaults)
-        XCTAssertEqual(settings.mode, .local)
+        XCTAssertEqual(settings.mode, .huggingFace, "Sharing goes through Hugging Face; recording requires it")
         XCTAssertFalse(settings.hasConsent)
         settings.giveConsent()
         XCTAssertTrue(ContributionSettings(defaults: defaults).hasConsent)

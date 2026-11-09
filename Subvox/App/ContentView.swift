@@ -8,7 +8,7 @@ struct ContentView: View {
     enum SidebarItem: Hashable { case train(TrainMode), screen(AppModel.Screen) }
 
     var body: some View {
-        if model.onboarded { main } else { WelcomeView() }
+        if model.canUseApp { main } else { WelcomeView() }
     }
 
     private var main: some View {
@@ -83,7 +83,7 @@ private struct SharingAccountMenu: View {
         Menu {
             if let username {
                 Text("Signed in as \(username)")
-                Text(model.automaticSharingGrant == nil ? "Automatic sharing is off" : "Automatic sharing is on")
+                Text(model.automaticSharingGrant.map { String(localized: "Sharing recordings with \($0.repo)") } ?? String(localized: "Sharing is off"))
             } else {
                 Text("Hugging Face · Signed out")
             }
@@ -93,7 +93,7 @@ private struct SharingAccountMenu: View {
             if username != nil {
                 Divider()
                 Button("Sign out", systemImage: "rectangle.portrait.and.arrow.right", action: model.signOutOfHuggingFace)
-                    .disabled(model.uploader.busy)
+                    .disabled(model.uploader.busy || model.navigationLocked)
             }
         } label: {
             Label(username ?? String(localized: "Sharing"), systemImage: username == nil ? "person.crop.circle" : "person.crop.circle.fill")
@@ -113,11 +113,27 @@ struct LanguageMenu: View {
         @Bindable var model = model
         Menu {
             Picker("I'm practising", selection: $model.language) {
-                ForEach(AppLanguage.allCases) { Text($0.name).tag($0) }
+                ForEach(model.practiceLanguages) { Text($0.name).tag($0) }
             }.pickerStyle(.inline)
-            Picker("I speak", selection: $model.nativeLanguage) {
-                ForEach(["en", "fr", "es", "zh"], id: \.self) { Text(Self.nativeName($0)).tag($0) }
-            }.pickerStyle(.inline)
+            Menu("Languages I practise") {
+                ForEach(AppLanguage.allCases) { item in
+                    Toggle(item.name, isOn: Binding(get: { model.practiceLanguages.contains(item) },
+                                                    set: { _ in model.togglePracticeLanguage(item) }))
+                        .disabled(model.practiceLanguages == [item])
+                }
+            }
+            Menu("Languages I speak") {
+                ForEach(AppModel.spokenLanguageCodes, id: \.self) { code in
+                    Toggle(Self.nativeName(code), isOn: Binding(get: { model.spokenLanguages.contains(code) },
+                                                               set: { _ in model.toggleSpokenLanguage(code) }))
+                        .disabled(model.spokenLanguages == [code])
+                }
+            }
+            if model.spokenLanguages.count > 1 {
+                Picker("Hints and translations in", selection: $model.nativeLanguage) {
+                    ForEach(model.spokenLanguages, id: \.self) { Text(Self.nativeName($0)).tag($0) }
+                }
+            }
             Menu("App language") {
                 ForEach(Self.interfaceLanguages, id: \.code) { option in
                     Button { pendingLanguage = option.code; confirmRestart = true } label: {
@@ -140,7 +156,7 @@ struct LanguageMenu: View {
         }
         .alert("Subvox couldn’t restart", isPresented: $restartFailed) { Button("OK", role: .cancel) {} }
         .help("The language you're practising (⌥⌘1–6), and the language you speak")
-        .accessibilityLabel("Practising \(model.language.localizedName); you speak \(Self.nativeName(model.nativeLanguage))")
+        .accessibilityLabel("Practising \(model.language.localizedName); you speak \(model.spokenLanguages.map(Self.nativeName).formatted(.list(type: .and)))")
     }
 
     /// The interface language, separate from the practice language. macOS reads it at launch,

@@ -47,6 +47,10 @@ final class AppModel {
         contribution.activeAutomaticGrant(for: huggingFace.username)
     }
 
+    /// Subvox is a data-collection app first: the main window opens only while the learner is
+    /// signed in to Hugging Face and automatic sharing is on. Otherwise Welcome asks for both.
+    var canUseApp: Bool { onboarded && huggingFace.username != nil && automaticSharingGrant != nil }
+
     func stopAutomaticSharing() {
         contribution.stopAutomaticSharing()
         if automaticSharingRunning { uploader.stop() }
@@ -88,14 +92,63 @@ final class AppModel {
     var trainMode: TrainMode = .reading
     /// Bumped by Practice › Start (⌘↩); the visible practice page starts its round.
     var startRequest = 0
-    /// The practice language for every mode, chosen from the toolbar.
+    /// The active practice language for every mode, always one of `practiceLanguages`.
     var language = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "ui.language") ?? "") ?? .en {
-        didSet { UserDefaults.standard.set(language.rawValue, forKey: "ui.language") }
+        didSet {
+            UserDefaults.standard.set(language.rawValue, forKey: "ui.language")
+            if !practiceLanguages.contains(language) { practiceLanguages.append(language) }
+        }
     }
-    /// The learner's own language ("I speak"), for "tricky for you" hints. Defaults to the Mac's language.
+    /// Every language the learner practises; the toolbar switches between them.
+    var practiceLanguages: [AppLanguage] = AppModel.storedPracticeLanguages() {
+        didSet {
+            if practiceLanguages.isEmpty { practiceLanguages = [language]; return }
+            UserDefaults.standard.set(practiceLanguages.map(\.rawValue), forKey: "ui.practiceLanguages")
+            if !practiceLanguages.contains(language) { language = practiceLanguages[0] }
+        }
+    }
+    /// Spoken-language codes the learner offers ("I speak"), as used by the corpus and hints.
+    static let spokenLanguageCodes = ["en", "fr", "es", "zh"]
+    /// Every language the learner speaks. `nativeLanguage` is the one used for hints and translations.
+    var spokenLanguages: [String] = AppModel.storedSpokenLanguages() {
+        didSet {
+            if spokenLanguages.isEmpty { spokenLanguages = [nativeLanguage]; return }
+            UserDefaults.standard.set(spokenLanguages, forKey: "ui.spokenLanguages")
+            if !spokenLanguages.contains(nativeLanguage) { nativeLanguage = spokenLanguages[0] }
+        }
+    }
+    /// The spoken language for "tricky for you" hints and translations. Defaults to the Mac's language.
     var nativeLanguage = UserDefaults.standard.string(forKey: "ui.nativeLanguage")
-        ?? (["en", "fr", "es", "zh"].first { $0 == Locale.current.language.languageCode?.identifier } ?? "en") {
-        didSet { UserDefaults.standard.set(nativeLanguage, forKey: "ui.nativeLanguage") }
+        ?? (AppModel.spokenLanguageCodes.first { $0 == Locale.current.language.languageCode?.identifier } ?? "en") {
+        didSet {
+            UserDefaults.standard.set(nativeLanguage, forKey: "ui.nativeLanguage")
+            if !spokenLanguages.contains(nativeLanguage) { spokenLanguages.append(nativeLanguage) }
+        }
+    }
+    func togglePracticeLanguage(_ item: AppLanguage) {
+        if let index = practiceLanguages.firstIndex(of: item) {
+            if practiceLanguages.count > 1 { practiceLanguages.remove(at: index) }
+        } else {
+            practiceLanguages.append(item)
+        }
+    }
+    func toggleSpokenLanguage(_ code: String) {
+        if let index = spokenLanguages.firstIndex(of: code) {
+            if spokenLanguages.count > 1 { spokenLanguages.remove(at: index) }
+        } else {
+            spokenLanguages.append(code)
+        }
+    }
+    private static func storedPracticeLanguages() -> [AppLanguage] {
+        let stored = (UserDefaults.standard.stringArray(forKey: "ui.practiceLanguages") ?? []).compactMap(AppLanguage.init(rawValue:))
+        if !stored.isEmpty { return stored }
+        return [AppLanguage(rawValue: UserDefaults.standard.string(forKey: "ui.language") ?? "") ?? .en]
+    }
+    private static func storedSpokenLanguages() -> [String] {
+        let stored = (UserDefaults.standard.stringArray(forKey: "ui.spokenLanguages") ?? []).filter(spokenLanguageCodes.contains)
+        if !stored.isEmpty { return stored }
+        return [UserDefaults.standard.string(forKey: "ui.nativeLanguage")
+                ?? (spokenLanguageCodes.first { $0 == Locale.current.language.languageCode?.identifier } ?? "en")]
     }
     /// Leaves any Reading-only full-page view (sharing, research tools) when switching mode.
     func closeOverlays() {
