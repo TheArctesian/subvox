@@ -15,21 +15,15 @@ struct SimpleTrainingView: View {
             HStack {
                 AppPageHeading(title: "Reading", subtitle: "Read a short sentence aloud, then mouth it silently. About ten minutes a session.")
                 Spacer()
-                Button("Share Recordings…") { model.showContribute = true }.disabled(workflow.isBusy)
+                Button("Share Recordings…", systemImage: "square.and.arrow.up") { model.showContribute = true }.disabled(model.navigationLocked)
                 Button { model.startSentenceTraining() } label: {
                     Label(calibrationLeft > 0 ? "Start Recording" : "Record Next Passages", systemImage: "record.circle")
                 }
-                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty || workflow.isBusy)
+                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!motionReady || workflow.plan.isEmpty || workflow.isBusy || !workflow.storageReady || workflow.data.reservedUnlockedAt != nil)
                 .help("⌘↩")
             }
         } content: {
-            if workflow.phase == .preparing {
-                VStack(spacing: 14) {
-                    ProgressView()
-                    Text(workflow.phase == .preparing ? "Starting…" : workflow.processingText.isEmpty ? "Saving…" : workflow.processingText)
-                    if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
+            Group {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 28) {
                         TrainingProcessingStatus(workflow: workflow)

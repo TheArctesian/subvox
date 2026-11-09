@@ -28,10 +28,14 @@ final class LocalWhisper {
     private(set) var isTranscribing = false
     private(set) var error: String?
     private(set) var status = "Ready for local transcription"
-    var isAvailable: Bool {
-        Self.validModel(URL(fileURLWithPath: Self.expanded(modelPath)))
-            && FileManager.default.isExecutableFile(atPath: Self.expanded(executablePath))
+    var hasModel: Bool { Self.validModel(URL(fileURLWithPath: Self.expanded(modelPath))) }
+    var hasExecutable: Bool {
+        let path = Self.expanded(executablePath)
+        let url = URL(fileURLWithPath: path)
+        return FileManager.default.isExecutableFile(atPath: path) &&
+            (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true
     }
+    var isAvailable: Bool { hasModel && hasExecutable }
     var isConfigured: Bool { isAvailable }
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private var process: Process?

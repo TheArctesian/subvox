@@ -21,14 +21,14 @@ struct RepresentationStudyView:View {
                 }.disabled(workflow.isBusy)
             }
         } content: {
-            if workflow.phase == .processing {
-                VStack(spacing:15) {ProgressView();Text("Saving points and evaluating frozen comparisons locally…")}
-                    .frame(maxWidth:.infinity,maxHeight:.infinity)
-            } else {
-                ScrollView {
+            ScrollView {
                     VStack(alignment:.leading,spacing:20) {
+                        if workflow.phase == .processing {
+                            HStack { ProgressView().controlSize(.small); Text("Evaluating saved takes on this Mac…") }
+                                .foregroundStyle(.secondary)
+                        }
                         if workflow.phase == .reseat {reseat}
-                        else {
+                        else if workflow.phase != .processing {
                             if workflow.canFitSavedTraining {
                                 Text("All training takes are saved. Fit them to continue; no re-recording is needed.").font(.headline)
                                 Button("Fit saved A and continue to B",action:workflow.fitSavedTraining)
@@ -67,7 +67,6 @@ struct RepresentationStudyView:View {
                                 .font(.callout).foregroundStyle(.secondary)
                         }
                     }.frame(maxWidth:1000,alignment:.leading).padding(24).frame(maxWidth:.infinity)
-                }
             }
         }
     }
@@ -133,7 +132,7 @@ struct RepresentationStudyView:View {
                 CameraPoseGuide(camera:workflow.camera,compact:true,allowsMovement:true).frame(height:70).padding(.horizontal,12)
                 RecordingPromptPanel(color:color) {
                     VStack(spacing:18) {
-                        RecordingCueStatus(timer:workflow.phase == .ready ? "When you’re ready" : String(format:"%.1f s",workflow.secondsRemaining),
+                        RecordingCueStatus(timer:workflow.phase == .ready ? "When you’re ready" : workflow.phase == .ended ? "Saved on this Mac" : String(format:"%.1f s",workflow.secondsRemaining),
                             title:workflow.phase == .relax ? "Relax" : workflow.phase == .ready ? "Ready" : workflow.phase == .ended ? "Saved" : "Recording", color:color)
                         Label(workflow.condition == .normal ? "Speak aloud":"Mouth silently",systemImage:workflow.condition == .normal ? "speaker.wave.2":"mouth")
                             .font(.title3.weight(.medium)).foregroundStyle(color)

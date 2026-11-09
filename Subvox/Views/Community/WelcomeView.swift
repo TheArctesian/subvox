@@ -49,12 +49,12 @@ struct WelcomeView: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     Text("What you'll need").font(.headline).accessibilityAddTraits(.isHeader)
-                    need(ok: model.motion.isConnected || model.motion.status == .streaming, symbol: "airpods",
+                    need(ok: model.motion.status == .streaming, symbol: "airpods",
                          title: "AirPods Pro, AirPods (3rd generation or later) or AirPods Max",
                          detail: "For recording. Listening to sounds and reading guides works without them.")
-                    need(ok: AVCaptureDevice.authorizationStatus(for: .video) != .denied, symbol: "camera",
+                    need(ok: AVCaptureDevice.authorizationStatus(for: .video) == .authorized, symbol: "camera",
                          title: "The Mac's camera",
-                         detail: "Reads lip points while you record. Never video or photos.")
+                         detail: "Subvox asks for camera access when needed. It saves lip points, and never saves video or photos.")
                     need(ok: model.localWhisper.isConfigured, symbol: "waveform",
                          title: "Speech recognition on this Mac (a local Whisper model)",
                          detail: "Checks what you said. Nothing is uploaded.")

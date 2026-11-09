@@ -9,13 +9,7 @@ struct DecodeView: View {
                 AppPageHeading(title: "Try a model", subtitle: "Mouth a word and inspect what the motion model detects.")
                 Spacer()
                 Button("Sentence models", systemImage: "text.bubble") {
-                    model.showNonSpeechCollection = false
-                    model.showObservability = false
-                    model.showContribute = false
-                    model.showRepresentation = false
-                    model.showSignalCheck = false
-                    model.showSequenceLearning = true
-                    model.screen = .train
+                    model.openReading(showModels: true)
                 }
             }
         } content: {
@@ -27,13 +21,7 @@ struct DecodeView: View {
                 } actions: {
                     if model.isBuildingDecoder { ProgressView() }
                     Button("Record sentences") {
-                        model.showNonSpeechCollection = false
-                        model.showObservability = false
-                    model.showContribute = false
-                        model.showRepresentation = false
-                        model.showSignalCheck = false
-                        model.showSequenceLearning = false
-                        model.screen = .train
+                        model.openReading()
                     }.buttonStyle(.borderedProminent)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
@@ -69,6 +57,9 @@ struct DecodeView: View {
                 HoldToCaptureButton(title: "Mouth a word", isCapturing: capture.isCapturing,
                     isEnabled: model.motion.status == .streaming && !captureUnavailable,
                     onBegin: capture.begin, onEnd: capture.end)
+                Button(capture.isCapturing ? "Finish capture" : "Start capture", systemImage: capture.isCapturing ? "checkmark" : "record.circle") {
+                    if capture.isCapturing { capture.end() } else { capture.begin() }
+                }.disabled(model.motion.status != .streaming || captureUnavailable)
             } else {
                 Button(capture.isCalibrating ? "Calibrating… stay still" : "Calibrate resting motion") { capture.calibrate() }
                     .disabled(capture.isCalibrating || model.motion.status != .streaming)
@@ -85,18 +76,20 @@ struct DecodeView: View {
             HStack {
                 Text("Model output").font(.headline)
                 Spacer()
-                Button("Clear", action: model.clearDecoded).disabled(model.decoded.isEmpty)
+                Button("Clear", action: model.clearDecoded).disabled(model.decoded.isEmpty && !model.isDecoding && !model.capture.takeTooShort)
             }
+            Text(model.isDecoding ? "Decoding…" : model.capture.takeTooShort ? "Capture was too short. Try mouthing the word again." : "Mouth one word to check the model.")
+                .font(.callout).foregroundStyle(.secondary)
             if model.decoded.isEmpty {
-                Text(model.isDecoding ? "Decoding…" : "Your words will appear here.").foregroundStyle(.secondary)
+                Text("Your words will appear here.").foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
             } else {
                 model.decoded.reduce(Text("")) { text, word in
-                    text + Text(word.text + " ").foregroundColor(word.prediction.accepted ? .primary : .secondary.opacity(0.4))
+                    text + Text(word.prediction.accepted ? word.text + " " : word.text + " (uncertain) ").foregroundColor(word.prediction.accepted ? .primary : .secondary)
                 }.font(.system(size: 30, weight: .medium)).textSelection(.enabled)
                     .frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
             }
-            Text("Faded words were rejected by the model’s thresholds.").font(.caption).foregroundStyle(.secondary)
+            Text("Uncertain words fell outside the model’s thresholds.").font(.caption).foregroundStyle(.secondary)
           }.padding(12)
         }
     }

@@ -20,6 +20,7 @@ struct SubvoxApp: App {
                 Button("Start") {
                     if model.screen == .train && model.trainMode == .reading { model.startSentenceTraining() } else { model.startRequest += 1 }
                 }.keyboardShortcut(.return, modifiers: .command)
+                    .disabled(model.screen != .train || !model.canRestartInterface)
                 Button("Show or Hide IPA") {
                     let defaults = UserDefaults.standard
                     defaults.set(!(defaults.object(forKey: "practice.showIPA") as? Bool ?? true), forKey: "practice.showIPA")
@@ -32,12 +33,14 @@ struct SubvoxApp: App {
                     ForEach(Array(AppLanguage.allCases.enumerated()), id: \.offset) { index, language in
                         Button(language.name) { model.language = language }
                             .keyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: [.command, .option])
+                            .disabled(model.navigationLocked)
                     }
                 }
                 Divider()
                 ForEach(TrainMode.allCases) { mode in
-                    Button(mode.title) { if mode != model.trainMode { model.closeOverlays() }; model.screen = .train; model.trainMode = mode }
+                    Button(mode.title) { if mode != model.trainMode { model.closeOverlays(); model.referenceSpeaker.stop() }; model.screen = .train; model.trainMode = mode }
                         .keyboardShortcut(KeyEquivalent(mode.shortcut), modifiers: .command)
+                        .disabled(model.navigationLocked)
                 }
             }
         }

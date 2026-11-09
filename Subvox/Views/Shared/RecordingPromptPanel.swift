@@ -47,25 +47,41 @@ struct NonSpeechMovementGuide:View {
     var movement:NonSpeechMovement
     var color:Color
     var demonstrating:Bool
+    var allowsReplay = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var origin=Date()
+    @State private var replaying = false
     var body:some View {
-        TimelineView(.animation(minimumInterval:1/24,paused:reduceMotion || !demonstrating)) {timeline in
-            let elapsed=reduceMotion || !demonstrating ? 0:timeline.date.timeIntervalSince(origin)
+        let active = !reduceMotion && (allowsReplay ? replaying : demonstrating)
+        VStack(spacing: 8) {
+        TimelineView(.animation(minimumInterval:1/24,paused:!active)) {timeline in
+            let elapsed = active ? timeline.date.timeIntervalSince(origin) : 0
             VStack(spacing:14) {
                 illustration(at:elapsed)
                 VStack(spacing:7) {
                     Text(movement.title).font(.system(size:30,weight:.semibold))
                     Text(movement.cue(at:elapsed)).font(.system(size:16)).foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
-                    if reduceMotion, movement == .nodAndTurn {Text("Nod up and down, then turn left and right.").font(.callout).foregroundStyle(.secondary)}
+                    if !active, movement == .nodAndTurn {Text("Nod up and down, then turn left and right.").font(.callout).foregroundStyle(.secondary)}
                 }
                 Text("Movement example, not live tracking").font(.caption).foregroundStyle(.tertiary)
             }.frame(maxWidth:560)
         }
         .accessibilityElement(children:.ignore)
         .accessibilityLabel("Example: "+movement.title+". "+movement.instruction)
-        .onChange(of:movement) {_,_ in origin=Date()}
+        if allowsReplay && !reduceMotion {
+            Button(replaying ? "Pause example" : "Replay example", systemImage: replaying ? "pause.fill" : "play.fill") {
+                origin = Date()
+                replaying.toggle()
+            }
+        }
+        }
+        .task(id: replaying) {
+            guard replaying else { return }
+            do { try await Task.sleep(for: .seconds(8)); replaying = false }
+            catch { return }
+        }
+        .onChange(of:movement) { _,_ in origin=Date(); replaying = false }
         .onChange(of:demonstrating) {_,active in if active {origin=Date()}}
     }
     private func illustration(at time:Double)->some View {
@@ -106,16 +122,25 @@ struct RecordingViewport<Header:View,Prompt:View,Actions:View,Motion:View>:View 
     @ViewBuilder var prompt:()->Prompt
     @ViewBuilder var actions:()->Actions
     @ViewBuilder var motion:()->Motion
+    var showsMotion = true
+    func withMotionVisibility(_ visible: Bool) -> Self {
+        var viewport = self
+        viewport.showsMotion = visible
+        return viewport
+    }
+
     var body:some View {
         GeometryReader {geometry in
-            let promptHeight=max(1,geometry.size.height-64-112-132-2)
+            let promptHeight = max(1, geometry.size.height - 64 - 112 - (showsMotion ? 133 : 0) - 1)
             VStack(spacing:0) {
                 header().frame(height:64).padding(.horizontal,24).clipped()
                 Divider()
                 prompt().frame(width:max(1,geometry.size.width-40),height:promptHeight).padding(.horizontal,20).clipped()
                 actions().frame(height:112).padding(.horizontal,24).clipped()
-                Divider()
-                motion().frame(height:132).padding(.horizontal,12).clipped()
+                if showsMotion {
+                    Divider()
+                    motion().frame(height:132).padding(.horizontal,12).clipped()
+                }
             }.frame(width:geometry.size.width,height:geometry.size.height,alignment:.top).clipped()
                 .background(Color(nsColor:.windowBackgroundColor))
         }

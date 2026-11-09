@@ -20,6 +20,21 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
+    func testReadingDestinationsFromDecodeSelectReadingAndCorrectOverlay() throws {
+        let (workflow, root) = try fixture()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = AppModel(sentenceTraining: workflow)
+        for showModels in [true, false] {
+            model.trainMode = .poetry
+            model.screen = .decode
+            model.openReading(showModels: showModels)
+            XCTAssertEqual(model.screen, .train)
+            XCTAssertEqual(model.trainMode, .reading)
+            XCTAssertEqual(model.showSequenceLearning, showModels)
+        }
+    }
+
+    @MainActor
     func testDoneEndsSpokenAndMouthedTakesAtThePressAndExcludesLateSamples() async throws {
         for condition in [SpeechCondition.normal, .silent] {
             let (workflow, root) = try fixture()

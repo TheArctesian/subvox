@@ -17,7 +17,7 @@ struct AudioTimingView: View {
                 HStack {
                     Text("Audio timing").font(.headline)
                     Spacer()
-                    Button("Play reference", systemImage: "play.fill") { play(start: transcript.sourceAudioStartSeconds ?? 0, duration: duration) }
+                    Button("Play recorded take", systemImage: "play.fill") { play(start: transcript.sourceAudioStartSeconds ?? 0, duration: duration) }
                     Button("Stop", systemImage: "stop.fill") { stop() }.disabled(player?.isPlaying != true)
                 }
                 Canvas { context, size in

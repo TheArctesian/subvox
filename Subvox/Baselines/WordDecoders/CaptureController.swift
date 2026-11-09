@@ -22,6 +22,17 @@ final class CaptureController {
     }
     var triggerRatio: Double = 3
 
+    private(set) var takeTooShort = false
+    func clearFeedback() { takeTooShort = false }
+
+    func cancelCapture() {
+        buffer.removeAll()
+        isCapturing = false
+        isManual = false
+        quietSince = nil
+        clearFeedback()
+    }
+
     private(set) var isCapturing = false
     private(set) var isCalibrating = false
     private(set) var energy: Double = 0
@@ -40,6 +51,7 @@ final class CaptureController {
 
     func begin() {
         guard !isCapturing else { return }
+        clearFeedback()
         isManual = true
         isCapturing = true
         buffer = preroll
@@ -92,6 +104,7 @@ final class CaptureController {
                 if duration > Self.maxAutoSeconds { finish() }
             }
         } else if autoEnabled, !isCalibrating, let threshold, energy > threshold {
+            clearFeedback()
             isManual = false
             isCapturing = true
             quietSince = nil
@@ -105,7 +118,7 @@ final class CaptureController {
         isCapturing = false
         isManual = false
         quietSince = nil
-        guard segment.count >= 4, let first = segment.first, let last = segment.last, last.t - first.t >= 0.15 else { return }
+        guard segment.count >= 4, let first = segment.first, let last = segment.last, last.t - first.t >= 0.15 else { takeTooShort = true; return }
         onSegment?(segment)
     }
 }

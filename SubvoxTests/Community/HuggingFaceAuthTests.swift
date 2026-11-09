@@ -142,6 +142,41 @@ final class CommunityUploaderTests: XCTestCase {
         XCTAssertEqual(reloaded.items.first?.dropped, ["t1"], "The queue survives a restart")
         reloaded.merge(reloaded.scan(contributor: "stephenokita"))
         XCTAssertEqual(reloaded.items.count, 1, "Re-scanning doesn't duplicate a session")
+        reloaded.toggleDrop("t2", in: "abc123")
+        XCTAssertTrue(reloaded.pending.isEmpty, "An empty upload cannot be sent")
+        XCTAssertEqual(reloaded.unsent.map(\.id), ["abc123"], "The session remains available for recovery")
+        reloaded.restoreTakes(in: "abc123")
+        XCTAssertEqual(reloaded.pending.map(\.id), ["abc123"])
+    }
+
+    @MainActor func testMixedUploadResultsRetainFailureAndRetryOnlyThatSession() async throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "uploader-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        var failFirst = true
+        var attempted: [String] = []
+        let uploader = CommunityUploader(root: root, runtimeRoot: root) { arguments, _ in
+            let session = arguments[try XCTUnwrap(arguments.firstIndex(of: "--session")) + 1]
+            attempted.append(session)
+            if session == "first", failFirst { throw URLError(.notConnectedToInternet) }
+            let result = arguments[try XCTUnwrap(arguments.firstIndex(of: "--output")) + 1]
+            try Data(#"{"pr_num":1}"#.utf8).write(to: URL(fileURLWithPath: result))
+        }
+        uploader.merge([
+            CommunityUpload(id: "first", folder: "first", takes: 1, month: "2026-11"),
+            CommunityUpload(id: "second", folder: "second", takes: 1, month: "2026-11"),
+        ])
+        await uploader.sendReviewed(["first", "second"], repo: "test/dataset", token: "fixture")
+        XCTAssertEqual(uploader.status, "1 sent · 1 failed")
+        XCTAssertNotNil(uploader.error)
+        XCTAssertEqual(uploader.pending.map(\.id), ["first"])
+        XCTAssertEqual(uploader.pending.first?.status, .failed)
+        XCTAssertEqual(uploader.shared.map(\.id), ["second"])
+
+        failFirst = false
+        await uploader.sendReviewed(["first"], repo: "test/dataset", token: "fixture")
+        XCTAssertEqual(uploader.status, "1 sent · 0 failed")
+        XCTAssertNil(uploader.error)
+        XCTAssertEqual(attempted, ["first", "second", "first"])
     }
 
     @MainActor func testSharingDefaultsToLocalAndConsentIsVersioned() {

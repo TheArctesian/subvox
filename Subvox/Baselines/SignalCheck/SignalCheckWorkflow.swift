@@ -24,6 +24,7 @@ final class SignalCheckWorkflow {
     private(set) var processingText = ""
     private(set) var plan: [SignalCheckPrompt] = []
     var isAcquiring: Bool { [.reseat, .controlSetup, .controlBreak, .ready, .relax, .recording, .ended].contains(phase) }
+    var showsCaptureCue: Bool { [.ready, .relax, .recording, .ended].contains(phase) }
     var isBusy: Bool { isAcquiring || phase == .preparing || phase == .processing }
     var current: SignalCheckPrompt? { plan.indices.contains(index) ? plan[index] : nil }
     var currentText: String { current.map { SignalCheckRun.sentences[$0.sentence] } ?? "" }

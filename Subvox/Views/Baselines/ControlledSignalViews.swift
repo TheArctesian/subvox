@@ -5,9 +5,8 @@ struct ControlledSignalSetupView: View {
     @Environment(AppModel.self) private var model
     private var workflow: SignalCheckWorkflow { model.signalCheck }
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 0.1)) { _ in
-            let between = workflow.phase == .controlBreak
-            ScrollView {
+        let between = workflow.phase == .controlBreak
+        ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     Text(workflow.usesCameraTeacher ? (between ? "2 of 2 · reseat and test B" : "1 of 2 · train and validate A") : between ? "Block B · reseat both AirPods" : "Block A · keep AirPods seated")
                         .font(.system(size: 34, weight: .semibold))
@@ -15,7 +14,8 @@ struct ControlledSignalSetupView: View {
                          : "Leave the AirPods in place. Sit comfortably facing the camera, keep your chair and screen fixed, and save a neutral head pose.")
                         .font(.title3).fixedSize(horizontal: false, vertical: true)
                     CameraPoseGuide(camera: workflow.camera, target: workflow.comparison?.target, allowsMovement: workflow.allowsHeadMovement)
-                    HStack {
+                    TimelineView(.periodic(from: .now, by: 0.1)) { _ in
+                      HStack {
                         Button(workflow.camera.isStarting ? "Starting camera…" : workflow.camera.isRunning ? "Restart local camera guide" : "Enable local camera guide") {
                             Task {
                                 if workflow.camera.isRunning { workflow.camera.stop() }
@@ -31,6 +31,11 @@ struct ControlledSignalSetupView: View {
                             model.startSignalCheck(againstReference: true, controlled: true)
                         }.buttonStyle(.borderedProminent).controlSize(.large)
                             .disabled(!workflow.canStartControlledBlock || model.motion.status != .streaming)
+                      }
+                      if between, workflow.breakRemaining > 0 {
+                          Text(String(format: "Rest and reseat · %.0f seconds remaining before block B can start", ceil(workflow.breakRemaining)))
+                              .font(.headline).foregroundStyle(.orange)
+                      }
                     }
                     if let tilt = workflow.imuTiltDifference, !workflow.allowsHeadMovement {
                         Text(String(format: "AirPods gravity direction differs by %.1f° from setup. This is recorded as a fit/pose diagnostic; it is not used to move the camera target or recalibrate the model.", tilt))
@@ -48,10 +53,6 @@ struct ControlledSignalSetupView: View {
                         .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                     Text(workflow.usesCameraTeacher ? "The camera teaches the AirPods to predict changes in mouth shape. Eye landmarks provide a continuous head-motion reference; relaxed-mouth periods teach what to ignore. A and the saved training history choose and freeze the model before B. Whole sessions are held out when available. B tests AirPods input alone. The primary test compares learned versus raw features with the same linear decoder. Other arms check context, template matching, camera mouth motion and head-motion confounding. Your reserved sentence final test remains untouched." : workflow.allowsHeadMovement ? "Block A learns how camera-measured head movement appears in AirPods rotation, using relaxed-mouth baselines only. The correction and new phrase references are locked before block B. Raw and corrected rotation are compared side by side; the older reference is also scored separately. Only camera tracking and capture timing affect the quality check, not your position. Predictions stay hidden until both blocks finish." : "One pose target, one frozen reference and one shuffled prompt order are used throughout. Face angles must be within 5°, face position within 5% of the frame and apparent face size within 12% before each take. Predictions remain hidden until both blocks finish.")
                         .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
-                    if between, workflow.breakRemaining > 0 {
-                        Text(String(format: "Rest and reseat · %.0f seconds remaining before block B can start", ceil(workflow.breakRemaining)))
-                            .font(.headline).foregroundStyle(.orange)
-                    }
                     if between, let note = workflow.comparison?.cameraAdjustmentNote { Text(note).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true) }
                     if between, let correction = workflow.comparison?.cameraReference?.correction {
                         Text(String(format: "Head-motion correction locked · %.0f%% less error on held-out baseline intervals. It will not refit after reseating.", correction.heldOutReduction*100)).font(.callout).foregroundStyle(.secondary)
@@ -65,7 +66,6 @@ struct ControlledSignalSetupView: View {
                     Text("The fixed A-then-B order cannot fully separate reseating from time or fatigue. The report keeps this limitation and all incomplete or off-target takes visible.")
                         .font(.caption).foregroundStyle(.secondary)
                 }.frame(maxWidth: 1000, alignment: .leading).padding(24).frame(maxWidth: .infinity)
-            }
         }
     }
 }
