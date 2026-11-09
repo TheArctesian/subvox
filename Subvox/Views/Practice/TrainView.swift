@@ -85,23 +85,27 @@ struct PracticePage<Controls: View, Content: View>: View {
         if !workflow.storageReady { return String(localized: "Local recording storage is unavailable") }
         if workflow.data.reservedUnlockedAt != nil { return String(localized: "The recording collection is locked") }
         if groups.isEmpty { return String(localized: "Nothing to practise yet") }
+        if workflow.phase == .processing { return String(localized: "Checking saved takes") }
         return nil
     }
 
     @ViewBuilder private var pageBody: some View {
-                        if !model.localWhisper.isConfigured {
-                            HStack {
-                                Label("Practice needs speech recognition on this Mac (a local Whisper model) to check what you said. Nothing is uploaded.", systemImage: "exclamationmark.triangle")
-                                    .foregroundStyle(.orange)
-                                Button("Set Up Whisper…") { showWhisperSetup = true }
-                            }
-                        }
-                        if mode.isLiterature { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
-                        if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
-                        TrainingProcessingStatus(workflow: workflow)
-                        PracticeFeedback(mode: mode, again: { model.startPractice(workflow.lastPracticePlan) })
-                        HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
-                        content()
+        if !model.localWhisper.isConfigured {
+            HStack {
+                Label("Practice needs speech recognition on this Mac (a local Whisper model) to check what you said. Nothing is uploaded.", systemImage: "exclamationmark.triangle")
+                    .foregroundStyle(.orange)
+                Button("Set Up Whisper…") { showWhisperSetup = true }
+            }
+        }
+        if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
+        TrainingProcessingStatus(workflow: workflow)
+        PracticeFeedback(mode: mode, again: { model.startPractice(workflow.lastPracticePlan) })
+        HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
+        content()
+        if mode.isLiterature {
+            DisclosureGroup("Word alignment settings") { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
+                .font(.callout).foregroundStyle(.secondary)
+        }
     }
 
     var body: some View {
@@ -238,6 +242,7 @@ private struct ReferenceButton: View {
     let language: AppLanguage
     var compact = true
     var phonetic = false
+    var subject: String?
 
     var body: some View {
         let speaker = model.referenceSpeaker
@@ -258,7 +263,7 @@ private struct ReferenceButton: View {
             }
         }
         .help(active ? "Stop reference" : "Listen to reference")
-        .accessibilityLabel(active ? "Stop reference" : "Listen to \(text)")
+        .accessibilityLabel(active ? "Stop reference" : "Listen to \(subject ?? text)")
     }
 }
 
@@ -343,7 +348,6 @@ struct PracticeFeedback: View {
             let processing = model.sentenceTraining.phase == .processing
             VStack(alignment: .leading, spacing: 12) {
                 if !processing { RoundCelebration() }
-                LocalRecordingHistory()
                 HStack {
                     (processing ? Text("Last round") : Text("Last round: \(summary)")).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
                         .accessibilityFocused($focusResults)
@@ -352,7 +356,12 @@ struct PracticeFeedback: View {
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
                         .disabled(!model.canRestartInterface || model.motion.status != .streaming || !model.localWhisper.isConfigured || model.sentenceTraining.lastPracticePlan.isEmpty)
                 }
-                ForEach(pairs) { row($0) }
+                DisclosureGroup("Take feedback") {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 10) { ForEach(pairs) { row($0) } }
+                    }.frame(maxHeight: 200)
+                }
+                LocalRecordingHistory()
                 Text("Speech recognition guesses what you meant, so it can accept sounds that aren't quite right. Use it to check you were understood, not to judge each sound. For a persistent difficulty, a teacher or speech and language therapist can hear what the app can't.")
                     .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             }
@@ -403,12 +412,13 @@ struct PracticeLineView: View {
     var showIPA: Bool
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
+            if let reading = line.reading(language) {
+                Text(reading).font(.callout).foregroundStyle(.secondary)
+            }
             Text(Self.spoken(line.text(language), language)).font(.title2)
-            // The meaning, in the interface language; not shown when it would just repeat the practised language.
             if let gloss = line.translation(to: model.nativeLanguage), model.nativeLanguage != language.corpus {
                 Text(gloss).font(.callout).foregroundStyle(.secondary)
             }
-            if let reading = line.reading(language) { Text(reading).font(.title3).foregroundStyle(.secondary) }
             if showIPA {
                 // Large enough that look-alike symbols (ɾ / r, ɡ / g) are told apart; VoiceOver skips it.
                 Text("/" + line.ipa(language).joined(separator: " ") + "/").font(.ipa(18, relativeTo: .title3)).foregroundStyle(.secondary)
@@ -539,7 +549,7 @@ struct LiteraturePracticeView: View {
                         ScrollView { VStack(alignment: .leading, spacing: 12) {
                             Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
-                            ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false)
+                            ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false, subject: String(localized: "this part"))
                             ForEach(lines.indices, id: \.self) { index in
                                 PracticeLineView(line: lines[index], language: language, showIPA: showIPA)
                             }

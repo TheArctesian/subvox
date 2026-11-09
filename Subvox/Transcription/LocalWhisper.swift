@@ -152,16 +152,22 @@ final class LocalWhisper {
                 try await waitForServer(child, port: port, session: session)
                 try Task.checkCancellation()
                 status = "Transcribing locally…"
-                let request = try Self.inferenceRequest(port: port, wav: Data(contentsOf: wav))
+                let request = try await Task.detached(priority: .userInitiated) {
+                    try Self.inferenceRequest(port: port, wav: Data(contentsOf: wav))
+                }.value
+                try Task.checkCancellation()
                 let (data, response) = try await session.data(for: request)
                 try Task.checkCancellation()
                 guard child.isRunning else { throw Failure.server("Process exited with status \(child.terminationStatus). See \(logURL.lastPathComponent).") }
                 guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
                     throw Failure.server("Inference HTTP status \((response as? HTTPURLResponse)?.statusCode ?? 0). See \(logURL.lastPathComponent).")
                 }
-                try data.write(to: outputDirectory.appending(path: "local-whisper-\(id)-raw.json"), options: .atomic)
-                let parsed = try AudioWordTiming.attentionTranscript(data)
-                let timing = Task.detached(priority: .userInitiated) { try AudioWordTiming.inspect(wav: wav, transcript: parsed) }
+                let timing = Task.detached(priority: .userInitiated) {
+                    try Task.checkCancellation()
+                    try data.write(to: outputDirectory.appending(path: "local-whisper-\(id)-raw.json"), options: .atomic)
+                    let parsed = try AudioWordTiming.attentionTranscript(data)
+                    return try AudioWordTiming.inspect(wav: wav, transcript: parsed)
+                }
                 var transcript = try await withTaskCancellationHandler(operation: { try await timing.value }, onCancel: { timing.cancel() })
                 try Task.checkCancellation()
                 if let timeRange {

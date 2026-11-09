@@ -93,7 +93,9 @@ struct SignalPlot: View {
     var body: some View {
         let range = span ?? ((samples.first?.t ?? 0)...(samples.last?.t ?? 1))
         let visible = samples.filter { range.contains($0.t) }
-        let scale = max(minScale, channels.flatMap { c in visible.map { abs($0[keyPath: c.value]) } }.max() ?? 0)
+        let scale = channels.reduce(minScale) { maximum, channel in
+            visible.reduce(maximum) { max($0, abs($1[keyPath: channel.value])) }
+        }
 
         VStack(alignment: .leading, spacing: 4) {
             if showsHeader {

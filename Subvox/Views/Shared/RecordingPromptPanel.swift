@@ -54,27 +54,27 @@ struct NonSpeechMovementGuide:View {
     var body:some View {
         let active = !reduceMotion && (allowsReplay ? replaying : demonstrating)
         VStack(spacing: 8) {
-        TimelineView(.animation(minimumInterval:1/24,paused:!active)) {timeline in
-            let elapsed = active ? timeline.date.timeIntervalSince(origin) : 0
-            VStack(spacing:14) {
-                illustration(at:elapsed)
-                VStack(spacing:7) {
-                    Text(movement.title).font(.system(size:30,weight:.semibold))
-                    Text(movement.cue(at:elapsed)).font(.system(size:16)).foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                    if !active, movement == .nodAndTurn {Text("Nod up and down, then turn left and right.").font(.callout).foregroundStyle(.secondary)}
-                }
-                Text("Movement example, not live tracking").font(.caption).foregroundStyle(.tertiary)
-            }.frame(maxWidth:560)
-        }
-        .accessibilityElement(children:.ignore)
-        .accessibilityLabel("Example: "+movement.title+". "+movement.instruction)
-        if allowsReplay && !reduceMotion {
-            Button(replaying ? "Pause example" : "Replay example", systemImage: replaying ? "pause.fill" : "play.fill") {
-                origin = Date()
-                replaying.toggle()
+            TimelineView(.animation(minimumInterval:1/24,paused:!active)) {timeline in
+                let elapsed = active ? timeline.date.timeIntervalSince(origin) : 0
+                VStack(spacing:14) {
+                    illustration(at:elapsed)
+                    VStack(spacing:7) {
+                        Text(movement.title).font(.system(size:30,weight:.semibold))
+                        Text(movement.cue(at:elapsed)).font(.system(size:16)).foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        if !active, movement == .nodAndTurn {Text("Nod up and down, then turn left and right.").font(.callout).foregroundStyle(.secondary)}
+                    }
+                    Text("Movement example, not live tracking").font(.caption).foregroundStyle(.tertiary)
+                }.frame(maxWidth:560)
             }
-        }
+            .accessibilityElement(children:.ignore)
+            .accessibilityLabel("Example: "+movement.title+". "+movement.instruction)
+            if allowsReplay && !reduceMotion {
+                Button(replaying ? "Stop example" : "Replay example", systemImage: replaying ? "stop.fill" : "play.fill") {
+                    origin = Date()
+                    replaying.toggle()
+                }
+            }
         }
         .task(id: replaying) {
             guard replaying else { return }
