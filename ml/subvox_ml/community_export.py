@@ -24,6 +24,7 @@ from .data import RATE, resample
 
 SCHEMA_VERSION = 2  # v2: language tags, speaker status, speaking style, expected/produced phones per take
 SUPPORTED_SCHEMAS = (1, 2)
+SESSION_FILES = ("camera.parquet", "motion.parquet", "session.json", "takes.jsonl")
 SWIFT_EPOCH = datetime.datetime(2001, 1, 1, tzinfo=datetime.timezone.utc)
 MOTION_COLUMNS = ["take_id", "t", "ax", "ay", "az", "rx", "ry", "rz", "gx", "gy", "gz", "qw", "qx", "qy", "qz", "side"]
 CAMERA_COLUMNS = ["take_id", "t"] + camera_input.RAW_NAMES
@@ -218,13 +219,12 @@ def validate_session(folder, index, heldout):
     import pyarrow.parquet as pq
     folder = Path(folder)
     problems = []
-    required = ["session.json", "takes.jsonl", "motion.parquet", "camera.parquet"]
-    for name in required:
+    for name in SESSION_FILES:
         if not (folder / name).exists():
             problems.append(f"missing {name}")
     if problems:
         return problems
-    extra = sorted(p.name for p in folder.iterdir() if p.name not in required and p.name not in ("alignment.jsonl", "audio"))
+    extra = sorted(p.name for p in folder.iterdir() if p.name not in SESSION_FILES and p.name not in ("alignment.jsonl", "audio"))
     if extra:
         problems.append(f"unexpected files {extra}")
     if sum(p.stat().st_size for p in folder.rglob("*") if p.is_file()) > MAX_SESSION_BYTES:
@@ -382,8 +382,8 @@ def upload_session(folder, repo, token, drop=(), pr=None, prompts_dir=None, api=
             raise ValueError(f"Session failed validation; not uploaded: {problems}")
         session = json.loads((source / "session.json").read_text())
         prefix = f"data/{session['contributor']}/{session['session_id']}"
-        operations = [CommitOperationAdd(path_in_repo=f"{prefix}/{p.name}", path_or_fileobj=str(p))
-                      for p in sorted(source.iterdir()) if p.is_file()]
+        operations = [CommitOperationAdd(path_in_repo=f"{prefix}/{name}", path_or_fileobj=str(source / name))
+                      for name in SESSION_FILES]
         api = api or HfApi(token=token)
         message = f"Add Subvox session {session['session_id'][:8]} ({session['takes']} takes)"
         description = (f"Contributed with Subvox {session['app_version']}. Schema v{session['schema_version']}, "

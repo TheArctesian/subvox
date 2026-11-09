@@ -125,9 +125,11 @@ class FakeHub:
 
 
 class UploadTests(Fixture):
-    def test_opens_one_pr_per_session_with_every_file_under_the_contributor(self):
+    def test_opens_one_pr_per_session_with_only_validated_files_under_the_contributor(self):
         from subvox_ml.community_export import upload_session
         [folder] = self.export()
+        (folder / "alignment.jsonl").write_text("unvalidated alignment payload")
+        (folder / "audio").write_bytes(b"unvalidated audio payload")
         hub = FakeHub()
         result = upload_session(folder, "stephenokita/subvox-community-test", "token", prompts_dir=self.prompts, api=hub)
         [call] = hub.calls
