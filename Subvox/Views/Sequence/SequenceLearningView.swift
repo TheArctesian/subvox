@@ -26,7 +26,7 @@ struct SequenceLearningView:View {
                             Picker("Movement example",selection:$previewMovement) {
                                 ForEach(NonSpeechMovement.allCases) {movement in Text(movement.title).tag(movement)}
                             }.pickerStyle(.segmented)
-                            NonSpeechMovementGuide(movement:previewMovement,color:.cyan,demonstrating:true)
+                            NonSpeechMovementGuide(movement:previewMovement,color:.cyan,demonstrating:false,allowsReplay:true)
                                 .frame(maxWidth:.infinity).padding(.vertical,12)
                             Text(previewMovement.instruction).font(.title2).frame(maxWidth:.infinity,alignment:.center)
                             Text("Four movements, twice for each model condition. Keep speech and silent word articulation off.")
@@ -116,10 +116,10 @@ struct SequenceLearningView:View {
                 Picker("Condition",selection:$workflow.inferenceCondition) {ForEach(SpeechCondition.allCasesForSequence) {Text($0.rawValue).tag($0)}}
             }
             TextField("Optional expected sentence, for focus and evaluation after inference",text:$workflow.expectedText)
-            if workflow.needsCamera {Label("This model reads camera lip and jaw points. Face the camera while recording; only numeric points are saved.",systemImage:"camera").font(.callout)}
+            if workflow.inferenceNeedsCamera {Label("This model reads camera lip and jaw points. Face the camera while recording; only numeric points are saved.",systemImage:"camera").font(.callout)}
             Button("Record a sentence for the frozen model") {
                 workflow.mode = .inference;startVisit()
-            }.buttonStyle(.borderedProminent).disabled(!canCollect || !workflow.hasModel)
+            }.buttonStyle(.borderedProminent).disabled(!canCollect || !workflow.canRunInference)
             if let p=workflow.prediction {
                 Text(p.accepted ? p.text:"Rejected / uncertain").font(.title)
                 Text("IPA hypotheses: "+p.phonemes.joined(separator:" ")).textSelection(.enabled)

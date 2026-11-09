@@ -45,7 +45,7 @@ struct CommunityUpload: Codable, Identifiable, Equatable, Sendable {
     var error: String?
 }
 
-struct CommunityTake: Identifiable, Sendable {
+struct CommunityTake: Identifiable, Equatable, Sendable {
     var id: String
     var promptID: String
     var mode: String
@@ -65,11 +65,17 @@ struct CommunityTake: Identifiable, Sendable {
     let root: URL
     @ObservationIgnored private let runtime: SequenceRuntime
     @ObservationIgnored private let corpus: CommunityCorpus
+    @ObservationIgnored private let upload: ([String], String) async throws -> Void
 
-    init(root: URL? = nil, runtimeRoot: URL? = nil, corpus: CommunityCorpus = .bundled) {
+    init(root: URL? = nil, runtimeRoot: URL? = nil, corpus: CommunityCorpus = .bundled,
+         upload: (([String], String) async throws -> Void)? = nil) {
         self.root = root ?? SentenceStore.directory.appending(path: "Community")
         // Shares the neural runtime's installed copy, so uploading doesn't set up Python twice.
-        runtime = SequenceRuntime(root: runtimeRoot ?? SentenceStore.directory.appending(path: "SequenceLearning"))
+        let runtime = SequenceRuntime(root: runtimeRoot ?? SentenceStore.directory.appending(path: "SequenceLearning"))
+        self.runtime = runtime
+        self.upload = upload ?? { arguments, token in
+            try await runtime.run(arguments, environment: ["SUBVOX_HF_TOKEN": token])
+        }
         self.corpus = corpus
         load()
     }
@@ -140,14 +146,20 @@ struct CommunityTake: Identifiable, Sendable {
     }
 
     func toggleDrop(_ take: String, in id: String) {
-        guard let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded, items[i].status != .uploading else { return }
+        guard !busy, let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded, items[i].status != .uploading else { return }
         if items[i].dropped.contains(take) { items[i].dropped.removeAll { $0 == take } } else { items[i].dropped.append(take) }
         save()
     }
 
+    func restoreTakes(in id: String) {
+        guard !busy, let index = items.firstIndex(where: { $0.id == id && $0.status != .uploaded }) else { return }
+        items[index].dropped.removeAll()
+        save()
+    }
+
     /// Sends one reviewed session as a pull request. A retry after a failure adds to the same PR.
-    func send(_ id: String, repo: String, token: String) async {
-        guard !busy, let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded else { return }
+    private func send(_ id: String, repo: String, token: String) async {
+        guard !busy, let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded, items[i].takes > items[i].dropped.count else { return }
         busy = true; error = nil; items[i].status = .uploading; items[i].error = nil; save()
         defer { busy = false }
         let item = items[i]
@@ -158,7 +170,7 @@ struct CommunityTake: Identifiable, Sendable {
         if let prompts = Self.promptsDirectory { arguments += ["--prompts-dir", prompts.path] }
         do {
             status = "Sending session \(id.prefix(8))…"
-            try await runtime.run(arguments, environment: ["SUBVOX_HF_TOKEN": token]) { _ in }
+            try await upload(arguments, token)
             let result = try JSONSerialization.jsonObject(with: Data(contentsOf: output)) as? [String: Any]
             try? FileManager.default.removeItem(at: output)
             guard let j = items.firstIndex(where: { $0.id == id }) else { return }
@@ -173,15 +185,20 @@ struct CommunityTake: Identifiable, Sendable {
         save()
     }
 
-    var pending: [CommunityUpload] { items.filter { $0.status != .uploaded && $0.takes > $0.dropped.count } }
+    var unsent: [CommunityUpload] { items.filter { $0.status != .uploaded } }
+    var pending: [CommunityUpload] { unsent.filter { $0.takes > $0.dropped.count } }
     var shared: [CommunityUpload] { items.filter { $0.status == .uploaded } }
 
-    /// Sends every reviewed session that isn't shared yet, one PR each, in order.
-    func sendAll(repo: String, token: String) async {
-        for item in pending where item.status != .uploading {
-            await send(item.id, repo: repo, token: token)
+    func sendReviewed(_ ids: [String], repo: String, token: String) async {
+        guard !busy else { return }
+        var sent = 0
+        var failed = 0
+        for id in ids {
+            await send(id, repo: repo, token: token)
+            if shared.contains(where: { $0.id == id }) { sent += 1 } else { failed += 1 }
         }
-        if error == nil { status = shared.isEmpty ? "" : "All sessions sent." }
+        error = failed == 0 ? nil : "Some sessions could not be sent. Review the failed sessions and retry."
+        status = "\(sent) sent · \(failed) failed"
     }
 
     func stop() { runtime.terminate() }

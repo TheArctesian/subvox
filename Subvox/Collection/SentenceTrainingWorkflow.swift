@@ -22,7 +22,8 @@ final class SentenceTrainingWorkflow {
         switch phase {
         case .ready:
             let instruction = currentCondition == .normal ? String(localized: "Say it aloud") : String(localized: "Mouth it silently, lips only")
-            text = AttributedString(String(localized: "Take \(min(index + 1, total)) of \(total). \(instruction): "))
+            text = AttributedString(error.map { $0 + " " } ?? "")
+            text += AttributedString(String(localized: "Take \(min(index + 1, total)) of \(total). \(instruction): "))
             var prompt = AttributedString(currentText)
             prompt.languageIdentifier = currentLanguage  // read in its own language
             text += prompt + AttributedString(String(localized: ". Press Space to start; a tone marks the start."))
@@ -33,6 +34,11 @@ final class SentenceTrainingWorkflow {
         }
         AccessibilityNotification.Announcement(text).post()
     }
+    var continueTitle: String {
+        if index + 1 >= total { return String(localized: "Finish round") }
+        return currentCondition == .normal ? String(localized: "Continue to silent take") : String(localized: "Next prompt")
+    }
+    private(set) var lastPracticePlan: [[SentencePrompt]] = []
     private(set) var error: String?
     private(set) var storageReady = true
     private(set) var currentText = ""
@@ -459,7 +465,7 @@ final class SentenceTrainingWorkflow {
             data.addCommunity(planned.flatMap { $0 })
         }
         if data.prompts.count != promptCount { needsAllPairUses = true }
-        if practiceMode { lastPracticePairIDs = [] }
+        if practiceMode { lastPracticePairIDs = []; lastPracticePlan = planned }
         let conditions: [SpeechCondition] = communityMode && mouthedOnly ? [.silent] : [.normal, .silent]
         if let retry, let pair = data.pairs.first(where: { $0.id == retry }) {
             planned = [data.prompts.filter { pair.promptIDs.contains($0.id) }]
@@ -528,7 +534,7 @@ final class SentenceTrainingWorkflow {
                     pairIDs.append(pair.id); currentPromptIDs = pair.promptIDs
                     if practiceMode { lastPracticePairIDs.append(pair.id) }
                     let translations = group.compactMap(\.englishTranslation)
-                    currentEnglishTranslation = translations.count == group.count ? translations.joined(separator: " ") : nil
+                    currentEnglishTranslation = translations.isEmpty ? nil : translations.joined(separator: group.first?.kind.isLiterature != true ? " " : "\n")
                     currentPinyin = group.flatMap { WordFocusGuide.pinyinByWord(in: $0.text, pinyin: $0.pinyin) }
                     currentText = pair.text
                     currentVerseLines = group.first?.kind.isLiterature == true

@@ -20,8 +20,8 @@ struct WordFocusPrompt: View {
                 continue
             }
             var fragment = AttributedString(word)
-            fragment.foregroundColor = activeWordIndex == nil || activeWordIndex == index ? color : color.opacity(0.35)
-            if activeWordIndex == index { fragment.backgroundColor = color.opacity(0.18) }
+            fragment.foregroundColor = activeWordIndex == nil || activeWordIndex == index ? color : Color.primary
+            if activeWordIndex == index { fragment.backgroundColor = color.opacity(0.22) }
             result.append(fragment)
             index += 1
         }
@@ -43,9 +43,9 @@ struct WordFocusPrompt: View {
                                 Text(pinyin[index] ?? " ").font(.title3).foregroundStyle(.secondary)
                             }
                             Text(words[index]).font(.system(size: 52, weight: .medium))
-                                .foregroundStyle(activeWordIndex == nil || activeWordIndex == index ? color : color.opacity(0.35))
-                                .background(activeWordIndex == index ? color.opacity(0.18) : .clear)
-                        }.fixedSize()
+                                .foregroundStyle(activeWordIndex == nil || activeWordIndex == index ? color : Color.primary)
+                                .background(activeWordIndex == index ? color.opacity(0.22) : .clear)
+                        }.fixedSize(horizontal: false, vertical: true)
                     }
                 }
             } else {
@@ -81,8 +81,9 @@ private struct PromptRows: Layout {
         for row in rows {
             var x = bounds.midX - (lineLengths.isEmpty ? row.width : stanzaWidth) / 2 + row.indent
             for index in row.indices {
-                let size = subviews[index].sizeThatFits(.unspecified)
-                subviews[index].place(at: CGPoint(x: x, y: y), anchor: .topLeading, proposal: .unspecified)
+                let proposal = ProposedViewSize(width: max(1, bounds.width - (lineIndents.max() ?? 0)), height: nil)
+                let size = subviews[index].sizeThatFits(proposal)
+                subviews[index].place(at: CGPoint(x: x, y: y), anchor: .topLeading, proposal: proposal)
                 x += size.width + (spacing + (row.coupletBreak == index + 1 ? row.coupletGap : 0))
             }
             y += row.height + 8
@@ -90,7 +91,9 @@ private struct PromptRows: Layout {
     }
 
     private func rows(for subviews: Subviews, width: CGFloat) -> [Row] {
-        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let maximumIndent = lineIndents.max() ?? 0
+        let proposal = width.isFinite ? ProposedViewSize(width: max(1, width - maximumIndent), height: nil) : .unspecified
+        let sizes = subviews.map { $0.sizeThatFits(proposal) }
         let lineHeight = sizes.map(\.height).max() ?? 0
         // Reserve space for the cue, translation and instructions in the scrollable panel.
         let compact = viewportHeight > 0 && CGFloat(lineLengths.count) * (lineHeight + 8) > viewportHeight - 185

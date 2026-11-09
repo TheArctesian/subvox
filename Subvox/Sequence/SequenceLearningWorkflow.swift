@@ -164,9 +164,12 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
         return manifest["modalities"] as? String ?? "imu"
     }
     /// Camera is captured for a visit whose frozen model reads it; training collection stays motion-only.
+    var inferenceNeedsCamera: Bool { modalities(condition: inferenceCondition) != "imu" }
+    var canRunInference: Bool { modelURL(condition: inferenceCondition) != nil }
+
     var needsCamera:Bool {
         switch mode {
-        case .inference:modalities(condition:inferenceCondition) != "imu"
+        case .inference:inferenceNeedsCamera
         case .sameFit,.reseated:[SpeechCondition.normal,.silent].contains {modalities(condition:$0) != "imu"}
         case .commands:true
         default:false

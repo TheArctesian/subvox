@@ -20,6 +20,21 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
+    func testReadingDestinationsFromDecodeSelectReadingAndCorrectOverlay() throws {
+        let (workflow, root) = try fixture()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = AppModel(sentenceTraining: workflow)
+        for showModels in [true, false] {
+            model.trainMode = .poetry
+            model.screen = .decode
+            model.openReading(showModels: showModels)
+            XCTAssertEqual(model.screen, .train)
+            XCTAssertEqual(model.trainMode, .reading)
+            XCTAssertEqual(model.showSequenceLearning, showModels)
+        }
+    }
+
+    @MainActor
     func testDoneEndsSpokenAndMouthedTakesAtThePressAndExcludesLateSamples() async throws {
         for condition in [SpeechCondition.normal, .silent] {
             let (workflow, root) = try fixture()
@@ -62,6 +77,10 @@ final class TrainingAdvanceTests: XCTestCase {
             XCTAssertFalse(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false, modifiers: .command))
             XCTAssertFalse(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false, isEditingText: true))
             XCTAssertTrue(workflow.canFinishTake)
+            model.captureShortcutsSuspended = true
+            XCTAssertFalse(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false))
+            XCTAssertTrue(workflow.canFinishTake)
+            model.captureShortcutsSuspended = false
             XCTAssertTrue(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false))
             _ = try await capture.value
             // Holding the same key into the next cue must not finish the silent take.

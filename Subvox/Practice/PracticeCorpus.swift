@@ -78,7 +78,10 @@ struct PracticeCorpus: Decodable {
         var glossL10n: [String: String]? = nil
         enum CodingKeys: String, CodingKey { case text, ipa, pinyin, hant, gloss, region, zhuyin, ipaMx = "ipa_mx", glossL10n = "gloss_l10n" }
         /// The meaning in the interface language (English when there's no translation).
-        var localizedGloss: String? { gloss.map { Interface.pick(glossL10n) ?? $0 } }
+        func translation(to language: String) -> String? {
+            if language == "en" { return gloss }
+            return glossL10n?[language] ?? gloss
+        }
         func reading(_ language: AppLanguage) -> String? { language == .zhHant ? (zhuyin ?? pinyin) : pinyin }
         func text(_ language: AppLanguage) -> String { language == .zhHant ? (hant ?? text) : text }
         func ipa(_ language: AppLanguage) -> [String] { language == .esMX ? (ipaMx ?? ipa) : ipa }

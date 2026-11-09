@@ -25,6 +25,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .disabled(model.navigationLocked)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
         } detail: {
             switch model.screen {
@@ -39,11 +40,18 @@ struct ContentView: View {
                 Button { model.screen = .devices } label: {
                     MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate, text: model.motion.statusText)
                 }
-                .buttonStyle(.plain).help("AirPods and microphone: open Devices")
+                .buttonStyle(.plain).disabled(model.navigationLocked)
+                .help(model.navigationLocked ? "Finish or stop the active take to open Devices." : "AirPods and microphone: open Devices")
                 .accessibilityLabel(model.motion.status == .streaming ? "AirPods connected" : "AirPods: " + model.motion.statusText)
                 .accessibilityHint("Opens Devices")
             }
             ToolbarItem(placement: .primaryAction) { LanguageMenu() }
+            if let activity = model.backgroundActivity {
+                ToolbarItem(placement: .status) {
+                    ProgressView().controlSize(.small)
+                        .help(activity).accessibilityLabel(activity)
+                }
+            }
         }
         // Each page carries its own large heading, so the window title would only repeat it.
         .navigationTitle(model.screen == .train ? model.trainMode.rawValue : model.screen.rawValue)
@@ -53,9 +61,10 @@ struct ContentView: View {
     private var selection: Binding<SidebarItem?> {
         Binding(get: { model.screen == .train ? .train(model.trainMode) : .screen(model.screen) },
                 set: { item in
+                    guard !model.navigationLocked else { return }
                     switch item {
                     case .train(let mode)?:
-                        if mode != model.trainMode { model.closeOverlays() }
+                        if mode != model.trainMode { model.closeOverlays(); model.referenceSpeaker.stop() }
                         model.trainMode = mode; model.screen = .train
                     case .screen(let screen)?: model.screen = screen
                     case nil: break
@@ -67,6 +76,9 @@ struct ContentView: View {
 /// The app-wide practice language, top right of the window.
 struct LanguageMenu: View {
     @Environment(AppModel.self) private var model
+    @State private var pendingLanguage: String?
+    @State private var confirmRestart = false
+    @State private var restartFailed = false
     var body: some View {
         @Bindable var model = model
         Menu {
@@ -78,7 +90,7 @@ struct LanguageMenu: View {
             }.pickerStyle(.inline)
             Menu("App language") {
                 ForEach(Self.interfaceLanguages, id: \.code) { option in
-                    Button { Self.setInterface(option.code) } label: {
+                    Button { pendingLanguage = option.code; confirmRestart = true } label: {
                         if Self.currentInterface == option.code { Label(option.name, systemImage: "checkmark") } else { Text(option.name) }
                     }
                 }
@@ -87,6 +99,16 @@ struct LanguageMenu: View {
             Label("Practising \(model.language.localizedName)", systemImage: "globe")
                 .labelStyle(.titleAndIcon)
         }
+        .disabled(model.navigationLocked)
+        .confirmationDialog("Apply app language and restart?", isPresented: $confirmRestart, titleVisibility: .visible) {
+            Button("Apply and restart") {
+                guard let pendingLanguage, model.canRestartInterface else { return }
+                Self.setInterface(pendingLanguage) { restartFailed = true }
+            }.disabled(!model.canRestartInterface)
+        } message: {
+            Text(model.canRestartInterface ? "Subvox will reopen in the selected language." : "Finish the active work before restarting Subvox.")
+        }
+        .alert("Subvox couldn’t restart", isPresented: $restartFailed) { Button("OK", role: .cancel) {} }
         .help("The language you're practising (⌥⌘1–6), and the language you speak")
         .accessibilityLabel("Practising \(model.language.localizedName); you speak \(Self.nativeName(model.nativeLanguage))")
     }
@@ -97,13 +119,19 @@ struct LanguageMenu: View {
         ("", String(localized: "Same as the Mac")), ("en", "English"), ("fr", "Français"), ("es", "Español (España)"), ("es-419", "Español (Latinoamérica)"),
         ("zh-Hans", "简体中文"), ("zh-Hant", "繁體中文")]
     static var currentInterface: String { (UserDefaults.standard.array(forKey: "AppleLanguages") as? [String])?.first.flatMap { code in
-        interfaceLanguages.first { !$0.code.isEmpty && code.hasPrefix($0.code) }?.code } ?? "" }
-    static func setInterface(_ code: String) {
-        if code.isEmpty { UserDefaults.standard.removeObject(forKey: "AppleLanguages") } else { UserDefaults.standard.set([code], forKey: "AppleLanguages") }
+        interfaceLanguages.map(\.code).filter { !$0.isEmpty && (code == $0 || code.hasPrefix($0 + "-")) }
+            .max(by: { $0.count < $1.count }) } ?? "" }
+    static func setInterface(_ code: String, onFailure: @escaping @MainActor () -> Void) {
+        let defaults = UserDefaults.standard
+        let previous = defaults.persistentDomain(forName: Bundle.main.bundleIdentifier ?? "")?["AppleLanguages"]
+        defaults.set(code.isEmpty ? nil : [code], forKey: "AppleLanguages")
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.createsNewApplicationInstance = true
-        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { _, _ in
-            DispatchQueue.main.async { NSApp.terminate(nil) }
+        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { app, error in
+            DispatchQueue.main.async {
+                if app != nil, error == nil { NSApp.terminate(nil) }
+                else { defaults.set(previous, forKey: "AppleLanguages"); onFailure() }
+            }
         }
     }
 

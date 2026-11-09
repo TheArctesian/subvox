@@ -70,6 +70,10 @@ struct SignalPlot: View {
     var height: CGFloat = 90
     var showsHeader = true
 
+    private static func traceStyle(_ index: Int) -> StrokeStyle {
+        StrokeStyle(lineWidth: 1.2, dash: index == 0 ? [] : index == 1 ? [5, 3] : [1.5, 3])
+    }
+
     static let acceleration = [
         Channel(name: "x", color: .red, value: \.ax),
         Channel(name: "y", color: .green, value: \.ay),
@@ -89,15 +93,23 @@ struct SignalPlot: View {
     var body: some View {
         let range = span ?? ((samples.first?.t ?? 0)...(samples.last?.t ?? 1))
         let visible = samples.filter { range.contains($0.t) }
-        let scale = max(minScale, channels.flatMap { c in visible.map { abs($0[keyPath: c.value]) } }.max() ?? 0)
+        let scale = channels.reduce(minScale) { maximum, channel in
+            visible.reduce(maximum) { max($0, abs($1[keyPath: channel.value])) }
+        }
 
         VStack(alignment: .leading, spacing: 4) {
             if showsHeader {
                 HStack(spacing: 10) {
                     Text(title).font(.caption.weight(.semibold))
-                    ForEach(channels, id: \.name) { channel in
-                        Label(channel.name, systemImage: "circle.fill")
-                            .labelStyle(.titleAndIcon)
+                    ForEach(Array(channels.enumerated()), id: \.element.name) { index, channel in
+                        Label { Text(channel.name) } icon: {
+                            Canvas { context, size in
+                                var line = Path()
+                                line.move(to: CGPoint(x: 0, y: size.height / 2))
+                                line.addLine(to: CGPoint(x: size.width, y: size.height / 2))
+                                context.stroke(line, with: .color(channel.color), style: Self.traceStyle(index))
+                            }.frame(width: 18, height: 8)
+                        }
                             .font(.caption2)
                             .foregroundStyle(channel.color)
                     }
@@ -115,7 +127,7 @@ struct SignalPlot: View {
                 context.stroke(axis, with: .color(.secondary.opacity(0.3)), lineWidth: 0.5)
 
                 let width = max(range.upperBound - range.lowerBound, 1e-3)
-                for channel in channels {
+                for (index, channel) in channels.enumerated() {
                     var path = Path()
                     for (i, s) in visible.enumerated() {
                         let point = CGPoint(
@@ -123,7 +135,7 @@ struct SignalPlot: View {
                             y: mid - s[keyPath: channel.value] / scale * (mid - 2))
                         if i == 0 { path.move(to: point) } else { path.addLine(to: point) }
                     }
-                    context.stroke(path, with: .color(channel.color), lineWidth: 1.2)
+                    context.stroke(path, with: .color(channel.color), style: Self.traceStyle(index))
                 }
             }
             .frame(height: height)
@@ -133,6 +145,7 @@ struct SignalPlot: View {
 }
 
 struct LevelMeter: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var value: Double
     var marker: Double?
     var tint: Color = .green
@@ -151,7 +164,7 @@ struct LevelMeter: View {
             }
         }
         .frame(height: 8)
-        .animation(.linear(duration: 0.08), value: value)
+        .animation(reduceMotion ? nil : .linear(duration: 0.08), value: value)
     }
 }
 
@@ -163,13 +176,14 @@ struct HoldToCaptureButton: View {
     var onBegin: () -> Void
     var onEnd: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var pressed = false
 
     var body: some View {
         VStack(spacing: 6) {
             Image(systemName: isCapturing ? "waveform" : "mouth")
                 .font(.system(size: 30, weight: .medium))
-                .symbolEffect(.variableColor.iterative, isActive: isCapturing)
+                .symbolEffect(.variableColor.iterative, isActive: isCapturing && !reduceMotion)
             Text(isCapturing ? "Capturing…" : title)
                 .font(.headline)
             Text("Hold Space or press and hold here")
@@ -185,6 +199,7 @@ struct HoldToCaptureButton: View {
                 .strokeBorder(isCapturing ? Color.red : Color.accentColor.opacity(0.4), lineWidth: isCapturing ? 2 : 1))
         .contentShape(Rectangle())
         .opacity(isEnabled ? 1 : 0.4)
+        .accessibilityHidden(true)
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { _ in

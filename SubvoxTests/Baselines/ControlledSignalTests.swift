@@ -65,6 +65,8 @@ final class ControlledSignalTests: XCTestCase {
         let clock = TestClock()
         let workflow = SignalCheckWorkflow(storeURL: root.appending(path: "signal.json"), clock: { clock.now })
         workflow.prepareControlled(policy: .strictPose)
+        XCTAssertTrue(workflow.isAcquiring)
+        XCTAssertFalse(workflow.showsCaptureCue, "Setup must expose the controls that start the first block")
         aim(workflow, clock: clock)
         workflow.savePoseTarget()
         XCTAssertNotNil(workflow.comparison?.target)
@@ -81,6 +83,7 @@ final class ControlledSignalTests: XCTestCase {
             let prompt = workflow.plan[index], start = clock.now
             workflow.beginCapture(at: start)
             XCTAssertEqual(workflow.phase, .recording)
+            XCTAssertTrue(workflow.showsCaptureCue)
             workflow.finishTake() // Manual early advance must not shorten a controlled take.
             XCTAssertEqual(workflow.phase, .recording)
             let pattern = try XCTUnwrap(patterns.first { $0.prompt.sentence == prompt.sentence && $0.prompt.condition == prompt.condition })

@@ -70,7 +70,7 @@ struct PracticePage<Controls: View, Content: View>: View {
     private var workflow: SentenceTrainingWorkflow { model.sentenceTraining }
     private var motionReady: Bool { model.motion.status == .streaming }
     private var canStart: Bool {
-        motionReady && model.localWhisper.isConfigured && !groups.isEmpty && !workflow.isBusy && !model.recorder.isRecording
+        motionReady && model.localWhisper.isConfigured && !groups.isEmpty && workflow.storageReady && workflow.data.reservedUnlockedAt == nil && !workflow.isBusy && !model.recorder.isRecording
     }
     /// "6 words · about 2 min": each is said aloud, then mouthed.
     private var cost: String {
@@ -82,24 +82,30 @@ struct PracticePage<Controls: View, Content: View>: View {
     private var blocker: String? {
         if !motionReady { return model.motion.status == .waiting ? String(localized: "Needs AirPods with head tracking") : model.motion.statusText }
         if !model.localWhisper.isConfigured { return String(localized: "Needs speech recognition set up") }
+        if !workflow.storageReady { return String(localized: "Local recording storage is unavailable") }
+        if workflow.data.reservedUnlockedAt != nil { return String(localized: "The recording collection is locked") }
         if groups.isEmpty { return String(localized: "Nothing to practise yet") }
+        if workflow.phase == .processing { return String(localized: "Checking saved takes") }
         return nil
     }
 
     @ViewBuilder private var pageBody: some View {
-                        if !model.localWhisper.isConfigured {
-                            HStack {
-                                Label("Practice needs speech recognition on this Mac (a local Whisper model) to check what you said. Nothing is uploaded.", systemImage: "exclamationmark.triangle")
-                                    .foregroundStyle(.orange)
-                                Button("Set Up Whisper…") { showWhisperSetup = true }
-                            }
-                        }
-                        if mode.isLiterature { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
-                        if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
-                        TrainingProcessingStatus(workflow: workflow)
-                        PracticeFeedback(mode: mode, again: { model.startPractice(groups) })
-                        HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
-                        content()
+        if !model.localWhisper.isConfigured {
+            HStack {
+                Label("Practice needs speech recognition on this Mac (a local Whisper model) to check what you said. Nothing is uploaded.", systemImage: "exclamationmark.triangle")
+                    .foregroundStyle(.orange)
+                Button("Set Up Whisper…") { showWhisperSetup = true }
+            }
+        }
+        if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
+        TrainingProcessingStatus(workflow: workflow)
+        PracticeFeedback(mode: mode, again: { model.startPractice(workflow.lastPracticePlan) })
+        HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
+        content()
+        if mode.isLiterature {
+            DisclosureGroup("Word alignment settings") { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
+                .font(.callout).foregroundStyle(.secondary)
+        }
     }
 
     var body: some View {
@@ -124,14 +130,7 @@ struct PracticePage<Controls: View, Content: View>: View {
                 }
             }
         } content: {
-            if workflow.phase == .preparing {
-                VStack(spacing: 14) {
-                    ProgressView()
-                    Text(workflow.phase == .preparing ? "Starting…" : workflow.processingText.isEmpty ? "Saving…" : workflow.processingText)
-                    Text("Processing stays on this Mac.").foregroundStyle(.secondary)
-                    if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if !scrolls {
+            if !scrolls {
                 VStack(alignment: .leading, spacing: 16) { pageBody }
                     .frame(maxWidth: PageMetrics.contentWidth + 120, maxHeight: .infinity, alignment: .topLeading)
                     .padding(PageMetrics.padding).frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -185,7 +184,7 @@ struct RoundCelebration: View {
         HStack(spacing: 12) {
             Image(systemName: progress.today >= PracticeProgress.dailyGoal ? "trophy.fill" : "party.popper.fill")
                 .font(.system(size: 34)).foregroundStyle(.orange)
-                .scaleEffect(shown || reduceMotion ? 1 : 0.4)
+                .opacity(shown || reduceMotion ? 1 : 0)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text("Round complete!").font(.title2.weight(.bold))
@@ -194,7 +193,7 @@ struct RoundCelebration: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .onAppear { withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.5)) { shown = true } }
+        .onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { shown = true } }
         .accessibilityElement(children: .combine)
     }
 }
@@ -209,7 +208,7 @@ struct IPAToggle: View {
             Button("What's IPA?") { explain.toggle() }
                 .buttonStyle(.link).font(.callout).lineLimit(1).fixedSize()
                 .popover(isPresented: $explain) {
-                    Text("IPA (the International Phonetic Alphabet) writes down exactly how a word sounds, one symbol per sound: /ʃ/ is the \"sh\" in \"ship\". You don't need to learn it — press Listen to hear any word. The Sounds page explains every symbol. English follows General American; transcriptions are broad.")
+                    Text("IPA (the International Phonetic Alphabet) writes down exactly how a word sounds, one symbol per sound: /ʃ/ is the \"sh\" in \"ship\". You can listen to examples without learning these symbols. The Sounds page explains every symbol. English follows General American; transcriptions are broad.")
                         .padding(16).frame(width: 340).fixedSize(horizontal: false, vertical: true)
                 }
         }
@@ -237,18 +236,68 @@ struct ForcedAlignerSetup: View {
     }
 }
 
+private struct ReferenceButton: View {
+    @Environment(AppModel.self) private var model
+    let text: String
+    let language: AppLanguage
+    var compact = true
+    var phonetic = false
+    var subject: String?
+
+    var body: some View {
+        let speaker = model.referenceSpeaker
+        let active = speaker.playing == text
+        Button {
+            if active { speaker.stop() }
+            else {
+                Task {
+                    if phonetic { await speaker.speakIPA(text, language: language.tag) }
+                    else { await speaker.speak(text, language: language.tag) }
+                }
+            }
+        } label: {
+            if compact {
+                Image(systemName: active ? "stop.fill" : "speaker.wave.2").frame(minWidth: 28, minHeight: 28)
+            } else {
+                Label(active ? "Stop reference" : "Listen", systemImage: active ? "stop.fill" : "speaker.wave.2")
+            }
+        }
+        .help(active ? "Stop reference" : "Listen to reference")
+        .accessibilityLabel(active ? "Stop reference" : "Listen to \(subject ?? text)")
+    }
+}
+
 struct WhisperSetupSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
+
+    private func chooseFile(_ description: String) -> String? {
+        let panel = NSOpenPanel()
+        panel.message = description
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        return panel.runModal() == .OK ? panel.url?.path : nil
+    }
+
     var body: some View {
         @Bindable var whisper = model.localWhisper
         VStack(alignment: .leading, spacing: 14) {
             Text("Local Whisper").font(.title2.weight(.semibold))
             Text("Practice uses a Whisper model already on this Mac to hear what you said. Nothing is downloaded.")
                 .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
-            TextField("Whisper model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
-            TextField("Whisper server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
-            Label(whisper.isConfigured ? "Ready" : "Not found yet", systemImage: whisper.isConfigured ? "checkmark.circle" : "questionmark.circle")
+            LabeledContent("Whisper model") {
+                TextField("GGML model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
+                Button("Choose…") { if let path = chooseFile("Choose a ggml-*.bin model") { whisper.modelPath = path } }
+                    .accessibilityLabel("Choose Whisper model")
+            }
+            if !whisper.hasModel { Text("Choose a readable ggml-*.bin model file.").font(.callout).foregroundStyle(.secondary) }
+            LabeledContent("Whisper server") {
+                TextField("Server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
+                Button("Choose…") { if let path = chooseFile("Choose the whisper-server executable") { whisper.executablePath = path } }
+                    .accessibilityLabel("Choose Whisper server")
+            }
+            if !whisper.hasExecutable { Text("Choose the executable whisper-server file.").font(.callout).foregroundStyle(.secondary) }
+            if whisper.isConfigured { Label("Ready", systemImage: "checkmark.circle") }
             HStack { Spacer(); Button("Done") { dismiss() }.keyboardShortcut(.defaultAction) }
         }
         .padding(24).frame(width: 520)
@@ -305,9 +354,14 @@ struct PracticeFeedback: View {
                     Spacer()
                     Button("Done") { model.sentenceTraining.clearPracticeResults() }
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
-                        .disabled(model.sentenceTraining.isBusy)
+                        .disabled(!model.canRestartInterface || model.motion.status != .streaming || !model.localWhisper.isConfigured || model.sentenceTraining.lastPracticePlan.isEmpty)
                 }
-                ForEach(pairs) { row($0) }
+                DisclosureGroup("Take feedback") {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 10) { ForEach(pairs) { row($0) } }
+                    }.frame(maxHeight: 200)
+                }
+                LocalRecordingHistory()
                 Text("Speech recognition guesses what you meant, so it can accept sounds that aren't quite right. Use it to check you were understood, not to judge each sound. For a persistent difficulty, a teacher or speech and language therapist can hear what the app can't.")
                     .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             }
@@ -352,17 +406,19 @@ struct PracticeFeedback: View {
 
 /// A line of practice text, with pinyin (Chinese) and IPA underneath.
 struct PracticeLineView: View {
+    @Environment(AppModel.self) private var model
     var line: PracticeCorpus.Line
     var language: AppLanguage
     var showIPA: Bool
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
+            if let reading = line.reading(language) {
+                Text(reading).font(.callout).foregroundStyle(.secondary)
+            }
             Text(Self.spoken(line.text(language), language)).font(.title2)
-            // The meaning, in the interface language; not shown when it would just repeat the practised language.
-            if let gloss = line.localizedGloss, !Interface.code.hasPrefix(language.corpus) {
+            if let gloss = line.translation(to: model.nativeLanguage), model.nativeLanguage != language.corpus {
                 Text(gloss).font(.callout).foregroundStyle(.secondary)
             }
-            if let reading = line.reading(language) { Text(reading).font(.title3).foregroundStyle(.secondary) }
             if showIPA {
                 // Large enough that look-alike symbols (ɾ / r, ɡ / g) are told apart; VoiceOver skips it.
                 Text("/" + line.ipa(language).joined(separator: " ") + "/").font(.ipa(18, relativeTo: .title3)).foregroundStyle(.secondary)
@@ -382,9 +438,9 @@ struct PracticeLineView: View {
 }
 
 extension SentencePrompt {
-    init(_ line: PracticeCorpus.Line, kind: SentencePromptKind, language: AppLanguage) {
+    init(_ line: PracticeCorpus.Line, kind: SentencePromptKind, language: AppLanguage, translationLanguage: String = "en") {
         self.init(text: line.text(language), kind: kind, language: language.tag,
-                  englishTranslation: language == .en ? nil : line.gloss,
+                  englishTranslation: translationLanguage == language.corpus ? nil : line.translation(to: translationLanguage),
                   pinyin: language.isChinese ? line.pinyin : nil)
     }
 }
@@ -426,7 +482,9 @@ struct LiteraturePracticeView: View {
     private var selectionKey: String { kind.rawValue }
     @Environment(AppModel.self) private var model
     @State private var selection: String?
-    @State private var selectedPart = 0
+    @AppStorage("practice.literature.parts") private var savedParts: Data = Data()
+    @State private var search = ""
+    @State private var showHistory = false
     @AppStorage("practice.showIPA") private var showIPA = true
 
     private var pieces: [PracticeCorpus.Piece] {
@@ -439,36 +497,59 @@ struct LiteraturePracticeView: View {
     var body: some View {
         let language = model.language
         let parts = piece.map { $0.parts(language: language) } ?? []
-        let partIndex = parts.indices.contains(selectedPart) ? selectedPart : 0
+        let partKey = "\(language.tag)/\(piece?.id ?? "")"
+        let partChoices = (try? JSONDecoder().decode([String: Int].self, from: savedParts)) ?? [:]
+        let savedPart = partChoices[partKey, default: 0]
+        let partIndex = parts.indices.contains(savedPart) ? savedPart : 0
+        let selectedPart = Binding(get: { partIndex }, set: { value in
+            var choices = partChoices
+            choices[partKey] = value
+            if let encoded = try? JSONEncoder().encode(choices) { savedParts = encoded }
+        })
+        let visiblePieces = search.isEmpty ? pieces : pieces.filter {
+            $0.title(language).localizedStandardContains(search) || $0.author(language).localizedStandardContains(search)
+        }
         let lines = parts.isEmpty ? [] : parts[partIndex]
         return PracticePage(title: tab == .poetry ? "Poetry" : "Speech",
-                     subtitle: "Read at your own pace. The words highlight as you go.",
+                     subtitle: "Read a section aloud, then mouth it silently. The pacing guide highlights the text at a steady rate.",
                      startTitle: "Start Reading",
-                     groups: lines.isEmpty ? [] : [lines.map { SentencePrompt($0, kind: kind, language: language) }],
+                     groups: lines.isEmpty ? [] : [lines.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }],
                      mode: kind, unit: "part", scrolls: false) {
             if parts.count > 1 {
-                Picker("Part", selection: $selectedPart) {
+                Picker("Part", selection: selectedPart) {
                     ForEach(parts.indices, id: \.self) { index in
-                        Text("\(index + 1) of \(parts.count)").tag(index)
+                        Text("\(index + 1) of \(parts.count) · \(String(parts[index].first?.text(language).prefix(30) ?? ""))").tag(index)
                     }
-                }.fixedSize()
+                }.frame(maxWidth: 245)
             }
             IPAToggle(isOn: $showIPA)
+            Button("Recording history", systemImage: "clock.arrow.circlepath") { showHistory.toggle() }
+                .labelStyle(.iconOnly).help("Recording history")
+                .popover(isPresented: $showHistory) {
+                    ScrollView { LocalRecordingHistory(expanded: true).padding(16) }
+                        .frame(width: 400, height: 360)
+                }
         } content: {
             if pieces.isEmpty {
                 ContentUnavailableView("No pieces in \(language.localizedName) yet", systemImage: "text.quote", description: Text("Choose another language from the toolbar."))
             } else {
                 HStack(alignment: .top, spacing: 20) {
-                    ScrollView { VStack(spacing: 4) {
-                        ForEach(pieces) { p in
+                    VStack(alignment: .leading, spacing: 8) {
+                        TextField("Search titles and authors", text: $search).textFieldStyle(.roundedBorder)
+                        if visiblePieces.isEmpty { Text("No matching titles").foregroundStyle(.secondary) }
+                        ScrollView { VStack(spacing: 4) {
+                        ForEach(visiblePieces) { p in
                             Button { selection = p.id } label: { pieceRow(p, selected: p.id == piece?.id) }.buttonStyle(.plain)
                                 .accessibilityLabel("\(p.title(language)), \(p.author(language)), \(p.when)")
                                 .accessibilityAddTraits(p.id == piece?.id ? .isSelected : [])
                         }
-                    } }.frame(width: 280)
+                        } }
+                    }.frame(width: 255)
                     if let piece {
                         ScrollView { VStack(alignment: .leading, spacing: 12) {
-                            Text("\(piece.author(language)) · \(piece.when)").font(.headline).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
+                            Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                            Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
+                            ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false, subject: String(localized: "this part"))
                             ForEach(lines.indices, id: \.self) { index in
                                 PracticeLineView(line: lines[index], language: language, showIPA: showIPA)
                             }
@@ -484,10 +565,9 @@ struct LiteraturePracticeView: View {
         }
         .onAppear { if selection == nil { selection = SavedSelection.get(selectionKey, model.language) } }
         .onChange(of: selection) { SavedSelection.set(selectionKey, model.language, selection) }
-        .onChange(of: piece?.id) { selectedPart = 0 }
         .onChange(of: model.language) {
             selection = SavedSelection.get(selectionKey, model.language)
-            selectedPart = 0
+            search = ""
         }
     }
 
@@ -527,7 +607,7 @@ struct LanguagePracticeView: View {
         let language = model.language
         PracticePage(title: "Language", subtitle: "Listen, say it aloud, then say it again silently, with your lips only.",
                      startTitle: "Start Drill",
-                     groups: phrases.map { [SentencePrompt($0, kind: .drill, language: language)] },
+                     groups: phrases.map { [SentencePrompt($0, kind: .drill, language: language, translationLanguage: model.nativeLanguage)] },
                      mode: .drill, unit: "phrases") {
             Picker("Drill", selection: Binding(get: { drill?.id }, set: { selection = $0 })) {
                 if topics.isEmpty {
@@ -551,9 +631,7 @@ struct LanguagePracticeView: View {
                         HStack(alignment: .firstTextBaseline) {
                             PracticeLineView(line: line, language: language, showIPA: showIPA)
                             Spacer()
-                            Button { Task { await model.referenceSpeaker.speak(line.text(language), language: language.tag) } } label: {
-                                Label("Listen", systemImage: "speaker.wave.2")
-                            }.accessibilityLabel("Listen to \(line.text(language))")
+                            ReferenceButton(text: line.text(language), language: language)
                         }
                     }
                     Text("Each phrase plays in a system voice before you say it. Always say it aloud before mouthing it; mouthed answers from memory aren't used.")
@@ -594,7 +672,7 @@ struct MinimalPairsView: View {
         let language = model.language
         PracticePage(title: "Minimal Pairs", subtitle: "Words that differ by one sound and look alike on the lips. Hear each pair, then say every word.",
                      startTitle: "Start Pairs",
-                     groups: round.map { [SentencePrompt($0, kind: .minimalPair, language: language)] },
+                     groups: round.map { [SentencePrompt($0, kind: .minimalPair, language: language, translationLanguage: model.nativeLanguage)] },
                      mode: .minimalPair, unit: "words") {
             Picker("Sounds", selection: Binding(get: { contrast?.id }, set: { selection = $0; shuffle() })) {
                 ForEach(sets) { Text($0.title).font(.ipa(15, relativeTo: .body)).tag(Optional($0.id)) }
@@ -613,9 +691,7 @@ struct MinimalPairsView: View {
                                 if index > 0 { Image(systemName: "arrow.left.arrow.right").foregroundStyle(.tertiary).padding(.top, 14).accessibilityHidden(true) }
                                 VStack(alignment: .leading, spacing: 8) {
                                     PracticeLineView(line: line, language: language, showIPA: showIPA)
-                                    Button { Task { await model.referenceSpeaker.speak(line.text(language), language: language.tag) } } label: {
-                                        Label("Listen", systemImage: "speaker.wave.2")
-                                    }.accessibilityLabel("Listen to \(line.text(language))")
+                                    ReferenceButton(text: line.text(language), language: language)
                                 }
                                 .padding(12).frame(maxWidth: .infinity, alignment: .leading)
                                 .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
@@ -655,9 +731,27 @@ struct MinimalPairsView: View {
 
 struct FreePracticeView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.undoManager) private var undoManager
     @AppStorage("practice.free.text") private var text = ""
     @AppStorage("practice.showIPA") private var showIPA = true
     @State private var readings: [String: PracticeChecker.Reading] = [:]
+
+    private func replaceDraft(with replacement: String) {
+        let draft = $text
+        let previous = draft.wrappedValue
+        guard previous != replacement else { return }
+        func register(_ value: String, restoring other: String, on manager: UndoManager) {
+            manager.registerUndo(withTarget: manager) { target in
+                draft.wrappedValue = value
+                register(other, restoring: value, on: target)
+            }
+        }
+        if let undoManager {
+            register(previous, restoring: replacement, on: undoManager)
+            undoManager.setActionName("Replace Practice Text")
+        }
+        draft.wrappedValue = replacement
+    }
 
     static func example(_ language: AppLanguage) -> String {
         switch language {
@@ -692,10 +786,11 @@ struct FreePracticeView: View {
         } content: {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Button("Paste", systemImage: "doc.on.clipboard") { text = NSPasteboard.general.string(forType: .string) ?? text }
-                    Button("Try an Example", systemImage: "text.badge.plus") { text = Self.example(language) }
-                    if !text.isEmpty { Button("Clear", systemImage: "xmark.circle") { text = "" } }
+                    Button("Paste", systemImage: "doc.on.clipboard") { replaceDraft(with: NSPasteboard.general.string(forType: .string) ?? text) }
+                    Button("Try an Example", systemImage: "text.badge.plus") { replaceDraft(with: Self.example(language)) }
+                    if !text.isEmpty { Button("Clear", systemImage: "xmark.circle") { replaceDraft(with: "") } }
                 }
+                Text("Practice text").font(.headline)
                 TextEditor(text: $text)
                     .font(.title2).frame(minHeight: 140).scrollContentBackground(.hidden).padding(6)
                     .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
@@ -753,7 +848,7 @@ struct SoundsView: View {
         let progress = PracticeProgress(pairs: model.sentenceTraining.data.pairs)
         PracticePage(title: "Sounds", subtitle: "Hear each sound, read how the lips and jaw make it, then say the example words.",
                      startTitle: sound.map { "Practise /\($0.ipa)/" } ?? "Start Sounds",
-                     groups: sound.map { s in s.examples.map { [SentencePrompt($0, kind: .sound, language: language)] } } ?? [],
+                     groups: sound.map { s in s.examples.map { [SentencePrompt($0, kind: .sound, language: language, translationLanguage: model.nativeLanguage)] } } ?? [],
                      mode: .sound, unit: "words", scrolls: false) {
             IPAToggle(isOn: $showIPA)
         } content: {
@@ -795,7 +890,7 @@ struct SoundsView: View {
     private func chips(_ list: [PracticeCorpus.Sound], progress: PracticeProgress, language: AppLanguage, prefix: String = "") -> some View {
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 76), spacing: 6)], alignment: .leading, spacing: 6) {
                                 ForEach(list) { s in
-                                    Button { selection = s.id; Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
+                                    Button { selection = s.id; model.referenceSpeaker.stop() } label: {
                                         VStack(spacing: 1) {
                                             Text(s.ipa).font(.ipa(24, relativeTo: .title2))
                                                 .overlay(alignment: .topTrailing) {
@@ -830,9 +925,7 @@ struct SoundsView: View {
                 }
             }
             HStack {
-                Button { Task { await model.referenceSpeaker.speakIPA(s.say, language: language.tag) } } label: {
-                    Label("Hear the Sound", systemImage: "speaker.wave.2.fill")
-                }.controlSize(.large)
+                ReferenceButton(text: s.say, language: language, compact: false, phonetic: true).controlSize(.large)
             }
             Text("Computer voice: an approximation, especially for single sounds. Listen to the example words too.")
                 .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
@@ -843,9 +936,7 @@ struct SoundsView: View {
                 HStack(alignment: .firstTextBaseline) {
                     PracticeLineView(line: line, language: language, showIPA: showIPA)
                     Spacer()
-                    Button { Task { await model.referenceSpeaker.speak(line.text(language), language: language.tag) } } label: {
-                        Label("Listen", systemImage: "speaker.wave.2")
-                    }.accessibilityLabel("Listen to \(line.text(language))")
+                    ReferenceButton(text: line.text(language), language: language)
                 }
             }
             Text("In a round, each word plays first; you say it aloud, then mouth it.").font(.callout).foregroundStyle(.secondary)

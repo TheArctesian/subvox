@@ -28,10 +28,14 @@ final class LocalWhisper {
     private(set) var isTranscribing = false
     private(set) var error: String?
     private(set) var status = "Ready for local transcription"
-    var isAvailable: Bool {
-        Self.validModel(URL(fileURLWithPath: Self.expanded(modelPath)))
-            && FileManager.default.isExecutableFile(atPath: Self.expanded(executablePath))
+    var hasModel: Bool { Self.validModel(URL(fileURLWithPath: Self.expanded(modelPath))) }
+    var hasExecutable: Bool {
+        let path = Self.expanded(executablePath)
+        let url = URL(fileURLWithPath: path)
+        return FileManager.default.isExecutableFile(atPath: path) &&
+            (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true
     }
+    var isAvailable: Bool { hasModel && hasExecutable }
     var isConfigured: Bool { isAvailable }
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private var process: Process?
@@ -148,16 +152,22 @@ final class LocalWhisper {
                 try await waitForServer(child, port: port, session: session)
                 try Task.checkCancellation()
                 status = "Transcribing locally…"
-                let request = try Self.inferenceRequest(port: port, wav: Data(contentsOf: wav))
+                let request = try await Task.detached(priority: .userInitiated) {
+                    try Self.inferenceRequest(port: port, wav: Data(contentsOf: wav))
+                }.value
+                try Task.checkCancellation()
                 let (data, response) = try await session.data(for: request)
                 try Task.checkCancellation()
                 guard child.isRunning else { throw Failure.server("Process exited with status \(child.terminationStatus). See \(logURL.lastPathComponent).") }
                 guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
                     throw Failure.server("Inference HTTP status \((response as? HTTPURLResponse)?.statusCode ?? 0). See \(logURL.lastPathComponent).")
                 }
-                try data.write(to: outputDirectory.appending(path: "local-whisper-\(id)-raw.json"), options: .atomic)
-                let parsed = try AudioWordTiming.attentionTranscript(data)
-                let timing = Task.detached(priority: .userInitiated) { try AudioWordTiming.inspect(wav: wav, transcript: parsed) }
+                let timing = Task.detached(priority: .userInitiated) {
+                    try Task.checkCancellation()
+                    try data.write(to: outputDirectory.appending(path: "local-whisper-\(id)-raw.json"), options: .atomic)
+                    let parsed = try AudioWordTiming.attentionTranscript(data)
+                    return try AudioWordTiming.inspect(wav: wav, transcript: parsed)
+                }
                 var transcript = try await withTaskCancellationHandler(operation: { try await timing.value }, onCancel: { timing.cancel() })
                 try Task.checkCancellation()
                 if let timeRange {

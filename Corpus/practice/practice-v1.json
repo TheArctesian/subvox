@@ -1134,7 +1134,8 @@
       "œ̃n",
       "aʁbʁ",
       "pɛʁʃe"
-     ]
+     ],
+     "gloss": "Master Crow, perched in a tree,"
     },
     {
      "text": "Tenait en son bec un fromage.",
@@ -1145,7 +1146,8 @@
       "bɛk",
       "œ̃",
       "fʁomaʒ"
-     ]
+     ],
+     "gloss": "Held a cheese in his beak."
     },
     {
      "text": "Maître Renard, par l'odeur alléché,",
@@ -1155,7 +1157,8 @@
       "paʁ",
       "lodœʁ",
       "aleʃe"
-     ]
+     ],
+     "gloss": "Master Fox, drawn by the smell,"
     },
     {
      "text": "Lui tint à peu près ce langage :",
@@ -1167,7 +1170,8 @@
       "pʁɛ",
       "sə",
       "lɑ̃ɡaʒ"
-     ]
+     ],
+     "gloss": "Said something like this to him:"
     }
    ]
   },
@@ -1194,7 +1198,8 @@
       "blɑ̃ʃi",
       "la",
       "kɑ̃paɲ"
-     ]
+     ],
+     "gloss": "Tomorrow at dawn, when the countryside grows pale,"
     },
     {
      "text": "Je partirai. Vois-tu, je sais que tu m'attends.",
@@ -1207,7 +1212,8 @@
       "kə",
       "ty",
       "matɑ̃"
-     ]
+     ],
+     "gloss": "I will leave. You see, I know you are waiting for me."
     },
     {
      "text": "J'irai par la forêt, j'irai par la montagne.",
@@ -1220,7 +1226,8 @@
       "paʁ",
       "la",
       "mɔ̃taɲ"
-     ]
+     ],
+     "gloss": "I will go through the forest, I will go over the mountain."
     },
     {
      "text": "Je ne puis demeurer loin de toi plus longtemps.",
@@ -1234,7 +1241,8 @@
       "twa",
       "ply",
       "lɔ̃tɑ̃"
-     ]
+     ],
+     "gloss": "I cannot stay away from you any longer."
     }
    ]
   },
@@ -1266,7 +1274,8 @@
       "ðises",
       "mjentɾas",
       "klaβas"
-     ]
+     ],
+     "gloss": "What is poetry? you ask, fixing"
     },
     {
      "text": "en mi pupila tu pupila azul.",
@@ -1285,7 +1294,8 @@
       "tu",
       "pupila",
       "asul"
-     ]
+     ],
+     "gloss": "Your blue eyes on mine."
     },
     {
      "text": "¡Qué es poesía! ¿Y tú me lo preguntas?",
@@ -1298,7 +1308,8 @@
       "me",
       "lo",
       "pɾeɣuntas"
-     ]
+     ],
+     "gloss": "What is poetry? And you ask me?"
     },
     {
      "text": "Poesía... eres tú.",
@@ -1306,7 +1317,8 @@
       "poesia",
       "eɾes",
       "tu"
-     ]
+     ],
+     "gloss": "Poetry is you."
     }
    ]
   },
@@ -1344,7 +1356,8 @@
       "i",
       "naða",
       "mas"
-     ]
+     ],
+     "gloss": "Traveler, your footprints are the road, and nothing more."
     },
     {
      "text": "caminante, no hay camino, se hace camino al andar.",
@@ -1369,7 +1382,8 @@
       "kamino",
       "al",
       "andaɾ"
-     ]
+     ],
+     "gloss": "Traveler, there is no road. You make the road by walking."
     }
    ]
   },
@@ -1395,7 +1409,8 @@
      ],
      "hant": "床前明月光，",
      "pinyin": "chuáng qián míng yuè guāng",
-     "zhuyin": "ㄔㄨㄤˊ ㄑㄧㄢˊ ㄇㄧㄥˊ ㄩㄝˋ ㄍㄨㄤ"
+     "zhuyin": "ㄔㄨㄤˊ ㄑㄧㄢˊ ㄇㄧㄥˊ ㄩㄝˋ ㄍㄨㄤ",
+     "gloss": "Bright moonlight lies before my bed,"
     },
     {
      "text": "疑是地上霜。",
@@ -1408,7 +1423,8 @@
      ],
      "hant": "疑是地上霜。",
      "pinyin": "yí shì dì shàng shuāng",
-     "zhuyin": "ㄧˊ ㄕˋ ㄉㄧˋ ㄕㄤˋ ㄕㄨㄤ"
+     "zhuyin": "ㄧˊ ㄕˋ ㄉㄧˋ ㄕㄤˋ ㄕㄨㄤ",
+     "gloss": "I thought it was frost upon the ground."
     },
     {
      "text": "举头望明月，",
@@ -1421,7 +1437,8 @@
      ],
      "hant": "舉頭望明月，",
      "pinyin": "jǔ tóu wàng míng yuè",
-     "zhuyin": "ㄐㄩˇ ㄊㄡˊ ㄨㄤˋ ㄇㄧㄥˊ ㄩㄝˋ"
+     "zhuyin": "ㄐㄩˇ ㄊㄡˊ ㄨㄤˋ ㄇㄧㄥˊ ㄩㄝˋ",
+     "gloss": "I lift my head to gaze at the bright moon,"
     },
     {
      "text": "低头思故乡。",
@@ -1434,7 +1451,8 @@
      ],
      "hant": "低頭思故鄉。",
      "pinyin": "dī tóu sī gù xiāng",
-     "zhuyin": "ㄉㄧ ㄊㄡˊ ㄙ ㄍㄨˋ ㄒㄧㄤ"
+     "zhuyin": "ㄉㄧ ㄊㄡˊ ㄙ ㄍㄨˋ ㄒㄧㄤ",
+     "gloss": "I lower it and think of home."
     }
    ]
   },
@@ -1460,7 +1478,8 @@
      ],
      "hant": "春眠不覺曉，",
      "pinyin": "chūn mián bù jué xiǎo",
-     "zhuyin": "ㄔㄨㄣ ㄇㄧㄢˊ ㄅㄨˋ ㄐㄩㄝˊ ㄒㄧㄠˇ"
+     "zhuyin": "ㄔㄨㄣ ㄇㄧㄢˊ ㄅㄨˋ ㄐㄩㄝˊ ㄒㄧㄠˇ",
+     "gloss": "Asleep in spring, I did not notice dawn."
     },
     {
      "text": "处处闻啼鸟。",
@@ -1473,7 +1492,8 @@
      ],
      "hant": "處處聞啼鳥。",
      "pinyin": "chù chù wén tí niǎo",
-     "zhuyin": "ㄔㄨˋ ㄔㄨˋ ㄨㄣˊ ㄊㄧˊ ㄋㄧㄠˇ"
+     "zhuyin": "ㄔㄨˋ ㄔㄨˋ ㄨㄣˊ ㄊㄧˊ ㄋㄧㄠˇ",
+     "gloss": "Everywhere I hear birds singing."
     },
     {
      "text": "夜来风雨声，",
@@ -1486,7 +1506,8 @@
      ],
      "hant": "夜來風雨聲，",
      "pinyin": "yè lái fēng yǔ shēng",
-     "zhuyin": "ㄧㄝˋ ㄌㄞˊ ㄈㄥ ㄩˇ ㄕㄥ"
+     "zhuyin": "ㄧㄝˋ ㄌㄞˊ ㄈㄥ ㄩˇ ㄕㄥ",
+     "gloss": "Last night came the sound of wind and rain."
     },
     {
      "text": "花落知多少。",
@@ -1499,7 +1520,8 @@
      ],
      "hant": "花落知多少。",
      "pinyin": "huā luò zhī duō shao",
-     "zhuyin": "ㄏㄨㄚ ㄌㄨㄛˋ ㄓ ㄉㄨㄛ ㄕㄠ˙"
+     "zhuyin": "ㄏㄨㄚ ㄌㄨㄛˋ ㄓ ㄉㄨㄛ ㄕㄠ˙",
+     "gloss": "Who knows how many blossoms fell?"
     }
    ]
   },
@@ -2427,7 +2449,8 @@
       "dœ̃",
       "ʁəɡaʁ",
       "tʁɑ̃kil"
-     ]
+     ],
+     "gloss": "Courage is to love life and look calmly at death."
     },
     {
      "text": "c’est d’aller à l’idéal et de comprendre le réel ;",
@@ -2441,7 +2464,8 @@
       "kɔ̃pʁɑ̃dʁ",
       "lə",
       "ʁeɛl"
-     ]
+     ],
+     "gloss": "It is to pursue the ideal and understand the real."
     },
     {
      "text": "c’est d’agir et de se donner aux grandes causes sans savoir quelle récompense réserve à notre effort l’univers profond,",
@@ -2465,7 +2489,8 @@
       "efɔʁ",
       "lynivɛʁ",
       "pʁofɔ̃"
-     ]
+     ],
+     "gloss": "It is to act and give yourself to great causes without knowing what reward the deep universe holds for your efforts,"
     },
     {
      "text": "ni s’il lui réserve une récompense.",
@@ -2476,7 +2501,8 @@
       "ʁezɛʁv",
       "yn",
       "ʁekɔ̃pɑ̃s"
-     ]
+     ],
+     "gloss": "Or whether it holds any reward at all."
     },
     {
      "text": "Le courage c’est de chercher la vérité et de la dire ;",
@@ -2492,7 +2518,8 @@
       "də",
       "la",
       "diʁ"
-     ]
+     ],
+     "gloss": "Courage is to seek the truth and speak it."
     },
     {
      "text": "c’est de ne pas subir la loi du mensonge triomphant qui passe,",
@@ -2509,7 +2536,8 @@
       "tʁiɔ̃fɑ̃",
       "ki",
       "pas"
-     ]
+     ],
+     "gloss": "It is to refuse to bow to the rule of the triumphant lie passing by."
     }
    ]
   },
@@ -2540,7 +2568,8 @@
       "a",
       "vuz",
       "osi"
-     ]
+     ],
+     "gloss": "A day will come when weapons fall from your hands, too!"
     },
     {
      "text": "Un jour viendra où la guerre paraîtra aussi absurde et sera aussi impossible entre Paris et Londres,",
@@ -2562,7 +2591,8 @@
       "paʁi",
       "e",
       "lɔ̃dʁ"
-     ]
+     ],
+     "gloss": "A day will come when war seems as absurd and is as impossible between Paris and London,"
     },
     {
      "text": "entre Pétersbourg et Berlin, entre Vienne et Turin, qu’elle serait impossible et qu’elle paraîtrait absurde",
@@ -2582,7 +2612,8 @@
       "kɛl",
       "paʁɛtʁɛ",
       "absyʁd"
-     ]
+     ],
+     "gloss": "Between Petersburg and Berlin, between Vienna and Turin, as it would be impossible and seem absurd"
     },
     {
      "text": "aujourd’hui entre Rouen et Amiens, entre Boston et Philadelphie.",
@@ -2596,7 +2627,8 @@
       "bɔstɔ̃",
       "e",
       "filadɛlfi"
-     ]
+     ],
+     "gloss": "Today between Rouen and Amiens, between Boston and Philadelphia."
     }
    ]
   },
@@ -2633,7 +2665,8 @@
       "də",
       "la",
       "patʁi"
-     ]
+     ],
+     "gloss": "The bell about to ring is a call to charge the enemies of our country."
     },
     {
      "text": "Pour les vaincre, il nous faut de l’audace,",
@@ -2646,7 +2679,8 @@
       "fo",
       "də",
       "lodas"
-     ]
+     ],
+     "gloss": "To defeat them, we need daring,"
     },
     {
      "text": "encore de l’audace, toujours de l’audace,",
@@ -2657,7 +2691,8 @@
       "tuʒuʁ",
       "də",
       "lodas"
-     ]
+     ],
+     "gloss": "More daring, always daring,"
     },
     {
      "text": "et la France est sauvée.",
@@ -2667,7 +2702,8 @@
       "fʁɑ̃s",
       "ɛ",
       "sove"
-     ]
+     ],
+     "gloss": "And France is saved."
     }
    ]
   },
@@ -2699,7 +2735,8 @@
       "ɑ̃ɡaʒ",
       "mɔ̃n",
       "ɔnœʁ"
-     ]
+     ],
+     "gloss": "Dreyfus is innocent, I swear. I stake my life and my honor on it."
     },
     {
      "text": "À cette heure solennelle, devant ce tribunal qui représente la justice humaine,",
@@ -2716,7 +2753,8 @@
       "la",
       "ʒystis",
       "ymɛn"
-     ]
+     ],
+     "gloss": "At this solemn hour, before this court that represents human justice,"
     },
     {
      "text": "devant vous, messieurs les jurés, qui êtes l’émanation même de la nation, devant toute la France, devant le monde entier,",
@@ -2741,7 +2779,8 @@
       "lə",
       "mɔ̃d",
       "ɑ̃tje"
-     ]
+     ],
+     "gloss": "Before you, gentlemen of the jury, who are the very voice of the nation, before all France and the whole world,"
     },
     {
      "text": "je jure que Dreyfus est innocent.",
@@ -2752,7 +2791,8 @@
       "dʁɛfys",
       "ɛt",
       "inosɑ̃"
-     ]
+     ],
+     "gloss": "I swear that Dreyfus is innocent."
     }
    ]
   },
@@ -2792,7 +2832,8 @@
       "də",
       "la",
       "filozofi"
-     ]
+     ],
+     "gloss": "In a word, we seek to fulfill nature’s wishes, carry out humanity’s destiny and keep philosophy’s promises,"
     },
     {
      "text": "absoudre la Providence du long règne du crime et de la tyrannie.",
@@ -2809,7 +2850,8 @@
       "də",
       "la",
       "tiʁani"
-     ]
+     ],
+     "gloss": "To absolve Providence of the long reign of crime and tyranny."
     },
     {
      "text": "Que la France, jadis illustre parmi les pays esclaves, éclipsant la gloire de tous les peuples libres qui ont existé,",
@@ -2834,7 +2876,8 @@
       "ki",
       "ɔ̃",
       "ɛɡziste"
-     ]
+     ],
+     "gloss": "May France, once distinguished among enslaved countries, eclipse the glory of every free people that has existed,"
     },
     {
      "text": "devienne le modèle des nations, l’effroi des oppresseurs, la consolation des opprimés, l’ornement de l’univers,",
@@ -2854,7 +2897,8 @@
       "lɔʁnəmɑ̃",
       "də",
       "lynivɛʁ"
-     ]
+     ],
+     "gloss": "And become a model to nations, a terror to oppressors, a comfort to the oppressed and an ornament to the world."
     }
    ]
   },
@@ -2878,7 +2922,8 @@
       "lez",
       "ɔm",
       "dekipaʒ"
-     ]
+     ],
+     "gloss": "Often, for amusement, the crewmen"
     },
     {
      "text": "Prennent des albatros, vastes oiseaux des mers,",
@@ -2890,7 +2935,8 @@
       "wazo",
       "de",
       "mɛʁ"
-     ]
+     ],
+     "gloss": "Catch albatrosses, vast birds of the sea,"
     },
     {
      "text": "Qui suivent, indolents compagnons de voyage,",
@@ -2901,7 +2947,8 @@
       "kɔ̃paɲɔ̃",
       "də",
       "vwajaʒ"
-     ]
+     ],
+     "gloss": "That follow, idle companions of the voyage,"
     },
     {
      "text": "Le navire glissant sur les gouffres amers.",
@@ -2913,7 +2960,8 @@
       "le",
       "ɡufʁ",
       "ame"
-     ]
+     ],
+     "gloss": "The ship gliding over the bitter depths."
     }
    ]
   },
@@ -2938,7 +2986,8 @@
       "vjolɔ̃",
       "də",
       "lotɔn"
-     ]
+     ],
+     "gloss": "The long sobs of autumn’s violins"
     },
     {
      "text": "Blessent mon cœur d’une langueur monotone.",
@@ -2949,7 +2998,8 @@
       "dyn",
       "lɑ̃ɡœʁ",
       "monotɔn"
-     ]
+     ],
+     "gloss": "Wound my heart with a monotonous ache."
     },
     {
      "text": "Tout suffocant et blême, quand sonne l’heure,",
@@ -2961,7 +3011,8 @@
       "kɑ̃",
       "sɔn",
       "lœʁ"
-     ]
+     ],
+     "gloss": "Breathless and pale when the hour strikes,"
     },
     {
      "text": "Je me souviens des jours anciens et je pleure ;",
@@ -2975,7 +3026,8 @@
       "e",
       "ʒə",
       "plœʁ"
-     ]
+     ],
+     "gloss": "I remember days long past and weep."
     }
    ]
   },
@@ -2999,7 +3051,8 @@
       "si",
       "la",
       "ʁɔz"
-     ]
+     ],
+     "gloss": "Darling, let us see whether the rose"
     },
     {
      "text": "Qui ce matin avoit desclose",
@@ -3009,7 +3062,8 @@
       "matɛ̃",
       "avɛ",
       "deklɔz"
-     ]
+     ],
+     "gloss": "That this morning had unfolded"
     },
     {
      "text": "Sa robe de pourpre au Soleil,",
@@ -3020,7 +3074,8 @@
       "puʁpʁ",
       "o",
       "solɛj"
-     ]
+     ],
+     "gloss": "Her purple dress to the sun"
     },
     {
      "text": "A point perdu ceste vesprée",
@@ -3030,7 +3085,8 @@
       "pɛʁdy",
       "sɛt",
       "vɛpʁe"
-     ]
+     ],
+     "gloss": "Has lost this evening"
     },
     {
      "text": "Les plis de sa robe pourprée,",
@@ -3041,7 +3097,8 @@
       "sa",
       "ʁɔb",
       "puʁpʁe"
-     ]
+     ],
+     "gloss": "The folds of her purple dress"
     },
     {
      "text": "Et son teint au vostre pareil.",
@@ -3052,7 +3109,8 @@
       "o",
       "votʁ",
       "paʁɛj"
-     ]
+     ],
+     "gloss": "And her complexion like yours."
     }
    ]
   },
@@ -3077,7 +3135,8 @@
       "kul",
       "la",
       "sɛn"
-     ]
+     ],
+     "gloss": "Under the Mirabeau Bridge flows the Seine"
     },
     {
      "text": "Et nos amours",
@@ -3085,7 +3144,8 @@
       "e",
       "noz",
       "amuʁ"
-     ]
+     ],
+     "gloss": "And our loves."
     },
     {
      "text": "Faut-il qu’il m’en souvienne",
@@ -3094,7 +3154,8 @@
       "kil",
       "mɑ̃",
       "suvjɛn"
-     ]
+     ],
+     "gloss": "Must I remember"
     },
     {
      "text": "La joie venait toujours après la peine",
@@ -3106,7 +3167,8 @@
       "apʁɛ",
       "la",
       "pɛn"
-     ]
+     ],
+     "gloss": "That joy always followed sorrow?"
     },
     {
      "text": "Vienne la nuit sonne l’heure",
@@ -3116,7 +3178,8 @@
       "nɥi",
       "sɔn",
       "lœʁ"
-     ]
+     ],
+     "gloss": "Let night come, let the hour strike."
     },
     {
      "text": "Les jours s’en vont je demeure",
@@ -3127,7 +3190,8 @@
       "vɔ̃",
       "ʒə",
       "dəmœʁ"
-     ]
+     ],
+     "gloss": "The days go by and I remain."
     }
    ]
   },
@@ -3153,7 +3217,8 @@
       "ʁapɔʁte",
       "de",
       "ʁoz"
-     ]
+     ],
+     "gloss": "I wanted to bring you roses this morning,"
     },
     {
      "text": "Mais j’en avais tant pris dans mes ceintures closes",
@@ -3167,7 +3232,8 @@
       "me",
       "sɛ̃tyʁ",
       "kloz"
-     ]
+     ],
+     "gloss": "But I had gathered so many into my tied sash"
     },
     {
      "text": "Que les nœuds trop serrés n’ont pu les contenir.",
@@ -3181,7 +3247,8 @@
       "py",
       "le",
       "kɔ̃tniʁ"
-     ]
+     ],
+     "gloss": "That its tight knots could not hold them."
     },
     {
      "text": "Les nœuds ont éclaté. Les roses envolées",
@@ -3193,7 +3260,8 @@
       "le",
       "ʁoz",
       "ɑ̃vole"
-     ]
+     ],
+     "gloss": "The knots burst. The roses flew away"
     },
     {
      "text": "Dans le vent, à la mer s’en sont toutes allées.",
@@ -3208,7 +3276,8 @@
       "sɔ̃",
       "tut",
       "ale"
-     ]
+     ],
+     "gloss": "On the wind and all went out to sea."
     },
     {
      "text": "Elles ont suivi l’eau pour ne plus revenir.",
@@ -3221,7 +3290,8 @@
       "nə",
       "ply",
       "ʁəvniʁ"
-     ]
+     ],
+     "gloss": "They followed the water, never to return."
     }
    ]
   },
@@ -4259,7 +4329,8 @@
       "la",
       "ðiβina",
       "pɾoβiðensja"
-     ]
+     ],
+     "gloss": "I therefore count myself among those most favored by Divine Providence,"
     },
     {
      "text": "ya que he tenido el honor de reunir a los representantes del pueblo de Venezuela en este augusto Congreso,",
@@ -4304,7 +4375,8 @@
       "este",
       "awɣusto",
       "koŋɡɾeso"
-     ]
+     ],
+     "gloss": "For I have had the honor of bringing the representatives of Venezuela’s people together in this august Congress,"
     },
     {
      "text": "fuente de la autoridad legítima, depósito de la voluntad soberana y árbitro del destino de la Nación.",
@@ -4345,7 +4417,8 @@
       "ðe",
       "la",
       "nasjon"
-     ]
+     ],
+     "gloss": "The source of lawful authority, repository of the sovereign will and arbiter of the nation’s destiny."
     },
     {
      "text": "Al transmitir a los representantes del pueblo el Poder Supremo que se me había confiado,",
@@ -4365,7 +4438,8 @@
       "me",
       "aβia",
       "konfjaðo"
-     ]
+     ],
+     "gloss": "By passing to the people’s representatives the supreme power entrusted to me,"
     },
     {
      "text": "colmo los votos de mi corazón, los de mis conciudadanos y los de nuestras futuras generaciones,",
@@ -4404,7 +4478,8 @@
       "nwestɾas",
       "futuɾas",
       "xeneɾasjones"
-     ]
+     ],
+     "gloss": "I fulfill the wishes of my heart, of my fellow citizens and of our future generations,"
     },
     {
      "text": "que todo lo esperan de vuestra sabiduría, rectitud y prudencia.",
@@ -4431,7 +4506,8 @@
       "rektituð",
       "i",
       "pɾuðensja"
-     ]
+     ],
+     "gloss": "Who expect everything from your wisdom, integrity and prudence."
     },
     {
      "text": "Cuando cumplo con este dulce deber, me liberto de la inmensa autoridad que me agobia,",
@@ -4468,7 +4544,8 @@
       "ke",
       "me",
       "aɣoβja"
-     ]
+     ],
+     "gloss": "In fulfilling this welcome duty I free myself from the immense authority that burdens me,"
     },
     {
      "text": "como de la responsabilidad ilimitada que pesaba sobre mis débiles fuerzas.",
@@ -4497,7 +4574,8 @@
       "mis",
       "ðeβiles",
       "fweɾsas"
-     ]
+     ],
+     "gloss": "And from the unlimited responsibility that weighed on my weak powers."
     },
     {
      "text": "Solamente una necesidad forzosa, unida a la voluntad imperiosa del pueblo,",
@@ -4526,7 +4604,8 @@
       "impeɾjosa",
       "ðel",
       "pweβlo"
-     ]
+     ],
+     "gloss": "Only compelling necessity, joined to the imperative will of the people,"
     },
     {
      "text": "me habría sometido al terrible y peligroso cargo de Dictador Jefe Supremo de la República.",
@@ -4546,7 +4625,8 @@
       "ðe",
       "la",
       "repuβlika"
-     ]
+     ],
+     "gloss": "Could have made me accept the terrible and dangerous office of dictator and supreme chief of the Republic."
     },
     {
      "text": "¡Pero ya respiro devolviéndoos esta autoridad, que con tanto riesgo,",
@@ -4561,7 +4641,8 @@
       "kon",
       "tanto",
       "riesɣo"
-     ]
+     ],
+     "gloss": "But I can breathe again as I return to you the authority which, at such risk,"
     },
     {
      "text": "dificultad y pena he logrado mantener en medio de las tribulaciones más horrorosas que pueden afligir a un cuerpo social!",
@@ -4608,7 +4689,8 @@
       "un",
       "kweɾpo",
       "sosjal"
-     ]
+     ],
+     "gloss": "Difficulty and pain, I have managed to hold amid the most dreadful troubles that can afflict a society."
     }
    ]
   },
@@ -4660,7 +4742,8 @@
       "nasjon",
       "del",
       "mundo"
-     ]
+     ],
+     "gloss": "More than anyone, I want to see the greatest nation in the world arise in America,"
     },
     {
      "text": "menos por su extensión y riquezas que por su libertad y gloria.",
@@ -4691,7 +4774,8 @@
       "liβeɾtað",
       "i",
       "ɣloɾja"
-     ]
+     ],
+     "gloss": "Less for its size and riches than for its freedom and glory."
     },
     {
      "text": "Aunque aspiro a la perfección del gobierno de mi patria,",
@@ -4718,7 +4802,8 @@
       "ðe",
       "mi",
       "patɾia"
-     ]
+     ],
+     "gloss": "Although I aspire to the perfection of my country’s government,"
     },
     {
      "text": "no puedo persuadirme que el Nuevo Mundo sea por el momento regido por una gran república;",
@@ -4739,7 +4824,8 @@
       "una",
       "ɣɾan",
       "repuβlika"
-     ]
+     ],
+     "gloss": "I cannot believe the New World can for now be governed by a great republic."
     },
     {
      "text": "como es imposible, no me atrevo a desearlo, y menos deseo una monarquía universal en América,",
@@ -4760,7 +4846,8 @@
       "uniβeɾsal",
       "en",
       "ameɾika"
-     ]
+     ],
+     "gloss": "Since it is impossible I dare not wish for it, and I wish even less for a universal monarchy in America,"
     },
     {
      "text": "porque este proyecto, sin ser útil, es también imposible.",
@@ -4774,7 +4861,8 @@
       "es",
       "tambjen",
       "imposiβle"
-     ]
+     ],
+     "gloss": "Because that project is both useless and impossible."
     },
     {
      "text": "Los abusos que actualmente existen no se reformarían y nuestra regeneración sería infructuosa.",
@@ -4807,7 +4895,8 @@
       "rexeneɾasjon",
       "seɾia",
       "imfɾuktwosa"
-     ]
+     ],
+     "gloss": "The abuses that now exist would remain unreformed and our renewal would bear no fruit."
     },
     {
      "text": "Los estados americanos han menester de los cuidados de gobiernos paternales que curen las llagas y las heridas del despotismo y la guerra.",
@@ -4860,7 +4949,8 @@
       "i",
       "la",
       "ɣera"
-     ]
+     ],
+     "gloss": "The American states need the care of governments that heal the sores and wounds of despotism and war."
     }
    ]
   },
@@ -4906,7 +4996,8 @@
       "solo",
       "una",
       "oβseɾβasjon"
-     ]
+     ],
+     "gloss": "I must finish for lack of time, and will add just one observation."
     },
     {
      "text": "Es dado al hombre, señor, atacar los derechos ajenos, apoderarse de sus bienes,",
@@ -4924,7 +5015,8 @@
       "ðe",
       "sus",
       "βjenes"
-     ]
+     ],
+     "gloss": "A person, sir, may attack the rights of others, seize their goods,"
     },
     {
      "text": "atentar contra la vida de los que defienden su nacionalidad,",
@@ -4951,7 +5043,8 @@
       "ðefjenden",
       "su",
       "nasjonaliðad"
-     ]
+     ],
+     "gloss": "Threaten the lives of those who defend their nation,"
     },
     {
      "text": "hacer de sus virtudes un crimen y de los vicios propios una virtud;",
@@ -4984,7 +5077,8 @@
       "pɾopjos",
       "una",
       "βiɾtud"
-     ]
+     ],
+     "gloss": "Turn their virtues into crimes and his own vices into virtues."
     },
     {
      "text": "pero hay una cosa que está fuera del alcance de la perversidad y es el fallo tremendo de la historia.",
@@ -5031,7 +5125,8 @@
       "ðe",
       "la",
       "istoɾja"
-     ]
+     ],
+     "gloss": "But one thing lies beyond the reach of wickedness: the terrible judgment of history."
     },
     {
      "text": "Ella nos juzgará.",
@@ -5044,7 +5139,8 @@
       "eʝa",
       "nos",
       "xusɣaɾa"
-     ]
+     ],
+     "gloss": "It will judge us."
     }
    ]
   },
@@ -5084,7 +5180,8 @@
       "a",
       "su",
       "fin"
-     ]
+     ],
+     "gloss": "Victory approaches, and the struggle nears its end."
     },
     {
      "text": "Se libran ya los últimos combates y en estos instantes solemnes,",
@@ -5100,7 +5197,8 @@
       "estos",
       "instantes",
       "solemnes"
-     ]
+     ],
+     "gloss": "The last battles are being fought, and in these solemn moments,"
     },
     {
      "text": "de pie y respetuosamente descubiertos ante la nación, aguardamos la hora decisiva,",
@@ -5131,7 +5229,8 @@
       "la",
       "oɾa",
       "ðesisiβa"
-     ]
+     ],
+     "gloss": "Standing with heads uncovered before the nation, we await the decisive hour,"
     },
     {
      "text": "el momento preciso en que los pueblos se hunden o se salvan,",
@@ -5162,7 +5261,8 @@
       "o",
       "se",
       "salβan"
-     ]
+     ],
+     "gloss": "The very moment when peoples sink or save themselves,"
     },
     {
      "text": "según el uso que hacen de la soberanía conquistada, esa soberanía por tanto tiempo arrebatada a nuestro pueblo,",
@@ -5205,7 +5305,8 @@
       "a",
       "nwestɾo",
       "pweβlo"
-     ]
+     ],
+     "gloss": "According to how they use the sovereignty they have won, the sovereignty long taken from our people,"
     },
     {
      "text": "y la que con el triunfo de la revolución volverá ilesa,",
@@ -5234,7 +5335,8 @@
       "reβolusjom",
       "bolβeɾa",
       "ilesa"
-     ]
+     ],
+     "gloss": "Which the triumph of the revolution will return unharmed,"
     },
     {
      "text": "tal como se ha conservado y la hemos defendido aquí,",
@@ -5249,7 +5351,8 @@
       "emos",
       "ðefendiðo",
       "aki"
-     ]
+     ],
+     "gloss": "Just as it has been preserved and we have defended it here,"
     },
     {
      "text": "en las montañas que han sido su solio y nuestro baluarte.",
@@ -5265,7 +5368,8 @@
       "i",
       "nwestɾo",
       "βaluaɾte"
-     ]
+     ],
+     "gloss": "In the mountains that have been its seat and our stronghold."
     },
     {
      "text": "Volverá dignificada y fortalecida para nunca más ser mancillada por la impostura ni encadenada por la tiranía.",
@@ -5306,7 +5410,8 @@
       "poɾ",
       "la",
       "tiɾania"
-     ]
+     ],
+     "gloss": "It will return dignified and strengthened, never again to be stained by deceit or chained by tyranny."
     },
     {
      "text": "Sin embargo, los hechos hablan muy alto de la fuerza y el origen de este movimiento.",
@@ -5345,7 +5450,8 @@
       "de",
       "este",
       "moβimjento"
-     ]
+     ],
+     "gloss": "Yet the facts speak clearly of the strength and origin of this movement."
     }
    ]
   },
@@ -5373,7 +5479,8 @@
       "nesjos",
       "ke",
       "akusais"
-     ]
+     ],
+     "gloss": "Foolish men who accuse"
     },
     {
      "text": "a la mujer, sin razón,",
@@ -5390,7 +5497,8 @@
       "muxeɾ",
       "sin",
       "rason"
-     ]
+     ],
+     "gloss": "Women without reason,"
     },
     {
      "text": "sin ver que sois la ocasión",
@@ -5402,7 +5510,8 @@
       "la",
       "okasjon"
      ],
-     "region": "ES"
+     "region": "ES",
+     "gloss": "Without seeing that you cause"
     },
     {
      "text": "de lo mismo que culpáis;",
@@ -5412,7 +5521,8 @@
       "mismo",
       "ke",
       "kulpais"
-     ]
+     ],
+     "gloss": "The very thing you blame them for:"
     },
     {
      "text": "si con ansia sin igual",
@@ -5422,7 +5532,8 @@
       "ansja",
       "sin",
       "iɣwal"
-     ]
+     ],
+     "gloss": "If with unmatched eagerness"
     },
     {
      "text": "solicitáis su desdén,",
@@ -5435,7 +5546,8 @@
       "solisitais",
       "su",
       "ðesðen"
-     ]
+     ],
+     "gloss": "You court their disdain,"
     },
     {
      "text": "por qué queréis que obren bien",
@@ -5447,7 +5559,8 @@
       "oβɾem",
       "bjen"
      ],
-     "region": "ES"
+     "region": "ES",
+     "gloss": "Why do you expect them to act well"
     },
     {
      "text": "si las incitáis al mal?",
@@ -5464,7 +5577,8 @@
       "insitais",
       "al",
       "mal"
-     ]
+     ],
+     "gloss": "When you urge them toward wrongdoing?"
     }
    ]
   },
@@ -5496,7 +5610,8 @@
       "oxos",
       "la",
       "postɾeɾa"
-     ]
+     ],
+     "gloss": "The last shadow may close my eyes,"
     },
     {
      "text": "sombra que me llevare el blanco día,",
@@ -5517,7 +5632,8 @@
       "el",
       "βlanko",
       "ðia"
-     ]
+     ],
+     "gloss": "Carrying away the bright day,"
     },
     {
      "text": "y podrá desatar esta alma mía",
@@ -5528,7 +5644,8 @@
       "esta",
       "alma",
       "mia"
-     ]
+     ],
+     "gloss": "And the hour that favors its anxious longing"
     },
     {
      "text": "hora a su afán ansioso lisonjera;",
@@ -5539,7 +5656,8 @@
       "afan",
       "ansjoso",
       "lisoŋxeɾa"
-     ]
+     ],
+     "gloss": "May set this soul of mine free."
     },
     {
      "text": "mas no, de esotra parte, en la ribera,",
@@ -5552,7 +5670,8 @@
       "en",
       "la",
       "riβeɾa"
-     ]
+     ],
+     "gloss": "But on the other bank it will not leave"
     },
     {
      "text": "dejará la memoria, en donde ardía:",
@@ -5563,7 +5682,8 @@
       "en",
       "donde",
       "aɾðia"
-     ]
+     ],
+     "gloss": "The memory where its flame once burned."
     },
     {
      "text": "nadar sabe mi llama la agua fría,",
@@ -5584,7 +5704,8 @@
       "la",
       "aɣwa",
       "fɾia"
-     ]
+     ],
+     "gloss": "My flame knows how to swim the cold water"
     },
     {
      "text": "y perder el respeto a ley severa.",
@@ -5596,7 +5717,8 @@
       "a",
       "lej",
       "seβeɾa"
-     ]
+     ],
+     "gloss": "And defy that stern law."
     }
    ]
   },
@@ -5626,7 +5748,8 @@
       "kaɲones",
       "poɾ",
       "βanda"
-     ]
+     ],
+     "gloss": "With ten cannons on either side,"
     },
     {
      "text": "Viento en popa á toda vela",
@@ -5647,7 +5770,8 @@
       "asentwaða",
       "toða",
       "βela"
-     ]
+     ],
+     "gloss": "The wind astern and under full sail,"
     },
     {
      "text": "No corta el mar, sino vuela",
@@ -5658,7 +5782,8 @@
       "maɾ",
       "sino",
       "βwela"
-     ]
+     ],
+     "gloss": "My sailing brig does not cut through the sea,"
     },
     {
      "text": "Mi velero bergantin:",
@@ -5666,7 +5791,8 @@
       "mi",
       "βeleɾo",
       "βeɾɣantin"
-     ]
+     ],
+     "gloss": "It flies across it."
     },
     {
      "text": "Bajel pirata que llaman",
@@ -5681,7 +5807,8 @@
       "piɾata",
       "ke",
       "ʝaman"
-     ]
+     ],
+     "gloss": "A pirate ship they call"
     },
     {
      "text": "Por su bravura el Temido,",
@@ -5691,7 +5818,8 @@
       "βɾaβuɾa",
       "el",
       "temiðo"
-     ]
+     ],
+     "gloss": "The Feared, for its bravery,"
     },
     {
      "text": "En todo mar conocido",
@@ -5706,7 +5834,8 @@
       "toðo",
       "maɾ",
       "konosiðo"
-     ]
+     ],
+     "gloss": "Known across every sea"
     },
     {
      "text": "Del uno al otro confin.",
@@ -5716,7 +5845,8 @@
       "al",
       "otɾo",
       "konfin"
-     ]
+     ],
+     "gloss": "From one end to the other."
     }
    ]
   },
@@ -5746,7 +5876,8 @@
       "un",
       "ombɾe",
       "sinseɾo"
-     ]
+     ],
+     "gloss": "I am an honest man"
     },
     {
      "text": "De donde crece la palma.",
@@ -5763,7 +5894,8 @@
       "kɾese",
       "la",
       "palma"
-     ]
+     ],
+     "gloss": "From where the palm tree grows."
     },
     {
      "text": "Y antes de morirme quiero",
@@ -5773,7 +5905,8 @@
       "ðe",
       "moɾiɾme",
       "kjeɾo"
-     ]
+     ],
+     "gloss": "Before I die, I want"
     },
     {
      "text": "Echar mis versos del alma.",
@@ -5783,7 +5916,8 @@
       "βeɾsos",
       "ðel",
       "alma"
-     ]
+     ],
+     "gloss": "To send forth the verses of my soul."
     },
     {
      "text": "Yo vengo de todas partes,",
@@ -5793,7 +5927,8 @@
       "ðe",
       "toðas",
       "paɾtes"
-     ]
+     ],
+     "gloss": "I come from everywhere"
     },
     {
      "text": "Y hacia todas partes voy:",
@@ -5810,7 +5945,8 @@
       "toðas",
       "paɾtes",
       "βoj"
-     ]
+     ],
+     "gloss": "And I go toward everywhere."
     },
     {
      "text": "Arte soy entre las artes,",
@@ -5820,7 +5956,8 @@
       "entɾe",
       "las",
       "aɾtes"
-     ]
+     ],
+     "gloss": "Among the arts I am art,"
     },
     {
      "text": "En los montes, monte soy.",
@@ -5830,7 +5967,8 @@
       "montes",
       "monte",
       "soj"
-     ]
+     ],
+     "gloss": "Among the mountains I am a mountain."
     }
    ]
   },
@@ -5866,7 +6004,8 @@
       "tendɾa",
       "la",
       "pɾinsesa"
-     ]
+     ],
+     "gloss": "The princess is sad. What can be wrong with her?"
     },
     {
      "text": "Los suspiros se escapan de su boca de fresa,",
@@ -5880,7 +6019,8 @@
       "βoka",
       "ðe",
       "fɾesa"
-     ]
+     ],
+     "gloss": "Sighs escape from her strawberry mouth,"
     },
     {
      "text": "Que ha perdido la risa, que ha perdido el color.",
@@ -5895,7 +6035,8 @@
       "peɾðiðo",
       "el",
       "koloɾ"
-     ]
+     ],
+     "gloss": "Which has lost its laughter and its color."
     },
     {
      "text": "La princesa está pálida en su silla de oro,",
@@ -5920,7 +6061,8 @@
       "siʝa",
       "ðe",
       "oɾo"
-     ]
+     ],
+     "gloss": "The princess is pale in her golden chair,"
     },
     {
      "text": "Está mudo el teclado de su clave sonoro;",
@@ -5933,7 +6075,8 @@
       "su",
       "klaβe",
       "sonoɾo"
-     ]
+     ],
+     "gloss": "The keys of her ringing harpsichord are silent,"
     },
     {
      "text": "Y en un vaso olvidada se desmaya una flor.",
@@ -5947,7 +6090,8 @@
       "ðesmaʝa",
       "una",
       "floɾ"
-     ]
+     ],
+     "gloss": "And in a forgotten vase a flower wilts."
     }
    ]
   },
@@ -5981,7 +6125,8 @@
       "rosa",
       "i",
       "asusena"
-     ]
+     ],
+     "gloss": "While rose and lily"
     },
     {
      "text": "se muestra la color en vuestro gesto,",
@@ -5993,7 +6138,8 @@
       "em",
       "bwestɾo",
       "xesto"
-     ]
+     ],
+     "gloss": "Color your face,"
     },
     {
      "text": "y que vuestro mirar ardiente, honesto,",
@@ -6004,7 +6150,8 @@
       "miɾaɾ",
       "aɾðjente",
       "onesto"
-     ]
+     ],
+     "gloss": "And your ardent, honest gaze"
     },
     {
      "text": "enciende el corazón y lo refrena,",
@@ -6023,7 +6170,8 @@
       "i",
       "lo",
       "refɾena"
-     ]
+     ],
+     "gloss": "Lights the heart and calms it,"
     },
     {
      "text": "y en tanto que el cabello, que en la vena",
@@ -6050,7 +6198,8 @@
       "en",
       "la",
       "βena"
-     ]
+     ],
+     "gloss": "And while your hair, taken as if"
     },
     {
      "text": "del oro se escogió, con vuelo presto,",
@@ -6062,7 +6211,8 @@
       "kom",
       "bwelo",
       "pɾesto"
-     ]
+     ],
+     "gloss": "From gold, in swift flight"
     },
     {
      "text": "por el hermoso cuello blanco, enhiesto,",
@@ -6081,7 +6231,8 @@
       "kweʝo",
       "βlanko",
       "enjesto"
-     ]
+     ],
+     "gloss": "Around your fair, upright white neck,"
     },
     {
      "text": "el viento mueve, esparce y desordena;",
@@ -6100,7 +6251,8 @@
       "espaɾse",
       "i",
       "ðesoɾðena"
-     ]
+     ],
+     "gloss": "Is stirred, scattered and disordered by the wind;"
     }
    ]
   },
@@ -6126,7 +6278,8 @@
      ],
      "hant": "國破山河在，",
      "pinyin": "guó pò shān hé zài",
-     "zhuyin": "ㄍㄨㄛˊ ㄆㄛˋ ㄕㄢ ㄏㄜˊ ㄗㄞˋ"
+     "zhuyin": "ㄍㄨㄛˊ ㄆㄛˋ ㄕㄢ ㄏㄜˊ ㄗㄞˋ",
+     "gloss": "The country is broken, but its hills and rivers remain."
     },
     {
      "text": "城春草木深。",
@@ -6139,7 +6292,8 @@
      ],
      "hant": "城春草木深。",
      "pinyin": "chéng chūn cǎo mù shēn",
-     "zhuyin": "ㄔㄥˊ ㄔㄨㄣ ㄘㄠˇ ㄇㄨˋ ㄕㄣ"
+     "zhuyin": "ㄔㄥˊ ㄔㄨㄣ ㄘㄠˇ ㄇㄨˋ ㄕㄣ",
+     "gloss": "Spring comes to the city and the grasses and trees grow thick."
     },
     {
      "text": "感时花溅泪，",
@@ -6152,7 +6306,8 @@
      ],
      "hant": "感時花濺淚，",
      "pinyin": "gǎn shí huā jiàn lèi",
-     "zhuyin": "ㄍㄢˇ ㄕˊ ㄏㄨㄚ ㄐㄧㄢˋ ㄌㄟˋ"
+     "zhuyin": "ㄍㄢˇ ㄕˊ ㄏㄨㄚ ㄐㄧㄢˋ ㄌㄟˋ",
+     "gloss": "Grieving for these times, I shed tears at the flowers."
     },
     {
      "text": "恨别鸟惊心。",
@@ -6165,7 +6320,8 @@
      ],
      "hant": "恨別鳥驚心。",
      "pinyin": "hèn bié niǎo jīng xīn",
-     "zhuyin": "ㄏㄣˋ ㄅㄧㄝˊ ㄋㄧㄠˇ ㄐㄧㄥ ㄒㄧㄣ"
+     "zhuyin": "ㄏㄣˋ ㄅㄧㄝˊ ㄋㄧㄠˇ ㄐㄧㄥ ㄒㄧㄣ",
+     "gloss": "Hating our separation, I start at the birds."
     },
     {
      "text": "烽火连三月，",
@@ -6178,7 +6334,8 @@
      ],
      "hant": "烽火連三月，",
      "pinyin": "fēng huǒ lián sān yuè",
-     "zhuyin": "ㄈㄥ ㄏㄨㄛˇ ㄌㄧㄢˊ ㄙㄢ ㄩㄝˋ"
+     "zhuyin": "ㄈㄥ ㄏㄨㄛˇ ㄌㄧㄢˊ ㄙㄢ ㄩㄝˋ",
+     "gloss": "The signal fires have burned for three months."
     },
     {
      "text": "家书抵万金。",
@@ -6191,7 +6348,8 @@
      ],
      "hant": "家書抵萬金。",
      "pinyin": "jiā shū dǐ wàn jīn",
-     "zhuyin": "ㄐㄧㄚ ㄕㄨ ㄉㄧˇ ㄨㄢˋ ㄐㄧㄣ"
+     "zhuyin": "ㄐㄧㄚ ㄕㄨ ㄉㄧˇ ㄨㄢˋ ㄐㄧㄣ",
+     "gloss": "A letter from home is worth ten thousand pieces of gold."
     },
     {
      "text": "白头搔更短，",
@@ -6204,7 +6362,8 @@
      ],
      "hant": "白頭搔更短，",
      "pinyin": "bái tóu sāo gèng duǎn",
-     "zhuyin": "ㄅㄞˊ ㄊㄡˊ ㄙㄠ ㄍㄥˋ ㄉㄨㄢˇ"
+     "zhuyin": "ㄅㄞˊ ㄊㄡˊ ㄙㄠ ㄍㄥˋ ㄉㄨㄢˇ",
+     "gloss": "I scratch my white hair and it grows shorter still."
     },
     {
      "text": "浑欲不胜簪。",
@@ -6217,7 +6376,8 @@
      ],
      "hant": "渾欲不勝簪。",
      "pinyin": "hún yù bù shēng zān",
-     "zhuyin": "ㄏㄨㄣˊ ㄩˋ ㄅㄨˋ ㄕㄥ ㄗㄢ"
+     "zhuyin": "ㄏㄨㄣˊ ㄩˋ ㄅㄨˋ ㄕㄥ ㄗㄢ",
+     "gloss": "Soon it will scarcely hold a hairpin."
     }
    ]
   },
@@ -6243,7 +6403,8 @@
      ],
      "hant": "空山不見人，",
      "pinyin": "kōng shān bù jiàn rén",
-     "zhuyin": "ㄎㄨㄥ ㄕㄢ ㄅㄨˋ ㄐㄧㄢˋ ㄖㄣˊ"
+     "zhuyin": "ㄎㄨㄥ ㄕㄢ ㄅㄨˋ ㄐㄧㄢˋ ㄖㄣˊ",
+     "gloss": "In the empty hills I see no one,"
     },
     {
      "text": "但闻人语响。",
@@ -6256,7 +6417,8 @@
      ],
      "hant": "但聞人語響。",
      "pinyin": "dàn wén rén yǔ xiǎng",
-     "zhuyin": "ㄉㄢˋ ㄨㄣˊ ㄖㄣˊ ㄩˇ ㄒㄧㄤˇ"
+     "zhuyin": "ㄉㄢˋ ㄨㄣˊ ㄖㄣˊ ㄩˇ ㄒㄧㄤˇ",
+     "gloss": "Yet I hear the sound of voices."
     },
     {
      "text": "返景入深林，",
@@ -6269,7 +6431,8 @@
      ],
      "hant": "返景入深林，",
      "pinyin": "fǎn yǐng rù shēn lín",
-     "zhuyin": "ㄈㄢˇ ㄧㄥˇ ㄖㄨˋ ㄕㄣ ㄌㄧㄣˊ"
+     "zhuyin": "ㄈㄢˇ ㄧㄥˇ ㄖㄨˋ ㄕㄣ ㄌㄧㄣˊ",
+     "gloss": "Returning light enters the deep woods,"
     },
     {
      "text": "复照青苔上。",
@@ -6282,7 +6445,8 @@
      ],
      "hant": "復照青苔上。",
      "pinyin": "fù zhào qīng tái shàng",
-     "zhuyin": "ㄈㄨˋ ㄓㄠˋ ㄑㄧㄥ ㄊㄞˊ ㄕㄤˋ"
+     "zhuyin": "ㄈㄨˋ ㄓㄠˋ ㄑㄧㄥ ㄊㄞˊ ㄕㄤˋ",
+     "gloss": "And shines again on the green moss."
     }
    ]
   },
@@ -6308,7 +6472,8 @@
      ],
      "hant": "離離原上草，",
      "pinyin": "lí lí yuán shàng cǎo",
-     "zhuyin": "ㄌㄧˊ ㄌㄧˊ ㄩㄢˊ ㄕㄤˋ ㄘㄠˇ"
+     "zhuyin": "ㄌㄧˊ ㄌㄧˊ ㄩㄢˊ ㄕㄤˋ ㄘㄠˇ",
+     "gloss": "Thick grows the grass on the ancient plain."
     },
     {
      "text": "一岁一枯荣。",
@@ -6321,7 +6486,8 @@
      ],
      "hant": "一歲一枯榮。",
      "pinyin": "yī suì yī kū róng",
-     "zhuyin": "ㄧ ㄙㄨㄟˋ ㄧ ㄎㄨ ㄖㄨㄥˊ"
+     "zhuyin": "ㄧ ㄙㄨㄟˋ ㄧ ㄎㄨ ㄖㄨㄥˊ",
+     "gloss": "Each year it withers and flourishes again."
     },
     {
      "text": "野火烧不尽，",
@@ -6334,7 +6500,8 @@
      ],
      "hant": "野火燒不盡，",
      "pinyin": "yě huǒ shāo bù jìn",
-     "zhuyin": "ㄧㄝˇ ㄏㄨㄛˇ ㄕㄠ ㄅㄨˋ ㄐㄧㄣˋ"
+     "zhuyin": "ㄧㄝˇ ㄏㄨㄛˇ ㄕㄠ ㄅㄨˋ ㄐㄧㄣˋ",
+     "gloss": "Wildfires cannot burn it all away."
     },
     {
      "text": "春风吹又生。",
@@ -6347,7 +6514,8 @@
      ],
      "hant": "春風吹又生。",
      "pinyin": "chūn fēng chuī yòu shēng",
-     "zhuyin": "ㄔㄨㄣ ㄈㄥ ㄔㄨㄟ ㄧㄡˋ ㄕㄥ"
+     "zhuyin": "ㄔㄨㄣ ㄈㄥ ㄔㄨㄟ ㄧㄡˋ ㄕㄥ",
+     "gloss": "The spring wind makes it grow again."
     },
     {
      "text": "远芳侵古道，",
@@ -6360,7 +6528,8 @@
      ],
      "hant": "遠芳侵古道，",
      "pinyin": "yuǎn fāng qīn gǔ dào",
-     "zhuyin": "ㄩㄢˇ ㄈㄤ ㄑㄧㄣ ㄍㄨˇ ㄉㄠˋ"
+     "zhuyin": "ㄩㄢˇ ㄈㄤ ㄑㄧㄣ ㄍㄨˇ ㄉㄠˋ",
+     "gloss": "Its distant fragrance reaches over the old road."
     },
     {
      "text": "晴翠接荒城。",
@@ -6373,7 +6542,8 @@
      ],
      "hant": "晴翠接荒城。",
      "pinyin": "qíng cuì jiē huāng chéng",
-     "zhuyin": "ㄑㄧㄥˊ ㄘㄨㄟˋ ㄐㄧㄝ ㄏㄨㄤ ㄔㄥˊ"
+     "zhuyin": "ㄑㄧㄥˊ ㄘㄨㄟˋ ㄐㄧㄝ ㄏㄨㄤ ㄔㄥˊ",
+     "gloss": "Its bright green meets the ruined city."
     },
     {
      "text": "又送王孙去，",
@@ -6386,7 +6556,8 @@
      ],
      "hant": "又送王孫去，",
      "pinyin": "yòu sòng wáng sūn qù",
-     "zhuyin": "ㄧㄡˋ ㄙㄨㄥˋ ㄨㄤˊ ㄙㄨㄣ ㄑㄩˋ"
+     "zhuyin": "ㄧㄡˋ ㄙㄨㄥˋ ㄨㄤˊ ㄙㄨㄣ ㄑㄩˋ",
+     "gloss": "Once more I see a friend off."
     },
     {
      "text": "萋萋满别情。",
@@ -6399,7 +6570,8 @@
      ],
      "hant": "萋萋滿別情。",
      "pinyin": "qī qī mǎn bié qíng",
-     "zhuyin": "ㄑㄧ ㄑㄧ ㄇㄢˇ ㄅㄧㄝˊ ㄑㄧㄥˊ"
+     "zhuyin": "ㄑㄧ ㄑㄧ ㄇㄢˇ ㄅㄧㄝˊ ㄑㄧㄥˊ",
+     "gloss": "The lush grass is full of parting sorrow."
     }
    ]
   },
@@ -6423,7 +6595,8 @@
      ],
      "hant": "鵝，鵝，鵝，",
      "pinyin": "é é é",
-     "zhuyin": "ㄜˊ ㄜˊ ㄜˊ"
+     "zhuyin": "ㄜˊ ㄜˊ ㄜˊ",
+     "gloss": "Goose, goose, goose,"
     },
     {
      "text": "曲项向天歌。",
@@ -6436,7 +6609,8 @@
      ],
      "hant": "曲項向天歌。",
      "pinyin": "qū xiàng xiàng tiān gē",
-     "zhuyin": "ㄑㄩ ㄒㄧㄤˋ ㄒㄧㄤˋ ㄊㄧㄢ ㄍㄜ"
+     "zhuyin": "ㄑㄩ ㄒㄧㄤˋ ㄒㄧㄤˋ ㄊㄧㄢ ㄍㄜ",
+     "gloss": "With bent neck you sing toward the sky."
     },
     {
      "text": "白毛浮绿水，",
@@ -6449,7 +6623,8 @@
      ],
      "hant": "白毛浮綠水，",
      "pinyin": "bái máo fú lǜ shuǐ",
-     "zhuyin": "ㄅㄞˊ ㄇㄠˊ ㄈㄨˊ ㄌㄩˋ ㄕㄨㄟˇ"
+     "zhuyin": "ㄅㄞˊ ㄇㄠˊ ㄈㄨˊ ㄌㄩˋ ㄕㄨㄟˇ",
+     "gloss": "White feathers float on green water."
     },
     {
      "text": "红掌拨清波。",
@@ -6462,7 +6637,8 @@
      ],
      "hant": "紅掌撥清波。",
      "pinyin": "hóng zhǎng bō qīng bō",
-     "zhuyin": "ㄏㄨㄥˊ ㄓㄤˇ ㄅㄛ ㄑㄧㄥ ㄅㄛ"
+     "zhuyin": "ㄏㄨㄥˊ ㄓㄤˇ ㄅㄛ ㄑㄧㄥ ㄅㄛ",
+     "gloss": "Red feet paddle the clear ripples."
     }
    ]
   },
@@ -6488,7 +6664,8 @@
      ],
      "hant": "明月幾時有，",
      "pinyin": "míng yuè jǐ shí yǒu",
-     "zhuyin": "ㄇㄧㄥˊ ㄩㄝˋ ㄐㄧˇ ㄕˊ ㄧㄡˇ"
+     "zhuyin": "ㄇㄧㄥˊ ㄩㄝˋ ㄐㄧˇ ㄕˊ ㄧㄡˇ",
+     "gloss": "When did the bright moon first appear?"
     },
     {
      "text": "把酒问青天。",
@@ -6501,7 +6678,8 @@
      ],
      "hant": "把酒問青天。",
      "pinyin": "bǎ jiǔ wèn qīng tiān",
-     "zhuyin": "ㄅㄚˇ ㄐㄧㄡˇ ㄨㄣˋ ㄑㄧㄥ ㄊㄧㄢ"
+     "zhuyin": "ㄅㄚˇ ㄐㄧㄡˇ ㄨㄣˋ ㄑㄧㄥ ㄊㄧㄢ",
+     "gloss": "I raise my cup and ask the blue sky."
     },
     {
      "text": "不知天上宫阙，",
@@ -6515,7 +6693,8 @@
      ],
      "hant": "不知天上宮闕，",
      "pinyin": "bù zhī tiān shàng gōng què",
-     "zhuyin": "ㄅㄨˋ ㄓ ㄊㄧㄢ ㄕㄤˋ ㄍㄨㄥ ㄑㄩㄝˋ"
+     "zhuyin": "ㄅㄨˋ ㄓ ㄊㄧㄢ ㄕㄤˋ ㄍㄨㄥ ㄑㄩㄝˋ",
+     "gloss": "I wonder, in the palaces of heaven,"
     },
     {
      "text": "今夕是何年。",
@@ -6528,7 +6707,8 @@
      ],
      "hant": "今夕是何年。",
      "pinyin": "jīn xī shì hé nián",
-     "zhuyin": "ㄐㄧㄣ ㄒㄧ ㄕˋ ㄏㄜˊ ㄋㄧㄢˊ"
+     "zhuyin": "ㄐㄧㄣ ㄒㄧ ㄕˋ ㄏㄜˊ ㄋㄧㄢˊ",
+     "gloss": "What year is it tonight?"
     }
    ]
   },
@@ -6555,7 +6735,8 @@
      ],
      "hant": "昨夜雨疏風驟，",
      "pinyin": "zuó yè yǔ shū fēng zhòu",
-     "zhuyin": "ㄗㄨㄛˊ ㄧㄝˋ ㄩˇ ㄕㄨ ㄈㄥ ㄓㄡˋ"
+     "zhuyin": "ㄗㄨㄛˊ ㄧㄝˋ ㄩˇ ㄕㄨ ㄈㄥ ㄓㄡˋ",
+     "gloss": "Last night the rain was light, but the wind blew hard."
     },
     {
      "text": "浓睡不消残酒。",
@@ -6569,7 +6750,8 @@
      ],
      "hant": "濃睡不消殘酒。",
      "pinyin": "nóng shuì bù xiāo cán jiǔ",
-     "zhuyin": "ㄋㄨㄥˊ ㄕㄨㄟˋ ㄅㄨˋ ㄒㄧㄠ ㄘㄢˊ ㄐㄧㄡˇ"
+     "zhuyin": "ㄋㄨㄥˊ ㄕㄨㄟˋ ㄅㄨˋ ㄒㄧㄠ ㄘㄢˊ ㄐㄧㄡˇ",
+     "gloss": "Deep sleep did not dispel the lingering wine."
     },
     {
      "text": "试问卷帘人，",
@@ -6582,7 +6764,8 @@
      ],
      "hant": "試問卷簾人，",
      "pinyin": "shì wèn juàn lián rén",
-     "zhuyin": "ㄕˋ ㄨㄣˋ ㄐㄩㄢˋ ㄌㄧㄢˊ ㄖㄣˊ"
+     "zhuyin": "ㄕˋ ㄨㄣˋ ㄐㄩㄢˋ ㄌㄧㄢˊ ㄖㄣˊ",
+     "gloss": "I asked the one rolling up the blind,"
     },
     {
      "text": "却道海棠依旧。",
@@ -6596,7 +6779,8 @@
      ],
      "hant": "卻道海棠依舊。",
      "pinyin": "què dào hǎi táng yī jiù",
-     "zhuyin": "ㄑㄩㄝˋ ㄉㄠˋ ㄏㄞˇ ㄊㄤˊ ㄧ ㄐㄧㄡˋ"
+     "zhuyin": "ㄑㄩㄝˋ ㄉㄠˋ ㄏㄞˇ ㄊㄤˊ ㄧ ㄐㄧㄡˋ",
+     "gloss": "Who said the crabapple blossoms looked the same."
     },
     {
      "text": "知否，知否，",
@@ -6608,7 +6792,8 @@
      ],
      "hant": "知否，知否，",
      "pinyin": "zhī fǒu zhī fǒu",
-     "zhuyin": "ㄓ ㄈㄡˇ ㄓ ㄈㄡˇ"
+     "zhuyin": "ㄓ ㄈㄡˇ ㄓ ㄈㄡˇ",
+     "gloss": "Don't you know? Don't you know?"
     },
     {
      "text": "应是绿肥红瘦。",
@@ -6622,7 +6807,8 @@
      ],
      "hant": "應是綠肥紅瘦。",
      "pinyin": "yīng shì lǜ féi hóng shòu",
-     "zhuyin": "ㄧㄥ ㄕˋ ㄌㄩˋ ㄈㄟˊ ㄏㄨㄥˊ ㄕㄡˋ"
+     "zhuyin": "ㄧㄥ ㄕˋ ㄌㄩˋ ㄈㄟˊ ㄏㄨㄥˊ ㄕㄡˋ",
+     "gloss": "The leaves must be fuller and the blossoms fewer."
     }
    ]
   },
@@ -6651,7 +6837,8 @@
      ],
      "hant": "紅日初升，其道大光。",
      "pinyin": "hóng rì chū shēng qí dào dà guāng",
-     "zhuyin": "ㄏㄨㄥˊ ㄖˋ ㄔㄨ ㄕㄥ ㄑㄧˊ ㄉㄠˋ ㄉㄚˋ ㄍㄨㄤ"
+     "zhuyin": "ㄏㄨㄥˊ ㄖˋ ㄔㄨ ㄕㄥ ㄑㄧˊ ㄉㄠˋ ㄉㄚˋ ㄍㄨㄤ",
+     "gloss": "The red sun rises and floods its path with light."
     },
     {
      "text": "河出伏流，一泻汪洋。",
@@ -6667,7 +6854,8 @@
      ],
      "hant": "河出伏流，一瀉汪洋。",
      "pinyin": "hé chū fú liú yī xiè wāng yáng",
-     "zhuyin": "ㄏㄜˊ ㄔㄨ ㄈㄨˊ ㄌㄧㄡˊ ㄧ ㄒㄧㄝˋ ㄨㄤ ㄧㄤˊ"
+     "zhuyin": "ㄏㄜˊ ㄔㄨ ㄈㄨˊ ㄌㄧㄡˊ ㄧ ㄒㄧㄝˋ ㄨㄤ ㄧㄤˊ",
+     "gloss": "A river bursts from underground and pours out into a vast expanse."
     },
     {
      "text": "潜龙腾渊，鳞爪飞扬。",
@@ -6683,7 +6871,8 @@
      ],
      "hant": "潛龍騰淵，鱗爪飛揚。",
      "pinyin": "qián lóng téng yuān lín zhǎo fēi yáng",
-     "zhuyin": "ㄑㄧㄢˊ ㄌㄨㄥˊ ㄊㄥˊ ㄩㄢ ㄌㄧㄣˊ ㄓㄠˇ ㄈㄟ ㄧㄤˊ"
+     "zhuyin": "ㄑㄧㄢˊ ㄌㄨㄥˊ ㄊㄥˊ ㄩㄢ ㄌㄧㄣˊ ㄓㄠˇ ㄈㄟ ㄧㄤˊ",
+     "gloss": "A hidden dragon leaps from the depths, its scales and claws flying."
     },
     {
      "text": "乳虎啸谷，百兽震惶。",
@@ -6699,7 +6888,8 @@
      ],
      "hant": "乳虎嘯谷，百獸震惶。",
      "pinyin": "rǔ hǔ xiào gǔ bǎi shòu zhèn huáng",
-     "zhuyin": "ㄖㄨˇ ㄏㄨˇ ㄒㄧㄠˋ ㄍㄨˇ ㄅㄞˇ ㄕㄡˋ ㄓㄣˋ ㄏㄨㄤˊ"
+     "zhuyin": "ㄖㄨˇ ㄏㄨˇ ㄒㄧㄠˋ ㄍㄨˇ ㄅㄞˇ ㄕㄡˋ ㄓㄣˋ ㄏㄨㄤˊ",
+     "gloss": "A young tiger roars in the valley and all the beasts tremble."
     },
     {
      "text": "鹰隼试翼，风尘翕张。",
@@ -6715,7 +6905,8 @@
      ],
      "hant": "鷹隼試翼，風塵翕張。",
      "pinyin": "yīng sǔn shì yì fēng chén xī zhāng",
-     "zhuyin": "ㄧㄥ ㄙㄨㄣˇ ㄕˋ ㄧˋ ㄈㄥ ㄔㄣˊ ㄒㄧ ㄓㄤ"
+     "zhuyin": "ㄧㄥ ㄙㄨㄣˇ ㄕˋ ㄧˋ ㄈㄥ ㄔㄣˊ ㄒㄧ ㄓㄤ",
+     "gloss": "A falcon tests its wings and the wind whips up the dust."
     },
     {
      "text": "奇花初胎，矞矞皇皇。",
@@ -6731,7 +6922,8 @@
      ],
      "hant": "奇花初胎，矞矞皇皇。",
      "pinyin": "qí huā chū tāi yù yù huáng huáng",
-     "zhuyin": "ㄑㄧˊ ㄏㄨㄚ ㄔㄨ ㄊㄞ ㄩˋ ㄩˋ ㄏㄨㄤˊ ㄏㄨㄤˊ"
+     "zhuyin": "ㄑㄧˊ ㄏㄨㄚ ㄔㄨ ㄊㄞ ㄩˋ ㄩˋ ㄏㄨㄤˊ ㄏㄨㄤˊ",
+     "gloss": "A rare flower begins to bud, radiant and splendid."
     },
     {
      "text": "干将发硎，有作其芒。",
@@ -6747,7 +6939,8 @@
      ],
      "hant": "干將發硎，有作其芒。",
      "pinyin": "gàn jiàng fā xíng yǒu zuò qí máng",
-     "zhuyin": "ㄍㄢˋ ㄐㄧㄤˋ ㄈㄚ ㄒㄧㄥˊ ㄧㄡˇ ㄗㄨㄛˋ ㄑㄧˊ ㄇㄤˊ"
+     "zhuyin": "ㄍㄢˋ ㄐㄧㄤˋ ㄈㄚ ㄒㄧㄥˊ ㄧㄡˇ ㄗㄨㄛˋ ㄑㄧˊ ㄇㄤˊ",
+     "gloss": "The sword Ganjiang comes off the whetstone with its edge gleaming."
     },
     {
      "text": "天戴其苍，地履其黄。",
@@ -6763,7 +6956,8 @@
      ],
      "hant": "天戴其蒼，地履其黃。",
      "pinyin": "tiān dài qí cāng dì lǚ qí huáng",
-     "zhuyin": "ㄊㄧㄢ ㄉㄞˋ ㄑㄧˊ ㄘㄤ ㄉㄧˋ ㄌㄩˇ ㄑㄧˊ ㄏㄨㄤˊ"
+     "zhuyin": "ㄊㄧㄢ ㄉㄞˋ ㄑㄧˊ ㄘㄤ ㄉㄧˋ ㄌㄩˇ ㄑㄧˊ ㄏㄨㄤˊ",
+     "gloss": "Above it is the blue sky, beneath it the yellow earth."
     }
    ]
   },
@@ -6795,7 +6989,8 @@
      ],
      "hant": "有了四千年吃人履歷的我，",
      "pinyin": "yǒu le sì qiān nián chī rén lǚ lì de wǒ",
-     "zhuyin": "ㄧㄡˇ ㄌㄜ˙ ㄙˋ ㄑㄧㄢ ㄋㄧㄢˊ ㄔ ㄖㄣˊ ㄌㄩˇ ㄌㄧˋ ㄉㄜ˙ ㄨㄛˇ"
+     "zhuyin": "ㄧㄡˇ ㄌㄜ˙ ㄙˋ ㄑㄧㄢ ㄋㄧㄢˊ ㄔ ㄖㄣˊ ㄌㄩˇ ㄌㄧˋ ㄉㄜ˙ ㄨㄛˇ",
+     "gloss": "I have four thousand years of eating people behind me."
     },
     {
      "text": "当初虽然不知道，现在明白，",
@@ -6814,7 +7009,8 @@
      ],
      "hant": "當初雖然不知道，現在明白，",
      "pinyin": "dāng chū suī rán bù zhī dao xiàn zài míng bai",
-     "zhuyin": "ㄉㄤ ㄔㄨ ㄙㄨㄟ ㄖㄢˊ ㄅㄨˋ ㄓ ㄉㄠ˙ ㄒㄧㄢˋ ㄗㄞˋ ㄇㄧㄥˊ ㄅㄞ˙"
+     "zhuyin": "ㄉㄤ ㄔㄨ ㄙㄨㄟ ㄖㄢˊ ㄅㄨˋ ㄓ ㄉㄠ˙ ㄒㄧㄢˋ ㄗㄞˋ ㄇㄧㄥˊ ㄅㄞ˙",
+     "gloss": "I did not know it at first, but now I understand."
     },
     {
      "text": "难见真的人！",
@@ -6827,7 +7023,8 @@
      ],
      "hant": "難見真的人！",
      "pinyin": "nán jiàn zhēn de rén",
-     "zhuyin": "ㄋㄢˊ ㄐㄧㄢˋ ㄓㄣ ㄉㄜ˙ ㄖㄣˊ"
+     "zhuyin": "ㄋㄢˊ ㄐㄧㄢˋ ㄓㄣ ㄉㄜ˙ ㄖㄣˊ",
+     "gloss": "It is hard to find a real human being!"
     },
     {
      "text": "没有吃过人的孩子，",
@@ -6843,7 +7040,8 @@
      ],
      "hant": "沒有吃過人的孩子，",
      "pinyin": "méi yǒu chī guò rén de hái zi",
-     "zhuyin": "ㄇㄟˊ ㄧㄡˇ ㄔ ㄍㄨㄛˋ ㄖㄣˊ ㄉㄜ˙ ㄏㄞˊ ㄗ˙"
+     "zhuyin": "ㄇㄟˊ ㄧㄡˇ ㄔ ㄍㄨㄛˋ ㄖㄣˊ ㄉㄜ˙ ㄏㄞˊ ㄗ˙",
+     "gloss": "Children who have never eaten anyone,"
     },
     {
      "text": "或者还有？",
@@ -6855,7 +7053,8 @@
      ],
      "hant": "或者還有？",
      "pinyin": "huò zhě hái yǒu",
-     "zhuyin": "ㄏㄨㄛˋ ㄓㄜˇ ㄏㄞˊ ㄧㄡˇ"
+     "zhuyin": "ㄏㄨㄛˋ ㄓㄜˇ ㄏㄞˊ ㄧㄡˇ",
+     "gloss": "Perhaps there are still some?"
     },
     {
      "text": "救救孩子……",
@@ -6867,7 +7066,8 @@
      ],
      "hant": "救救孩子……",
      "pinyin": "jiù jiù hái zi",
-     "zhuyin": "ㄐㄧㄡˋ ㄐㄧㄡˋ ㄏㄞˊ ㄗ˙"
+     "zhuyin": "ㄐㄧㄡˋ ㄐㄧㄡˋ ㄏㄞˊ ㄗ˙",
+     "gloss": "Save the children…"
     }
    ]
   },
@@ -6895,7 +7095,8 @@
      ],
      "hant": "朝辭白帝彩雲間，",
      "pinyin": "zhāo cí bái dì cǎi yún jiān",
-     "zhuyin": "ㄓㄠ ㄘˊ ㄅㄞˊ ㄉㄧˋ ㄘㄞˇ ㄩㄣˊ ㄐㄧㄢ"
+     "zhuyin": "ㄓㄠ ㄘˊ ㄅㄞˊ ㄉㄧˋ ㄘㄞˇ ㄩㄣˊ ㄐㄧㄢ",
+     "gloss": "At dawn I leave Baidi among the colored clouds."
     },
     {
      "text": "千里江陵一日还。",
@@ -6910,7 +7111,8 @@
      ],
      "hant": "千里江陵一日還。",
      "pinyin": "qiān lǐ jiāng líng yī rì huán",
-     "zhuyin": "ㄑㄧㄢ ㄌㄧˇ ㄐㄧㄤ ㄌㄧㄥˊ ㄧ ㄖˋ ㄏㄨㄢˊ"
+     "zhuyin": "ㄑㄧㄢ ㄌㄧˇ ㄐㄧㄤ ㄌㄧㄥˊ ㄧ ㄖˋ ㄏㄨㄢˊ",
+     "gloss": "A thousand li to Jiangling, and I am back in a day."
     },
     {
      "text": "两岸猿声啼不尽，",
@@ -6925,7 +7127,8 @@
      ],
      "hant": "兩岸猿聲啼不盡，",
      "pinyin": "liǎng àn yuán shēng tí bù jìn",
-     "zhuyin": "ㄌㄧㄤˇ ㄢˋ ㄩㄢˊ ㄕㄥ ㄊㄧˊ ㄅㄨˋ ㄐㄧㄣˋ"
+     "zhuyin": "ㄌㄧㄤˇ ㄢˋ ㄩㄢˊ ㄕㄥ ㄊㄧˊ ㄅㄨˋ ㄐㄧㄣˋ",
+     "gloss": "The monkeys on both banks have hardly stopped calling,"
     },
     {
      "text": "轻舟已过万重山。",
@@ -6940,7 +7143,8 @@
      ],
      "hant": "輕舟已過萬重山。",
      "pinyin": "qīng zhōu yǐ guò wàn chóng shān",
-     "zhuyin": "ㄑㄧㄥ ㄓㄡ ㄧˇ ㄍㄨㄛˋ ㄨㄢˋ ㄔㄨㄥˊ ㄕㄢ"
+     "zhuyin": "ㄑㄧㄥ ㄓㄡ ㄧˇ ㄍㄨㄛˋ ㄨㄢˋ ㄔㄨㄥˊ ㄕㄢ",
+     "gloss": "And my light boat has already passed ten thousand hills."
     }
    ]
   },
@@ -6968,7 +7172,8 @@
      ],
      "hant": "日照香爐生紫煙，",
      "pinyin": "rì zhào xiāng lú shēng zǐ yān",
-     "zhuyin": "ㄖˋ ㄓㄠˋ ㄒㄧㄤ ㄌㄨˊ ㄕㄥ ㄗˇ ㄧㄢ"
+     "zhuyin": "ㄖˋ ㄓㄠˋ ㄒㄧㄤ ㄌㄨˊ ㄕㄥ ㄗˇ ㄧㄢ",
+     "gloss": "Sunlight on Incense Burner Peak sends up purple mist."
     },
     {
      "text": "遥看瀑布挂前川。",
@@ -6983,7 +7188,8 @@
      ],
      "hant": "遙看瀑布掛前川。",
      "pinyin": "yáo kàn pù bù guà qián chuān",
-     "zhuyin": "ㄧㄠˊ ㄎㄢˋ ㄆㄨˋ ㄅㄨˋ ㄍㄨㄚˋ ㄑㄧㄢˊ ㄔㄨㄢ"
+     "zhuyin": "ㄧㄠˊ ㄎㄢˋ ㄆㄨˋ ㄅㄨˋ ㄍㄨㄚˋ ㄑㄧㄢˊ ㄔㄨㄢ",
+     "gloss": "From afar the waterfall hangs before the mountain."
     },
     {
      "text": "飞流直下三千尺，",
@@ -6998,7 +7204,8 @@
      ],
      "hant": "飛流直下三千尺，",
      "pinyin": "fēi liú zhí xià sān qiān chǐ",
-     "zhuyin": "ㄈㄟ ㄌㄧㄡˊ ㄓˊ ㄒㄧㄚˋ ㄙㄢ ㄑㄧㄢ ㄔˇ"
+     "zhuyin": "ㄈㄟ ㄌㄧㄡˊ ㄓˊ ㄒㄧㄚˋ ㄙㄢ ㄑㄧㄢ ㄔˇ",
+     "gloss": "Its torrent plunges straight down three thousand feet."
     },
     {
      "text": "疑是银河落九天。",
@@ -7013,7 +7220,8 @@
      ],
      "hant": "疑是銀河落九天。",
      "pinyin": "yí shì yín hé luò jiǔ tiān",
-     "zhuyin": "ㄧˊ ㄕˋ ㄧㄣˊ ㄏㄜˊ ㄌㄨㄛˋ ㄐㄧㄡˇ ㄊㄧㄢ"
+     "zhuyin": "ㄧˊ ㄕˋ ㄧㄣˊ ㄏㄜˊ ㄌㄨㄛˋ ㄐㄧㄡˇ ㄊㄧㄢ",
+     "gloss": "Could it be the Milky Way falling from the highest heaven?"
     }
    ]
   }

@@ -350,6 +350,18 @@ def build(year=2026):
 CONTENT_L10N = ROOT / "Tools" / "l10n" / "content.json"
 
 
+def add_literature_glosses(corpus):
+    glosses = json.loads((ROOT / "Tools" / "l10n" / "literature-en.json").read_text())
+    for piece in corpus["pieces"]:
+        lines = glosses.get(piece["id"])
+        if lines is None:
+            continue
+        if len(lines) != len(piece["lines"]):
+            raise ValueError(f"Gloss count does not match the lines in {piece['id']}")
+        for line, gloss in zip(piece["lines"], lines):
+            line["gloss"] = gloss
+
+
 def add_translations(corpus):
     """Drill titles, notes and glosses in each interface language (Tools/l10n/content.json:
     {"titles": {lang: {english: text}}, "glosses": {...}}), stored per item as *_l10n."""
@@ -376,6 +388,7 @@ if __name__ == "__main__":
     out = ROOT / "Corpus" / "practice" / "practice-v1.json"
     out.parent.mkdir(exist_ok=True)
     corpus, problems = build()
+    add_literature_glosses(corpus)
     add_translations(corpus)
     out.write_text(json.dumps(corpus, ensure_ascii=False, indent=1) + "\n")
     print(out)

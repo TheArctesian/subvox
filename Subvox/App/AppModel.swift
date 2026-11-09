@@ -76,9 +76,44 @@ final class AppModel {
     }
     var visibleScreens: [Screen] { researchTools ? Screen.allCases : [.train, .devices] }
     let sentenceTraining: SentenceTrainingWorkflow
+    var backgroundActivity: String? {
+        if sentenceTraining.phase == .processing {
+            return sentenceTraining.processingText.isEmpty ? "Saving recordings on this Mac" : sentenceTraining.processingText
+        }
+        if signalCheck.phase == .processing { return "Scoring the motion check on this Mac" }
+        if representation.phase == .processing { return "Evaluating frozen models on this Mac" }
+        if sequenceLearning.phase == .working { return "Running a local model job" }
+        if observability.phase == .analysing { return "Scoring the mouth signal check on this Mac" }
+        if uploader.busy { return uploader.status.isEmpty ? "Preparing the sharing queue" : uploader.status }
+        return nil
+    }
+    var captureShortcutsSuspended = false
+
+    var navigationLocked: Bool {
+        sentenceTraining.isAcquiring || sentenceTraining.phase == .preparing ||
+        signalCheck.showsCaptureCue || signalCheck.phase == .preparing ||
+        representation.isAcquiring || sequenceLearning.isAcquiring || observability.isAcquiring
+    }
+    var canRestartInterface: Bool {
+        !navigationLocked && !recorder.isRecording && !uploader.busy &&
+        !sentenceTraining.isBusy && !signalCheck.isBusy && !representation.isBusy &&
+        !sequenceLearning.isBusy && !observability.isBusy
+    }
+    func openReading(showModels: Bool = false) {
+        guard !navigationLocked else { return }
+        closeOverlays()
+        trainMode = .reading
+        showSequenceLearning = showModels
+        screen = .train
+    }
     var screen: Screen = .train {
         didSet {
-            if oldValue == .train && screen != .train { sentenceTraining.stop(); signalCheck.stop(); representation.stop(); sequenceLearning.stop(); observability.stop() }
+            if oldValue != screen { referenceSpeaker.stop() }
+            if oldValue == .decode && screen != .decode {
+                capture.cancelCapture()
+                decodeGeneration += 1
+                pendingDecodes = 0
+            }
             syncCaptureMode()
         }
     }
@@ -109,7 +144,9 @@ final class AppModel {
     }
     private(set) var decoder: MotionWordDecoder?
     private(set) var isBuildingDecoder = false
-    private(set) var isDecoding = false
+    private var decodeGeneration = 0
+    private var pendingDecodes = 0
+    var isDecoding: Bool { pendingDecodes > 0 }
     private(set) var decoded: [DecodedWord] = []
     private(set) var lastSegment: [MotionSample] = []
     @ObservationIgnored private var decoderBuild: Task<Void, Never>?
@@ -212,6 +249,7 @@ final class AppModel {
 
     func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil) {
         guard motion.status == .streaming, localWhisper.isConfigured || sentenceTraining.readingSource == .community, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
+        referenceSpeaker.stop()
         sentenceTraining.start(audio: audio, recorder: recorder, whisper: localWhisper,
             canRecord: { [weak self] in self?.motion.status == .streaming }, repairs: repairs, retry: retry)
     }
@@ -225,10 +263,12 @@ final class AppModel {
     private func handleSegment(_ segment: [MotionSample]) {
         guard screen == .decode, !sentenceTraining.isBusy, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy, let decoder else { return }
         lastSegment = segment
-        isDecoding = true
+        let generation = decodeGeneration
+        pendingDecodes += 1
         Task {
             let prediction = await Task.detached(priority: .userInitiated) { decoder.predict(segment) }.value
-            isDecoding = false
+            guard generation == decodeGeneration else { return }
+            pendingDecodes -= 1
             decoded.append(DecodedWord(prediction: prediction))
         }
     }
@@ -254,7 +294,7 @@ final class AppModel {
     /// Space and the forward arrows start, finish or continue; backward arrows redo. Held keys never carry into later takes.
     func handleTrainingArrowKey(keyCode: UInt16, isRepeat: Bool, modifiers: NSEvent.ModifierFlags = [],
                                   isEditingText: Bool = false) -> Bool {
-        guard screen == .train, ((showObservability && observability.isAcquiring) || sentenceTraining.isAcquiring || (showSignalCheck && signalCheck.isAcquiring) || (showRepresentation && representation.isAcquiring) || ((showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring)), !isEditingText,
+        guard screen == .train, ((showObservability && observability.isAcquiring) || sentenceTraining.isAcquiring || (showSignalCheck && signalCheck.showsCaptureCue) || (showRepresentation && representation.isAcquiring) || ((showSequenceLearning || showNonSpeechCollection) && sequenceLearning.isAcquiring)), !isEditingText, !captureShortcutsSuspended,
               [123, 124, 125, 126, 49].contains(keyCode),
               modifiers.intersection([.command, .control, .option, .shift]).isEmpty else { return false }
         let forward = keyCode == 124 || keyCode == 125 || keyCode == 49
@@ -272,7 +312,7 @@ final class AppModel {
                 else { representation.redo() }
                 return true
             }
-            if showSignalCheck && signalCheck.isAcquiring {
+            if showSignalCheck && signalCheck.showsCaptureCue {
                 if forward { signalCheck.next() }
                 else { signalCheck.redo() }
                 return true
@@ -283,7 +323,13 @@ final class AppModel {
         return true
     }
 
-    func clearDecoded() { decoded.removeAll(); lastSegment = [] }
+    func clearDecoded() {
+        decodeGeneration += 1
+        pendingDecodes = 0
+        capture.clearFeedback()
+        decoded.removeAll()
+        lastSegment = []
+    }
     func toggleMic() async {
         guard !sentenceTraining.isBusy, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
         if audio.isRunning { audio.stop() }

@@ -1,8 +1,19 @@
+import AppKit
 import CoreAudio
 import SwiftUI
 
 struct DevicesView: View {
     @Environment(AppModel.self) private var model
+
+    private var motionHelp: String {
+        switch model.motion.status {
+        case .unsupported: return "This Mac or headset does not provide headphone motion."
+        case .denied: return "Allow Motion & Fitness access in System Settings to use AirPods motion."
+        case .error: return "Reconnect your AirPods and check that they are the active audio output."
+        case .waiting where !model.motion.isConnected: return "Put in your AirPods and select them as the active audio output."
+        case .waiting, .streaming: return "Play audio and choose Head Tracked in the AirPods Spatial Audio menu."
+        }
+    }
 
     var body: some View {
         let motion = model.motion
@@ -16,14 +27,18 @@ struct DevicesView: View {
                     MicrophoneCard()
                 }
 
-                GroupBox("Live motion (last 8 s)") {
+                GroupBox(motion.status == .streaming ? "Live motion (last 8 s)" : "Motion history") {
                   if motion.history.isEmpty {
                     // Empty charts with axis labels only look broken; say what to do instead.
                     ContentUnavailableView("No motion yet", systemImage: "airpods",
-                        description: Text("Put in your AirPods, play something in Music or Safari, and set Spatial Audio to Head Tracked in the AirPods menu in the menu bar."))
+                        description: Text(motionHelp))
                         .frame(maxWidth: .infinity, minHeight: 220)
                   } else {
-                    VStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 12) {
+                        if motion.status != .streaming {
+                            Label("Signal stopped · showing last received samples", systemImage: "pause.circle")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
                         SignalPlot(title: "User acceleration (g)", samples: motion.history,
                                    channels: SignalPlot.acceleration, span: span, minScale: 0.01)
                         SignalPlot(title: "Rotation rate (rad/s)", samples: motion.history,
@@ -49,8 +64,15 @@ struct DevicesView: View {
                 LabeledContent("Sample rate", value: String(format: "%.1f Hz", motion.sampleRate))
                 LabeledContent("Samples", value: "\(motion.sampleCount)")
                 LabeledContent("Reported sensor", value: motion.latest?.sensorLocation == 1 ? String(localized: "Left AirPod") : motion.latest?.sensorLocation == 2 ? String(localized: "Right AirPod") : String(localized: "Unavailable"))
-                if motion.status == .waiting {
-                    Text("Put in AirPods Pro and make sure they're the active output on this Mac.")
+                if motion.status == .denied {
+                    Button("Open Privacy Settings", systemImage: "gearshape") {
+                        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Motion") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    }
+                }
+                if motion.status != .streaming {
+                    Text(motionHelp)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -63,6 +85,7 @@ struct DevicesView: View {
 }
 
 private struct MicrophoneCard: View {
+    @State private var starting = false
     @Environment(AppModel.self) private var model
 
     var body: some View {
@@ -76,11 +99,15 @@ private struct MicrophoneCard: View {
                     }
                 }
                 HStack {
-                    Button(audio.isRunning ? "Stop test" : "Test microphone", systemImage: audio.isRunning ? "stop.fill" : "mic") {
-                        Task { await model.toggleMic() }
-                    }.fixedSize()
+                    Button(starting ? "Waiting for microphone…" : audio.isRunning ? "Stop test" : "Test microphone", systemImage: audio.isRunning ? "stop.fill" : "mic") {
+                        starting = true
+                        Task {
+                            defer { starting = false }
+                            await model.toggleMic()
+                        }
+                    }.fixedSize().disabled(starting)
                     Button("Refresh", systemImage: "arrow.clockwise") { audio.refreshDevices() }
-                        .labelStyle(.iconOnly)
+                        .labelStyle(.iconOnly).frame(minWidth: 28, minHeight: 28)
                         .help("Refresh microphone inputs")
                     LevelMeter(value: Double(audio.level))
                 }

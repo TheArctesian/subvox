@@ -9,10 +9,14 @@ struct SentenceTrainingView: View {
     private var relax: Color { colorScheme == .dark ? Color(red: 1, green: 0.74, blue: 0.35) : Color(red: 0.62, green: 0.39, blue: 0.08) }
     @State private var channel = MotionPlotChannel.rotation
     @State private var promptViewportHeight: CGFloat = 0
+    @State private var confirmStop = false
+    @State private var showCaptureMotion = false
+    @AppStorage("practice.pacingGuide") private var showPacingGuide = true
     private enum Section: String, CaseIterable { case record = "Record", review = "Review", progress = "Progress" }
     @State private var section = Section.record
     /// VoiceOver starts on the recording screen's title when a round begins and at each new take.
     @AccessibilityFocusState private var focusRecording: Bool
+    @FocusState private var pacingFocused: Bool
 
     var body: some View {
         if model.showContribute { ContributeView() }
@@ -46,18 +50,9 @@ struct SentenceTrainingView: View {
                 }
             }
         } content: {
-            if workflow.phase == .preparing {
-                VStack(spacing: 16) {
-                    ProgressView()
-                    Text(workflow.phase == .preparing ? "Starting recording…" : workflow.processingText).font(.title3)
-                    Text("Processing stays on this Mac.").foregroundStyle(.secondary)
-                    if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
+            Group {
               VStack(spacing: 0) {
-                if workflow.phase == .processing {
-                    TrainingProcessingStatus(workflow: workflow).padding(.top, 12)
-                }
+                TrainingProcessingStatus(workflow: workflow).padding(.top, 12)
                 Picker("Training section", selection: $section) {
                     Text("Record").tag(Section.record)
                     Text("Review" + (attentionCount > 0 ? " (\(attentionCount))" : "")).tag(Section.review)
@@ -253,10 +248,18 @@ struct SentenceTrainingView: View {
         let workflow=model.sentenceTraining
         let resting=workflow.phase == .relax || workflow.phase == .recovery
         let color=resting ? relax:workflow.currentCondition == .normal ? speak:mouth
-        let status=workflow.isSavingTake ? String(localized: "Saving…") : workflow.phase == .ready ? "Ready":resting ? "Relax":workflow.phase == .ended ? "Saved":"Recording"
+        let status=workflow.isSavingTake ? String(localized: "Saving…") : workflow.phase == .ready ? "Ready":resting ? "Relax":workflow.phase == .ended ? "Take saved":"Recording"
         return RecordingViewport {
             VStack(spacing:8) {
-                HStack {Text(recordingTitle).font(.headline).accessibilityAddTraits(.isHeader).accessibilityFocused($focusRecording);Spacer();Text("\(min(workflow.index+1,workflow.total)) of \(workflow.total)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)}
+                HStack(spacing: 16) {
+                    Text(recordingTitle).font(.headline).accessibilityAddTraits(.isHeader)
+                        .accessibilityFocused($focusRecording)
+                    Spacer()
+                    Toggle("Pacing guide", isOn: $showPacingGuide).toggleStyle(.switch).controlSize(.small)
+                        .focused($pacingFocused)
+                    Text("\(min(workflow.index + 1, workflow.total)) of \(workflow.total)")
+                        .font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+                }
                 ProgressView(value:Double(workflow.index),total:Double(max(1,workflow.total))).tint(color)
             }
         } prompt: {
@@ -275,14 +278,20 @@ struct SentenceTrainingView: View {
                               systemImage: resting ? "pause.circle" : workflow.currentCondition == .normal ? "speaker.wave.2.fill" : "mouth.fill")
                             .font(.title2.weight(.bold)).foregroundStyle(color)
                         VStack(spacing: 6) {
-                            WordFocusPrompt(text: workflow.currentText, activeWordIndex: workflow.activeWordIndex,
+                            WordFocusPrompt(text: workflow.currentText, activeWordIndex: showPacingGuide ? workflow.activeWordIndex : nil,
                                             color: color, pinyin: workflow.currentPinyin,
                                             verseLines: workflow.currentVerseLines, viewportHeight: promptViewportHeight)
                             if let translation = workflow.currentEnglishTranslation {
                                 Text(translation).font(.title3).foregroundStyle(.secondary).multilineTextAlignment(.center)
                             }
                         }
-                        Text(resting ? "Relax your mouth. Wait for the recording cue.":workflow.phase == .ended ? "Take saved. Press Space for the next one, or redo any mistake.":workflow.guideSecondsRemaining == nil ? "Finished? Press Space." : "Follow the highlighted words.")
+                        if let error = workflow.error {
+                            Label(error, systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+                        }
+                        Text(resting ? "Relax your mouth. Wait for the recording cue."
+                             : workflow.phase == .ready ? "Press Space when you’re ready to begin."
+                             : workflow.phase == .ended ? "This take was saved on this Mac. Press Space to continue, or redo it."
+                             : (!showPacingGuide || workflow.guideSecondsRemaining == nil) ? "Finished? Press Space." : "Follow the pacing guide.")
                             .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     }
                 }
@@ -293,16 +302,31 @@ struct SentenceTrainingView: View {
                 HStack(spacing:14) {
                     Button {workflow.redoCurrentTake()} label: {Label("Redo",systemImage:"arrow.counterclockwise").frame(minWidth:90)}.disabled(!workflow.canRedoTake)
                     Button {workflow.advance()} label: {
-                        Label(workflow.phase == .ready ? "Start take":workflow.phase == .ended ? "Next":"Done",systemImage:workflow.phase == .speak || workflow.phase == .mouth ? "checkmark":"chevron.right").frame(minWidth:200)
+                        Label(workflow.phase == .ready ? "Start take" : workflow.phase == .ended ? workflow.continueTitle : "Finish take",systemImage:workflow.phase == .speak || workflow.phase == .mouth ? "checkmark":"chevron.right").frame(minWidth:200)
                     }.buttonStyle(.borderedProminent).disabled(!workflow.canAdvance)
                 }.controlSize(.large).frame(maxWidth:.infinity)
                 HStack(spacing:16) {
                     Text("Space or → start, finish or next  ·  ← redo  ·  Esc stop").font(.callout).foregroundStyle(.secondary)
-                    Button("Stop and Save (Esc)",action:workflow.stop).keyboardShortcut(.cancelAction).font(.callout)
+                    Button(showCaptureMotion ? "Hide motion" : "Show motion", systemImage: "waveform") { showCaptureMotion.toggle() }
+                        .help("Show or hide the live AirPods signal")
+                    Button("Stop round…") {
+                        model.captureShortcutsSuspended = true
+                        confirmStop = true
+                    }.keyboardShortcut(.cancelAction).font(.callout)
                 }
             }.frame(maxWidth:.infinity)
-        } motion: {LiveMotionPanel(plotHeight:44)}
+        } motion: { LiveMotionPanel(plotHeight: 44) }
+        .withMotionVisibility(showCaptureMotion)
+        .confirmationDialog("Stop this round?", isPresented: $confirmStop, titleVisibility: .visible) {
+            Button("Stop round", role: .destructive, action: workflow.stop)
+            Button("Keep practising", role: .cancel) {}
+        } message: {
+            Text("Finished takes stay on this Mac. An unfinished take is discarded.")
+        }
         .onAppear { focusRecording = true }
+        .onChange(of: confirmStop) { model.captureShortcutsSuspended = confirmStop || pacingFocused }
+        .onChange(of: pacingFocused) { model.captureShortcutsSuspended = confirmStop || pacingFocused }
+        .onDisappear { model.captureShortcutsSuspended = false }
         .onChange(of: model.sentenceTraining.phase) { if model.sentenceTraining.phase == .ready { focusRecording = true } }
     }
 
@@ -323,7 +347,9 @@ struct SentenceTrainingView: View {
     private var cueTimer: String {
         let workflow = model.sentenceTraining
         if workflow.phase == .ready { return "When you’re ready" }
-        if let left = workflow.guideSecondsRemaining { return String(format: "%.1f s", left) }
+        if workflow.phase == .ended { return "Saved on this Mac" }
+        if workflow.isSavingTake { return "Finishing this take" }
+        if showPacingGuide, let left = workflow.guideSecondsRemaining { return String(format: "%.1f s", left) }
         if workflow.phase == .speak || workflow.phase == .mouth {
             return workflow.secondsRemaining < 5 ? String(format: "Stops in %.0f s", ceil(workflow.secondsRemaining)) : "Press Space when done"
         }
@@ -383,13 +409,17 @@ struct SentenceTrainingView: View {
                     Text("Sentence model · " + take.name + ": " + (take.included ? "eligible for next dataset" : "not included — " + (take.reason ?? "unavailable")))
                 }
             }.font(.caption).foregroundStyle(.secondary)
-            if let spoken = pair.spoken {
-                SignalPlot(title: "Spoken", samples: spoken.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
-                qualityLabel(spoken)
-            }
-            if let silent = pair.silent {
-                SignalPlot(title: "Mouthed", samples: silent.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
-                qualityLabel(silent)
+            if pair.spoken != nil || pair.silent != nil {
+                DisclosureGroup("Inspect recorded motion") {
+                    if let spoken = pair.spoken {
+                        SignalPlot(title: "Spoken", samples: spoken.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
+                        qualityLabel(spoken)
+                    }
+                    if let silent = pair.silent {
+                        SignalPlot(title: "Mouthed", samples: silent.cueSamples, channels: channel.channels, minScale: channel.minScale, height: 70)
+                        qualityLabel(silent)
+                    }
+                }
             }
             if let transcript = pair.transcript {
                 Text("Heard: " + transcript.text).font(.callout)
@@ -553,11 +583,12 @@ struct TrainingProcessingStatus: View {
     var workflow: SentenceTrainingWorkflow
 
     var body: some View {
-        if workflow.phase == .processing {
+        if workflow.phase == .processing || workflow.phase == .preparing {
             HStack(spacing: 8) {
                 ProgressView().controlSize(.small)
-                Text(workflow.processingText.isEmpty ? String(localized: "Saving…") : workflow.processingText)
+                Text(workflow.phase == .preparing ? "Preparing recording…" : workflow.processingText.isEmpty ? "Saving on this Mac…" : workflow.processingText)
                     .font(.callout)
+                if workflow.phase == .preparing { Button("Cancel", action: workflow.stop) }
             }
             .foregroundStyle(.secondary)
             .accessibilityElement(children: .combine)
