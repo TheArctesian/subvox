@@ -345,6 +345,35 @@ final class SentenceTrainingTests: XCTestCase {
 }
 
 extension SentenceTrainingTests {
+
+    @MainActor func testCheckpointUpdatesAssessmentAndKeepsOtherPairsReserved() throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "sentence-assessment-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let url = root.appending(path: "sentences.json")
+        let session = RecordingSession(id: UUID(), directory: root, startUptime: 190, audioOffset: 0)
+        let prompt = SentencePrompt(text: "bee bob")
+        let reservedPrompt = SentencePrompt(text: "bob bee")
+        let reserved = pair(reservedPrompt, role: .training)
+        var active = automaticPair()
+        active.recordingSessionID = session.id
+        let original = try XCTUnwrap(active.spoken)
+        let data = SentenceTrainingData(prompts: [prompt, reservedPrompt],
+            roles: [prompt.id: .training, reservedPrompt.id: .finalTest], pairs: [reserved, active])
+        try SentenceStore.save(data, to: url)
+        let workflow = SentenceTrainingWorkflow(storeURL: url)
+        try workflow.beginVisit(session: session, audioDevice: nil, timing: .comfortable,
+                                presentation: .sentences, persistImmediately: false)
+
+        try workflow.discardHalf(condition: .normal, pairID: active.id)
+        XCTAssertEqual(workflow.pairUses[active.id]?.takes.first?.reason, "Not recorded")
+        XCTAssertEqual(workflow.pairUses[reserved.id]?.state, .reserved)
+
+        try workflow.saveCompletedHalf(original, pairID: active.id, session: session)
+        XCTAssertEqual(workflow.pairUses[active.id]?.takes.first?.included, true)
+        XCTAssertEqual(workflow.pairUses[reserved.id]?.state, .reserved)
+        XCTAssertEqual(try SentenceStore.load(from: url).pairs.last?.spoken?.id, original.id)
+    }
+
     /// Run in Release with TEST_RUNNER_SUBVOX_PERF=1 and select only this test.
     @MainActor func testSyntheticHistoryPerformance() async throws {
         let environment = ProcessInfo.processInfo.environment
