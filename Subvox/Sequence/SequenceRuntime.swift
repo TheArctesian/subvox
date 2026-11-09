@@ -30,14 +30,51 @@ import Foundation
             .filter { $0.hasSuffix(".py") }.sorted().map { "subvox_ml/" + $0 }
         let files = python.map { ($0, source.appending(path: $0)) } + [("Corpus/diphones.txt", corpus.appending(path: "diphones.txt"))]
         var hash = SHA256()
-        for (file, url) in files { hash.update(data: Data(file.utf8)); hash.update(data: try Data(contentsOf: url)) }
+        let projectFiles = try files.map { file, source in
+            let data = try Data(contentsOf: source)
+            hash.update(data: Data(file.utf8))
+            hash.update(data: data)
+            return (path: file, source: source, size: data.count)
+        }
         let identity = hash.finalize().map { String(format: "%02x", $0) }.joined()
         let destination = root.appending(path: "Runtime/\(identity)")
-        if copy && !FileManager.default.fileExists(atPath: destination.path) {
-            for directory in ["subvox_ml", "Corpus"] { try FileManager.default.createDirectory(at: destination.appending(path: directory), withIntermediateDirectories: true) }
-            for (file, url) in files { try FileManager.default.copyItem(at: url, to: destination.appending(path: file)) }
-        }
+        if copy { try installProject(projectFiles, at: destination) }
         return destination
+    }
+
+    private typealias ProjectFile = (path: String, source: URL, size: Int)
+
+    private func installProject(_ files: [ProjectFile], at destination: URL) throws {
+        let manager = FileManager.default
+        func isComplete(_ file: ProjectFile) -> Bool {
+            let target = destination.appending(path: file.path)
+            let values = try? target.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey])
+            return values?.isRegularFile == true && values?.fileSize == file.size
+        }
+
+        if manager.fileExists(atPath: destination.path) {
+            // Repair legacy partial copies without replacing an existing environment.
+            for file in files where !isComplete(file) {
+                let target = destination.appending(path: file.path)
+                try manager.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try Data(contentsOf: file.source).write(to: target, options: .atomic)
+            }
+            return
+        }
+
+        let staging = destination.deletingLastPathComponent().appending(path: ".staging-\(UUID())")
+        defer { try? manager.removeItem(at: staging) }
+        for file in files {
+            let target = staging.appending(path: file.path)
+            try manager.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try manager.copyItem(at: file.source, to: target)
+        }
+        do {
+            try manager.moveItem(at: staging, to: destination)
+        } catch {
+            // Another app instance may have published the same content while we staged it.
+            guard files.allSatisfy(isComplete) else { throw error }
+        }
     }
 
     /// Runs `subvox-ml <arguments>`. `environment` is added to the app's own (secrets go here, never
