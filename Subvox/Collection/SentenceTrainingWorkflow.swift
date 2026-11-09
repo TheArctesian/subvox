@@ -114,7 +114,11 @@ final class SentenceTrainingWorkflow {
         set { changeSettings { $0.method = newValue } }
     }
     var isAcquiring: Bool { [.ready,.relax, .speak, .mouth,.ended, .recovery].contains(phase) }
-    var isBusy: Bool { isAcquiring || phase == .preparing || phase == .processing }
+    var canStartRecording: Bool { !isAcquiring && phase != .preparing && phase != .processing }
+    var isCheckingRecordings: Bool { backgroundCheck != nil }
+    var isBusy: Bool { !canStartRecording || isCheckingRecordings }
+    private var backgroundCheck: Task<Void, Never>?
+    private(set) var checkingPairIDs: Set<UUID> = []
     var coverage: [String: Int] { data.coverage(lexicon: .bundled) }
     var fittingWords: [Template] { data.derivedWords(role: .training, lexicon: .bundled) }
     var repairWords: [String] { data.repairWords(lexicon: .bundled) }
@@ -275,6 +279,7 @@ final class SentenceTrainingWorkflow {
     /// Synchronous: willTerminate cannot wait for the acquisition task to unwind.
     func prepareForTermination(recorder: SessionRecorder) {
         isTerminating = true
+        backgroundCheck?.cancel()
         task?.cancel()
         if redoRequested {
             do { try discardRedoAttempt() }
@@ -456,7 +461,7 @@ final class SentenceTrainingWorkflow {
                canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil, automaticContributionID: UUID? = nil) {
         let practiceMode = practicePlan != nil && retry == nil && !repairs
         let communityMode = !practiceMode && readingSource == .community && retry == nil && !repairs
-        guard !isBusy, storageReady, data.reservedUnlockedAt == nil, !recorder.isRecording,
+        guard canStartRecording, storageReady, data.reservedUnlockedAt == nil, !recorder.isRecording,
               whisper.isConfigured || communityMode, canRecord() else { return }
         var planned = plan
         let promptCount = data.prompts.count
@@ -554,7 +559,7 @@ final class SentenceTrainingWorkflow {
                             baselineSeconds: timing.baseline, recoverySeconds: timing.recovery, canRecord: canRecord,
                             onCompleted: { recording in
                                 guard canRecord() else { throw Failure.disconnected }
-                                guard let checkpoint = try recorder.checkpoint(sessionID: recordingSession.id) else { throw Failure.ownership }
+                                guard let checkpoint = try await recorder.checkpointCompletedTake(sessionID: recordingSession.id) else { throw Failure.ownership }
                                 try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint, persistImmediately: false)
                                 try await persistInBackground()
                                 try Task.checkCancellation()
@@ -576,17 +581,43 @@ final class SentenceTrainingWorkflow {
             finishVisit(session: finished)
             currentPromptIDs = []
             phase = .processing
-            guard !isTerminating, await saveInBackground() else { phase = .finished; return }
-            if communityMode && automaticContributionID != nil { onCommunitySessionSaved?() }
-            // A fresh unstructured task processes saved complete pairs even after Stop.
-            // Community takes need no local Whisper; alignment can run later or elsewhere.
-            await Task { @MainActor in
-                for id in pairIDs where whisper.isConfigured {
-                    await self.process(id, whisper: whisper)
-                    if practiceMode { await self.onPracticeProcessed?(id) }
+            if whisper.isConfigured {
+                let finishedIDs = Set(pairIDs)
+                for index in data.pairs.indices where finishedIDs.contains(data.pairs[index].id)
+                    && data.pairs[index].spoken != nil {
+                    data.pairs[index].needsBackgroundCheck = true
                 }
-            }.value
-            phase = .finished; processingText = ""; task = nil
+            }
+            guard !isTerminating, await saveInBackground() else {
+                phase = .finished
+                task = nil
+                return
+            }
+            if communityMode && automaticContributionID != nil { onCommunitySessionSaved?() }
+            resumeBackgroundChecks(whisper: whisper)
+            phase = .finished
+            task = nil
+        }
+    }
+
+    func resumeBackgroundChecks(whisper: LocalWhisper) {
+        guard !isTerminating, storageReady, whisper.isConfigured, data.reservedUnlockedAt == nil else { return }
+        checkingPairIDs = Set(data.pairs.lazy.filter { $0.needsBackgroundCheck == true }.map(\.id))
+        guard backgroundCheck == nil, !checkingPairIDs.isEmpty else { return }
+        backgroundCheck = Task {
+            defer {
+                backgroundCheck = nil
+                processingText = ""
+                checkingPairIDs = []
+                if !isTerminating { onTrainingChanged?() }
+            }
+            while !Task.isCancelled, storageReady,
+                  let pair = data.pairs.first(where: { $0.needsBackgroundCheck == true }) {
+                await process(pair.id, whisper: whisper, background: true)
+                guard !Task.isCancelled, storageReady else { break }
+                if pair.practiceMode != nil { await onPracticeProcessed?(pair.id) }
+                checkingPairIDs.remove(pair.id)
+            }
         }
     }
 
@@ -645,10 +676,16 @@ final class SentenceTrainingWorkflow {
         }
     }
 
-    private func process(_ id: UUID, whisper: LocalWhisper, retrying: Bool = false) async {
+    private func process(_ id: UUID, whisper: LocalWhisper, retrying: Bool = false, background: Bool = false) async {
         guard let i = data.pairs.firstIndex(where: { $0.id == id }), data.pairs[i].spoken != nil,
               data.pairs[i].role != .finalTest,
-              !data.pairs[i].promptIDs.contains(where: { data.roles[$0] == .finalTest }) else { return }
+              !data.pairs[i].promptIDs.contains(where: { data.roles[$0] == .finalTest }) else {
+            if background, let index = data.pairs.firstIndex(where: { $0.id == id }) {
+                data.pairs[index].needsBackgroundCheck = nil
+                await saveInBackground()
+            }
+            return
+        }
         var pair = data.pairs[i]
         // Reprocessing annotations does not undo the user's inclusion/exclusion override.
         pair.alignment = nil
@@ -760,8 +797,14 @@ final class SentenceTrainingWorkflow {
             }
             try Task.checkCancellation()
             pair.error = nil
-            let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-            try encoder.encode(pair).write(to: URL(fileURLWithPath: directory).appending(path: "sentence-pair-\(id).json"), options: .atomic)
+            pair.needsBackgroundCheck = nil
+            let checkedPair = pair
+            try await Task.detached(priority: .utility) {
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+                let destination = URL(fileURLWithPath: directory).appending(path: "sentence-pair-\(id).json")
+                try encoder.encode(checkedPair).write(to: destination, options: .atomic)
+            }.value
         } catch {
             if Task.isCancelled { return }
             if retrying, !(error is Failure) {
@@ -770,11 +813,13 @@ final class SentenceTrainingWorkflow {
             }
             pair.error = error.localizedDescription
         }
+        guard !Task.isCancelled else { return }
+        pair.needsBackgroundCheck = nil
         if let current = data.pairs.firstIndex(where: { $0.id == id }) {
             data.pairs[current] = pair
             changedPairUses.insert(id)
         }
-        await saveInBackground(notify: true)
+        await saveInBackground(notify: !background)
     }
 
     func validate() {

@@ -44,7 +44,7 @@ struct SentenceTrainingView: View {
                         Button("Check motion signal") { model.showSignalCheck = true }
                     }.controlSize(.large)
                 }
-                if !workflow.isBusy && !workflow.plan.isEmpty {
+                if workflow.canStartRecording && !workflow.plan.isEmpty {
                     Button("Record sentences") { model.startSentenceTraining() }
                         .buttonStyle(.borderedProminent).controlSize(.large).disabled(!canStart)
                 }
@@ -96,7 +96,7 @@ struct SentenceTrainingView: View {
 
     private var canStart: Bool {
         model.motion.status == .streaming && (model.localWhisper.isConfigured || model.sentenceTraining.readingSource == .community) && model.sentenceTraining.storageReady
-            && !model.sentenceTraining.isBusy && !model.recorder.isRecording && !model.sequenceLearning.isBusy
+            && model.sentenceTraining.canStartRecording && !model.recorder.isRecording && !model.sequenceLearning.isBusy
     }
 
     private var communitySetup: some View {
@@ -583,7 +583,7 @@ struct TrainingProcessingStatus: View {
     var workflow: SentenceTrainingWorkflow
 
     var body: some View {
-        if workflow.phase == .processing || workflow.phase == .preparing {
+        if workflow.phase == .processing || workflow.phase == .preparing || workflow.isCheckingRecordings {
             HStack(spacing: 8) {
                 ProgressView().controlSize(.small)
                 Text(workflow.phase == .preparing ? "Preparing recording…" : workflow.processingText.isEmpty ? "Saving on this Mac…" : workflow.processingText)

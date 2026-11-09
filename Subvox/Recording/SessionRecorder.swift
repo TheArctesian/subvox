@@ -1,5 +1,6 @@
 import AVFoundation
 import Observation
+import os
 
 /// Immutable identity and clock for one recorder session. Never infer ownership from "last".
 struct RecordingSession: Codable, Equatable, Sendable {
@@ -124,9 +125,13 @@ final class SessionRecorder {
         }
     }
 
+    private static let signposter = OSSignposter(subsystem: "com.joeblau.subvox", category: "Recording")
+
     /// Save the clock while acquisition is still running; completed takes can recover it.
     func checkpoint(sessionID: UUID? = nil) throws -> RecordingSession? {
         guard let session = currentSession, sessionID == nil || sessionID == session.id else { return nil }
+        let interval = Self.signposter.beginInterval("Recording checkpoint")
+        defer { Self.signposter.endInterval("Recording checkpoint", interval) }
         try motionHandle?.synchronize()
         try eventsHandle?.synchronize()
         try cameraHandle?.synchronize()
@@ -134,9 +139,30 @@ final class SessionRecorder {
         return session
     }
 
+    /// Flush saved take data on a worker using separate handles. A stopped or replaced
+    /// session can finish flushing, but cannot write a new checkpoint after it loses ownership.
+    func checkpointCompletedTake(sessionID: UUID) async throws -> RecordingSession? {
+        guard let session = currentSession, session.id == sessionID else { return nil }
+        let interval = Self.signposter.beginInterval("Flush completed take")
+        defer { Self.signposter.endInterval("Flush completed take", interval) }
+        let files = cameraHandle == nil ? ["motion.csv", "events.csv"] : ["motion.csv", "events.csv", "camera-points.ndjson"]
+        try await Task.detached(priority: .userInitiated) {
+            for name in files {
+                let handle = try FileHandle(forWritingTo: session.directory.appending(path: name))
+                defer { try? handle.close() }
+                try handle.synchronize()
+            }
+        }.value
+        guard let current = currentSession, current.id == sessionID else { return nil }
+        try writeMetadata(session: current, audioInfo: audioWriter?.currentInfo, complete: false)
+        return current
+    }
+
     @discardableResult
     func stop(sessionID: UUID? = nil) -> RecordingSession? {
         guard let session = currentSession, sessionID == nil || sessionID == session.id else { return nil }
+        let interval = Self.signposter.beginInterval("Finish recording session")
+        defer { Self.signposter.endInterval("Finish recording session", interval) }
         isRecording = false
         if let sinkID { sink?.remove(sinkID) }
         sinkID = nil

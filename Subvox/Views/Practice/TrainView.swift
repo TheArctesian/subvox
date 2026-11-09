@@ -70,7 +70,7 @@ struct PracticePage<Controls: View, Content: View>: View {
     private var workflow: SentenceTrainingWorkflow { model.sentenceTraining }
     private var motionReady: Bool { model.motion.status == .streaming }
     private var canStart: Bool {
-        motionReady && model.localWhisper.isConfigured && !groups.isEmpty && workflow.storageReady && workflow.data.reservedUnlockedAt == nil && !workflow.isBusy && !model.recorder.isRecording
+        motionReady && model.localWhisper.isConfigured && !groups.isEmpty && workflow.storageReady && workflow.data.reservedUnlockedAt == nil && workflow.canStartRecording && !model.recorder.isRecording
     }
     /// "6 words · about 2 min": each is said aloud, then mouthed.
     private var cost: String {
@@ -345,7 +345,7 @@ struct PracticeFeedback: View {
 
     var body: some View {
         if !pairs.isEmpty {
-            let processing = model.sentenceTraining.phase == .processing
+            let processing = pairs.contains { model.sentenceTraining.checkingPairIDs.contains($0.id) }
             VStack(alignment: .leading, spacing: 12) {
                 if !processing { RoundCelebration() }
                 HStack {
@@ -354,7 +354,7 @@ struct PracticeFeedback: View {
                     Spacer()
                     Button("Done") { model.sentenceTraining.clearPracticeResults() }
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
-                        .disabled(!model.canRestartInterface || model.motion.status != .streaming || !model.localWhisper.isConfigured || model.sentenceTraining.lastPracticePlan.isEmpty)
+                        .disabled(!model.sentenceTraining.canStartRecording || model.motion.status != .streaming || !model.localWhisper.isConfigured || model.sentenceTraining.lastPracticePlan.isEmpty)
                 }
                 DisclosureGroup("Take feedback") {
                     ScrollView {

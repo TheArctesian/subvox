@@ -97,6 +97,7 @@ struct SentencePair: Codable, Identifiable, Sendable {
     var sessionStartUptime: Double?
     var audioOffset: Double?
     var recordingSessionID: UUID?
+    var needsBackgroundCheck: Bool?
     var transcript: LocalWhisperTranscript?
     var transcriptMatchRate: Double?
     var timedWordCoverage: Double?

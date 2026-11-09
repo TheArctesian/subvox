@@ -117,7 +117,7 @@ final class AppModel {
     var visibleScreens: [Screen] { researchTools ? Screen.allCases : [.train, .devices] }
     let sentenceTraining: SentenceTrainingWorkflow
     var backgroundActivity: String? {
-        if sentenceTraining.phase == .processing {
+        if sentenceTraining.phase == .processing || sentenceTraining.isCheckingRecordings {
             return sentenceTraining.processingText.isEmpty ? "Saving recordings on this Mac" : sentenceTraining.processingText
         }
         if signalCheck.phase == .processing { return "Scoring the motion check on this Mac" }
@@ -237,6 +237,7 @@ final class AppModel {
         motion.start()
         audio.refreshDevices()
         installKeyMonitor()
+        sentenceTraining.resumeBackgroundChecks(whisper: localWhisper)
         automaticSharingTimer = Task { [weak self] in
             while !Task.isCancelled {
                 await self?.sendAutomaticContributions()
@@ -264,13 +265,15 @@ final class AppModel {
         decoderBuild?.cancel()
         decoder = nil
         syncCaptureMode()
-        let takes = sentenceTraining.fittingWords
-        guard !takes.isEmpty else { isBuildingDecoder = false; return }
+        let snapshot = sentenceTraining.data
+        guard !snapshot.pairs.isEmpty else { isBuildingDecoder = false; return }
         isBuildingDecoder = true
         let settings = decodeSettings
         decoderBuild = Task {
             let build = Task.detached(priority: .utility) {
-                MotionWordDecoder(takes: takes, lexicon: .bundled, vocabulary: Lexicon.vocabulary, settings: settings)
+                let takes = snapshot.derivedWords(role: .training, lexicon: .bundled)
+                guard !takes.isEmpty, !Task.isCancelled else { return nil as MotionWordDecoder? }
+                return MotionWordDecoder(takes: takes, lexicon: .bundled, vocabulary: Lexicon.vocabulary, settings: settings)
             }
             let result = await withTaskCancellationHandler(operation: { await build.value }, onCancel: { build.cancel() })
             guard !Task.isCancelled else { return }
