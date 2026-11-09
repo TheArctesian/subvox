@@ -94,6 +94,17 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
+    func testLiteratureCompletesTheSilentPassBeforeStartingTheSpokenPass() {
+        let literature = SentenceTrainingWorkflow.takeOrder(groupCount: 3, conditions: [.normal, .silent], fullPiece: true)
+        XCTAssertEqual(literature.map(\.group), [0, 1, 2, 0, 1, 2])
+        XCTAssertEqual(literature.map(\.condition), [.silent, .silent, .silent, .normal, .normal, .normal])
+
+        let drill = SentenceTrainingWorkflow.takeOrder(groupCount: 2, conditions: [.normal, .silent], fullPiece: false)
+        XCTAssertEqual(drill.map(\.group), [0, 0, 1, 1])
+        XCTAssertEqual(drill.map(\.condition), [.normal, .silent, .normal, .silent])
+    }
+
+    @MainActor
     func testMotionWarningClearsWhenRetryBegins() async throws {
         let (workflow, root) = try fixture()
         defer { try? FileManager.default.removeItem(at: root) }

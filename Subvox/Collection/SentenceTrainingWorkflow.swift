@@ -22,7 +22,7 @@ final class SentenceTrainingWorkflow {
         switch phase {
         case .ready:
             let instruction = currentCondition == .normal ? String(localized: "Say it aloud") : String(localized: "Mouth it silently, lips only")
-            text = AttributedString(error.map { $0 + " " } ?? "")
+            text = AttributedString((error ?? takeWarning).map { $0 + " " } ?? "")
             text += AttributedString(String(localized: "Take \(min(index + 1, total)) of \(total). \(instruction): "))
             var prompt = AttributedString(currentText)
             prompt.languageIdentifier = currentLanguage  // read in its own language
@@ -36,6 +36,10 @@ final class SentenceTrainingWorkflow {
     }
     var continueTitle: String {
         if index + 1 >= total { return String(localized: "Finish round") }
+        if currentKind?.isLiterature == true {
+            return currentCondition == .silent && index + 1 == total / 2
+                ? String(localized: "Continue to spoken pass") : String(localized: "Next section")
+        }
         return currentCondition == .normal ? String(localized: "Continue to silent take") : String(localized: "Next prompt")
     }
     private(set) var lastPracticePlan: [[SentencePrompt]] = []
@@ -268,7 +272,9 @@ final class SentenceTrainingWorkflow {
                 data.pairs[i].audioOffset = session.audioOffset
                 if captureCameraPoints, let a = data.pairs[i].spoken, let b = data.pairs[i].silent {
                     data.pairs[i].cameraReadings = cameraReadings.filter {
-                        $0.t >= a.cueStart - 3 && $0.t <= b.cueEnd + 0.3
+                        if a.cueStart < b.cueStart { return (a.cueStart - 3...b.cueEnd + 0.3).contains($0.t) }
+                        return (a.cueStart - 3...a.cueEnd + 0.3).contains($0.t)
+                            || (b.cueStart - 3...b.cueEnd + 0.3).contains($0.t)
                     }
                 }
             }
@@ -459,6 +465,15 @@ final class SentenceTrainingWorkflow {
         save()
     }
 
+    static func takeOrder(groupCount: Int, conditions: [SpeechCondition], fullPiece: Bool)
+        -> [(group: Int, condition: SpeechCondition)] {
+        let groups = 0..<groupCount
+        if fullPiece {
+            return [SpeechCondition.silent, .normal].flatMap { condition in groups.map { ($0, condition) } }
+        }
+        return groups.flatMap { group in conditions.map { (group, $0) } }
+    }
+
     func start(audio: AudioService, recorder: SessionRecorder, whisper: LocalWhisper,
                canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil, automaticContributionID: UUID? = nil) {
         let practiceMode = practicePlan != nil && retry == nil && !repairs
@@ -502,7 +517,8 @@ final class SentenceTrainingWorkflow {
         guard !batch.isEmpty else { error = "This batch is too long. Choose fewer sentences."; return }
         let timing = pace
         let cueTimes = batch.map { cueDuration($0.map(\.text).joined(separator: " ")) }
-        phase = .preparing; error = nil; index = 0; total = batch.count * conditions.count
+        let order = Self.takeOrder(groupCount: batch.count, conditions: conditions, fullPiece: fullPiece)
+        phase = .preparing; error = nil; index = 0; total = order.count
         task = Task {
             defer {if activeRecordingID==nil {camera.stop();cameraRecorder=nil;cameraReadings=[]}}
             if practiceMode || communityMode {
@@ -524,12 +540,15 @@ final class SentenceTrainingWorkflow {
                 error = audio.error ?? "Recording cancelled before the microphone started."; phase = .setup; return
             }
             recorder.condition = .paired
-            recorder.prompt = "Paired sentence training; spoken then silently mouthed; independent sentence split"
+            recorder.prompt = fullPiece
+                ? "Paired literature practice; silent pass then spoken pass"
+                : "Paired sentence training; spoken then silently mouthed; independent sentence split"
             guard let recordingSession = recorder.start(audio: audio, cameraPoints: captureCameraPoints) else {
                 if ownedAudio { audio.stop() }
                 error = recorder.error ?? "Could not start recording."; phase = .setup; return
             }
             var pairIDs: [UUID] = []
+            var pairsByGroup: [Int: SentencePair] = [:]
             let device = await MotionDeviceInfo.probe()
             do {
                 let visit = try beginVisit(session: recordingSession, audioDevice: audio.activeDeviceName,
@@ -537,13 +556,21 @@ final class SentenceTrainingWorkflow {
                                            automaticContributionID: communityMode ? automaticContributionID : nil)
                 if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].motionDevice = device }
                 try await persistInBackground()
-                for (groupIndex, group) in batch.enumerated() {
+                for (groupIndex, condition) in order {
                     try Task.checkCancellation()
                     guard canRecord() else { throw Failure.disconnected }
-                    let pair = try beginPair(prompts: group, visit: visit, session: recordingSession, persistImmediately: false)
-                    try await persistInBackground()
-                    pairIDs.append(pair.id); currentPromptIDs = pair.promptIDs
-                    if practiceMode { lastPracticePairIDs.append(pair.id) }
+                    let group = batch[groupIndex]
+                    let pair: SentencePair
+                    if let existing = pairsByGroup[groupIndex] {
+                        pair = existing
+                    } else {
+                        pair = try beginPair(prompts: group, visit: visit, session: recordingSession, persistImmediately: false)
+                        try await persistInBackground()
+                        pairsByGroup[groupIndex] = pair
+                        pairIDs.append(pair.id)
+                        if practiceMode { lastPracticePairIDs.append(pair.id) }
+                    }
+                    currentPromptIDs = pair.promptIDs
                     let translations = group.compactMap(\.englishTranslation)
                     currentEnglishTranslation = translations.isEmpty ? nil : translations.joined(separator: group.first?.kind.isLiterature != true ? " " : "\n")
                     currentPinyin = group.flatMap { WordFocusGuide.pinyinByWord(in: $0.text, pinyin: $0.pinyin) }
@@ -552,28 +579,25 @@ final class SentenceTrainingWorkflow {
                         ? group.map(\.text) : []
                     currentKind = group.first.flatMap { $0.kind.isPractice ? $0.kind : nil }
                     currentLanguage = group.first?.language ?? "en"
-                    for condition in conditions {
-                        try Task.checkCancellation()
-                        currentCondition = condition
-                        if condition == .normal, let first = group.first, [.drill, .sound, .minimalPair].contains(first.kind), let playReference {
-                            await playReference(pair.text, first.language ?? "en")
-                        }
-                        try await collectTake(condition: condition, maximumDuration: cueTimes[groupIndex],
-                            baselineSeconds: timing.baseline, recoverySeconds: timing.recovery, canRecord: canRecord,
-                            onCompleted: { recording in
-                                guard canRecord() else { throw Failure.disconnected }
-                                guard let checkpoint = try await recorder.checkpointCompletedTake(sessionID: recordingSession.id) else { throw Failure.ownership }
-                                try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint, persistImmediately: false)
-                                try await persistInBackground()
-                                try Task.checkCancellation()
-                                recorder.logEvent(recording.samples, kind: condition == .normal ? "sentence-spoken" : "sentence-silent",
-                                                  label: pair.text, confidence: nil)
-                            }, onRedo: { discarded in
-                                try self.discardHalf(condition: condition, pairID: pair.id)
-                                recorder.logEvent(discarded?.samples ?? self.buffer, kind: "sentence-redo-discarded", label: pair.text, confidence: nil)
-                            })
-                        buffer = []; index += 1
+                    currentCondition = condition
+                    if condition == .normal, let first = group.first, [.drill, .sound, .minimalPair].contains(first.kind), let playReference {
+                        await playReference(pair.text, first.language ?? "en")
                     }
+                    try await collectTake(condition: condition, maximumDuration: cueTimes[groupIndex],
+                        baselineSeconds: timing.baseline, recoverySeconds: timing.recovery, canRecord: canRecord,
+                        onCompleted: { recording in
+                            guard canRecord() else { throw Failure.disconnected }
+                            guard let checkpoint = try await recorder.checkpointCompletedTake(sessionID: recordingSession.id) else { throw Failure.ownership }
+                            try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint, persistImmediately: false)
+                            try await persistInBackground()
+                            try Task.checkCancellation()
+                            recorder.logEvent(recording.samples, kind: condition == .normal ? "sentence-spoken" : "sentence-silent",
+                                              label: pair.text, confidence: nil)
+                        }, onRedo: { discarded in
+                            try self.discardHalf(condition: condition, pairID: pair.id)
+                            recorder.logEvent(discarded?.samples ?? self.buffer, kind: "sentence-redo-discarded", label: pair.text, confidence: nil)
+                        })
+                    buffer = []; index += 1
                 }
             } catch is CancellationError {
                 // Never turn an interrupted cue into a completed reference or silent take.

@@ -123,8 +123,8 @@ struct PracticePage<Controls: View, Content: View>: View {
                     Button { model.startPractice(groups) } label: { Label(startTitle, systemImage: "record.circle") }
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .disabled(!canStart)
-                        .help(blocker ?? String(localized: "Shows each one; you say it aloud, then mouth it. ⌘↩"))
-                        .accessibilityHint(blocker ?? String(localized: "Shows each one; you say it aloud, then mouth it silently. Command Return."))
+                        .help(blocker ?? String(localized: "Starts a practice session. ⌘↩"))
+                        .accessibilityHint(blocker ?? String(localized: "Starts a practice session. Command Return."))
                     if let blocker, !motionReady {
                         Button(blocker + " ›") { model.screen = .devices }.buttonStyle(.link).font(.callout)
                             .accessibilityLabel(blocker + ". " + String(localized: "Opens Devices."))
@@ -525,8 +525,8 @@ struct LiteraturePracticeView: View {
         let startTitle: LocalizedStringKey = partIndex == 0
             ? (isSpeech ? "Start Speech" : "Start Poem") : "Start at Part \(partIndex + 1)"
         return PracticePage(title: isSpeech ? "Speech" : "Poetry",
-                     subtitle: isSpeech ? "Practise the speech in one session. Read each section aloud, then mouth it silently."
-                         : "Practise the poem in one session. Read each section aloud, then mouth it silently.",
+                     subtitle: isSpeech ? "Mouth the speech silently from start to finish, then read it aloud."
+                         : "Mouth the poem silently from start to finish, then read it aloud.",
                      startTitle: startTitle,
                      groups: groups,
                      mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false) {
@@ -572,7 +572,7 @@ struct LiteraturePracticeView: View {
                             Text(model.personalPracticePieces.contains(where: { $0.id == piece.id })
                                  ? "Personal library" : "Public domain in the UK and US.")
                                 .font(.caption).foregroundStyle(.secondary)
-                            Text("Read it aloud, then mouth it, a few lines at a time. Speech recognition on this Mac checks how much it understood.")
+                            Text("Each pass shows a few lines at a time. Speech recognition on this Mac checks the spoken pass.")
                                 .font(.callout).foregroundStyle(.secondary)
                         }.frame(maxWidth: .infinity, alignment: .leading) }
                         .id(piece.id)
