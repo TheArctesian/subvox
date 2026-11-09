@@ -1,8 +1,10 @@
+import hashlib
 import json
 import shutil
 import subprocess
 import sys
 import wave
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -33,10 +35,10 @@ def test_unspoken_middle_word_is_untimed():
 
 @pytest.fixture(scope="module")
 def vocab():
-    path = fa.MODEL_DIRECTORY / "vocab.json"
-    if not path.is_file():
-        pytest.skip("install the pinned forced alignment model to check its vocabulary")
-    return json.loads(path.read_text())
+    # Exact upstream vocabulary from fa.REVISION, under Apache-2.0.
+    raw = (Path(__file__).parent / "test_data/forced_align_vocab.json").read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == "d732ab2456c0c017930001dc9af0b41b3b93d25b2eb9740bf9d925508d7d87d0"
+    return json.loads(raw)
 
 
 @pytest.mark.parametrize("tag", ["en", "fr", "es", "es-MX", "zh-Hans", "zh-Hant"])
@@ -61,7 +63,7 @@ CASES = [
     ("es", "Mónica", "La casa tiene una puerta roja."),
     ("es-MX", "Paulina", "La casa tiene una puerta roja."),
     ("zh-Hans", "Tingting", "你好，我今天很忙。"),
-    ("zh-Hant", "Meijia", "你好，我今天很忙。"),
+    ("zh-Hant", "Meijia", "你好，我今天讀書。"),
 ]
 
 

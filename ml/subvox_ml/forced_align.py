@@ -6,6 +6,9 @@ The -4.8 mean log posterior and 4.7-nat greedy-path gap preserve the six
 macOS voices in the integration tests and the two saved English speech takes
 (24 words and 9 words). The 50% energy gate includes a one-frame collar when
 measuring support because CTC emits narrow spikes within sustained sounds.
+Deleting a word costs 4.8 nats per acoustic unit, so skipped words can
+leave the path without pulling neighboring boundaries into silence. The
+35% active-frame floor guards against spans crammed into energy peaks.
 Appended and unrelated passages from the same audio were used as negatives.
 These are local acceptance thresholds, not calibrated probabilities.
 """
