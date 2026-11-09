@@ -94,6 +94,7 @@ struct PracticePage<Controls: View, Content: View>: View {
                                 Button("Set Up Whisper…") { showWhisperSetup = true }
                             }
                         }
+                        if mode == .speech { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
                         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
                         PracticeFeedback(mode: mode, again: { model.startPractice(groups) })
                         HStack(spacing: 16) { controls(); Spacer(); ProgressStrip() }
@@ -214,6 +215,27 @@ struct IPAToggle: View {
     }
 }
 
+struct ForcedAlignerSetup: View {
+    var aligner: ForcedAligner
+
+    var body: some View {
+        if !aligner.isInstalled {
+            if aligner.isInstalling {
+                ProgressView("Setting up local word alignment…").controlSize(.small)
+            } else {
+                Button("Download word alignment model (1.26 GB)") {
+                    Task { await aligner.install() }
+                }
+                Text("Matches the words you read to your audio on this Mac. Requires uv and eSpeak NG.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            if let error = aligner.installError {
+                Label(error, systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+            }
+        }
+    }
+}
+
 struct WhisperSetupSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
@@ -252,9 +274,14 @@ struct PracticeFeedback: View {
     /// The decision stored with the pair, in words: kept, practice only, or not used and why.
     static func verdict(_ pair: SentencePair) -> (symbol: String, color: Color, text: String, kept: Bool) {
         let recognised = pair.transcriptMatchRate.map { String(localized: " · \(Int(($0 * 100).rounded(.down)))% of words recognised") } ?? ""
-        if pair.transcript == nil && pair.error == nil { return ("clock", .secondary, String(localized: "Waiting for speech recognition"), false) }
+        if pair.transcript == nil && pair.error == nil && pair.wordTimingSource == nil { return ("clock", .secondary, String(localized: "Waiting for speech recognition"), false) }
         // The same rule the training data uses (SentencePair.usesAlignedWords), not a guess from the view.
-        if pair.usesAlignedWords { return ("checkmark.circle.fill", .green, String(localized: "Kept for training") + recognised, true) }
+        if pair.usesAlignedWords {
+            let label = pair.wordTimingSource == .forcedAlignment && (pair.transcriptMatchRate ?? 0) < 0.8
+                ? String(localized: "Kept for training (words matched to your audio)")
+                : String(localized: "Kept for training") + recognised
+            return ("checkmark.circle.fill", .green, label, true)
+        }
         if pair.error == SentenceTrainingWorkflow.Failure.practiceOnly.localizedDescription {
             return ("pencil.circle.fill", .orange, String(localized: "Practice only") + recognised + String(localized: "; typed text needs 85%"), false)
         }

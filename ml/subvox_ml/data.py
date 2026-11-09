@@ -148,6 +148,12 @@ def discover(root, language, corrections=None, min_transcript_match=MIN_TRANSCRI
             match = pair.get("transcriptMatchRate")
             if pair["review"] == "Accepted":
                 reference = "recorded prompt; pair accepted by user"
+            elif pair.get("wordTimingSource") == "forcedAlignment":
+                if (min_transcript_match is None or pair.get("error") or not (pair.get("alignment") or {}).get("words")
+                    or (pair.get("timedWordCoverage") or 0) < .8
+                    or (pair.get("practiceMode") == "freeText" and (match or 0) < max(.85, min_transcript_match))):
+                    continue
+                reference = "recorded prompt; words matched to the audio by local IPA CTC alignment"
             elif min_transcript_match is not None and match is not None and match >= min_transcript_match:
                 reference = f"recorded prompt; local Whisper matched {match:.0%} of prompt words in the spoken take; user review pending"
             else:

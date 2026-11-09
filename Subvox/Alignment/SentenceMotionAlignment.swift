@@ -59,7 +59,8 @@ enum SentenceMotionAlignment {
     }
 
     static func align(voiced: [MotionSample], silent: [MotionSample], words: [MotionWordAnchor],
-                      features: FeatureSet = [.acceleration, .rotation], referenceScales: [Double]? = nil) throws -> MotionTransferResult {
+                      features: FeatureSet = [.acceleration, .rotation], referenceScales: [Double]? = nil,
+                      omitCollapsedWords: Bool = false) throws -> MotionTransferResult {
         guard !features.isEmpty, features.subtracting(.all).isEmpty else { throw Failure.invalidFeatures }
         try validate(voiced)
         try validate(silent)
@@ -166,11 +167,18 @@ enum SentenceMotionAlignment {
         var transferred: [TransferredMotionWord] = []
         for word in words {
             let start = transfer(word.start), end = transfer(word.end)
-            guard start.isFinite, end.isFinite, end > start else { throw Failure.collapsedWord }
+            guard start.isFinite, end.isFinite, end > start else {
+                if omitCollapsedWords { continue }
+                throw Failure.collapsedWord
+            }
             transferred.append(TransferredMotionWord(word: word.word, voicedStart: word.start,
                 voicedEnd: word.end, silentStart: start, silentEnd: end))
         }
+        guard !transferred.isEmpty else { throw Failure.collapsedWord }
         var warnings = ["Transferred word times are DTW estimates, not ground truth. No phone boundaries were inferred."]
+        if transferred.count < words.count {
+            warnings.append(String(localized: "Some words had no usable interval in the mouthed take."))
+        }
         if words.contains(where: { $0.start < v0 || $0.end > v1 }) {
             warnings.append("Anchors within the 40 ms boundary tolerance were clipped to the motion recording.")
         }

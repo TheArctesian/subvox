@@ -54,6 +54,8 @@ final class SentenceTrainingWorkflow {
     var excludedCollectionGroups:Set<String> = []
     private var advanceRequested = false
     let phoneAligner = LocalPhonemeAligner()
+    let forcedAligner = ForcedAligner()
+    private(set) var realignmentReport: (recovered: Int, total: Int)?
     let camera = CameraPoseService()
     var captureCameraPoints = false
     /// Optional explicit teacher collection keeps whole train/development visits apart.
@@ -357,6 +359,7 @@ final class SentenceTrainingWorkflow {
         if condition == .normal { data.pairs[i].spoken = nil }
         else { data.pairs[i].silent = nil }
         data.pairs[i].alignment = nil; data.pairs[i].review = .pending
+        data.pairs[i].wordTimingSource = nil; data.pairs[i].wordTimingModelRevision = nil
         data.pairs[i].spokenPhones = nil; data.pairs[i].mouthedPhones = nil
         try persist()
     }
@@ -557,7 +560,42 @@ final class SentenceTrainingWorkflow {
         }
     }
 
-    private func process(_ id: UUID, whisper: LocalWhisper) async {
+    var realignableIDs: [UUID] {
+        guard data.reservedUnlockedAt == nil else { return [] }
+        let errors = [Failure.timing.localizedDescription, Failure.transcript.localizedDescription]
+        return data.pairs.filter { pair in
+            pair.complete && pair.role != .finalTest && pair.review != .excluded
+                && pair.promptIDs.allSatisfy { data.roles[$0] != .finalTest }
+                && pair.error.map(errors.contains) == true
+                && pair.directory.map {
+                    FileManager.default.isReadableFile(atPath: URL(fileURLWithPath: $0).appending(path: "audio.caf").path)
+                } == true
+        }.map(\.id)
+    }
+
+    func realignSavedTakes(whisper: LocalWhisper) {
+        guard !isBusy, storageReady, forcedAligner.isInstalled else { return }
+        let ids = realignableIDs
+        guard !ids.isEmpty else { return }
+        realignmentReport = nil
+        error = nil
+        phase = .processing
+        task = Task {
+            var attempted = 0
+            var recovered = 0
+            for id in ids {
+                guard !Task.isCancelled, storageReady else { break }
+                await process(id, whisper: whisper, retrying: true)
+                guard !Task.isCancelled, storageReady else { break }
+                attempted += 1
+                if data.pairs.first(where: { $0.id == id })?.usesAlignedWords == true { recovered += 1 }
+            }
+            realignmentReport = (recovered, attempted)
+            phase = .finished; processingText = ""; task = nil
+        }
+    }
+
+    private func process(_ id: UUID, whisper: LocalWhisper, retrying: Bool = false) async {
         guard let i = data.pairs.firstIndex(where: { $0.id == id }), data.pairs[i].spoken != nil,
               data.pairs[i].role != .finalTest,
               !data.pairs[i].promptIDs.contains(where: { data.roles[$0] == .finalTest }) else { return }
@@ -565,67 +603,123 @@ final class SentenceTrainingWorkflow {
         // Reprocessing annotations does not undo the user's inclusion/exclusion override.
         pair.alignment = nil
         pair.spokenPhones = nil; pair.mouthedPhones = nil; pair.phoneAlignmentNote = nil
+        let savedTranscript = pair.transcript
+        let savedMatchRate = pair.transcriptMatchRate
         pair.transcriptMatchRate = nil; pair.timedWordCoverage = nil
+        pair.wordTimingSource = nil; pair.wordTimingModelRevision = nil
         data.validationReport = nil
         do {
             guard let spoken = pair.spoken, let directory = pair.directory,
                   let start = pair.sessionStartUptime, let offset = pair.audioOffset else { throw Failure.clock }
-            let range = (spoken.cueStart - start - offset)...(spoken.cueEnd - start - offset)
+            let origin = start + offset
+            guard origin.isFinite, spoken.cueStart.isFinite, spoken.cueEnd.isFinite,
+                  origin <= spoken.cueStart, spoken.cueStart < spoken.cueEnd else { throw Failure.clock }
+            let cue = spoken.cueStart...spoken.cueEnd
+            let range = (cue.lowerBound - origin)...(cue.upperBound - origin)
+            let folder = URL(fileURLWithPath: directory)
+            let audio = folder.appending(path: "audio.caf")
+            let language = pair.language ?? "en"
+            let freeText = pair.practiceMode == .freeText
+            let useForced = forcedAligner.isInstalled
             processingText = "Checking the spoken sentence locally…"
-            let transcript = try await whisper.transcribe(audioURL: URL(fileURLWithPath: directory).appending(path: "audio.caf"),
-                outputDirectory: URL(fileURLWithPath: directory), timeRange: range, language: String((pair.language ?? "en").prefix(2)))
+            // Keep Free Practice independent of the typed text. With forced alignment,
+            // Whisper is advisory for a known prompt, including when Whisper is unavailable.
+            let transcript: LocalWhisperTranscript?
+            if retrying, let savedTranscript, savedMatchRate != nil {
+                transcript = savedTranscript
+            } else {
+                do {
+                    transcript = try await whisper.transcribe(audioURL: audio, outputDirectory: folder, timeRange: range,
+                        language: String(language.prefix(2)), initialPrompt: useForced && !freeText ? pair.text : nil)
+                } catch {
+                    if Task.isCancelled || !useForced || freeText { throw error }
+                    transcript = nil
+                }
+            }
             pair.transcript = transcript
-            // Han text is compared in Simplified form: speech recognition may return either script.
             let expected = Lexicon.words(in: pair.text).map(Lexicon.matchKey)
-            // Text agreement and usable timing coverage are different checks. Untimed ASR
-            // words still count in text agreement, but never become motion labels.
-            let textMatches = Alignment.commonSubsequence(expected, Lexicon.words(in: transcript.text).map(Lexicon.matchKey))
-            pair.transcriptMatchRate = Double(textMatches.count) / Double(max(1, expected.count))
-            guard let silent=pair.silent else {throw Failure.missingSilent}
-            // Free practice (data rule 3): the typed text is a label only when Whisper heard it.
-            if pair.practiceMode == .freeText, (pair.transcriptMatchRate ?? 0) < Self.freeTextAgreement { throw Failure.practiceOnly }
-            guard textMatches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.transcript }
-            let heard = try SentenceReference.anchors(transcript, sessionStart: start, audioOffset: offset)
-            let matches = Alignment.commonSubsequence(expected, heard.map { Lexicon.matchKey($0.word) })
-            pair.timedWordCoverage = Double(matches.count) / Double(max(1, expected.count))
-            guard matches.count >= max(1, Int(ceil(Double(expected.count) * 0.8))) else { throw Failure.timing }
-            let anchors = matches.map { heard[$0.1] }
+            if let transcript {
+                let heard = Lexicon.words(in: transcript.text).map(Lexicon.matchKey)
+                let textMatches = Alignment.commonSubsequence(expected, heard)
+                pair.transcriptMatchRate = Double(textMatches.count) / Double(max(1, expected.count))
+            }
+            guard let silent = pair.silent else { throw Failure.missingSilent }
+            if freeText, (pair.transcriptMatchRate ?? 0) < Self.freeTextAgreement { throw Failure.practiceOnly }
+            let forced: ForcedAligner.Result?
+            let anchors: [MotionWordAnchor]
+            if useForced {
+                pair.wordTimingSource = .forcedAlignment
+                processingText = String(localized: "Matching words to the audio…")
+                let result = try await forcedAligner.align(audio: audio, range: range, text: pair.text, language: language)
+                pair.timedWordCoverage = result.coverage
+                guard result.accepted else {
+                    throw (pair.transcriptMatchRate ?? 0) >= 0.8 ? Failure.timing : Failure.transcript
+                }
+                anchors = try result.anchors(origin: cue.lowerBound, cue: cue)
+                pair.wordTimingModelRevision = result.revision
+                forced = result
+            } else {
+                guard let transcript, (pair.transcriptMatchRate ?? 0) >= 0.8 else { throw Failure.transcript }
+                let heard = try SentenceReference.anchors(transcript, sessionStart: start, audioOffset: offset)
+                let matches = Alignment.commonSubsequence(expected, heard.map { Lexicon.matchKey($0.word) })
+                pair.timedWordCoverage = Double(matches.count) / Double(max(1, expected.count))
+                guard (pair.timedWordCoverage ?? 0) >= 0.8 else { throw Failure.timing }
+                anchors = matches.map { heard[$0.1] }
+                pair.wordTimingSource = .whisperAttention
+                forced = nil
+            }
             processingText = "Aligning spoken and silent motion…"
             let a = spoken.cueSamples, b = silent.cueSamples
-            pair.alignment = try await Task.detached(priority: .userInitiated) {
-                try SentenceMotionAlignment.align(voiced: a, silent: b, words: anchors)
+            let transfer = try await Task.detached(priority: .userInitiated) {
+                try SentenceMotionAlignment.align(voiced: a, silent: b, words: anchors,
+                                                  omitCollapsedWords: useForced)
             }.value
-            // Independent optional acoustic phone alignment. Its failure must not erase
-            // a usable legacy word alignment, nor substitute duration-spread labels.
-            if phoneAligner.isConfigured && (pair.language ?? "en") == "en" {
+            if let forced, Double(transfer.words.count) / Double(forced.words.count) < 0.8 { throw Failure.timing }
+            pair.alignment = transfer
+            if forced != nil || (phoneAligner.isConfigured && language == "en") {
                 do {
                     let profile = try pair.pronunciationProfile ?? PronunciationProfile.load()
-                    let config = phoneAligner.configuration
-                    processingText = "Estimating phoneme boundaries against local audio…"
-                    let phoneTask = Task.detached(priority: .userInitiated) {
-                        try await LocalPhonemeAligner.align(configuration: config,
-                            audio: URL(fileURLWithPath: directory).appending(path: "audio.caf"), range: range,
-                            sessionAudioOrigin: start + offset, text: transcript.text, profile: profile,
-                            lexicon: .bundled, output: URL(fileURLWithPath: directory))
-                    }
-                    let alignment = try await withTaskCancellationHandler(operation: {try await phoneTask.value},onCancel: {phoneTask.cancel()})
-                    pair.spokenPhones = alignment
-                    if let points = pair.cameraReadings {
-                        pair.mouthedPhones = try CameraPhoneAlignment.transfer(alignment,
-                            spoken: CameraPhoneAlignment.frames(points, range: spoken.cueStart...spoken.cueEnd),
-                            mouthed: CameraPhoneAlignment.frames(points, range: silent.cueStart...silent.cueEnd),
-                            profileHash: profile.fingerprint())
+                    let profileHash = try profile.fingerprint()
+                    let alignment: PhoneAlignment?
+                    if let forced {
+                        alignment = try forced.phoneAlignment(origin: cue.lowerBound, cue: cue, profileHash: profileHash)
+                    } else if let transcript {
+                        let config = phoneAligner.configuration
+                        processingText = "Estimating phoneme boundaries against local audio…"
+                        let phoneTask = Task.detached(priority: .userInitiated) {
+                            try await LocalPhonemeAligner.align(configuration: config, audio: audio, range: range,
+                                sessionAudioOrigin: origin, text: transcript.text, profile: profile,
+                                lexicon: .bundled, output: folder)
+                        }
+                        alignment = try await withTaskCancellationHandler(operation: { try await phoneTask.value }, onCancel: { phoneTask.cancel() })
                     } else {
+                        alignment = nil
+                    }
+                    pair.spokenPhones = alignment
+                    if let alignment, let points = pair.cameraReadings {
+                        pair.mouthedPhones = try CameraPhoneAlignment.transfer(alignment,
+                            spoken: CameraPhoneAlignment.frames(points, range: cue),
+                            mouthed: CameraPhoneAlignment.frames(points, range: silent.cueStart...silent.cueEnd),
+                            profileHash: profileHash, allowPartial: useForced)
+                    } else if alignment != nil {
                         pair.phoneAlignmentNote = "Spoken acoustic estimates saved. No mouthed phone times: camera points were not collected."
                     }
                 } catch { pair.phoneAlignmentNote = error.localizedDescription }
             } else {
                 pair.phoneAlignmentNote = "No local phoneme aligner configured. Whisper word times remain word estimates; no phoneme boundaries were invented."
             }
+            try Task.checkCancellation()
             pair.error = nil
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try encoder.encode(pair).write(to: URL(fileURLWithPath: directory).appending(path: "sentence-pair-\(id).json"), options: .atomic)
-        } catch { pair.error = error.localizedDescription }
+        } catch {
+            if Task.isCancelled { return }
+            if retrying, !(error is Failure) {
+                self.error = error.localizedDescription
+                return
+            }
+            pair.error = error.localizedDescription
+        }
         if let current = data.pairs.firstIndex(where: { $0.id == id }) { data.pairs[current] = pair }
         save(notify: true)
     }

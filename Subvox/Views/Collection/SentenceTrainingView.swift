@@ -191,6 +191,15 @@ struct SentenceTrainingView: View {
                     ForEach(TrainingPace.allCases) { Text($0.rawValue).tag($0) }
                 }.pickerStyle(.segmented)
             }
+            ForcedAlignerSetup(aligner: workflow.forcedAligner)
+            if workflow.forcedAligner.isInstalled && !workflow.realignableIDs.isEmpty {
+                Button("Re-align saved takes") { workflow.realignSavedTakes(whisper: model.localWhisper) }
+                    .disabled(workflow.isBusy || model.recorder.isRecording)
+            }
+            if let report = workflow.realignmentReport {
+                Text("Recovered \(report.recovered) of \(report.total) saved takes.")
+                    .font(.callout).foregroundStyle(.secondary)
+            }
             if !workflow.pendingTranscriptionIDs.isEmpty {
                 Button("Run local Whisper on \(workflow.pendingTranscriptionIDs.count) pending spoken takes") {
                     workflow.transcribePending(whisper:model.localWhisper)
@@ -385,6 +394,9 @@ struct SentenceTrainingView: View {
                     Text(String(format: "Text match %.0f%% · usable timed words %.0f%%", textRate * 100, timingRate * 100))
                         .font(.caption).foregroundStyle(.secondary)
                 }
+            }
+            if pair.usesAlignedWords, pair.wordTimingSource == .forcedAlignment, (pair.transcriptMatchRate ?? 0) < 0.8 {
+                Text("Kept for training (words matched to your audio)").font(.caption).foregroundStyle(.green)
             }
             if !pair.complete { Text("Incomplete pair. Re-record to collect both takes.").font(.caption).foregroundStyle(.orange) }
             if let error = pair.error { Text("Word alignment: " + error).font(.caption).foregroundStyle(.secondary) }

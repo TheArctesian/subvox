@@ -77,6 +77,10 @@ struct SentenceRecording: Codable, Identifiable, Sendable {
     var quality: TakeQuality { TakeQuality.inspect(cueSamples, maximumDuration: 48) }
 }
 
+enum WordTimingSource: String, Codable, Sendable {
+    case forcedAlignment, whisperAttention
+}
+
 struct SentencePair: Codable, Identifiable, Sendable {
     var id = UUID()
     var visitID: UUID
@@ -93,6 +97,8 @@ struct SentencePair: Codable, Identifiable, Sendable {
     var transcript: LocalWhisperTranscript?
     var transcriptMatchRate: Double?
     var timedWordCoverage: Double?
+    var wordTimingSource: WordTimingSource?
+    var wordTimingModelRevision: String?
     var alignment: MotionTransferResult?
     var review: ReviewDecision = .pending
     var error: String?
@@ -122,7 +128,14 @@ struct SentencePair: Codable, Identifiable, Sendable {
     /// Pending is automatic mode. Accepted/Excluded are persistent user overrides;
     /// automatic decisions never overwrite them or approve phone-level annotations.
     var hasReliableTranscript: Bool {
-        review == .accepted || transcriptMatchRate.map { $0.isFinite && (0.85...1).contains($0) } == true
+        if review == .accepted { return true }
+        let rate = transcriptMatchRate ?? 0
+        if wordTimingSource == .forcedAlignment {
+            guard error == nil, (0.8...1).contains(timedWordCoverage ?? 0) else { return false }
+            return practiceMode != .freeText || (0.85...1).contains(rate)
+        }
+        if practiceMode == .freeText { return (0.85...1).contains(rate) }
+        return ((wordTimingSource == nil ? 0.85 : 0.8)...1).contains(rate)
     }
     var usesAlignedWords: Bool {
         role != .finalTest && review != .excluded && hasReliableTranscript && canAccept

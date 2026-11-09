@@ -32,6 +32,7 @@ SESSION_KEYS = {"schema_version", "app_version", "contributor", "session_id", "a
                 "month", "prompts_version", "takes"}
 TAKE_KEYS = {"take_id", "prompt_id", "passage_id", "mode", "cue_start", "cue_end", "motion_hz", "eligible", "ineligible_reason",
              "camera_coverage", "camera_eligible", "redo_count"}
+TIMING_KEYS = {"word_timing_source", "word_timing_model_revision"}
 TAKE_KEYS_V2 = TAKE_KEYS | {"language", "speaker_status", "first_language", "speaking_style", "expected_phones", "produced_phones"}
 SPEAKING_STYLES = ("natural", "exaggerated")
 HEX_ID = re.compile(r"^0x[0-9A-F]{4}$")
@@ -141,6 +142,22 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
         for pair in sorted(pairs, key=lambda p: p["createdAt"]):
             readings = pair.get("cameraReadings") or []
             check = pair.get("phoneCheck") or {}
+            expected = check.get("expected_phones") or expected_phones(pair.get("text", ""), pair.get("language") or "en")
+            intervals = (pair.get("spokenPhones") or {}).get("phones") or []
+            # A partial sequence is useful as timed annotations locally, but
+            # would be an incorrect whole-take CTC target in the dataset.
+            labels = [phone["ipa"] for phone in intervals]
+            produced = labels if expected and len(labels) == len(expected) and all(p in ipa.INVENTORY for p in labels) else None
+            if produced is None and pair.get("wordTimingSource") != "forcedAlignment" and check.get("source") == "phone-intervals":
+                produced = check.get("produced_phones")
+            rejected_alignment = pair.get("wordTimingSource") == "forcedAlignment" and bool(pair.get("error"))
+            if rejected_alignment:
+                produced = None
+            timing = {}
+            if pair.get("alignment") and not pair.get("error") and pair.get("wordTimingSource"):
+                timing["word_timing_source"] = pair["wordTimingSource"]
+                if pair.get("wordTimingModelRevision"):
+                    timing["word_timing_model_revision"] = pair["wordTimingModelRevision"]
             readings_all += readings
             for mode, key in (("spoken", "spoken"), ("mouthed", "silent")):
                 recording = pair.get(key)
@@ -148,6 +165,8 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
                     continue
                 take_id = opaque("take", recording["id"])
                 m, c, coverage, reason = take_rows(recording, origin, take_id, readings)
+                if rejected_alignment and reason is None:
+                    reason = "Word alignment did not verify the reading"
                 motion.append(m); cameras.append(c); all_samples += recording["samples"]
                 takes.append(dict(take_id=take_id, prompt_id=pair["promptIDs"][0], passage_id=index[pair["promptIDs"][0]], mode=mode,
                                   cue_start=recording["cueStart"] - origin, cue_end=recording["cueEnd"] - origin,
@@ -157,8 +176,9 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
                                   language=pair.get("language") or "en", speaker_status=pair.get("speakerStatus") or speaker.get("status") or "unknown",
                                   first_language=pair.get("firstLanguage") or speaker.get("firstLanguage"),
                                   speaking_style=pair.get("speakingStyle") or "natural",
-                                  expected_phones=(pair.get("phoneCheck") or {}).get("expected_phones") or expected_phones(pair.get("text", ""), pair.get("language") or "en"),
-                                  produced_phones=check.get("produced_phones") if mode == "spoken" and check.get("source") == "phone-intervals" else None))
+                                  expected_phones=expected,
+                                  produced_phones=produced if mode == "spoken" else None,
+                                  **timing))
         if not takes:
             continue
         times = sorted(r["t"] for r in readings_all)
@@ -231,8 +251,9 @@ def validate_session(folder, index, heldout):
     ids = set()
     for take in takes:
         expected_keys = TAKE_KEYS_V2 if version == 2 else TAKE_KEYS
-        if set(take) != expected_keys:
-            problems.append(f"take keys differ: {sorted(set(take) ^ expected_keys)}")
+        keys = set(take) - (TIMING_KEYS if version == 2 else set())
+        if keys != expected_keys:
+            problems.append(f"take keys differ: {sorted(keys ^ expected_keys)}")
             continue
         if version == 2:
             problems += language_problems(take)
@@ -289,6 +310,15 @@ def language_problems(take):
         value = take[key]
         if value is not None and (not isinstance(value, list) or any(p not in ipa.INVENTORY for p in value)):
             problems.append(f"{key} must be a list of shared-inventory IPA phones")
+    source = take.get("word_timing_source")
+    revision = take.get("word_timing_model_revision")
+    if source not in (None, "forcedAlignment", "whisperAttention"):
+        problems.append("unknown word timing source")
+    if source == "forcedAlignment":
+        if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
+            problems.append("forced alignment requires a model revision")
+    elif revision is not None:
+        problems.append("unexpected word timing model revision")
     return problems
 
 
@@ -297,6 +327,8 @@ def training_phones(take, produced_source=None):
     recogniser or aligner ran; the textbook phones only for a native speaker reading known text;
     otherwise None (practice only). Phones guessed from the words Whisper heard are not 'produced':
     a mispronounced sound inside a recognised word would become a correct-looking label."""
+    if take.get("eligible") is False:
+        return None
     if take.get("produced_phones") and produced_source in (None, "phone-intervals"):
         return take["produced_phones"]
     if take.get("speaker_status") == "native" and take.get("speaking_style") == "natural":

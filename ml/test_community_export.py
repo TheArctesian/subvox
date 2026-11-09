@@ -182,6 +182,27 @@ class LanguageTagTests(Fixture):
         if community["expected_phones"] is not None:  # needs espeak-ng
             self.assertEqual(community["expected_phones"][:3], ["ð", "ə", "k"])
 
+    def test_exports_verified_timing_and_complete_phone_labels(self):
+        path = self.root / "sentence-training.json"
+        data = json.loads(path.read_text())
+        labels = ["ʒ", "ə"]
+        revision = "a" * 40
+        data["pairs"][0].update(language="fr", wordTimingSource="forcedAlignment",
+                                wordTimingModelRevision=revision, alignment={"words": [{}]},
+                                phoneCheck={"expected_phones": labels},
+                                spokenPhones={"phones": [{"ipa": phone} for phone in labels]})
+        data["pairs"][1].update(wordTimingSource="forcedAlignment", error="Reading did not match")
+        path.write_text(json.dumps(data))
+
+        [folder] = self.export()
+        takes = self.takes(folder)
+        spoken = next(t for t in takes if t["mode"] == "spoken" and t["passage_id"] == "book-0001")
+        self.assertEqual(spoken["produced_phones"], labels)
+        self.assertEqual(spoken["word_timing_source"], "forcedAlignment")
+        self.assertEqual(spoken["word_timing_model_revision"], revision)
+        self.assertTrue(all(not t["eligible"] for t in takes if t["passage_id"] is None))
+        self.assertEqual(validate_session(folder, *load_prompt_index(self.prompts)), [])
+
     def test_validator_rejects_bad_tags_and_off_inventory_phones(self):
         [folder] = self.export()
         takes = self.takes(folder)

@@ -39,7 +39,8 @@ A take enters training only if:
 - **Tests:** a few hand-checked phrases per language (*je suis / tu es / il est* liaison, Spanish vowels, Mandarin characters with more than one reading).
 
 ### 2. Phone check from audio
-- Run Whisper (already local) to find out which words were said. Then use local MFA alignment, or a phone recogniser, to get the phones actually produced and their timing.
+- Reading and Speech & Poetry can match known text against local IPA CTC audio evidence in English, French, Spanish and Mandarin. Install the pinned checkpoint from the Reading or Speech & Poetry page. Reading can retry saved word-timing and transcript failures. Free Practice still requires 85% Whisper agreement, and configured English MFA is available when the new aligner is absent.
+- The CTC aligner times supported expected phones. Some Mandarin clusters occupy one model token, so their individual boundaries are omitted. An independent phone recogniser is still needed to identify substitutions for pronunciation feedback.
 - Store the expected and produced phones side by side.
 - This shows learners their pronunciation, and supplies cleaner training labels.
 
