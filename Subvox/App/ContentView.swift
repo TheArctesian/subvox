@@ -30,11 +30,17 @@ struct ContentView: View {
                 if let activity = model.backgroundActivity {
                     VStack(spacing: 0) {
                         Divider()
-                        HStack(alignment: .top, spacing: 8) {
-                            ProgressView().controlSize(.small).accessibilityHidden(true)
-                            Text(activity).font(.caption).foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer(minLength: 0)
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack(alignment: .top, spacing: 8) {
+                                ProgressView().controlSize(.small).accessibilityHidden(true)
+                                Text(activity).font(.caption).foregroundStyle(.secondary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer(minLength: 0)
+                            }
+                            if model.sentenceTraining.phase == .preparing {
+                                Button("Cancel", action: model.sentenceTraining.stop)
+                                    .keyboardShortcut(.cancelAction)
+                            }
                         }
                         .padding(12)
                     }

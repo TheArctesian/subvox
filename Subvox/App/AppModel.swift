@@ -174,6 +174,7 @@ final class AppModel {
     var visibleScreens: [Screen] { researchTools ? Screen.allCases : [.train, .devices] }
     let sentenceTraining: SentenceTrainingWorkflow
     var backgroundActivity: String? {
+        if sentenceTraining.phase == .preparing { return String(localized: "Preparing recording…") }
         if sentenceTraining.phase == .processing || sentenceTraining.isCheckingRecordings {
             return sentenceTraining.processingText.isEmpty ? "Saving recordings on this Mac" : sentenceTraining.processingText
         }
