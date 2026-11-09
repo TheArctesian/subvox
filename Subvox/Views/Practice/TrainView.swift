@@ -105,7 +105,7 @@ struct PracticePage<Controls: View, Content: View>: View {
             }
         }
         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
-        TrainingProcessingStatus(workflow: workflow)
+        RecordingPreparationStatus(workflow: workflow)
         PracticeFeedback(mode: mode, again: { model.startPractice(workflow.lastPracticePlan) })
         HStack(spacing: 16) { controls(); Spacer() }
         content()
