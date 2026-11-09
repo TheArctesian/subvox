@@ -157,8 +157,8 @@ struct SignalCheckView: View {
                 if workflow.isPaced { CameraPoseGuide(camera: workflow.camera, target: workflow.comparison?.target, compact: true, allowsMovement: workflow.allowsHeadMovement).frame(height:70).padding(.horizontal,12) }
                 RecordingPromptPanel(color:cueColor) {
                     VStack(spacing:18) {
-                        RecordingCueStatus(timer:phase == .ready ? "When you’re ready" : phase == .ended ? "Saved on this Mac" : String(format:"%.1f s",workflow.secondsRemaining),
-                            title:phase == .ready ? "Ready" : phase == .relax ? "Relax" : phase == .ended ? "END · Saved" : "START · Recording",color:cueColor)
+                        RecordingCueStatus(timer:phase == .ready ? "When you’re ready" : phase == .ended ? (workflow.pendingWrites > 0 ? "Saving on this Mac…" : "Saved on this Mac") : String(format:"%.1f s",workflow.secondsRemaining),
+                            title:phase == .ready ? "Ready" : phase == .relax ? "Relax" : phase == .ended ? (workflow.pendingWrites > 0 ? "END · Saving" : "END · Saved") : "START · Recording",color:cueColor)
                         Label(workflow.current?.condition == .normal ? "Speak aloud" : "Mouth silently", systemImage: workflow.current?.condition == .normal ? "speaker.wave.2" : "mouth")
                             .font(.title3.weight(.medium)).foregroundStyle(cueColor)
                         WordFocusPrompt(text:workflow.currentText,activeWordIndex:workflow.isPaced ? workflow.activeWordIndex : nil,color:cueColor)
@@ -196,7 +196,9 @@ struct SignalCheckView: View {
         switch workflow.phase {
         case .ready:return "Read first. Start take when ready, then wait for the recording cue."
         case .relax:return workflow.allowsHeadMovement ? "Relax your mouth. Move comfortably and keep your face visible." : "Keep your head and jaw still. Wait for the recording cue."
-        case .ended:return workflow.latestTake?.endReason == .timeout ? "Timed out: excluded from comparisons. Redo to add a manual end marker." : "Take saved. Continue, or redo any mistake."
+        case .ended:
+            if workflow.pendingWrites > 0 { return "You can continue or redo while this take saves." }
+            return workflow.latestTake?.endReason == .timeout ? "Timed out: excluded from comparisons. Redo to add a manual end marker." : "Take saved. Continue, or redo any mistake."
         default:return workflow.isPaced ? (workflow.allowsHeadMovement ? "Follow the highlighted words. Move naturally with your face visible. Recording ends automatically." : "Follow the highlighted words. Keep your head still. Recording ends automatically.") : "Read once naturally. Choose Done as soon as you finish."
         }
     }

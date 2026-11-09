@@ -110,14 +110,17 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
     let root: URL
     @ObservationIgnored private let runtime: SequenceRuntime
     @ObservationIgnored private let corpus: CommunityCorpus
+    @ObservationIgnored private let export: ([String]) async throws -> Void
     @ObservationIgnored private let upload: ([String], String) async throws -> Void
 
     init(root: URL? = nil, runtimeRoot: URL? = nil, corpus: CommunityCorpus = .bundled,
+         export: (([String]) async throws -> Void)? = nil,
          upload: (([String], String) async throws -> Void)? = nil) {
         self.root = root ?? SentenceStore.directory.appending(path: "Community")
         // Shares the neural runtime's installed copy, so uploading doesn't set up Python twice.
         let runtime = SequenceRuntime(root: runtimeRoot ?? SentenceStore.directory.appending(path: "SequenceLearning"))
         self.runtime = runtime
+        self.export = export ?? { try await runtime.run($0) }
         self.upload = upload ?? { arguments, token in
             try await runtime.run(arguments, environment: ["SUBVOX_HF_TOKEN": token])
         }
@@ -176,7 +179,7 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
             let shared = self.shared.map(\.id)
             if !shared.isEmpty { arguments += ["--skip", shared.joined(separator: ",")] }
             if let grant { arguments += ["--automatic-grant", grant.id.uuidString, "--manifest", manifest.path] }
-            try await runtime.run(arguments)
+            try await export(arguments)
             let found: [CommunityUpload]
             if grant != nil {
                 let paths = try JSONDecoder().decode([String].self, from: Data(contentsOf: manifest))

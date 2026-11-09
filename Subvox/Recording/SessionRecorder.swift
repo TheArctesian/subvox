@@ -145,17 +145,34 @@ final class SessionRecorder {
         guard let session = currentSession, session.id == sessionID else { return nil }
         let interval = Self.signposter.beginInterval("Flush completed take")
         defer { Self.signposter.endInterval("Flush completed take", interval) }
-        let files = cameraHandle == nil ? ["motion.csv", "events.csv"] : ["motion.csv", "events.csv", "camera-points.ndjson"]
+        let files = checkpointFiles(in: session.directory)
         try await Task.detached(priority: .userInitiated) {
-            for name in files {
-                let handle = try FileHandle(forWritingTo: session.directory.appending(path: name))
-                defer { try? handle.close() }
-                try handle.synchronize()
-            }
+            try Self.flushRecordingFiles(files)
         }.value
         guard let current = currentSession, current.id == sessionID else { return nil }
         try writeMetadata(session: current, audioInfo: audioWriter?.currentInfo, complete: false)
         return current
+    }
+
+    private func checkpointFiles(in directory: URL) -> [URL] {
+        let names = cameraHandle == nil ? ["motion.csv", "events.csv"] : ["motion.csv", "events.csv", "camera-points.ndjson"]
+        return names.map { directory.appending(path: $0) }
+    }
+
+    nonisolated private static func flushRecordingFiles(_ files: [URL]) throws {
+        for file in files {
+            let handle = try FileHandle(forWritingTo: file)
+            defer { try? handle.close() }
+            try handle.synchronize()
+        }
+    }
+
+    /// Diagnostic sessions already have their clock in the initial metadata. Flush
+    /// their raw files without rewriting metadata that finalization may have closed.
+    func recordingFileFlush(sessionID: UUID) -> (@Sendable () throws -> Void)? {
+        guard let session = currentSession, session.id == sessionID else { return nil }
+        let files = checkpointFiles(in: session.directory)
+        return { try Self.flushRecordingFiles(files) }
     }
 
     @discardableResult
