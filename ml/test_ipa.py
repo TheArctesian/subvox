@@ -1,4 +1,8 @@
 """Hand-checked IPA for each language (docs/next-phase-plan.md, item 1)."""
+import json
+from pathlib import Path
+import subprocess
+import sys
 import unittest
 from subvox_ml import ipa
 
@@ -72,6 +76,23 @@ class EspeakLanguages(unittest.TestCase):
 
 
 class Mandarin(unittest.TestCase):
+    def test_phones_cli_returns_pinyin_without_loading_torch(self):
+        command = """
+import runpy
+import sys
+
+sys.argv[1:] = ["phones", "--language", "zh-Hans", "--text", "你好"]
+runpy.run_module("subvox_ml.cli", run_name="__main__")
+assert "torch" not in sys.modules
+"""
+        result = subprocess.run(
+            [sys.executable, "-c", command], cwd=Path(__file__).parent,
+            capture_output=True, text=True, check=True,
+        )
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["pinyin"], "nǐ hǎo")
+        self.assertEqual(payload["words"], [["n", "i"], ["x", "a", "u"]])
+
     def test_characters_with_more_than_one_reading_follow_the_phrase(self):
         self.assertEqual([s["pinyin"] for s in ipa.mandarin_syllables("银行")], ["yin2", "hang2"])
         self.assertEqual([s["pinyin"] for s in ipa.mandarin_syllables("行走")], ["xing2", "zou3"])
