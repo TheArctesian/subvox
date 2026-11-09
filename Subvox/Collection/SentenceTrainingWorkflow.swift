@@ -70,6 +70,8 @@ final class SentenceTrainingWorkflow {
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var buffer: [MotionSample] = []
     @ObservationIgnored private let storeURL: URL
+    @ObservationIgnored private var changedPairUses: Set<UUID> = []
+    @ObservationIgnored private var needsAllPairUses = true
     @ObservationIgnored private let storeWrites = DispatchQueue(label: "Subvox.sentence-store", qos: .userInitiated)
     @ObservationIgnored private var activeVisitID: UUID?
     @ObservationIgnored private var activeRecordingID: UUID?
@@ -163,7 +165,10 @@ final class SentenceTrainingWorkflow {
     }
     func addSentenceBank(_ prompts:[SentencePrompt] = SentencePrompt.diphoneBank) {
         guard !isBusy,storageReady,data.reservedUnlockedAt==nil else {return}
-        var generator=SystemRandomNumberGenerator();data.add(prompts,using:&generator);save()
+        var generator = SystemRandomNumberGenerator()
+        data.add(prompts, using: &generator)
+        needsAllPairUses = true
+        save()
     }
     var estimatedSeconds: Double { plan.reduce(0) { $0 + 2 * (pace.baseline + cueDuration($1.map(\.text).joined(separator: " ")) + pace.recovery) } }
 
@@ -216,6 +221,7 @@ final class SentenceTrainingWorkflow {
             text: prompts.map(\.text).joined(separator: " "), role: role, directory: session.directory.path,
             sessionStartUptime: session.startUptime, audioOffset: session.audioOffset, recordingSessionID: session.id)
         data.pairs.append(pair)
+        changedPairUses.insert(pair.id)
         data.pairs[data.pairs.count - 1].language = first.language
         data.pairs[data.pairs.count - 1].practiceMode = first.kind.isPractice ? first.kind : nil
         data.pairs[data.pairs.count - 1].pronunciationProfile = try PronunciationProfile.load()
@@ -233,6 +239,7 @@ final class SentenceTrainingWorkflow {
         data.pairs[i].directory = session.directory.path
         data.pairs[i].sessionStartUptime = session.startUptime
         data.pairs[i].audioOffset = session.audioOffset
+        changedPairUses.insert(pairID)
         if persistImmediately { try persist() }
     }
 
@@ -375,6 +382,7 @@ final class SentenceTrainingWorkflow {
         data.pairs[i].alignment = nil; data.pairs[i].review = .pending
         data.pairs[i].wordTimingSource = nil; data.pairs[i].wordTimingModelRevision = nil
         data.pairs[i].spokenPhones = nil; data.pairs[i].mouthedPhones = nil
+        changedPairUses.insert(pairID)
         try persist()
     }
 
@@ -417,6 +425,7 @@ final class SentenceTrainingWorkflow {
               !data.pairs[i].promptIDs.contains(where: { data.roles[$0] == .finalTest }) else { return }
         guard decision != .accepted || data.pairs[i].canIncludeManually else { return }
         data.pairs[i].review = decision
+        changedPairUses.insert(id)
         data.validationReport = nil
         save(notify: true)
     }
@@ -442,12 +451,14 @@ final class SentenceTrainingWorkflow {
         guard !isBusy, storageReady, data.reservedUnlockedAt == nil, !recorder.isRecording,
               whisper.isConfigured || communityMode, canRecord() else { return }
         var planned = plan
+        let promptCount = data.prompts.count
         if practiceMode {
             data.addPractice(planned.flatMap { $0 })
         }
         if communityMode {
             data.addCommunity(planned.flatMap { $0 })
         }
+        if data.prompts.count != promptCount { needsAllPairUses = true }
         if practiceMode { lastPracticePairIDs = [] }
         let conditions: [SpeechCondition] = communityMode && mouthedOnly ? [.silent] : [.normal, .silent]
         if let retry, let pair = data.pairs.first(where: { $0.id == retry }) {
@@ -456,6 +467,7 @@ final class SentenceTrainingWorkflow {
             let prompts = repairWords.map { SentencePrompt(text: $0, kind: .wordRepair) }
             var generator = SystemRandomNumberGenerator()
             data.add(prompts, using: &generator)
+            needsAllPairUses = true
             guard save() else { return }
             planned = prompts.prefix(8).map { [$0] }
         }
@@ -748,7 +760,10 @@ final class SentenceTrainingWorkflow {
             }
             pair.error = error.localizedDescription
         }
-        if let current = data.pairs.firstIndex(where: { $0.id == id }) { data.pairs[current] = pair }
+        if let current = data.pairs.firstIndex(where: { $0.id == id }) {
+            data.pairs[current] = pair
+            changedPairUses.insert(id)
+        }
         await saveInBackground(notify: true)
     }
 
@@ -774,12 +789,21 @@ final class SentenceTrainingWorkflow {
         catch { storageReady = false; self.error = error.localizedDescription; return false }
     }
     private func refreshPairUses() {
-        // Sensor checks run when recordings change, not on every live-motion UI update.
-        pairUses = Dictionary(uniqueKeysWithValues: data.pairs.map { pair in
-            var assessed = pair
-            if pair.promptIDs.contains(where: { data.roles[$0] == .finalTest }) { assessed.role = .finalTest }
-            return (pair.id, assessed.automaticUse)
-        })
+        // Role changes can affect several pairs. Ordinary checkpoints only change one take.
+        if needsAllPairUses {
+            pairUses = Dictionary(uniqueKeysWithValues: data.pairs.map { ($0.id, assessUse($0)) })
+        } else if !changedPairUses.isEmpty {
+            for pair in data.pairs where changedPairUses.contains(pair.id) {
+                pairUses[pair.id] = assessUse(pair)
+            }
+        }
+        needsAllPairUses = false
+        changedPairUses.removeAll()
+    }
+    private func assessUse(_ pair: SentencePair) -> SentencePairUse {
+        var assessed = pair
+        if pair.promptIDs.contains(where: { data.roles[$0] == .finalTest }) { assessed.role = .finalTest }
+        return assessed.automaticUse
     }
     func use(for pair: SentencePair) -> SentencePairUse { pairUses[pair.id] ?? pair.automaticUse }
     private func persist() throws {

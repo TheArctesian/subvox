@@ -61,6 +61,19 @@ final class SentenceTrainingTests: XCTestCase {
         XCTAssertEqual(restored.derivedWords(role: .training, lexicon: lexicon).count, 2)
     }
 
+    func testWordTemplatesRespectBothCueAndWordBoundaries() throws {
+        var item = automaticPair()
+        item.silent?.samples.insert(MotionSample(t: 199.98), at: 0)
+        item.alignment?.words[0].silentStart = 199.97
+        let prompt = SentencePrompt(text: item.text)
+        let data = SentenceTrainingData(prompts: [prompt], roles: [prompt.id: .training], pairs: [item])
+        let templates = data.derivedWords(role: .training, lexicon: lexicon)
+
+        XCTAssertEqual(templates.map(\.label), ["bee", "bob"])
+        XCTAssertEqual(templates.map { $0.samples.first?.t }, [200, 201])
+        XCTAssertEqual(templates.map { $0.samples.last?.t }, [201, 202])
+    }
+
     func testWordTimingFailureStillAdmitsSentenceTakesAutomatically() {
         var item = automaticPair()
         item.alignment = nil; item.error = "Too few words have usable audio-aligned times."
@@ -341,5 +354,126 @@ final class SentenceTrainingTests: XCTestCase {
         let invalid = LocalWhisperTranscript(text: "bee", words: [.init(text: "bee", start: 1, end: 1)])
         XCTAssertThrowsError(try SentenceReference.anchors(invalid, sessionStart: 100, audioOffset: 0))
         XCTAssertThrowsError(try SentenceReference.anchors(ambiguous, sessionStart: .nan, audioOffset: 0))
+    }
+}
+
+extension SentenceTrainingTests {
+
+    @MainActor func testCheckpointUpdatesAssessmentAndKeepsOtherPairsReserved() throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "sentence-assessment-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let url = root.appending(path: "sentences.json")
+        let session = RecordingSession(id: UUID(), directory: root, startUptime: 190, audioOffset: 0)
+        let prompt = SentencePrompt(text: "bee bob")
+        let reservedPrompt = SentencePrompt(text: "bob bee")
+        let reserved = pair(reservedPrompt, role: .training)
+        var active = automaticPair()
+        active.recordingSessionID = session.id
+        let original = try XCTUnwrap(active.spoken)
+        let data = SentenceTrainingData(prompts: [prompt, reservedPrompt],
+            roles: [prompt.id: .training, reservedPrompt.id: .finalTest], pairs: [reserved, active])
+        try SentenceStore.save(data, to: url)
+        let workflow = SentenceTrainingWorkflow(storeURL: url)
+        try workflow.beginVisit(session: session, audioDevice: nil, timing: .comfortable,
+                                presentation: .sentences, persistImmediately: false)
+
+        try workflow.discardHalf(condition: .normal, pairID: active.id)
+        XCTAssertEqual(workflow.pairUses[active.id]?.takes.first?.reason, "Not recorded")
+        XCTAssertEqual(workflow.pairUses[reserved.id]?.state, .reserved)
+
+        try workflow.saveCompletedHalf(original, pairID: active.id, session: session)
+        XCTAssertEqual(workflow.pairUses[active.id]?.takes.first?.included, true)
+        XCTAssertEqual(workflow.pairUses[reserved.id]?.state, .reserved)
+        XCTAssertEqual(try SentenceStore.load(from: url).pairs.last?.spoken?.id, original.id)
+    }
+
+    /// Run in Release with TEST_RUNNER_SUBVOX_PERF=1 and select only this test.
+    @MainActor func testSyntheticHistoryPerformance() async throws {
+        let environment = ProcessInfo.processInfo.environment
+        try XCTSkipUnless(environment["SUBVOX_PERF"] == "1" || environment["TEST_RUNNER_SUBVOX_PERF"] == "1")
+        let root = FileManager.default.temporaryDirectory.appending(path: "subvox-history-perf-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let url = root.appending(path: "sentences.json")
+        let requestedSize = (environment["SUBVOX_PERF_HISTORY"] ?? environment["TEST_RUNNER_SUBVOX_PERF_HISTORY"])
+            .flatMap(Int.init)
+        let sizes = requestedSize.map { [$0] } ?? [100, 500, 1000]
+        XCTAssertTrue(sizes.allSatisfy { $0 > 0 })
+        let clock = ContinuousClock()
+        let samples = (0...400).map {
+            MotionSample(t: 200 + Double($0) / 50,
+                         accel: (0.02 * sin(Double($0) / 4), 0, 0),
+                         rotation: (0.1 * cos(Double($0) / 4), 0, 0))
+        }
+        let prompt = SentencePrompt(text: String(repeating: "bee bob ", count: 8))
+        let words = (0..<16).map { index in
+            let start = 200 + Double(index) * 0.5
+            return TransferredMotionWord(word: index.isMultiple(of: 2) ? "bee" : "bob",
+                                         voicedStart: start, voicedEnd: start + 0.5,
+                                         silentStart: start, silentEnd: start + 0.5)
+        }
+        let alignment = MotionTransferResult(normalizedCost: 0.1, durationRatio: 1, path: [], words: words, warnings: [])
+        for count in sizes {
+            let session = RecordingSession(id: UUID(), directory: root, startUptime: 190, audioOffset: 0)
+            let pairs = (0..<count).map { _ in
+                var pair = SentencePair(visitID: UUID(), promptIDs: [prompt.id], text: prompt.text, role: .training)
+                pair.spoken = SentenceRecording(condition: .normal, samples: samples, cueStart: 200, cueEnd: 208)
+                pair.silent = SentenceRecording(condition: .silent, samples: samples, cueStart: 200, cueEnd: 208)
+                pair.recordingSessionID = session.id
+                pair.transcriptMatchRate = 1
+                pair.alignment = alignment
+                return pair
+            }
+            var activePair = SentencePair(visitID: UUID(), promptIDs: [prompt.id], text: prompt.text, role: .training)
+            activePair.recordingSessionID = session.id
+            activePair.transcriptMatchRate = 1
+            let data = SentenceTrainingData(prompts: [prompt], roles: [prompt.id: .training], pairs: pairs + [activePair])
+            try SentenceStore.save(data, to: url)
+            let workflow = SentenceTrainingWorkflow(storeURL: url)
+            try workflow.beginVisit(session: session, audioDevice: nil, timing: .comfortable,
+                                    presentation: .sentences, persistImmediately: false)
+            for iteration in 0..<3 {
+                var started = clock.now
+                let templates = workflow.data.derivedWords(role: .training, lexicon: lexicon)
+                let extraction = started.duration(to: clock.now)
+                XCTAssertEqual(templates.count, 16 * count)
+
+                let half = SentenceRecording(condition: .silent, samples: samples, cueStart: 200, cueEnd: 208)
+                started = clock.now
+                try workflow.saveCompletedHalf(half, pairID: activePair.id, session: session)
+                let checkpoint = started.duration(to: clock.now)
+                XCTAssertEqual(workflow.pairUses.count, count + 1)
+                XCTAssertEqual(workflow.pairUses[activePair.id]?.takes.last?.included, true)
+
+                // Queue an altered half-take, then use the same background persistence path
+                // as the recording flow. The result changes on every iteration.
+                var interrupted = half
+                interrupted.samples.removeSubrange(30..<45)
+                try workflow.saveCompletedHalf(interrupted, pairID: activePair.id, session: session, persistImmediately: false)
+                let check = PhoneCheckResult(language: "en", expectedPhones: ["b"], producedPhones: ["b"],
+                                             source: "synthetic", alignment: [], wordAgreement: Double(iteration) / 2,
+                                             phoneErrorRate: 0, trainable: true)
+                // While the asynchronous path writes, sample main-actor responsiveness.
+                // The last interval includes the synchronous cache refresh on resumption.
+                var lastBeat = clock.now
+                var maxGap = Duration.zero
+                let heartbeat = Task { @MainActor in
+                    while !Task.isCancelled {
+                        try? await Task.sleep(for: .milliseconds(2))
+                        let now = clock.now
+                        maxGap = max(maxGap, lastBeat.duration(to: now))
+                        lastBeat = now
+                    }
+                }
+                started = clock.now
+                await workflow.setPhoneCheck(check, for: activePair.id)
+                let asyncSave = started.duration(to: clock.now)
+                maxGap = max(maxGap, lastBeat.duration(to: clock.now))
+                heartbeat.cancel()
+                await heartbeat.value
+                XCTAssertTrue(workflow.storageReady)
+                XCTAssertTrue(workflow.pairUses[activePair.id]?.takes.last?.reason?.contains("Sensor gap") == true)
+                print("SUBVOX_PERF history=\(count) iteration=\(iteration) templates=\(extraction) checkpoint=\(checkpoint) async-save=\(asyncSave) max-main-gap=\(maxGap)")
+            }
+        }
     }
 }
