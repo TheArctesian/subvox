@@ -9,7 +9,6 @@ import numpy as np
 from . import VERSION
 from .data import MIN_TRANSCRIPT_MATCH, prepare, load_dataset, atomic_json, digest, resample, features, words, pronunciations, group_id
 from .decoding import Lexicon, BigramLM, decode, edit_alignment, homophone_equal, prior_correct, summary, without_separator
-from . import evaluation
 
 
 def prediction(model, checkpoint, language, row):
@@ -74,6 +73,7 @@ def score_rows(rows, language, transitions):
 def ranking_fields(model, checkpoint, row, excluded_groups, frames_per_phone, language):
     """Forced choice (raw and prior-corrected), duration floor, frame alignment pairs and
     top-k frame recall for one held-out utterance."""
+    from . import evaluation
     from .network import emission
     lp,tokens,_,_,_=emission(model,checkpoint,row)
     index={t:i for i,t in enumerate(tokens)}
@@ -113,6 +113,7 @@ def ranking_fields(model, checkpoint, row, excluded_groups, frames_per_phone, la
 
 
 def evaluate_model(model_path, dataset_path, fold, output=None, which="selected"):
+    from . import evaluation
     from .network import load_model
     name="development-report.json" if which=="selected" else "development-report-final-epoch.json"
     output=Path(output) if output else Path(model_path)/name
@@ -216,6 +217,7 @@ def raw_dtw_baseline(examples, folds):
 
 def full_summary(rows, tokens):
     """Decoding summary plus ranking measurements and the prior-corrected phoneme error."""
+    from . import evaluation
     result=summary(rows)
     result.update(evaluation.ranking_summary(rows,tokens,"fc"))
     result.update(evaluation.ranking_summary(rows,None,"fcp"))
