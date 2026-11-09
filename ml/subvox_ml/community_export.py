@@ -113,7 +113,7 @@ def take_rows(recording, origin, take_id, readings):
     return motion, camera_table, coverage, reason
 
 
-def export_sessions(root, output, contributor, consent_version, prompts_dir=None, app_version="0.1.0", prompts_version=1, skip=()):
+def export_sessions(root, output, contributor, consent_version, prompts_dir=None, app_version="0.1.0", prompts_version=1, skip=(), automatic_grant=None):
     """Writes one folder per recording session that has community takes; returns their paths."""
     import pyarrow as pa
     import pyarrow.parquet as pq
@@ -121,15 +121,24 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
         raise ValueError("Contributor ID must be 2-64 letters, digits, '.', '_' or '-'")
     index, heldout = load_prompt_index(prompts_dir or find_prompts_dir())
     data = json.loads((Path(root) / "sentence-training.json").read_text())
-    devices = {v["id"]: v.get("motionDevice") for v in data.get("visits", [])}
+    visits = {v["id"]: v for v in data.get("visits", [])}
+    devices = {key: v.get("motionDevice") for key, v in visits.items()}
     kinds = {p_id: p.get("kind", "sentence") for p in data.get("prompts", []) for p_id in [prompt_identity(p["text"])]}
     speaker = data.get("speaker") or {}
     sessions = {}
     for pair in data.get("pairs", []):
+        if automatic_grant is not None:
+            visit = visits.get(pair.get("visitID"), {})
+            if (visit.get("automaticContributionID") != automatic_grant or visit.get("endedAt") is None
+                    or visit.get("recordingSessionID") != pair.get("recordingSessionID")
+                    or pair.get("review") == "Excluded"):
+                continue
         ids = pair.get("promptIDs") or []
         if len(ids) != 1 or not pair.get("recordingSessionID") or pair.get("role") == "Final test":
             continue
         if kinds.get(ids[0]) not in ("community", "calibration") or ids[0] not in index or ids[0] in heldout:
+            continue
+        if not any((pair.get(key) or {}).get("samples") for key in ("spoken", "silent")):
             continue
         sessions.setdefault(pair["recordingSessionID"], []).append(pair)
     written = []
@@ -367,7 +376,7 @@ def without_takes(folder, drop, destination):
     return destination
 
 
-def upload_session(folder, repo, token, drop=(), pr=None, prompts_dir=None, api=None):
+def upload_session(folder, repo, token, drop=(), pr=None, prompts_dir=None, api=None, automatic=False):
     """One commit per session, opened as a pull request on `repo` (a dataset). Re-uploading with
     `pr` adds to that PR's `refs/pr/N` branch instead of opening a duplicate. The files are checked
     against the schema again right before sending."""
@@ -388,6 +397,15 @@ def upload_session(folder, repo, token, drop=(), pr=None, prompts_dir=None, api=
         message = f"Add Subvox session {session['session_id'][:8]} ({session['takes']} takes)"
         description = (f"Contributed with Subvox {session['app_version']}. Schema v{session['schema_version']}, "
                        f"{session['airpods_model'] or 'unknown headphones'}, consent {session['consent_version']}.")
+        if automatic and pr is None:
+            # Recover the PR if the previous request reached the Hub but the app never got its receipt.
+            message = f"Add Subvox session {session['session_id']} ({session['takes']} takes)"
+            marker = f"Add Subvox session {session['session_id']} ("
+            for discussion in api.get_repo_discussions(repo, repo_type="dataset", author=session["contributor"],
+                                                       discussion_type="pull_request"):
+                if discussion.title.startswith(marker):
+                    return dict(session_id=session["session_id"], takes=session["takes"], pr_url=discussion.url,
+                                pr_num=discussion.num, commit=None)
         if pr is not None:
             info = api.create_commit(repo_id=repo, repo_type="dataset", operations=operations, commit_message=message,
                                      revision=f"refs/pr/{int(pr)}")

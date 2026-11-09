@@ -41,6 +41,46 @@ final class AppModel {
     let contribution = ContributionSettings()
     let uploader = CommunityUploader()
     var showContribute = false
+    @ObservationIgnored private var automaticSharingTimer: Task<Void, Never>?
+    @ObservationIgnored private var automaticSharingRunning = false
+
+    var automaticSharingGrant: ContributionSettings.AutomaticGrant? {
+        contribution.activeAutomaticGrant(for: huggingFace.username)
+    }
+
+    func stopAutomaticSharing() {
+        contribution.stopAutomaticSharing()
+        if automaticSharingRunning { uploader.stop() }
+    }
+
+    func sendAutomaticContributions() async {
+        guard started, !automaticSharingRunning, !uploader.busy, let grant = automaticSharingGrant else { return }
+        let visits = Set(sentenceTraining.data.visits.lazy.filter {
+            $0.automaticContributionID == grant.id && $0.endedAt != nil
+        }.map(\.id))
+        guard !visits.isEmpty else { return }
+        let handled = Set(uploader.items.filter { $0.status == .uploaded || ($0.takes > 0 && $0.dropped.count >= $0.takes) }.map(\.id))
+        let hasPending = sentenceTraining.data.pairs.contains { pair in
+            guard visits.contains(pair.visitID), pair.role != .finalTest, pair.review != .excluded,
+                  pair.promptIDs.count == 1, sentenceTraining.community.prompt(pair.promptIDs[0]) != nil,
+                  let session = pair.recordingSessionID,
+                  pair.spoken?.samples.isEmpty == false || pair.silent?.samples.isEmpty == false else { return false }
+            return !handled.contains(CommunityUploader.publicSessionID(session))
+        }
+        guard hasPending else { return }
+        automaticSharingRunning = true
+        defer { automaticSharingRunning = false }
+        guard let token = try? await huggingFace.accessToken(),
+              automaticSharingGrant == grant, !Task.isCancelled,
+              let sessions = await uploader.prepare(contributor: grant.username, automatic: grant),
+              automaticSharingGrant == grant, !Task.isCancelled else { return }
+        let pending = Set(uploader.pending.map(\.id))
+        let ids = sessions.map(\.id).filter { pending.contains($0) }
+        guard !ids.isEmpty else { return }
+        await uploader.sendReviewed(ids, repo: grant.repo, token: token, automatic: true) {
+            self.started && self.automaticSharingGrant == grant
+        }
+    }
     var trainMode: TrainMode = .reading
     /// Bumped by Practice › Start (⌘↩); the visible practice page starts its round.
     var startRequest = 0
@@ -95,7 +135,7 @@ final class AppModel {
         representation.isAcquiring || sequenceLearning.isAcquiring || observability.isAcquiring
     }
     var canRestartInterface: Bool {
-        !navigationLocked && !recorder.isRecording && !uploader.busy &&
+        !navigationLocked && !recorder.isRecording && !uploader.busy && !automaticSharingRunning &&
         !sentenceTraining.isBusy && !signalCheck.isBusy && !representation.isBusy &&
         !sequenceLearning.isBusy && !observability.isBusy
     }
@@ -166,6 +206,9 @@ final class AppModel {
             self.sentenceTraining.excludedCollectionGroups=Set((representation.study?.training ?? []).map(\.id)+(representation.study?.evaluation ?? []).map(\.id))
         }
         if !researchTools { self.sentenceTraining.readingSource = .community }
+        self.sentenceTraining.onCommunitySessionSaved = { [weak self] in
+            Task { await self?.sendAutomaticContributions() }
+        }
         self.sentenceTraining.onTrainingChanged = { [weak self] in self?.rebuildDecoder() }
         self.sentenceTraining.onPracticeProcessed = { [weak self] id in await self?.checkPhones(id) }
         self.sentenceTraining.playReference = { [weak self] text, language in await self?.referenceSpeaker.speak(text, language: language) }
@@ -194,9 +237,18 @@ final class AppModel {
         motion.start()
         audio.refreshDevices()
         installKeyMonitor()
+        automaticSharingTimer = Task { [weak self] in
+            while !Task.isCancelled {
+                await self?.sendAutomaticContributions()
+                do { try await Task.sleep(for: .seconds(60)) }
+                catch { return }
+            }
+        }
     }
 
     func prepareForTermination() {
+        started = false
+        automaticSharingTimer?.cancel()
         uploader.stop()
         observability.stop()
         sequenceLearning.stop()
@@ -251,7 +303,8 @@ final class AppModel {
         guard motion.status == .streaming, localWhisper.isConfigured || sentenceTraining.readingSource == .community, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
         referenceSpeaker.stop()
         sentenceTraining.start(audio: audio, recorder: recorder, whisper: localWhisper,
-            canRecord: { [weak self] in self?.motion.status == .streaming }, repairs: repairs, retry: retry)
+            canRecord: { [weak self] in self?.motion.status == .streaming }, repairs: repairs, retry: retry,
+            automaticContributionID: automaticSharingGrant?.id)
     }
 
     func startSignalCheck(againstReference: Bool = false, controlled: Bool = false) {

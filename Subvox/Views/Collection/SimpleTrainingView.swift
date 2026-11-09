@@ -97,16 +97,21 @@ struct SimpleTrainingView: View {
 
 /// What a recording saves, where, and what leaves the Mac: one line, with the details a click away.
 struct PrivacySummary: View {
+    @Environment(AppModel.self) private var model
     @State private var details = false
     var body: some View {
         HStack(spacing: 8) {
-            Label("Recordings stay on this Mac until you share them. No video or photos.", systemImage: "lock.shield").font(.callout)
+            if model.automaticSharingGrant != nil {
+                Label("Automatic sharing is on for community sessions.", systemImage: "arrow.up.circle").font(.callout)
+            } else {
+                Label("Recordings stay on this Mac until you share them. No video or photos.", systemImage: "lock.shield").font(.callout)
+            }
             Button("What's saved?") { details.toggle() }.buttonStyle(.link)
                 .popover(isPresented: $details) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("What's saved, and where").font(.headline)
                         Text("On this Mac: your voice as audio, AirPods head motion, and numeric lip and jaw points from the camera. Never video or photos.")
-                        Text("Speech recognition runs on this Mac. Nothing leaves it unless you press Send in Share Recordings, and audio is never shared.")
+                        Text("Speech recognition and audio stay on this Mac. You control whether community sessions are submitted in Share Recordings.")
                         Text(SentenceStore.directory.path).font(.callout.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
                         Button("Show in Finder") { NSWorkspace.shared.activateFileViewerSelecting([SentenceStore.directory]) }
                     }

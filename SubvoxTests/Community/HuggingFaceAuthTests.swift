@@ -78,9 +78,13 @@ final class HuggingFaceAuthTests: XCTestCase {
         let old = HuggingFaceToken(accessToken: "old", refreshToken: "r1", expiresAt: Date(timeIntervalSince1970: 100), scope: nil, username: "stephenokita")
         try store.save(JSONEncoder().encode(old))
         StubProtocol.requests = []
-        StubProtocol.handler = { _ in (200, Data(#"{"access_token":"new","expires_in":28800}"#.utf8)) }
         let account = HuggingFaceAccount(store: store, session: URLSession(configuration: configuration), open: { _ in })
         XCTAssertEqual(account.username, "stephenokita")
+        StubProtocol.handler = { _ in (503, Data()) }
+        do { _ = try await account.accessToken(now: Date(timeIntervalSince1970: 200)); XCTFail("expected temporary failure") }
+        catch { XCTAssertEqual(error as? HuggingFaceOAuth.Failure, .http(503, "")) }
+        XCTAssertEqual(account.username, "stephenokita", "A temporary failure keeps credentials available for background retry")
+        StubProtocol.handler = { _ in (200, Data(#"{"access_token":"new","expires_in":28800}"#.utf8)) }
         let token = try await account.accessToken(now: Date(timeIntervalSince1970: 200))
         XCTAssertEqual(token, "new")
         XCTAssertTrue(String(decoding: StubProtocol.requests.last?.httpBody ?? Data(), as: UTF8.self).contains("grant_type=refresh_token"))
@@ -177,6 +181,27 @@ final class CommunityUploaderTests: XCTestCase {
         XCTAssertEqual(uploader.status, "1 sent · 0 failed")
         XCTAssertNil(uploader.error)
         XCTAssertEqual(attempted, ["first", "second", "first"])
+    }
+
+    @MainActor func testAutomaticSharingRequiresItsOwnAccountAndDatasetGrant() throws {
+        let suite = "subvox-test-\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let settings = ContributionSettings(defaults: defaults)
+        settings.mode = .huggingFace
+        settings.giveConsent()
+        XCTAssertNil(settings.activeAutomaticGrant(for: "alice"))
+        settings.enableAutomaticSharing(for: "alice")
+        let first = try XCTUnwrap(settings.activeAutomaticGrant(for: "alice"))
+        XCTAssertNil(settings.activeAutomaticGrant(for: "bob"))
+        XCTAssertEqual(ContributionSettings(defaults: defaults).activeAutomaticGrant(for: "alice"), first)
+        settings.repo = "owner/new-dataset"
+        XCTAssertNil(settings.activeAutomaticGrant(for: "alice"))
+        settings.enableAutomaticSharing(for: "alice")
+        XCTAssertNotEqual(settings.activeAutomaticGrant(for: "alice")?.id, first.id)
+        settings.mode = .local
+        settings.mode = .huggingFace
+        XCTAssertNil(settings.activeAutomaticGrant(for: "alice"))
     }
 
     @MainActor func testSharingDefaultsToLocalAndConsentIsVersioned() {

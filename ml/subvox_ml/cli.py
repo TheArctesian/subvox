@@ -476,8 +476,9 @@ def main():
     p=sub.add_parser("export-community");p.add_argument("--root",required=True);p.add_argument("--output",required=True)
     p.add_argument("--contributor",required=True);p.add_argument("--consent-version",required=True);p.add_argument("--prompts-dir");p.add_argument("--app-version",default="0.1.0")
     p.add_argument("--skip",default="",help="comma-separated session IDs already shared")
+    p.add_argument("--automatic-grant");p.add_argument("--manifest")
     p=sub.add_parser("upload-community");p.add_argument("--session",required=True);p.add_argument("--repo",required=True);p.add_argument("--output",required=True)
-    p.add_argument("--drop",default="");p.add_argument("--pr",type=int);p.add_argument("--prompts-dir")
+    p.add_argument("--drop",default="");p.add_argument("--pr",type=int);p.add_argument("--prompts-dir");p.add_argument("--automatic",action="store_true")
     p=sub.add_parser("validate-community");p.add_argument("--session",required=True);p.add_argument("--prompts-dir")
     p=sub.add_parser("prepare-teachers");p.add_argument("--dataset",required=True);p.add_argument("--base-run",required=True);p.add_argument("--output",required=True)
     p=sub.add_parser("phones");p.add_argument("--text",required=True);p.add_argument("--language",required=True);p.add_argument("--output")
@@ -523,13 +524,14 @@ def main():
     elif args.command=="export-community":
         from .community_export import export_sessions
         result=[str(p) for p in export_sessions(args.root,args.output,args.contributor,args.consent_version,args.prompts_dir,args.app_version,
-                                                skip={s for s in args.skip.split(",") if s})]
+                                                skip={s for s in args.skip.split(",") if s}, automatic_grant=args.automatic_grant)]
+        if args.manifest: atomic_json(Path(args.manifest), result)
     elif args.command=="upload-community":
         import os
         from .community_export import upload_session
         token=os.environ.get("SUBVOX_HF_TOKEN")
         if not token:raise SystemExit("Set SUBVOX_HF_TOKEN; tokens are never passed as arguments")
-        result=upload_session(args.session,args.repo,token,[d for d in args.drop.split(",") if d],args.pr,args.prompts_dir)
+        result=upload_session(args.session,args.repo,token,[d for d in args.drop.split(",") if d],args.pr,args.prompts_dir,automatic=args.automatic)
         atomic_json(Path(args.output),result)
     elif args.command=="validate-community":
         from .community_export import validate_session,load_prompt_index,find_prompts_dir

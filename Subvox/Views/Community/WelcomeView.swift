@@ -14,7 +14,7 @@ struct WelcomeView: View {
         switch model.contribution.mode {
         case .local: true
         case .anonymous: false
-        case .huggingFace: model.huggingFace.username != nil && model.contribution.hasConsent
+        case .huggingFace: model.automaticSharingGrant != nil || (model.huggingFace.username != nil && model.contribution.hasConsent)
         }
     }
 
