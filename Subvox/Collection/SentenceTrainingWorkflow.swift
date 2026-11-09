@@ -36,12 +36,13 @@ final class SentenceTrainingWorkflow {
     }
     var continueTitle: String {
         if index + 1 >= total { return String(localized: "Finish round") }
-        if currentKind?.isLiterature == true {
+        if recordsLiteratureInPasses {
             return currentCondition == .silent && index + 1 == total / 2
                 ? String(localized: "Continue to spoken pass") : String(localized: "Next section")
         }
         return currentCondition == .normal ? String(localized: "Continue to silent take") : String(localized: "Next prompt")
     }
+    private(set) var recordsLiteratureInPasses = false
     private(set) var lastPracticePlan: [[SentencePrompt]] = []
     private(set) var error: String?
     private(set) var takeWarning: String?
@@ -518,6 +519,7 @@ final class SentenceTrainingWorkflow {
         let timing = pace
         let cueTimes = batch.map { cueDuration($0.map(\.text).joined(separator: " ")) }
         let order = Self.takeOrder(groupCount: batch.count, conditions: conditions, fullPiece: fullPiece)
+        recordsLiteratureInPasses = fullPiece
         phase = .preparing; error = nil; index = 0; total = order.count
         task = Task {
             defer {if activeRecordingID==nil {camera.stop();cameraRecorder=nil;cameraReadings=[]}}
