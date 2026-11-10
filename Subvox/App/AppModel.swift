@@ -10,10 +10,11 @@ struct DecodedWord: Identifiable, Hashable {
 @MainActor @Observable
 final class AppModel {
     enum Screen: String, CaseIterable, Identifiable {
-        case train = "Train", decode = "Try model", devices = "Devices"
+        case home = "Home", train = "Train", decode = "Try model", devices = "Devices"
         var id: String { rawValue }
         var symbol: String {
             switch self {
+            case .home: "house"
             case .train: "text.book.closed"
             case .decode: "text.bubble"
             case .devices: "waveform.path.ecg"
@@ -171,7 +172,6 @@ final class AppModel {
     var onboarded = UserDefaults.standard.bool(forKey: "ui.onboarded") {
         didSet { UserDefaults.standard.set(onboarded, forKey: "ui.onboarded") }
     }
-    var visibleScreens: [Screen] { researchTools ? Screen.allCases : [.train, .devices] }
     let sentenceTraining: SentenceTrainingWorkflow
     var backgroundActivity: String? {
         if sentenceTraining.phase == .preparing { return String(localized: "Preparing recording…") }
@@ -204,7 +204,23 @@ final class AppModel {
         showSequenceLearning = showModels
         screen = .train
     }
-    var screen: Screen = .train {
+    func openHome() {
+        guard !navigationLocked else { return }
+        closeOverlays()
+        screen = .home
+    }
+
+    func openPractice(_ mode: TrainMode) {
+        guard !navigationLocked else { return }
+        if mode != trainMode {
+            closeOverlays()
+            referenceSpeaker.stop()
+        }
+        trainMode = mode
+        screen = .train
+    }
+
+    var screen: Screen = .home {
         didSet {
             if oldValue != screen { referenceSpeaker.stop() }
             if oldValue == .decode && screen != .decode {

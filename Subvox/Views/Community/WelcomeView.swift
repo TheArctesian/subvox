@@ -118,9 +118,9 @@ struct WelcomeView: View {
                     model.contribution.mode = .huggingFace
                     model.contribution.enableAutomaticSharing(for: username)
                 }
-                model.trainMode = .reading
+                model.openHome()
                 model.onboarded = true
-            } label: { Text("Start recording").frame(minWidth: 140) }
+            } label: { Text("Continue to Home").frame(minWidth: 140) }
                 .buttonStyle(.borderedProminent).controlSize(.large).keyboardShortcut(.defaultAction)
                 .disabled(!canStart)
             Text(!signedIn ? "Sign in to continue." : !shareAgreed ? "Confirm both statements to continue." : "You can stop sharing in Subvox Settings.")
