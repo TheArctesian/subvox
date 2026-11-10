@@ -1,3 +1,4 @@
+import AVFoundation
 import XCTest
 @testable import Subvox
 
@@ -104,6 +105,46 @@ final class TrainingAdvanceTests: XCTestCase {
         let drill = SentenceTrainingWorkflow.takeOrder(groupCount: 2, conditions: [.normal, .silent], fullPiece: false)
         XCTAssertEqual(drill.map(\.group), [0, 0, 1, 1])
         XCTAssertEqual(drill.map(\.condition), [.normal, .silent, .normal, .silent])
+    }
+
+    @MainActor
+    func testInvictusStanzaTakesAreAvailableAfterReopening() throws {
+        let poem = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == "invictus" })
+        let stanzas = poem.parts(language: .en)
+        XCTAssertEqual(stanzas.map(\.count), [4, 4, 4, 4])
+        let root = FileManager.default.temporaryDirectory.appending(path: "invictus-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let store = root.appending(path: "sentences.json")
+        let prompts = stanzas.map { $0.map { SentencePrompt($0, kind: .poetry, language: .en) } }
+        var data = SentenceTrainingData()
+        data.addPractice(prompts.flatMap { $0 })
+        try SentenceStore.save(data, to: store)
+
+        let audioURL = root.appending(path: "audio.caf")
+        let format = try XCTUnwrap(AVAudioFormat(standardFormatWithSampleRate: 8_000, channels: 1))
+        let buffer = try XCTUnwrap(AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 80_000))
+        buffer.frameLength = buffer.frameCapacity
+        do {
+            let audio = try AVAudioFile(forWriting: audioURL, settings: format.settings)
+            try audio.write(from: buffer)
+        }
+
+        let workflow = SentenceTrainingWorkflow(storeURL: store)
+        let session = RecordingSession(id: UUID(), directory: root, startUptime: 100, audioOffset: 0.5)
+        let visit = try workflow.beginVisit(session: session, audioDevice: nil, timing: .comfortable, presentation: .sentences)
+        let pairs = try prompts.map { try workflow.beginPair(prompts: $0, visit: visit, session: session) }
+        for (index, pair) in pairs.enumerated() {
+            let start = 101.5 + Double(index * 2)
+            let spoken = SentenceRecording(condition: .normal, samples: [], cueStart: start, cueEnd: start + 1)
+            try workflow.saveCompletedHalf(spoken, pairID: pair.id, session: session)
+        }
+        let reopened = SentenceTrainingWorkflow(storeURL: store)
+        for (index, stanza) in stanzas.enumerated() {
+            let take = try XCTUnwrap(SpokenTakePlayer.latestPoetryTake(for: stanza, language: .en, in: reopened.data.pairs))
+            XCTAssertEqual(take.id, pairs[index].id)
+            XCTAssertEqual(take.clip.url, audioURL)
+            XCTAssertEqual(take.clip.range, Double(1 + index * 2)...Double(2 + index * 2))
+        }
     }
 
     @MainActor
