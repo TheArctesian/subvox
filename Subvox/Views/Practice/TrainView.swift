@@ -245,6 +245,7 @@ private struct ReferenceButton: View {
     var compact = true
     var phonetic = false
     var subject: String?
+    var listenTitle: LocalizedStringKey = "Listen"
 
     var body: some View {
         let speaker = model.referenceSpeaker
@@ -264,7 +265,7 @@ private struct ReferenceButton: View {
                 // Both titles share one width so neighbours don't shift when playback starts.
                 Label {
                     ZStack {
-                        Text("Listen").opacity(active ? 0 : 1)
+                        Text(listenTitle).opacity(active ? 0 : 1)
                         Text("Stop").opacity(active ? 1 : 0)
                     }
                 } icon: {
@@ -500,6 +501,7 @@ struct LiteraturePracticeView: View {
     @State private var startPart = 0
     @State private var search = ""
     @State private var showHistory = false
+    @State private var playback = SpokenTakePlayer()
     @AppStorage("practice.showIPA") private var showIPA = true
 
     private var pieces: [PracticeCorpus.Piece] {
@@ -512,9 +514,10 @@ struct LiteraturePracticeView: View {
     var body: some View {
         let language = model.language
         let isSpeech = kind == .speech
+        let isInvictus = piece?.id == "invictus"
         let parts = piece.map { $0.parts(language: language) } ?? []
         let partKey = "\(language.tag)/\(piece?.id ?? "")"
-        let partIndex = parts.indices.contains(startPart) ? startPart : 0
+        let partIndex = !isInvictus && parts.indices.contains(startPart) ? startPart : 0
         let visiblePieces = search.isEmpty ? pieces : pieces.filter {
             $0.title(language).localizedStandardContains(search) || $0.author(language).localizedStandardContains(search)
         }
@@ -530,7 +533,7 @@ struct LiteraturePracticeView: View {
                      startTitle: startTitle,
                      groups: groups,
                      mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false) {
-            if parts.count > 1 {
+            if parts.count > 1 && !isInvictus {
                 Picker("Start at", selection: $startPart) {
                     ForEach(parts.indices, id: \.self) { index in
                         Text("\(index + 1) of \(parts.count) · \(String(parts[index].first?.text(language).prefix(30) ?? ""))").tag(index)
@@ -566,8 +569,17 @@ struct LiteraturePracticeView: View {
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
                             ReferenceButton(text: previewLines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false,
                                             subject: String(localized: "the full text"))
-                            ForEach(previewLines.indices, id: \.self) { index in
-                                PracticeLineView(line: previewLines[index], language: language, showIPA: showIPA)
+                            if isInvictus {
+                                if let error = playback.error {
+                                    Text(error).font(.callout).foregroundStyle(.orange)
+                                }
+                                ForEach(parts.indices, id: \.self) { index in
+                                    stanza(parts[index], number: index + 1, language: language)
+                                }
+                            } else {
+                                ForEach(previewLines.indices, id: \.self) { index in
+                                    PracticeLineView(line: previewLines[index], language: language, showIPA: showIPA)
+                                }
                             }
                             Text(model.personalPracticePieces.contains(where: { $0.id == piece.id })
                                  ? "Personal library" : "Public domain in the UK and US.")
@@ -581,12 +593,39 @@ struct LiteraturePracticeView: View {
             }
         }
         .onAppear { if selection == nil { selection = SavedSelection.get(selectionKey, model.language) } }
-        .onChange(of: partKey) { startPart = 0 }
+        .modifier(SpokenPlaybackLifecycle(playback: playback))
+        .onChange(of: partKey) { startPart = 0; playback.stop() }
         .onChange(of: selection) { SavedSelection.set(selectionKey, model.language, selection) }
         .onChange(of: model.language) {
             selection = SavedSelection.get(selectionKey, model.language)
             search = ""
         }
+    }
+
+    private func stanza(_ lines: [PracticeCorpus.Line], number: Int, language: AppLanguage) -> some View {
+        let take = SpokenTakePlayer.latestPoetryTake(for: lines, language: language,
+                                                    in: model.sentenceTraining.data.pairs)
+        let isPlaying = take != nil && take?.id == playback.playing
+        return VStack(alignment: .leading, spacing: 8) {
+            Divider()
+            Text("Stanza \(number)").font(.headline).accessibilityAddTraits(.isHeader)
+            HStack {
+                ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: "\n"),
+                                language: language, compact: false,
+                                subject: String(localized: "stanza \(number)"), listenTitle: "Hear example")
+                Button(isPlaying ? "Stop" : "Play my take", systemImage: isPlaying ? "stop.fill" : "play.fill") {
+                    guard let take else { return }
+                    model.referenceSpeaker.stop()
+                    playback.toggle(take.clip, id: take.id)
+                }
+                .disabled(take == nil || !model.sentenceTraining.canStartRecording)
+                .help(take == nil ? "Record this stanza aloud to hear your take." : "Play your latest spoken take")
+            }
+            ForEach(lines.indices, id: \.self) { index in
+                PracticeLineView(line: lines[index], language: language, showIPA: showIPA)
+            }
+        }
+        .padding(.vertical, 4)
     }
 
     private func pieceRow(_ p: PracticeCorpus.Piece, selected: Bool) -> some View {

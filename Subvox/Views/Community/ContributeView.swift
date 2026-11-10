@@ -1,5 +1,4 @@
 import AppKit
-import AVFoundation
 import SwiftUI
 
 struct ContributeView: View {
@@ -219,28 +218,14 @@ struct ContributeView: View {
 struct LocalRecordingHistory: View {
     @Environment(AppModel.self) private var model
     @State var expanded = false
-    @State private var player: AVPlayer?
-    @State private var playing: UUID?
-    @State private var playbackError: String?
+    @State private var playback = SpokenTakePlayer()
 
     var body: some View {
         DisclosureGroup("Saved on this Mac", isExpanded: $expanded.motion(.disclosure)) {
             if expanded { recordings }
         }
-        .onChange(of: expanded) { if !expanded { stopPlayback() } }
-        .onChange(of: model.sentenceTraining.canStartRecording) {
-            if !model.sentenceTraining.canStartRecording { stopPlayback() }
-        }
-        .onDisappear(perform: stopPlayback)
-        .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { notification in
-            if notification.object as? AVPlayerItem === player?.currentItem { stopPlayback() }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemFailedToPlayToEndTime)) { notification in
-            if notification.object as? AVPlayerItem === player?.currentItem {
-                stopPlayback()
-                playbackError = String(localized: "The saved audio could not be played.")
-            }
-        }
+        .onChange(of: expanded) { if !expanded { playback.stop() } }
+        .modifier(SpokenPlaybackLifecycle(playback: playback))
     }
 
     private var recordings: some View {
@@ -249,18 +234,18 @@ struct LocalRecordingHistory: View {
         let uploads = Dictionary(model.uploader.items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         return VStack(alignment: .leading, spacing: 8) {
             if pairs.isEmpty { Text("Your saved takes will appear here.").foregroundStyle(.secondary) }
-            if let playbackError { Text(playbackError).font(.caption).foregroundStyle(.orange) }
+            if let playbackError = playback.error { Text(playbackError).font(.caption).foregroundStyle(.orange) }
             ForEach(pairs.prefix(30)) { pair in
                 let title = title(for: pair)
                 VStack(alignment: .leading, spacing: 3) {
                     HStack {
                         Text(title ?? pair.text).font(.headline).lineLimit(2)
                         Spacer()
-                        if let clip = spokenClip(for: pair) {
-                            Button(playing == pair.id ? "Stop" : "Play spoken take",
-                                   systemImage: playing == pair.id ? "stop.fill" : "play.fill") {
-                                if playing == pair.id { stopPlayback() }
-                                else { play(clip.url, range: clip.range, id: pair.id) }
+                        if let clip = SpokenTakePlayer.clip(for: pair) {
+                            Button(playback.playing == pair.id ? "Stop" : "Play spoken take",
+                                   systemImage: playback.playing == pair.id ? "stop.fill" : "play.fill") {
+                                model.referenceSpeaker.stop()
+                                playback.toggle(clip, id: pair.id)
                             }
                             .disabled(!workflow.canStartRecording)
                         }
@@ -323,41 +308,6 @@ struct LocalRecordingHistory: View {
         }
     }
 
-    private func spokenClip(for pair: SentencePair) -> (url: URL, range: ClosedRange<Double>)? {
-        guard let spoken = pair.spoken, let directory = pair.directory,
-              let sessionStart = pair.sessionStartUptime, let audioOffset = pair.audioOffset else { return nil }
-        let origin = sessionStart + audioOffset
-        let start = spoken.cueStart - origin
-        let end = spoken.cueEnd - origin
-        let url = URL(fileURLWithPath: directory).appending(path: "audio.caf")
-        guard start.isFinite, end.isFinite, start >= 0, end > start,
-              FileManager.default.isReadableFile(atPath: url.path) else { return nil }
-        return (url, start...end)
-    }
-
-    private func play(_ url: URL, range: ClosedRange<Double>, id: UUID) {
-        stopPlayback()
-        playbackError = nil
-        let item = AVPlayerItem(url: url)
-        item.forwardPlaybackEndTime = CMTime(seconds: range.upperBound, preferredTimescale: 600)
-        let next = AVPlayer(playerItem: item)
-        player = next
-        playing = id
-        next.seek(to: CMTime(seconds: range.lowerBound, preferredTimescale: 600),
-                  toleranceBefore: .zero, toleranceAfter: .zero) { finished in
-            Task { @MainActor in
-                guard player === next else { return }
-                if finished { next.play() }
-                else { stopPlayback(); playbackError = String(localized: "The saved audio could not be played.") }
-            }
-        }
-    }
-
-    private func stopPlayback() {
-        player?.pause()
-        player = nil
-        playing = nil
-    }
 }
 
 /// Sharing mode, Hugging Face sign-in and consent. Shown on first launch and in Settings.
