@@ -16,18 +16,23 @@ struct PracticeHomeView: View {
 
                 HStack(spacing: 32) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Reading").font(.title.weight(.semibold)).accessibilityAddTraits(.isHeader)
-                        Text("Read short passages aloud and silently with your AirPods.")
+                        Text("Speech and poetry").font(.title.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                        Text("Mouth a piece silently, then read it aloud.")
                             .foregroundStyle(.secondary)
-                        Button("Open Reading", systemImage: TrainMode.reading.symbol) {
-                            model.openPractice(.reading)
+                        HStack(spacing: 12) {
+                            Button("Open Speech", systemImage: TrainMode.speech.symbol) {
+                                model.openPractice(.speech)
+                            }
+                            Button("Open Poetry", systemImage: TrainMode.poetry.symbol) {
+                                model.openPractice(.poetry)
+                            }
                         }
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .padding(.top, 4)
                     }
                     Spacer()
-                    Image(systemName: "waveform")
-                        .font(.system(size: 78, weight: .light))
+                    Image(systemName: "text.quote")
+                        .font(.system(size: 66, weight: .light))
                         .foregroundStyle(Color.accentColor)
                         .accessibilityHidden(true)
                 }
@@ -37,9 +42,8 @@ struct PracticeHomeView: View {
 
                 HStack(alignment: .top, spacing: 32) {
                     VStack(alignment: .leading, spacing: 0) {
-                        sectionTitle("Speech and poetry")
-                        practiceRow(.speech, detail: "Practise a speech from the library")
-                        practiceRow(.poetry, detail: "Read a poem in two passes")
+                        sectionTitle("Reading practice")
+                        practiceRow(.reading, detail: "Read short passages with your AirPods")
                         practiceRow(.free, detail: "Practise with your own text")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

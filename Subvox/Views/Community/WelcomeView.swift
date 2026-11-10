@@ -15,19 +15,38 @@ struct WelcomeView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                header.padding(.bottom, 8)
-                WelcomeStep(number: 1, title: "Sign in with Hugging Face", done: signedIn, enabled: true) {
-                    Text("Your recordings are contributed to the public dataset under your Hugging Face account.")
-                        .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
-                    HuggingFaceSignInView()
+            VStack(alignment: .leading, spacing: 24) {
+                header
+                Divider()
+                HStack(alignment: .top, spacing: 32) {
+                    VStack(alignment: .leading, spacing: 20) {
+                        WelcomeStep(number: 1, title: "Sign in with Hugging Face", done: signedIn, enabled: true) {
+                            HuggingFaceSignInView()
+                        }
+                        WelcomeStep(number: 2, title: "Your languages", done: false, enabled: true) { languages }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    VStack(alignment: .leading, spacing: 20) {
+                        WelcomeStep(number: 3, title: "Share your recordings", done: signedIn && shareAgreed, enabled: signedIn) { sharing }
+                        DisclosureGroup("Recording setup") { requirements.padding(.top, 10) }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                WelcomeStep(number: 2, title: "Your languages", done: true, enabled: true) { languages }
-                WelcomeStep(number: 3, title: "Share your recordings", done: signedIn && shareAgreed, enabled: signedIn) { sharing }
-                requirements
-                footer
             }
-            .frame(maxWidth: 640, alignment: .leading).padding(.horizontal, 40).padding(.vertical, 48).frame(maxWidth: .infinity)
+            .frame(maxWidth: 880, alignment: .leading)
+            .padding(.horizontal, 36).padding(.vertical, 28)
+            .frame(maxWidth: .infinity)
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack(spacing: 0) {
+                Divider()
+                footer
+                    .frame(maxWidth: 880)
+                    .padding(.horizontal, 36).padding(.vertical, 14)
+                    .frame(maxWidth: .infinity)
+            }
+            .background(.bar)
         }
         .background(Color(nsColor: .windowBackgroundColor))
         .onAppear { model.contribution.mode = .huggingFace }
@@ -40,9 +59,9 @@ struct WelcomeView: View {
                 .frame(width: 64, height: 64).background(Color.accentColor.gradient, in: RoundedRectangle(cornerRadius: 16))
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 6) {
-                Text("Teach computers to read silent speech").font(.largeTitle.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                Text("Set up Subvox").font(.largeTitle.weight(.semibold)).accessibilityAddTraits(.isHeader)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("Subvox records how your AirPods move while you read passages aloud and then mouth them silently, and adds those recordings to an open research dataset. You get pronunciation practice in English, French, Spanish and Mandarin along the way.")
+                Text("Practise speech and pronunciation while helping build an open research dataset for silent speech.")
                     .font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -76,7 +95,7 @@ struct WelcomeView: View {
                     ForEach(model.spokenLanguages, id: \.self) { Text(LanguageMenu.nativeName($0)).tag($0) }
                 }.fixedSize()
             }
-            Text("Choose as many as you like. Switch between them from the globe menu at the top right.")
+            Text("Change languages any time from the globe menu.")
                 .font(.callout).foregroundStyle(.secondary)
         }
     }
@@ -101,7 +120,7 @@ struct WelcomeView: View {
     private var requirements: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("To record you'll also need").font(.subheadline.weight(.semibold))
-            HStack(spacing: 8) {
+            ChipFlow {
                 need(model.motion.status == .streaming, "airpods", "AirPods with head tracking")
                 need(AVCaptureDevice.authorizationStatus(for: .video) == .authorized, "camera", "Camera")
                 need(model.localWhisper.isConfigured, "waveform", "Local Whisper")
@@ -113,6 +132,9 @@ struct WelcomeView: View {
 
     private var footer: some View {
         HStack(spacing: 14) {
+            Text(!signedIn ? "Sign in to continue." : !shareAgreed ? "Confirm both sharing statements to continue." : "You can stop sharing in Subvox Settings.")
+                .font(.callout).foregroundStyle(.secondary)
+            Spacer()
             Button {
                 if model.automaticSharingGrant == nil, let username = model.huggingFace.username {
                     model.contribution.mode = .huggingFace
@@ -123,9 +145,7 @@ struct WelcomeView: View {
             } label: { Text("Continue to Home").frame(minWidth: 140) }
                 .buttonStyle(.borderedProminent).controlSize(.large).keyboardShortcut(.defaultAction)
                 .disabled(!canStart)
-            Text(!signedIn ? "Sign in to continue." : !shareAgreed ? "Confirm both statements to continue." : "You can stop sharing in Subvox Settings.")
-                .font(.callout).foregroundStyle(.secondary)
-        }.padding(.top, 4)
+        }
     }
 
     private func need(_ ok: Bool, _ symbol: String, _ title: LocalizedStringKey) -> some View {
@@ -142,7 +162,7 @@ struct WelcomeView: View {
     }
 }
 
-/// A numbered card; the number becomes a check when the step is complete.
+/// The number becomes a check when a required step is complete.
 private struct WelcomeStep<Content: View>: View {
     var number: Int
     var title: LocalizedStringKey
@@ -165,8 +185,6 @@ private struct WelcomeStep<Content: View>: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(18)
-        .background(.quaternary.opacity(0.3), in: RoundedRectangle(cornerRadius: 14))
         .opacity(enabled ? 1 : 0.5)
         .disabled(!enabled)
     }
