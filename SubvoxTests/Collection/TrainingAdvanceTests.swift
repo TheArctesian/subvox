@@ -108,6 +108,79 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
+    func testResumeUsesSavedHalvesAndPreservesEachPhysicalSessionClock() throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "literature-resume-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let store = root.appending(path: "sentences.json")
+        let groups = ["Mouth this line.", "Then move onward."].map {
+            [SentencePrompt(text: $0, kind: .poetry, language: "en")]
+        }
+        var data = SentenceTrainingData()
+        data.addPractice(groups.flatMap { $0 })
+        try SentenceStore.save(data, to: store)
+
+        let initial = SentenceTrainingWorkflow(storeURL: store)
+        let firstSession = RecordingSession(id: UUID(), directory: root.appending(path: "first"),
+                                            startUptime: 100, audioOffset: 0.5)
+        let firstVisit = try initial.beginVisit(session: firstSession, audioDevice: nil,
+                                               timing: .comfortable, presentation: .sentences)
+        let first = try initial.beginPair(prompts: groups[0], visit: firstVisit, session: firstSession,
+                                          literaturePieceID: "fixture")
+        _ = try initial.beginPair(prompts: groups[1], visit: firstVisit, session: firstSession,
+                                  literaturePieceID: "fixture")
+        let draft = LiteraturePracticeRound(pieceID: "fixture", title: "Fixture", language: "en",
+                                            kind: .poetry, groups: groups)
+        let silent = SentenceRecording(condition: .silent, samples: [], cueStart: 101, cueEnd: 102)
+        _ = try initial.saveLiteratureHalf(silent, pairID: first.id, session: firstSession,
+                                           round: draft, section: 0)
+
+        let reopened = SentenceTrainingWorkflow(storeURL: store)
+        var round = try XCTUnwrap(reopened.resumableLiterature.first)
+        XCTAssertEqual(round.id, draft.id)
+        XCTAssertEqual(reopened.nextLiteratureTake(in: round)?.group, 1)
+        XCTAssertEqual(reopened.nextLiteratureTake(in: round)?.condition, .silent)
+
+        let nextSession = RecordingSession(id: UUID(), directory: root.appending(path: "second"),
+                                           startUptime: 200, audioOffset: 0.25)
+        let nextVisit = try reopened.beginVisit(session: nextSession, audioDevice: nil,
+                                                timing: .comfortable, presentation: .sentences)
+        let second = try reopened.beginPair(prompts: groups[1], visit: nextVisit, session: nextSession,
+                                            literaturePieceID: "fixture")
+        let resumedSilent = SentenceRecording(condition: .silent, samples: [], cueStart: 201, cueEnd: 202)
+        round = try reopened.saveLiteratureHalf(resumedSilent, pairID: second.id, session: nextSession,
+                                                round: round, section: 1)
+        XCTAssertEqual(reopened.nextLiteratureTake(in: round)?.group, 0)
+        XCTAssertEqual(reopened.nextLiteratureTake(in: round)?.condition, .normal)
+
+        let spoken = SentenceRecording(condition: .normal, samples: [], cueStart: 203, cueEnd: 204)
+        XCTAssertThrowsError(try reopened.saveLiteratureHalf(spoken, pairID: first.id, session: nextSession,
+                                                             round: round, section: 0))
+        let spokenFirst = try reopened.beginPair(prompts: groups[0], visit: nextVisit, session: nextSession,
+                                                 literaturePieceID: "fixture")
+        round = try reopened.saveLiteratureHalf(spoken, pairID: spokenFirst.id, session: nextSession,
+                                                round: round, section: 0)
+        XCTAssertEqual(reopened.nextLiteratureTake(in: round)?.group, 1)
+        round = try reopened.saveLiteratureHalf(spoken, pairID: second.id, session: nextSession,
+                                                round: round, section: 1)
+
+        let completed = SentenceTrainingWorkflow(storeURL: store)
+        XCTAssertTrue(completed.resumableLiterature.isEmpty)
+        let firstHalf = try XCTUnwrap(completed.data.pairs.first { $0.id == first.id })
+        let secondHalf = try XCTUnwrap(completed.data.pairs.first { $0.id == spokenFirst.id })
+        XCTAssertEqual(firstHalf.recordingSessionID, firstSession.id)
+        XCTAssertEqual(firstHalf.sessionStartUptime, 100)
+        XCTAssertEqual(firstHalf.silent?.id, silent.id)
+        XCTAssertNil(firstHalf.spoken)
+        XCTAssertEqual(secondHalf.recordingSessionID, nextSession.id)
+        XCTAssertEqual(secondHalf.sessionStartUptime, 200)
+        XCTAssertEqual(secondHalf.audioOffset, 0.25)
+        XCTAssertEqual(secondHalf.spoken?.id, spoken.id)
+        XCTAssertNil(secondHalf.silent)
+        XCTAssertFalse(firstHalf.canAccept)
+        XCTAssertFalse(secondHalf.canAccept)
+        XCTAssertTrue(completed.data.pairs.first { $0.id == second.id }?.complete == true)
+    }
+    @MainActor
     func testInvictusStanzaTakesAreAvailableAfterReopening() throws {
         let poem = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == "invictus" })
         let stanzas = poem.parts(language: .en)

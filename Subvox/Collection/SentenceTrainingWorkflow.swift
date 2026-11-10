@@ -37,13 +37,17 @@ final class SentenceTrainingWorkflow {
     var continueTitle: String {
         if index + 1 >= total { return String(localized: "Finish round") }
         if recordsLiteratureInPasses {
-            return currentCondition == .silent && index + 1 == total / 2
+            return currentCondition == .silent && nextLiteratureCondition == .normal
                 ? String(localized: "Continue to spoken pass") : String(localized: "Next section")
         }
         return currentCondition == .normal ? String(localized: "Continue to silent take") : String(localized: "Next prompt")
     }
     private(set) var recordsLiteratureInPasses = false
+    private(set) var literatureSectionNumber: Int?
+    private(set) var literatureSectionCount: Int?
+    private var nextLiteratureCondition: SpeechCondition?
     private(set) var lastPracticePlan: [[SentencePrompt]] = []
+    private(set) var lastLiteratureRound: LiteraturePracticeRound?
     private(set) var error: String?
     private(set) var storageReady = true
     private(set) var currentText = ""
@@ -152,6 +156,21 @@ final class SentenceTrainingWorkflow {
     }
     /// Set by a practice tab just before `start`; recording then uses these prompts (spoken, then mouthed).
     var practicePlan: [[SentencePrompt]]?
+    var literatureSelection: LiteraturePracticeSelection?
+
+    var resumableLiterature: [LiteraturePracticeRound] {
+        guard let rounds = data.literatureRounds, !rounds.isEmpty else { return [] }
+        let pairs = Dictionary(data.pairs.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        return rounds.filter { round in
+            let pending = round.pendingTakes(pairs: pairs).count
+            return pending > 0 && pending < round.groups.count * 2
+        }.sorted { $0.updatedAt > $1.updatedAt }
+    }
+
+    func nextLiteratureTake(in round: LiteraturePracticeRound) -> (group: Int, condition: SpeechCondition)? {
+        let pairs = Dictionary(data.pairs.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        return round.pendingTakes(pairs: pairs).first
+    }
     /// Pairs recorded by the most recent practice round, for the tab's feedback view.
     private(set) var lastPracticePairIDs: [UUID] = []
     /// Called after a practice pair is transcribed, to run the audio phone check.
@@ -230,7 +249,8 @@ final class SentenceTrainingWorkflow {
         return visit
     }
 
-    func beginPair(prompts: [SentencePrompt], visit: SentenceVisit, session: RecordingSession, persistImmediately: Bool = true) throws -> SentencePair {
+    func beginPair(prompts: [SentencePrompt], visit: SentenceVisit, session: RecordingSession, persistImmediately: Bool = true,
+                   literaturePieceID: String? = nil) throws -> SentencePair {
         guard session.id == activeRecordingID, visit.id == activeVisitID,
               let first = prompts.first, let role = data.roles[first.id], role != .finalTest,
               prompts.allSatisfy({ data.roles[$0.id] == role }) else { throw Failure.split }
@@ -239,7 +259,8 @@ final class SentenceTrainingWorkflow {
             sessionStartUptime: session.startUptime, audioOffset: session.audioOffset, recordingSessionID: session.id)
         data.pairs.append(pair)
         changedPairUses.insert(pair.id)
-        data.pairs[data.pairs.count - 1].language = first.language
+        data.pairs[data.pairs.count - 1].language = literaturePieceID == nil ? first.language : first.language ?? "en"
+        data.pairs[data.pairs.count - 1].literaturePieceID = literaturePieceID
         data.pairs[data.pairs.count - 1].practiceMode = first.kind.isPractice ? first.kind : nil
         data.pairs[data.pairs.count - 1].pronunciationProfile = try PronunciationProfile.load()
         if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].pairIDs.append(pair.id) }
@@ -258,6 +279,21 @@ final class SentenceTrainingWorkflow {
         data.pairs[i].audioOffset = session.audioOffset
         changedPairUses.insert(pairID)
         if persistImmediately { try persist() }
+    }
+
+    /// Save the physical take and update the logical round in the same store write.
+    func saveLiteratureHalf(_ recording: SentenceRecording, pairID: UUID, session: RecordingSession,
+                            round: LiteraturePracticeRound, section: Int,
+                            persistImmediately: Bool = true) throws -> LiteraturePracticeRound {
+        try saveCompletedHalf(recording, pairID: pairID, session: session, persistImmediately: false)
+        var updated = round
+        updated.record(recording.condition, section: section, pairID: pairID)
+        var rounds = data.literatureRounds ?? []
+        rounds.removeAll { $0.pieceID == round.pieceID && $0.language == round.language }
+        rounds.append(updated)
+        data.literatureRounds = rounds
+        if persistImmediately { try persist() }
+        return updated
     }
 
     private func finishVisit(session: RecordingSession?) {
@@ -515,9 +551,33 @@ final class SentenceTrainingWorkflow {
         guard !batch.isEmpty else { error = "This batch is too long. Choose fewer sentences."; return }
         let timing = pace
         let cueTimes = batch.map { cueDuration($0.map(\.text).joined(separator: " ")) }
-        let order = Self.takeOrder(groupCount: batch.count, conditions: conditions, fullPiece: fullPiece)
+        let fullOrder = Self.takeOrder(groupCount: batch.count, conditions: conditions, fullPiece: fullPiece)
+        let round: LiteraturePracticeRound?
+        if fullPiece, let first = batch.first?.first, let literatureSelection {
+            switch literatureSelection {
+            case .new(let pieceID, let title):
+                round = LiteraturePracticeRound(pieceID: pieceID, title: title, language: first.language ?? "en",
+                                               kind: first.kind, groups: batch)
+            case .resume(let id):
+                guard let saved = resumableLiterature.first(where: { $0.id == id }), saved.groups == batch else { return }
+                round = saved
+            }
+        } else {
+            round = nil
+        }
+        let order: [(group: Int, condition: SpeechCondition)]
+        if let round {
+            let pairs = Dictionary(data.pairs.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+            order = round.pendingTakes(pairs: pairs)
+        } else {
+            order = fullOrder
+        }
+        guard !order.isEmpty else { return }
         recordsLiteratureInPasses = fullPiece
-        phase = .preparing; error = nil; index = 0; total = order.count
+        lastLiteratureRound = round
+        literatureSectionNumber = nil
+        literatureSectionCount = fullPiece ? batch.count : nil
+        phase = .preparing; error = nil; index = fullOrder.count - order.count; total = fullOrder.count
         task = Task {
             defer {if activeRecordingID==nil {camera.stop();cameraRecorder=nil;cameraReadings=[]}}
             if practiceMode || communityMode {
@@ -547,6 +607,7 @@ final class SentenceTrainingWorkflow {
                 error = recorder.error ?? "Could not start recording."; phase = .setup; return
             }
             var pairIDs: [UUID] = []
+            var activeRound = round
             var pairsByGroup: [Int: SentencePair] = [:]
             let device = await MotionDeviceInfo.probe()
             do {
@@ -555,7 +616,10 @@ final class SentenceTrainingWorkflow {
                                            automaticContributionID: communityMode ? automaticContributionID : nil)
                 if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].motionDevice = device }
                 try await persistInBackground()
-                for (groupIndex, condition) in order {
+                for (position, take) in order.enumerated() {
+                    let (groupIndex, condition) = take
+                    literatureSectionNumber = fullPiece ? groupIndex + 1 : nil
+                    nextLiteratureCondition = position + 1 < order.count ? order[position + 1].condition : nil
                     try Task.checkCancellation()
                     guard canRecord() else { throw Failure.disconnected }
                     let group = batch[groupIndex]
@@ -563,7 +627,8 @@ final class SentenceTrainingWorkflow {
                     if let existing = pairsByGroup[groupIndex] {
                         pair = existing
                     } else {
-                        pair = try beginPair(prompts: group, visit: visit, session: recordingSession, persistImmediately: false)
+                        pair = try beginPair(prompts: group, visit: visit, session: recordingSession, persistImmediately: false,
+                                             literaturePieceID: activeRound?.pieceID)
                         try await persistInBackground()
                         pairsByGroup[groupIndex] = pair
                         pairIDs.append(pair.id)
@@ -587,7 +652,13 @@ final class SentenceTrainingWorkflow {
                         onCompleted: { recording in
                             guard canRecord() else { throw Failure.disconnected }
                             guard let checkpoint = try await recorder.checkpointCompletedTake(sessionID: recordingSession.id) else { throw Failure.ownership }
-                            try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint, persistImmediately: false)
+                            if let activeRoundValue = activeRound {
+                                activeRound = try saveLiteratureHalf(recording, pairID: pair.id, session: checkpoint,
+                                                                    round: activeRoundValue, section: groupIndex,
+                                                                    persistImmediately: false)
+                            } else {
+                                try saveCompletedHalf(recording, pairID: pair.id, session: checkpoint, persistImmediately: false)
+                            }
                             try await persistInBackground()
                             try Task.checkCancellation()
                             recorder.logEvent(recording.samples, kind: condition == .normal ? "sentence-spoken" : "sentence-silent",

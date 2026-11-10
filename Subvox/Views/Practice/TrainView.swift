@@ -62,6 +62,7 @@ struct PracticePage<Controls: View, Content: View>: View {
     var unit: LocalizedStringResource = "takes"
     /// Pages with their own scrolling panes (Sounds) turn the page scroll off.
     var scrolls = true
+    var startRound: (() -> Void)? = nil
     @ViewBuilder var controls: () -> Controls
     @ViewBuilder var content: () -> Content
     @State private var showWhisperSetup = false
@@ -70,6 +71,10 @@ struct PracticePage<Controls: View, Content: View>: View {
 
     private var workflow: SentenceTrainingWorkflow { model.sentenceTraining }
     private var motionReady: Bool { model.motion.status == .streaming }
+    private func start() {
+        if let startRound { startRound() }
+        else { model.startPractice(groups) }
+    }
     private var canStart: Bool {
         motionReady && model.localWhisper.isConfigured && !groups.isEmpty && workflow.storageReady && workflow.data.reservedUnlockedAt == nil && workflow.canStartRecording && !model.recorder.isRecording
     }
@@ -105,7 +110,13 @@ struct PracticePage<Controls: View, Content: View>: View {
             }
         }
         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
-        PracticeFeedback(mode: mode, again: { model.startPractice(workflow.lastPracticePlan) })
+        PracticeFeedback(mode: mode, again: {
+            if mode.isLiterature, let round = workflow.lastLiteratureRound {
+                model.startLiterature(round.groups, pieceID: round.pieceID, title: round.title)
+            } else {
+                model.startPractice(workflow.lastPracticePlan)
+            }
+        })
         HStack(spacing: 16) { controls(); Spacer() }
         content()
         if mode.isLiterature {
@@ -120,7 +131,7 @@ struct PracticePage<Controls: View, Content: View>: View {
                 AppPageHeading(title: title, subtitle: subtitle)
                 Spacer()
                 VStack(alignment: .trailing, spacing: 4) {
-                    Button { model.startPractice(groups) } label: { Label(startTitle, systemImage: "record.circle") }
+                    Button(action: start) { Label(startTitle, systemImage: "record.circle") }
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .disabled(!canStart)
                         .help(blocker ?? String(localized: "Starts a practice session. ⌘↩"))
@@ -153,7 +164,7 @@ struct PracticePage<Controls: View, Content: View>: View {
             }
         }
         .sheet(isPresented: $showWhisperSetup) { WhisperSetupSheet() }
-        .onChange(of: model.startRequest) { if canStart { model.startPractice(groups) } }
+        .onChange(of: model.startRequest) { if canStart { start() } }
     }
 }
 
@@ -362,7 +373,7 @@ struct PracticeFeedback: View {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     // The summary cross-fades in when checking ends; it never counts up.
-                    (processing ? Text("Last round") : Text("Last round: \(summary)")).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                    (processing || mode.isLiterature ? Text("Last round") : Text("Last round: \(summary)")).font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
                         .contentTransition(.opacity)
                         .accessibilityFocused($focusResults)
                     Spacer()
@@ -370,14 +381,20 @@ struct PracticeFeedback: View {
                     Button("Practise Again", action: again).buttonStyle(.borderedProminent)
                         .disabled(!model.sentenceTraining.canStartRecording || model.motion.status != .streaming || !model.localWhisper.isConfigured || model.sentenceTraining.lastPracticePlan.isEmpty)
                 }
-                MotionDisclosure("Take feedback") {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 10) { ForEach(pairs) { row($0) } }
-                    }.frame(maxHeight: 200)
+                if mode.isLiterature {
+                    Text("Play your spoken take beside each section in the library.")
+                        .font(.callout).foregroundStyle(.secondary)
                 }
-                LocalRecordingHistory()
-                Text("Speech recognition guesses what you meant, so it can accept sounds that aren't quite right. Use it to check you were understood, not to judge each sound. For a persistent difficulty, a teacher or speech and language therapist can hear what the app can't.")
-                    .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                if !mode.isLiterature || model.researchTools {
+                    MotionDisclosure("Take feedback") {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 10) { ForEach(pairs) { row($0) } }
+                        }.frame(maxHeight: 200)
+                    }
+                    LocalRecordingHistory()
+                    Text("Speech recognition guesses what you meant, so it can accept sounds that aren't quite right. Use it to check you were understood, not to judge each sound. For a persistent difficulty, a teacher or speech and language therapist can hear what the app can't.")
+                        .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                }
             }
             .padding(16)
             .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 10))
@@ -525,14 +542,21 @@ struct LiteraturePracticeView: View {
         let groups = parts.dropFirst(partIndex).map { part in
             part.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }
         }
+        let unfinished = model.sentenceTraining.resumableLiterature.first {
+            $0.pieceID == piece?.id && $0.language == language.tag
+        }
         let startTitle: LocalizedStringKey = partIndex == 0
-            ? (isSpeech ? "Start Speech" : "Start Poem") : "Start at Part \(partIndex + 1)"
+            ? (unfinished == nil ? (isSpeech ? "Start Speech" : "Start Poem") : "Start New Round")
+            : "Start at Part \(partIndex + 1)"
         return PracticePage(title: isSpeech ? "Speech" : "Poetry",
                      subtitle: isSpeech ? "Mouth the speech silently from start to finish, then read it aloud."
                          : "Mouth the poem silently from start to finish, then read it aloud.",
                      startTitle: startTitle,
                      groups: groups,
-                     mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false) {
+                     mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false,
+                     startRound: {
+                         if let piece { model.startLiterature(groups, pieceID: piece.id, title: piece.title(language)) }
+                     }) {
             if parts.count > 1 && !isInvictus {
                 Picker("Start at", selection: $startPart) {
                     ForEach(parts.indices, id: \.self) { index in
@@ -567,19 +591,24 @@ struct LiteraturePracticeView: View {
                         ScrollView { LazyVStack(alignment: .leading, spacing: 12) {
                             Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
+                            if let unfinished {
+                                Button("Continue recording", systemImage: "arrow.right.circle") {
+                                    model.resumeLiterature(unfinished)
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(!model.canResumeLiterature)
+                                .accessibilityLabel("Continue recording \(piece.title(language))")
+                            }
                             ReferenceButton(text: previewLines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false,
                                             subject: String(localized: "the full text"))
-                            if isInvictus {
-                                if let error = playback.error {
-                                    Text(error).font(.callout).foregroundStyle(.orange)
-                                }
-                                ForEach(parts.indices, id: \.self) { index in
-                                    stanza(parts[index], number: index + 1, language: language)
-                                }
-                            } else {
-                                ForEach(previewLines.indices, id: \.self) { index in
-                                    PracticeLineView(line: previewLines[index], language: language, showIPA: showIPA)
-                                }
+                            if let error = playback.error {
+                                Text(error).font(.callout).foregroundStyle(.orange)
+                            }
+                            ForEach(parts.indices, id: \.self) { index in
+                                section(parts[index], index: index, language: language,
+                                        pieceID: piece.id,
+                                        usesStanzas: kind == .poetry && piece.stanzaEnds?.last == previewLines.count,
+                                        canChooseStart: !isInvictus && parts.count > 1)
                             }
                             Text(model.personalPracticePieces.contains(where: { $0.id == piece.id })
                                  ? "Personal library" : "Public domain in the UK and US.")
@@ -594,7 +623,11 @@ struct LiteraturePracticeView: View {
         }
         .onAppear { if selection == nil { selection = SavedSelection.get(selectionKey, model.language) } }
         .modifier(SpokenPlaybackLifecycle(playback: playback))
-        .onChange(of: partKey) { startPart = 0; playback.stop() }
+        .onChange(of: partKey) {
+            startPart = 0
+            playback.stop()
+            model.referenceSpeaker.stop()
+        }
         .onChange(of: selection) { SavedSelection.set(selectionKey, model.language, selection) }
         .onChange(of: model.language) {
             selection = SavedSelection.get(selectionKey, model.language)
@@ -602,24 +635,38 @@ struct LiteraturePracticeView: View {
         }
     }
 
-    private func stanza(_ lines: [PracticeCorpus.Line], number: Int, language: AppLanguage) -> some View {
-        let take = SpokenTakePlayer.latestPoetryTake(for: lines, language: language,
-                                                    in: model.sentenceTraining.data.pairs)
+    private func section(_ lines: [PracticeCorpus.Line], index: Int, language: AppLanguage, pieceID: String,
+                         usesStanzas: Bool, canChooseStart: Bool) -> some View {
+        let number = index + 1
+        let title = usesStanzas ? String(localized: "Stanza \(number)") : String(localized: "Section \(number)")
+        let take = SpokenTakePlayer.latestTake(for: lines, mode: kind, language: language, pieceID: pieceID,
+                                              in: model.sentenceTraining.data.pairs)
         let isPlaying = take != nil && take?.id == playback.playing
         return VStack(alignment: .leading, spacing: 8) {
             Divider()
-            Text("Stanza \(number)").font(.headline).accessibilityAddTraits(.isHeader)
+            Text(title).font(.headline).accessibilityAddTraits(.isHeader)
             HStack {
                 ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: "\n"),
                                 language: language, compact: false,
-                                subject: String(localized: "stanza \(number)"), listenTitle: "Hear example")
+                                subject: title, listenTitle: "Hear example")
                 Button(isPlaying ? "Stop" : "Play my take", systemImage: isPlaying ? "stop.fill" : "play.fill") {
                     guard let take else { return }
                     model.referenceSpeaker.stop()
                     playback.toggle(take.clip, id: take.id)
                 }
                 .disabled(take == nil || !model.sentenceTraining.canStartRecording)
-                .help(take == nil ? "Record this stanza aloud to hear your take." : "Play your latest spoken take")
+                .help(take == nil ? "Record this section aloud to hear your take." : "Play your latest spoken take")
+                .accessibilityLabel(isPlaying ? "Stop your take for \(title)" : "Play your take for \(title)")
+                if canChooseStart {
+                    if startPart == index {
+                        Label("Starts here", systemImage: "checkmark.circle")
+                            .font(.callout).foregroundStyle(.secondary)
+                    } else {
+                        Button("Choose start") { startPart = index }
+                            .help("Start the next session at this section.")
+                            .accessibilityLabel("Choose \(title) as the start")
+                    }
+                }
             }
             ForEach(lines.indices, id: \.self) { index in
                 PracticeLineView(line: lines[index], language: language, showIPA: showIPA)
@@ -645,15 +692,26 @@ struct LiteraturePracticeView: View {
 
 // MARK: - Language drills
 
+enum LanguageDrillRounds {
+    static func phrases(in drill: PracticeCorpus.Drill, language: AppLanguage) -> [[PracticeCorpus.Line]] {
+        let available = drill.phrases.filter { language.shows(region: $0.region) }
+        return stride(from: 0, to: available.count, by: 3).map { start in
+            Array(available[start..<min(start + 3, available.count)])
+        }
+    }
+}
+
 struct LanguagePracticeView: View {
     @Environment(AppModel.self) private var model
     @State private var selection: String?
+    @State private var selectedRound: Int?
+    @State private var recall = false
+    @State private var revealed: Set<Int> = []
+    @State private var playback = SpokenTakePlayer()
     @AppStorage("practice.showIPA") private var showIPA = true
 
     private var drills: [PracticeCorpus.Drill] { model.practice.drills.filter { $0.language == model.language.corpus && model.language.shows(region: $0.region) } }
     private var drill: PracticeCorpus.Drill? { drills.first { $0.id == selection } ?? drills.first { $0.topic == "Everyday life" } ?? drills.first }
-    /// Spain-only phrases (vosotros) are left out of Español (México).
-    private var phrases: [PracticeCorpus.Line] { (drill?.phrases ?? []).filter { model.language.shows(region: $0.region) } }
     /// Everyday phrases first: what a returning learner needs most, then the grammar topics.
     private var topics: [String] {
         let all = drills.compactMap(\.topic).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
@@ -662,11 +720,20 @@ struct LanguagePracticeView: View {
 
     var body: some View {
         let language = model.language
-        PracticePage(title: "Language", subtitle: "Listen, say it aloud, then say it again silently, with your lips only.",
-                     startTitle: "Start Drill",
+        let rounds = drill.map { LanguageDrillRounds.phrases(in: $0, language: language) } ?? []
+        let savedRound = drill.flatMap { SavedSelection.get("drill-round-\($0.id)", language) }.flatMap(Int.init)
+        let preferredRound = selectedRound ?? savedRound ?? 0
+        let roundIndex = rounds.indices.contains(preferredRound) ? preferredRound : 0
+        let phrases = rounds.indices.contains(roundIndex) ? rounds[roundIndex] : []
+        PracticePage(title: "Language", subtitle: "Practise a few phrases for a situation. Listen, say each phrase aloud, then mouth it silently.",
+                     startTitle: "Start Round",
                      groups: phrases.map { [SentencePrompt($0, kind: .drill, language: language, translationLanguage: model.nativeLanguage)] },
-                     mode: .drill, unit: "phrases") {
-            Picker("Drill", selection: Binding(get: { drill?.id }, set: { selection = $0 })) {
+                     mode: .drill, unit: phrases.count == 1 ? "phrase" : "phrases") {
+            Picker("Practice goal", selection: Binding(get: { drill?.id }, set: { id in
+                selection = id
+                selectedRound = nil
+                resetPreview()
+            })) {
                 if topics.isEmpty {
                     ForEach(drills) { Text($0.title(language)).tag(Optional($0.id)) }
                 } else {
@@ -679,28 +746,119 @@ struct LanguagePracticeView: View {
                     }
                 }
             }.fixedSize()
+            if rounds.count > 1 {
+                Picker("Round", selection: Binding(get: { roundIndex }, set: { index in
+                    selectedRound = index
+                    if let drill { SavedSelection.set("drill-round-\(drill.id)", language, String(index)) }
+                    resetPreview()
+                })) {
+                    ForEach(rounds.indices, id: \.self) { index in
+                        Text("\(index + 1) of \(rounds.count)").tag(index)
+                    }
+                }.fixedSize()
+            }
             IPAToggle(isOn: $showIPA)
         } content: {
             if let drill {
-                VStack(alignment: .leading, spacing: 12) {
-                    if let note = drill.note(language) { Text(note).foregroundStyle(.secondary) }
-                    ForEach(phrases, id: \.self) { line in
-                        HStack(alignment: .firstTextBaseline) {
-                            PracticeLineView(line: line, language: language, showIPA: showIPA)
-                            Spacer()
-                            ReferenceButton(text: line.text(language), language: language)
+                VStack(alignment: .leading, spacing: 16) {
+                    Label(listeningTip(for: drill, language: language, roundIndex: roundIndex), systemImage: "ear")
+                        .font(.callout).fixedSize(horizontal: false, vertical: true)
+                    if let note = drill.note(language) {
+                        MotionDisclosure("Usage note") {
+                            Text(note).font(.callout).foregroundStyle(.secondary)
                         }
                     }
-                    Text("Each phrase plays in a system voice before you say it. Always say it aloud before mouthing it; mouthed answers from memory aren't used.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    if !phrases.isEmpty {
+                        Toggle("Try from memory", isOn: $recall)
+                            .onChange(of: recall) { clearPreview() }
+                        if recall {
+                            Text("Say the phrase from memory, then reveal it and listen. Start Round records the scripted phrases.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        if let error = playback.error {
+                            Text(error).font(.callout).foregroundStyle(.orange)
+                        }
+                        ForEach(phrases.indices, id: \.self) { index in
+                            phraseRow(phrases[index], index: index, language: language)
+                        }
+                    }
                 }
             } else {
                 ContentUnavailableView("No drills in \(language.localizedName) yet", systemImage: "character.bubble", description: Text("Choose another language from the toolbar."))
             }
         }
+        .modifier(SpokenPlaybackLifecycle(playback: playback))
         .onAppear { if selection == nil { selection = SavedSelection.get("drill", model.language) } }
         .onChange(of: selection) { SavedSelection.set("drill", model.language, selection) }
-        .onChange(of: model.language) { selection = SavedSelection.get("drill", model.language) }
+        .onChange(of: model.language) {
+            selection = SavedSelection.get("drill", model.language)
+            selectedRound = nil
+            resetPreview()
+        }
+    }
+
+    private func phraseRow(_ line: PracticeCorpus.Line, index: Int, language: AppLanguage) -> some View {
+        let take = SpokenTakePlayer.latestTake(for: [line], mode: .drill, language: language,
+                                               in: model.sentenceTraining.data.pairs)
+        let playing = take != nil && take?.id == playback.playing
+        return VStack(alignment: .leading, spacing: 8) {
+            Divider()
+            if recall && !revealed.contains(index) {
+                if let clue = line.translation(to: model.nativeLanguage), clue != line.text(language) {
+                    Text(clue).font(.headline)
+                } else {
+                    Text("Phrase \(index + 1)").font(.headline)
+                }
+                Button("Reveal phrase", systemImage: "eye") { revealed.insert(index) }
+                    .accessibilityHint("Shows the phrase to compare with what you said")
+            } else {
+                PracticeLineView(line: line, language: language, showIPA: showIPA)
+                HStack {
+                    ReferenceButton(text: line.text(language), language: language,
+                                    compact: false, listenTitle: "Hear example")
+                    if let take {
+                        Button(playing ? "Stop" : "Play my take", systemImage: playing ? "stop.fill" : "play.fill") {
+                            model.referenceSpeaker.stop()
+                            playback.toggle(take.clip, id: take.id)
+                        }
+                        .disabled(!model.sentenceTraining.canStartRecording)
+                        .accessibilityLabel(playing ? Text("Stop playback") : Text("Play my take of \(line.text(language))"))
+                        .accessibilityHint("Plays your latest spoken recording of this phrase")
+                    }
+                }
+            }
+        }
+    }
+
+    private func clearPreview() {
+        revealed.removeAll()
+        model.referenceSpeaker.stop()
+        playback.stop()
+    }
+
+    private func resetPreview() {
+        recall = false
+        clearPreview()
+    }
+
+    private func listeningTip(for drill: PracticeCorpus.Drill, language: AppLanguage,
+                              roundIndex: Int) -> LocalizedStringKey {
+        switch drill.id {
+        case "en-coffee" where roundIndex == 0:
+            "Listen for the emphasis on the drink name, then give it the same emphasis in your order."
+        case "fr-cafe" where roundIndex == 0:
+            "Listen to s’il vous plaît as one group. Try saying it without a pause between the words."
+        case "es-cafe" where roundIndex == 0, "es-tacos-mx" where roundIndex == 0:
+            "Listen to how por favor flows at the end of an order, then repeat it in one breath."
+        case "zh-canting": "Listen to how the pitch changes through each syllable, then repeat the phrase aloud."
+        default:
+            switch language {
+            case .en: "Listen for the word that stands out. Give that word a little extra emphasis when you repeat the phrase."
+            case .fr: "Listen for words that run together. Repeat that group as one unit."
+            case .es, .esMX: "Listen for the stressed syllable in a longer word, then keep the same stress when you say the phrase."
+            case .zhHans, .zhHant: "Listen to the pitch of one syllable, then repeat it aloud before saying the full phrase."
+            }
+        }
     }
 }
 
