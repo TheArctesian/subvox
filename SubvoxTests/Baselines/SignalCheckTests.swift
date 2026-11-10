@@ -144,6 +144,7 @@ final class SignalCheckTests: XCTestCase {
         let session = RecordingSession(id: UUID(), directory: root, startUptime: ProcessInfo.processInfo.systemUptime, audioOffset: nil)
         workflow.begin(session: session, audioDevice: nil, seed: 1)
         let model = AppModel(sentenceTraining: training, signalCheck: workflow)
+        model.screen = .train
         model.showSignalCheck = true
         workflow.beginCapture(at: session.startUptime - 1)
         XCTAssertTrue(model.handleTrainingArrowKey(keyCode: 124, isRepeat: true))

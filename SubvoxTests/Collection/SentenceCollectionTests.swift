@@ -11,6 +11,7 @@ final class SentenceCollectionTests:XCTestCase {
         defer {try? FileManager.default.removeItem(at:root)}
         let workflow=SentenceTrainingWorkflow(storeURL:root.appending(path:"sentences.json"));workflow.guidedRecording=true
         let model=AppModel(sentenceTraining:workflow)
+        model.openPractice(.reading)
         var completed:[SentenceRecording]=[],discarded=0
         let task=Task {try await workflow.collectTake(condition:.normal,maximumDuration:5,baselineSeconds:0.04,recoverySeconds:0,text:"Pack my blue bag.",
             onCompleted:{completed.append($0)},onRedo:{_ in discarded+=1;completed=[]})}
