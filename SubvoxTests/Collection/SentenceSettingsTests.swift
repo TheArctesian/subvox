@@ -76,7 +76,7 @@ final class SentenceSettingsTests: XCTestCase {
         let restored = SentenceTrainingWorkflow(storeURL: url)
         XCTAssertEqual(restored.settings, model.decodeSettings)
         XCTAssertEqual(try Data(contentsOf: oldURL), oldData)
-        XCTAssertEqual(AppModel.Screen.allCases.map(\.rawValue), ["Train", "Try model", "Devices"])
+        XCTAssertEqual(AppModel.Screen.allCases.map(\.rawValue), ["Home", "Train", "Try model", "Devices"])
     }
 
     @MainActor

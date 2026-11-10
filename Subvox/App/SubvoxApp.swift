@@ -17,6 +17,9 @@ struct SubvoxApp: App {
         .windowResizability(.contentMinSize)
         .commands {
             CommandMenu("Practice") {
+                Button("Home", action: model.openHome)
+                    .keyboardShortcut("0", modifiers: .command)
+                    .disabled(!model.canUseApp || model.navigationLocked)
                 Button("Start") {
                     if model.screen == .train && model.trainMode == .reading { model.startSentenceTraining() } else { model.startRequest += 1 }
                 }.keyboardShortcut(.return, modifiers: .command)
@@ -38,7 +41,7 @@ struct SubvoxApp: App {
                 }
                 Divider()
                 ForEach(TrainMode.allCases) { mode in
-                    Button(mode.title) { if mode != model.trainMode { model.closeOverlays(); model.referenceSpeaker.stop() }; model.screen = .train; model.trainMode = mode }
+                    Button(mode.title) { model.openPractice(mode) }
                         .keyboardShortcut(KeyEquivalent(mode.shortcut), modifiers: .command)
                         .disabled(model.navigationLocked)
                 }

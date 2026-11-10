@@ -24,6 +24,7 @@ final class TrainingAdvanceTests: XCTestCase {
         let (workflow, root) = try fixture()
         defer { try? FileManager.default.removeItem(at: root) }
         let model = AppModel(sentenceTraining: workflow)
+        XCTAssertEqual(model.screen, .home)
         for showModels in [true, false] {
             model.trainMode = .poetry
             model.screen = .decode
@@ -68,6 +69,7 @@ final class TrainingAdvanceTests: XCTestCase {
             let (workflow, root) = try fixture()
             defer { try? FileManager.default.removeItem(at: root) }
             let model = AppModel(sentenceTraining: workflow)
+            model.openPractice(.reading)
             XCTAssertFalse(model.handleTrainingArrowKey(keyCode: forward, isRepeat: false)) // Setup stays interactive.
             let capture = Task { try await workflow.captureTake(condition: .normal, maximumDuration: 30) }
             try await waitFor(.speak, in: workflow)
@@ -140,6 +142,7 @@ final class TrainingAdvanceTests: XCTestCase {
             let (workflow, root) = try fixture()
             defer { try? FileManager.default.removeItem(at: root) }
             let model = AppModel(sentenceTraining: workflow)
+            model.openPractice(.reading)
             let start = ProcessInfo.processInfo.systemUptime
             let resting = Task { try await workflow.rest(phase, seconds: 0.15) }
             try await waitFor(phase, in: workflow)
@@ -157,6 +160,7 @@ final class TrainingAdvanceTests: XCTestCase {
             let (workflow, root) = try fixture()
             defer { try? FileManager.default.removeItem(at: root) }
             let model = AppModel(sentenceTraining: workflow)
+            model.openPractice(.reading)
             var completed: [SentenceRecording] = [], discarded = 0
             let collecting = Task {
                 try await workflow.collectTake(condition: .normal, maximumDuration: 30, baselineSeconds: 0.03,

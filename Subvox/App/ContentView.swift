@@ -4,91 +4,67 @@ import SwiftUI
 struct ContentView: View {
     @Environment(AppModel.self) private var model
 
-    /// A sidebar row: one of the Train modes, or another top-level screen.
-    enum SidebarItem: Hashable { case train(TrainMode), screen(AppModel.Screen) }
-
     var body: some View {
         if model.canUseApp { main } else { WelcomeView() }
     }
 
     private var main: some View {
-        NavigationSplitView {
-            List(selection: selection) {
-                Section("Train") {
-                    ForEach(TrainMode.allCases) { mode in
-                        Label(mode.title, systemImage: mode.symbol).tag(SidebarItem.train(mode))
-                    }
-                }
-                Section {
-                    ForEach(model.visibleScreens.filter { $0 != .train }) { screen in
-                        Label(LocalizedStringKey(screen.rawValue), systemImage: screen.symbol).tag(SidebarItem.screen(screen))
-                    }
+        NavigationStack {
+            Group {
+                switch model.screen {
+                case .home: PracticeHomeView()
+                case .train: TrainView()
+                case .decode: DecodeView()
+                case .devices: DevicesView()
                 }
             }
-            .disabled(model.navigationLocked)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 if let activity = model.backgroundActivity {
                     VStack(spacing: 0) {
                         Divider()
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack(alignment: .top, spacing: 8) {
-                                ProgressView().controlSize(.small).accessibilityHidden(true)
-                                Text(activity).font(.caption).foregroundStyle(.secondary)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                Spacer(minLength: 0)
-                            }
+                        HStack(spacing: 8) {
+                            ProgressView().controlSize(.small).accessibilityHidden(true)
+                            Text(activity).font(.caption).foregroundStyle(.secondary)
                             if model.sentenceTraining.phase == .preparing {
                                 Button("Cancel", action: model.sentenceTraining.stop)
                                     .keyboardShortcut(.cancelAction)
                             }
+                            Spacer(minLength: 0)
                         }
-                        .padding(12)
+                        .padding(.horizontal, 24).padding(.vertical, 8)
                     }
                     .background(.bar)
                     .transition(.stateFade)
                 }
             }
             .motion(.state, value: model.backgroundActivity != nil)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-        } detail: {
-            switch model.screen {
-            case .train: TrainView()
-            case .decode: DecodeView()
-            case .devices: DevicesView()
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigation) { PracticeProgressBadge() }
-            ToolbarItem(placement: .status) {
-                // The one AirPods status in the app; clicking it opens Devices to fix it.
-                Button { model.screen = .devices } label: {
-                    MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate, text: model.motion.statusText)
-                }
-                .buttonStyle(.plain).disabled(model.navigationLocked)
-                .help(model.navigationLocked ? "Finish or stop the active take to open Devices." : "AirPods and microphone: open Devices")
-                .accessibilityLabel(model.motion.status == .streaming ? "AirPods connected" : "AirPods: " + model.motion.statusText)
-                .accessibilityHint("Opens Devices")
-            }
-            ToolbarItem(placement: .primaryAction) { LanguageMenu() }
-            ToolbarItem(placement: .primaryAction) { SharingAccountMenu() }
-        }
-        // Each page carries its own large heading, so the window title would only repeat it.
-        .navigationTitle(model.screen == .train ? model.trainMode.rawValue : model.screen.rawValue)
-        .modifier(HiddenWindowTitle())
-    }
-
-    private var selection: Binding<SidebarItem?> {
-        Binding(get: { model.screen == .train ? .train(model.trainMode) : .screen(model.screen) },
-                set: { item in
-                    guard !model.navigationLocked else { return }
-                    switch item {
-                    case .train(let mode)?:
-                        if mode != model.trainMode { model.closeOverlays(); model.referenceSpeaker.stop() }
-                        model.trainMode = mode; model.screen = .train
-                    case .screen(let screen)?: model.screen = screen
-                    case nil: break
+            .toolbar {
+                ToolbarItemGroup(placement: .navigation) {
+                    if model.screen != .home {
+                        Button("Home", systemImage: "house", action: model.openHome)
+                            .labelStyle(.titleAndIcon)
+                            .disabled(model.navigationLocked)
+                            .help("Home (⌘0)")
                     }
-                })
+                    PracticeProgressBadge()
+                }
+                ToolbarItem(placement: .status) {
+                    // The one AirPods status in the app; clicking it opens Devices to fix it.
+                    Button { model.screen = .devices } label: {
+                        MotionStatusBadge(status: model.motion.status, rate: model.motion.sampleRate, text: model.motion.statusText)
+                    }
+                    .buttonStyle(.plain).disabled(model.navigationLocked)
+                    .help(model.navigationLocked ? "Finish or stop the active take to open Devices." : "AirPods and microphone: open Devices")
+                    .accessibilityLabel(model.motion.status == .streaming ? "AirPods connected" : "AirPods: " + model.motion.statusText)
+                    .accessibilityHint("Opens Devices")
+                }
+                ToolbarItem(placement: .primaryAction) { LanguageMenu() }
+                ToolbarItem(placement: .primaryAction) { SharingAccountMenu() }
+            }
+            // Each page carries its own large heading, so the window title would only repeat it.
+            .navigationTitle(model.screen == .train ? model.trainMode.rawValue : model.screen.rawValue)
+            .modifier(HiddenWindowTitle())
+        }
     }
 }
 

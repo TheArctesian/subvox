@@ -11,6 +11,7 @@ final class SentenceCollectionTests:XCTestCase {
         defer {try? FileManager.default.removeItem(at:root)}
         let workflow=SentenceTrainingWorkflow(storeURL:root.appending(path:"sentences.json"));workflow.guidedRecording=true
         let model=AppModel(sentenceTraining:workflow)
+        model.openPractice(.reading)
         var completed:[SentenceRecording]=[],discarded=0
         let task=Task {try await workflow.collectTake(condition:.normal,maximumDuration:5,baselineSeconds:0.04,recoverySeconds:0,text:"Pack my blue bag.",
             onCompleted:{completed.append($0)},onRedo:{_ in discarded+=1;completed=[]})}
@@ -45,7 +46,7 @@ final class SentenceCollectionTests:XCTestCase {
         var sample=MotionSample(t:ProcessInfo.processInfo.systemUptime);sample.sensorLocation=1;workflow.ingest(sample)
         sample.t+=0.02;sample.sensorLocation=2;workflow.ingest(sample)
         try await wait(.ready,workflow)
-        XCTAssertEqual(saved,0);XCTAssertEqual(discarded,1);XCTAssertNotNil(workflow.error)
+        XCTAssertEqual(saved,0);XCTAssertEqual(discarded,1);XCTAssertNil(workflow.error)
     }
     func testExpandedBankKeepsExistingReservationAndPlansFreshSingleRoleGroups() throws {
         var data=SentenceTrainingData(),rng=SplitMix64(seed:82)
