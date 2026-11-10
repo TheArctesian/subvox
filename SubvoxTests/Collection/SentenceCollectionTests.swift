@@ -46,7 +46,7 @@ final class SentenceCollectionTests:XCTestCase {
         var sample=MotionSample(t:ProcessInfo.processInfo.systemUptime);sample.sensorLocation=1;workflow.ingest(sample)
         sample.t+=0.02;sample.sensorLocation=2;workflow.ingest(sample)
         try await wait(.ready,workflow)
-        XCTAssertEqual(saved,0);XCTAssertEqual(discarded,1);XCTAssertNotNil(workflow.error)
+        XCTAssertEqual(saved,0);XCTAssertEqual(discarded,1);XCTAssertNil(workflow.error)
     }
     func testExpandedBankKeepsExistingReservationAndPlansFreshSingleRoleGroups() throws {
         var data=SentenceTrainingData(),rng=SplitMix64(seed:82)
