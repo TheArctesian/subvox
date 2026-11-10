@@ -116,6 +116,7 @@ struct SentencePair: Codable, Identifiable, Sendable {
     /// Practice tabs: the take's language, its mode, and the audio phone check (expected vs produced IPA).
     var language: String?
     var practiceMode: SentencePromptKind?
+    var literaturePieceID: String?
     var phoneCheck: PhoneCheckResult?
     var complete: Bool { spoken != nil && silent != nil }
     var canAccept: Bool {
@@ -274,6 +275,57 @@ struct SentenceVisit: Codable, Identifiable, Sendable {
 }
 
 /// The active personal training experiment, grouped and split by sentence.
+/// A logical round can span capture sessions. Each half points to its physical pair,
+/// which owns the recording directory, clock, and device provenance.
+struct LiteraturePracticeRound: Codable, Identifiable, Sendable {
+    var id = UUID()
+    let pieceID: String
+    let title: String
+    let language: String
+    let kind: SentencePromptKind
+    let groups: [[SentencePrompt]]
+    var updatedAt = Date()
+    private var silentPairs: [Int: UUID] = [:]
+    private var spokenPairs: [Int: UUID] = [:]
+
+    init(pieceID: String, title: String, language: String, kind: SentencePromptKind, groups: [[SentencePrompt]]) {
+        self.pieceID = pieceID
+        self.title = title
+        self.language = language
+        self.kind = kind
+        self.groups = groups
+    }
+
+    mutating func record(_ condition: SpeechCondition, section: Int, pairID: UUID) {
+        if condition == .silent { silentPairs[section] = pairID }
+        else { spokenPairs[section] = pairID }
+        updatedAt = Date()
+    }
+
+    func hasTake(_ condition: SpeechCondition, section: Int, pairs: [UUID: SentencePair]) -> Bool {
+        guard let id = (condition == .silent ? silentPairs : spokenPairs)[section],
+              let pair = pairs[id], pair.practiceMode == kind,
+              pair.literaturePieceID == pieceID, pair.language == language,
+              groups.indices.contains(section),
+              pair.promptIDs == groups[section].map(\.id),
+              pair.text == groups[section].map(\.text).joined(separator: " ") else { return false }
+        return condition == .silent ? pair.silent != nil : pair.spoken != nil
+    }
+
+    func pendingTakes(pairs: [UUID: SentencePair]) -> [(group: Int, condition: SpeechCondition)] {
+        [SpeechCondition.silent, .normal].flatMap { condition in
+            groups.indices.compactMap { section in
+                hasTake(condition, section: section, pairs: pairs) ? nil : (section, condition)
+            }
+        }
+    }
+}
+
+enum LiteraturePracticeSelection {
+    case new(pieceID: String, title: String)
+    case resume(UUID)
+}
+
 struct SentenceTrainingData: Codable, Sendable {
     var schemaVersion = 2
     var id = UUID()
@@ -285,6 +337,7 @@ struct SentenceTrainingData: Codable, Sendable {
     var reservedUnlockedAt: Date?
     var validationReport: SentenceValidationReport?
     var decoderSettings: DecoderSettings?
+    var literatureRounds: [LiteraturePracticeRound]?
 
     mutating func add<G: RandomNumberGenerator>(_ incoming: [SentencePrompt], using generator: inout G) {
         guard reservedUnlockedAt == nil else { return }

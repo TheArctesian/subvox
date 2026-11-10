@@ -370,6 +370,33 @@ final class AppModel {
         sentenceTraining.practicePlan = nil
     }
 
+    var canResumeLiterature: Bool {
+        canUseApp && !navigationLocked && motion.status == .streaming && localWhisper.isConfigured
+            && sentenceTraining.storageReady && sentenceTraining.data.reservedUnlockedAt == nil
+            && sentenceTraining.canStartRecording && !recorder.isRecording
+            && !signalCheck.isBusy && !representation.isBusy && !sequenceLearning.isBusy && !observability.isBusy
+    }
+
+    func startLiterature(_ groups: [[SentencePrompt]], pieceID: String, title: String) {
+        guard canResumeLiterature else { return }
+        sentenceTraining.literatureSelection = .new(pieceID: pieceID, title: title)
+        defer { sentenceTraining.literatureSelection = nil }
+        startPractice(groups)
+    }
+
+    func resumeLiterature(_ round: LiteraturePracticeRound) {
+        guard canResumeLiterature,
+              sentenceTraining.resumableLiterature.contains(where: { $0.id == round.id }),
+              let language = AppLanguage(rawValue: round.language) else { return }
+        self.language = language
+        openPractice(round.kind == .poetry ? .poetry : .speech)
+        // Use the same selection key as the library so the piece is visible after the round.
+        SavedSelection.set(round.kind.rawValue, language, round.pieceID)
+        sentenceTraining.literatureSelection = .resume(round.id)
+        defer { sentenceTraining.literatureSelection = nil }
+        startPractice(round.groups)
+    }
+
     private func checkPhones(_ id: UUID) async {
         guard let pair = sentenceTraining.data.pairs.first(where: { $0.id == id }), let heard = pair.transcript?.text else { return }
         let result = await practiceChecker.check(text: pair.text, language: pair.language ?? "en", heard: heard)

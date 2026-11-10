@@ -41,6 +41,20 @@ final class PracticeTests: XCTestCase {
         XCTAssertEqual(data.prompts[0].language, "fr")
     }
 
+    func testLanguageDrillRoundsKeepEveryRegionalPhraseInOrder() throws {
+        let corpus = PracticeCorpus.bundled
+        for language in AppLanguage.allCases {
+            let drills = corpus.drills.filter { $0.language == language.corpus && language.shows(region: $0.region) }
+            for drill in drills {
+                let rounds = LanguageDrillRounds.phrases(in: drill, language: language)
+                XCTAssertTrue(rounds.allSatisfy { (1...3).contains($0.count) }, drill.id)
+                XCTAssertEqual(rounds.flatMap { $0 }, drill.phrases.filter { language.shows(region: $0.region) }, drill.id)
+            }
+        }
+        let cafe = try XCTUnwrap(corpus.drills.first { $0.id == "fr-cafe" })
+        XCTAssertEqual(LanguageDrillRounds.phrases(in: cafe, language: .fr).map(\.count), [3, 3, 2])
+    }
+
     func testFreeTextSplitsIntoSentencesAndRoundsUseWholeSets() {
         XCTAssertEqual(FreePracticeView.sentences("Hello there. How are you?\nFine!"), ["Hello there.", "How are you?", "Fine!"])
         let pairs = PracticeCorpus.MinimalPairs(language: "fr", contrast: "y u", sets: [

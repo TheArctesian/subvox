@@ -259,8 +259,13 @@ struct SentenceTrainingView: View {
                         Text(workflow.currentCondition == .silent ? "Silent pass" : "Spoken pass")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
-                    Text("\(min(workflow.index + 1, workflow.total)) of \(workflow.total)")
-                        .font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+                    if let section = workflow.literatureSectionNumber, let count = workflow.literatureSectionCount {
+                        Text("Section \(section) of \(count)")
+                            .font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+                    } else {
+                        Text("\(min(workflow.index + 1, workflow.total)) of \(workflow.total)")
+                            .font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+                    }
                 }
                 ProgressView(value:Double(workflow.index),total:Double(max(1,workflow.total))).tint(color)
             }

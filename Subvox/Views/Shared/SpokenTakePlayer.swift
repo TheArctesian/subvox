@@ -13,13 +13,20 @@ final class SpokenTakePlayer {
     fileprivate(set) var error: String?
 
     static func latestPoetryTake(for lines: [PracticeCorpus.Line], language: AppLanguage,
-                                 in pairs: [SentencePair]) -> (id: UUID, clip: Clip)? {
+                                in pairs: [SentencePair]) -> (id: UUID, clip: Clip)? {
+        latestTake(for: lines, mode: .poetry, language: language, in: pairs)
+    }
+
+    static func latestTake(for lines: [PracticeCorpus.Line], mode: SentencePromptKind,
+                           language: AppLanguage, pieceID: String? = nil,
+                           in pairs: [SentencePair]) -> (id: UUID, clip: Clip)? {
         let text = lines.map { $0.text(language) }
         let ids = text.map(SentencePrompt.identity)
         let exactText = text.joined(separator: " ")
         for pair in pairs.reversed()
-        where pair.practiceMode == .poetry && (pair.language ?? "en") == language.tag
-            && pair.promptIDs == ids && pair.text == exactText {
+        where pair.practiceMode == mode && (pair.language ?? "en") == language.tag
+            && pair.promptIDs == ids && pair.text == exactText
+            && (pieceID == nil || pair.literaturePieceID == nil || pair.literaturePieceID == pieceID) {
             if let clip = clip(for: pair) { return (pair.id, clip) }
         }
         return nil
