@@ -186,6 +186,16 @@ final class PracticeTests: XCTestCase {
         XCTAssertEqual(progress.today, 2)
         XCTAssertEqual(progress.streak, 3, "A day with only a spoken half doesn't keep the streak")
         XCTAssertEqual(PracticeProgress(pairs: [pair(daysAgo: 1)], calendar: calendar, now: now).streak, 1, "Yesterday still counts until today ends")
+
+        let target = VoicePracticeTarget(mode: TrainMode.speech.rawValue, language: .en, itemID: "speech", text: "Hello.")
+        let voiceRuns = [0, 1].map { daysAgo in
+            VoicePracticeRun(id: UUID(), target: target, createdAt: calendar.date(byAdding: .day, value: -daysAgo, to: now)!,
+                             duration: 10)
+        }
+        let combined = PracticeProgress(pairs: [pair(daysAgo: 0), pair(daysAgo: 2)], voiceRuns: voiceRuns,
+                                        calendar: calendar, now: now)
+        XCTAssertEqual(combined.today, 2)
+        XCTAssertEqual(combined.streak, 3)
     }
 
     func testTraditionalAndSimplifiedMatchForSpeechRecognition() {

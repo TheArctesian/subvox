@@ -34,10 +34,10 @@ struct MemorizationPracticeView: View {
                 if !reviewSections.isEmpty {
                     Button("End review", action: endReview).disabled(model.voicePractice.isBusy)
                 } else {
-                    Button("Review marked sections", systemImage: "arrow.clockwise") { beginReview(round) }
+                    Button("Review due sections", systemImage: "arrow.clockwise") { beginReview(round) }
                         .buttonStyle(.borderedProminent)
                         .disabled(round.isEmpty || model.voicePractice.isBusy)
-                        .help("Mark a section to include it in a short review.")
+                        .help("Marked sections return when they’re due.")
                 }
             }
         } content: {
@@ -112,7 +112,8 @@ struct MemorizationPracticeView: View {
 
             let target = VoicePracticeTarget(mode: TrainMode.memorization.rawValue, language: language, itemID: piece.id,
                                              text: piece.lines.map { $0.text(language) }.joined(separator: "\n"))
-            VoicePracticePanel(target: target, title: piece.title(language))
+            VoicePracticePanel(target: target, title: piece.title(language),
+                               referenceTitle: hideLines ? nil : "Hear full piece", showsOtherRuns: !hideLines)
         }
         .frame(maxWidth: PageMetrics.contentWidth, maxHeight: .infinity, alignment: .topLeading)
         .padding(PageMetrics.padding)
@@ -184,11 +185,12 @@ struct MemorizationPracticeView: View {
     }
 }
 
-private struct MemorizationCard: View {
+struct MemorizationCard: View {
     @Environment(AppModel.self) private var model
     let section: MemorizationSection
     let language: AppLanguage
     let hidesLines: Bool
+    @State private var hinted: Set<Int> = []
     @State private var revealed: Set<Int> = []
 
     var body: some View {
@@ -200,7 +202,8 @@ private struct MemorizationCard: View {
                 Text(section.pieceTitle).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
                 Text(section.label).foregroundStyle(.secondary)
             }
-            Button(playing ? "Stop example" : "Hear example", systemImage: playing ? "stop.fill" : "speaker.wave.2") {
+            Button(playing ? "Stop example" : hidesLines ? "Hear answer" : "Hear example",
+                   systemImage: playing ? "stop.fill" : "speaker.wave.2") {
                 if playing { model.referenceSpeaker.stop() }
                 else { Task { await model.referenceSpeaker.speak(text, language: language.tag) } }
             }
@@ -212,19 +215,47 @@ private struct MemorizationCard: View {
                         PracticeLineView(line: section.lines[index], language: language, showIPA: false)
                         Spacer(minLength: 8)
                         if hidesLines {
-                            Button("Hide line \(index + 1)", systemImage: "eye.slash") { revealed.remove(index) }
+                            Button("Hide line \(index + 1)", systemImage: "eye.slash") {
+                                revealed.remove(index)
+                                hinted.remove(index)
+                            }
                                 .labelStyle(.iconOnly)
                                 .help("Hide line \(index + 1)")
                         }
                     }
                 } else {
-                    Button("Reveal line \(index + 1)", systemImage: "eye") { revealed.insert(index) }
+                    recallLine(index)
                 }
             }
         }
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
-        .onChange(of: hidesLines) { revealed.removeAll() }
+        .onChange(of: hidesLines) {
+            hinted.removeAll()
+            revealed.removeAll()
+        }
+    }
+
+    private func recallLine(_ index: Int) -> some View {
+        let text = section.lines[index].text(language)
+        let opening = text.drop(while: { !$0.isLetter && !$0.isNumber })
+        let hint = language.isChinese ? String(opening.prefix(1))
+            : opening.prefixMatch(of: /[\p{L}\p{N}]+(?:['’][\p{L}]+)*/).map { String($0.output) } ?? ""
+        let hasMore = opening.dropFirst(hint.count).contains { $0.isLetter || $0.isNumber }
+        return HStack(spacing: 10) {
+            Text("Line \(index + 1)")
+                .font(.callout.weight(.medium))
+                .foregroundStyle(.secondary)
+            if hinted.contains(index) {
+                Text("\(hint)…").font(.headline)
+                    .accessibilityLabel("Starts with \(hint)")
+            } else if !hint.isEmpty, hasMore {
+                Button("Show hint", systemImage: "lightbulb") { hinted.insert(index) }
+                    .accessibilityLabel("Show a hint for line \(index + 1)")
+            }
+            Button("Reveal line", systemImage: "eye") { revealed.insert(index) }
+                .accessibilityLabel("Reveal line \(index + 1)")
+        }
     }
 }

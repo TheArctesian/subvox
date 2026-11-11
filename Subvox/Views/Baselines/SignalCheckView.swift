@@ -47,7 +47,8 @@ struct SignalCheckView: View {
             HStack {
                 AppPageHeading(title:"Motion signal",subtitle:"Three phrases, repeated aloud and silently mouthed.")
                 Spacer()
-                Button("Back to recording") { model.showSignalCheck = false;model.showRepresentation=false }.disabled(workflow.isBusy)
+                Button(model.signalCheckFromDevices ? "Back to Devices" : "Back to recording", action: model.closeSignalCheck)
+                    .disabled(workflow.isBusy)
             }
         } content: {
             if workflow.phase == .reseat { reseat.padding(24) }

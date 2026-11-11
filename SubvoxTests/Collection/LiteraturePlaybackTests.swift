@@ -1,7 +1,41 @@
+import AVFoundation
 import XCTest
 @testable import Subvox
 
 final class LiteraturePlaybackTests: XCTestCase {
+    @MainActor
+    func testSectionComparisonLoopsOnlyItsTwoBoundedTakes() throws {
+        let url = FileManager.default.temporaryDirectory.appending(path: "\(UUID()).caf")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let format = try XCTUnwrap(AVAudioFormat(standardFormatWithSampleRate: 8_000, channels: 1))
+        do {
+            let file = try AVAudioFile(forWriting: url, settings: format.settings)
+            let buffer = try XCTUnwrap(AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 8_000))
+            buffer.frameLength = 8_000
+            buffer.floatChannelData?[0].update(repeating: 0, count: 8_000)
+            try file.write(from: buffer)
+        }
+        let latest = SpokenTakePlayer.Take(id: UUID(), clip: .init(url: url, range: 0.1...0.3), createdAt: .now)
+        let previous = SpokenTakePlayer.Take(id: UUID(), clip: .init(url: url, range: 0.5...0.8), createdAt: .distantPast)
+        let playback = SpokenTakePlayer()
+        playback.play([latest, previous], loops: true)
+        let firstItem = try XCTUnwrap(playback.player?.currentItem)
+        XCTAssertEqual(playback.playing, latest.id)
+        XCTAssertEqual(firstItem.forwardPlaybackEndTime.seconds, 0.3, accuracy: 0.001)
+        playback.finished(firstItem)
+        let secondItem = try XCTUnwrap(playback.player?.currentItem)
+        XCTAssertEqual(playback.playing, previous.id)
+        XCTAssertEqual(secondItem.forwardPlaybackEndTime.seconds, 0.8, accuracy: 0.001)
+        playback.finished(firstItem)
+        XCTAssertEqual(playback.playing, previous.id, "An event from a replaced player cannot advance the current comparison")
+        playback.finished(secondItem)
+        XCTAssertEqual(playback.playing, latest.id)
+        playback.setLooping(false)
+        playback.finished(try XCTUnwrap(playback.player?.currentItem))
+        playback.finished(try XCTUnwrap(playback.player?.currentItem))
+        XCTAssertNil(playback.playing)
+    }
+
     @MainActor
     func testSpeechPlaybackUsesLatestAvailableTakeForTheSelectedPiece() throws {
         let root = FileManager.default.temporaryDirectory.appending(path: "speech-playback-\(UUID())")

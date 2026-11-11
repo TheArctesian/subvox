@@ -41,7 +41,7 @@ final class PracticeNextTests: XCTestCase {
             let script = PersonalScript(id: UUID(), revision: UUID(), title: "A script", text: "New text.", language: .fr)
             let other = PersonalScript(id: UUID(), revision: UUID(), title: "Another script", text: "Other text.", language: .en)
             let runs = [
-                VoicePracticeTarget(mode: TrainMode.language.rawValue, language: .fr, itemID: frenchDrill.id, text: "Un café."),
+                VoicePracticeTarget(mode: TrainMode.language.rawValue, language: .fr, itemID: "phrase/\(frenchDrill.id)", text: "Un café."),
                 VoicePracticeTarget(mode: TrainMode.speech.rawValue, language: .en, itemID: speech.id, text: "Here is my speech."),
                 VoicePracticeTarget(mode: TrainMode.memorization.rawValue, language: .fr, itemID: script.pieceID, text: script.text),
                 VoicePracticeTarget(mode: TrainMode.free.rawValue, language: .fr, itemID: script.pieceID, text: script.text)
