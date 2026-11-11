@@ -239,10 +239,11 @@ final class SentenceTrainingWorkflow {
 
     @discardableResult
     func beginVisit(session: RecordingSession, audioDevice: String?, timing: TrainingPace,
-                    presentation: Presentation, persistImmediately: Bool = true, automaticContributionID: UUID? = nil) throws -> SentenceVisit {
+                    presentation: Presentation, persistImmediately: Bool = true, automaticContributionID: UUID? = nil,
+                    libraryContributionID: UUID? = nil) throws -> SentenceVisit {
         let visit = SentenceVisit(notes: notes, directory: session.directory.path, audioDevice: audioDevice,
                                   pace: timing.rawValue, presentation: presentation.rawValue, recordingSessionID: session.id,
-                                  automaticContributionID: automaticContributionID)
+                                  automaticContributionID: automaticContributionID, libraryContributionID: libraryContributionID)
         activeVisitID = visit.id; activeRecordingID = session.id
         data.visits.append(visit)
         if persistImmediately { try persist() }
@@ -306,6 +307,9 @@ final class SentenceTrainingWorkflow {
                 data.pairs[i].directory = session.directory.path
                 data.pairs[i].sessionStartUptime = session.startUptime
                 data.pairs[i].audioOffset = session.audioOffset
+                if data.visits[v].libraryContributionID != nil, data.pairs[i].complete {
+                    data.pairs[i].needsBackgroundCheck = true
+                }
                 if captureCameraPoints, let a = data.pairs[i].spoken, let b = data.pairs[i].silent {
                     data.pairs[i].cameraReadings = cameraReadings.filter {
                         if a.cueStart < b.cueStart { return (a.cueStart - 3...b.cueEnd + 0.3).contains($0.t) }
@@ -509,7 +513,8 @@ final class SentenceTrainingWorkflow {
     }
 
     func start(audio: AudioService, recorder: SessionRecorder, whisper: LocalWhisper,
-               canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil, automaticContributionID: UUID? = nil) {
+               canRecord: @escaping () -> Bool, repairs: Bool = false, retry: UUID? = nil,
+               automaticContributionID: UUID? = nil, libraryContributionID: UUID? = nil) {
         let practiceMode = practicePlan != nil && retry == nil && !repairs
         let communityMode = !practiceMode && readingSource == .community && retry == nil && !repairs
         guard canStartRecording, storageReady, data.reservedUnlockedAt == nil, !recorder.isRecording,
@@ -573,6 +578,10 @@ final class SentenceTrainingWorkflow {
             order = fullOrder
         }
         guard !order.isEmpty else { return }
+        let libraryID = round.flatMap { round in
+            LibraryPilotCatalog.bundled.allows(pieceID: round.pieceID, language: round.language, groups: batch)
+                ? libraryContributionID : nil
+        }
         recordsLiteratureInPasses = fullPiece
         lastLiteratureRound = round
         literatureSectionNumber = nil
@@ -613,7 +622,8 @@ final class SentenceTrainingWorkflow {
             do {
                 let visit = try beginVisit(session: recordingSession, audioDevice: audio.activeDeviceName,
                                            timing: timing, presentation: presentation, persistImmediately: false,
-                                           automaticContributionID: communityMode ? automaticContributionID : nil)
+                                           automaticContributionID: communityMode ? automaticContributionID : nil,
+                                           libraryContributionID: libraryID)
                 if let v = data.visits.firstIndex(where: { $0.id == visit.id }) { data.visits[v].motionDevice = device }
                 try await persistInBackground()
                 for (position, take) in order.enumerated() {

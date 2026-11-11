@@ -10,6 +10,7 @@ import Foundation
     /// Bump when the consent text changes; contributors then confirm again before uploading.
     static let consentVersion = "consent-v1-draft"
     static let automaticConsentVersion = "consent-v2-automatic"
+    static let libraryConsentVersion = "consent-v3-library-pilot"
     struct AutomaticGrant: Codable, Equatable {
         let id: UUID
         let username: String
@@ -36,6 +37,7 @@ import Foundation
     private(set) var consentedVersion: String?
 
     private(set) var automaticGrant: AutomaticGrant?
+    private(set) var libraryGrant: AutomaticGrant?
 
     var hasConsent: Bool { consentedVersion == Self.consentVersion }
 
@@ -45,6 +47,9 @@ import Foundation
         repo = defaults.string(forKey: "contribution.repo") ?? Self.defaultRepo
         consentedVersion = defaults.string(forKey: "contribution.consent")
         automaticGrant = defaults.data(forKey: "contribution.automaticGrant").flatMap {
+            try? JSONDecoder().decode(AutomaticGrant.self, from: $0)
+        }
+        libraryGrant = defaults.data(forKey: "contribution.libraryGrant").flatMap {
             try? JSONDecoder().decode(AutomaticGrant.self, from: $0)
         }
     }
@@ -66,13 +71,35 @@ import Foundation
         guard mode == .huggingFace, !username.isEmpty, !repo.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         let grant = AutomaticGrant(id: UUID(), username: username, repo: repo, version: Self.automaticConsentVersion)
         guard let data = try? JSONEncoder().encode(grant) else { return }
+        stopLibrarySharing()
         automaticGrant = grant
         defaults.set(data, forKey: "contribution.automaticGrant")
     }
 
     func stopAutomaticSharing() {
+        stopLibrarySharing()
         automaticGrant = nil
         defaults.removeObject(forKey: "contribution.automaticGrant")
+    }
+
+    func activeLibraryGrant(for username: String?) -> AutomaticGrant? {
+        guard let base = activeAutomaticGrant(for: username), let libraryGrant,
+              libraryGrant.username == base.username, libraryGrant.repo == base.repo,
+              libraryGrant.version == Self.libraryConsentVersion else { return nil }
+        return libraryGrant
+    }
+
+    func enableLibrarySharing(for username: String) {
+        guard activeAutomaticGrant(for: username) != nil, activeLibraryGrant(for: username) == nil else { return }
+        let grant = AutomaticGrant(id: UUID(), username: username, repo: repo, version: Self.libraryConsentVersion)
+        guard let encoded = try? JSONEncoder().encode(grant) else { return }
+        libraryGrant = grant
+        defaults.set(encoded, forKey: "contribution.libraryGrant")
+    }
+
+    func stopLibrarySharing() {
+        libraryGrant = nil
+        defaults.removeObject(forKey: "contribution.libraryGrant")
     }
 }
 
@@ -88,6 +115,9 @@ struct CommunityUpload: Codable, Identifiable, Equatable, Sendable {
     var prNumber: Int?
     var prURL: String?
     var error: String?
+    var libraryGrantID: UUID?
+    var libraryTakeIDs: Set<String>?
+    var isLibraryPilot: Bool { libraryGrantID != nil }
 }
 
 struct CommunityTake: Identifiable, Equatable, Sendable {
@@ -159,14 +189,27 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
 
     /// Exported IDs match the Python dataset schema and never expose the local session UUID.
     static func publicSessionID(_ id: UUID) -> String {
-        SHA256.hash(data: Data("subvox-community:session:\(id.uuidString)".utf8))
+        publicID(id, kind: "session")
+    }
+
+    static func publicTakeID(_ id: UUID) -> String {
+        publicID(id, kind: "take")
+    }
+
+    private static func publicID(_ id: UUID, kind: String) -> String {
+        SHA256.hash(data: Data("subvox-community:\(kind):\(id.uuidString)".utf8))
             .prefix(16).map { String(format: "%02x", $0) }.joined()
     }
 
     /// Re-exports community sessions. Automatic runs consume only the current export manifest.
     @discardableResult
-    func prepare(contributor: String, automatic grant: ContributionSettings.AutomaticGrant? = nil) async -> [CommunityUpload]? {
+    func prepare(contributor: String, automatic grant: ContributionSettings.AutomaticGrant? = nil,
+                 library: ContributionSettings.AutomaticGrant? = nil) async -> [CommunityUpload]? {
         guard !busy, queueReadable else { return nil }
+        if let library {
+            guard let grant, library.username == contributor, grant.username == contributor,
+                  library.repo == grant.repo, library.version == ContributionSettings.libraryConsentVersion else { return nil }
+        }
         busy = true; error = nil; status = "Looking for new sessions…"
         defer { busy = false }
         let output = grant.map { exportRoot.appending(path: $0.id.uuidString) } ?? exportRoot
@@ -179,11 +222,12 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
             let shared = self.shared.map(\.id)
             if !shared.isEmpty { arguments += ["--skip", shared.joined(separator: ",")] }
             if let grant { arguments += ["--automatic-grant", grant.id.uuidString, "--manifest", manifest.path] }
+            if let library { arguments += ["--library-grant", library.id.uuidString] }
             try await export(arguments)
             let found: [CommunityUpload]
             if grant != nil {
                 let paths = try JSONDecoder().decode([String].self, from: Data(contentsOf: manifest))
-                found = paths.compactMap { loadSession(URL(fileURLWithPath: $0)) }
+                found = paths.compactMap { loadSession(URL(fileURLWithPath: $0), libraryGrantID: library?.id) }
             } else {
                 found = scan(contributor: contributor)
             }
@@ -200,20 +244,34 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
     func scan(contributor: String) -> [CommunityUpload] {
         let folder = exportRoot.appending(path: "data/\(contributor)")
         let sessions = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)) ?? []
-        return sessions.compactMap(loadSession).sorted { $0.id < $1.id }
+        return sessions.compactMap { loadSession($0) }.sorted { $0.id < $1.id }
     }
 
-    private func loadSession(_ url: URL) -> CommunityUpload? {
+    private func loadSession(_ url: URL, libraryGrantID: UUID? = nil) -> CommunityUpload? {
         guard let data = try? Data(contentsOf: url.appending(path: "session.json")),
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let id = json["session_id"] as? String else { return nil }
-        return CommunityUpload(id: id, folder: url.path, takes: json["takes"] as? Int ?? 0, month: json["month"] as? String ?? "")
+        var item = CommunityUpload(id: id, folder: url.path, takes: json["takes"] as? Int ?? 0, month: json["month"] as? String ?? "")
+        if json["consent_version"] as? String == ContributionSettings.libraryConsentVersion {
+            guard let libraryGrantID else { return nil }
+            item.libraryGrantID = libraryGrantID
+            let takeIDs = Set(takes(item).map(\.id))
+            guard !takeIDs.isEmpty, takeIDs.count == item.takes else { return nil }
+            item.libraryTakeIDs = takeIDs
+        }
+        return item
     }
 
     func merge(_ found: [CommunityUpload]) {
         for item in found {
             if let i = items.firstIndex(where: { $0.id == item.id }) {
-                if items[i].status != .uploaded && items[i].status != .uploading { items[i].takes = item.takes; items[i].folder = item.folder }
+                if items[i].status != .uploaded && items[i].status != .uploading {
+                    guard items[i].libraryGrantID == item.libraryGrantID else { continue }
+                    items[i].takes = item.takes
+                    items[i].folder = item.folder
+                    items[i].libraryTakeIDs = item.libraryTakeIDs
+                    if let takeIDs = item.libraryTakeIDs { items[i].dropped.removeAll { !takeIDs.contains($0) } }
+                }
             } else { items.append(item) }
         }
         save()
@@ -225,15 +283,25 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
             guard let row = try? JSONSerialization.jsonObject(with: Data(line.utf8)) as? [String: Any],
                   let id = row["take_id"] as? String, let prompt = row["prompt_id"] as? String else { return nil }
             let entry = corpus.prompt(prompt)
+            let library = LibraryPilotCatalog.bundled.prompt(prompt)
             return CommunityTake(id: id, promptID: prompt, mode: row["mode"] as? String ?? "", eligible: row["eligible"] as? Bool ?? false,
-                                 cameraEligible: row["camera_eligible"] as? Bool ?? false, text: entry?.text ?? "Unknown prompt",
-                                 source: entry.map { $0.passageID == nil ? "Calibration" : "\($0.title) — \($0.author)" })
+                                 cameraEligible: row["camera_eligible"] as? Bool ?? false, text: entry?.text ?? library?.text ?? "Unknown prompt",
+                                 source: entry.map { $0.passageID == nil ? "Calibration" : "\($0.title) — \($0.author)" }
+                                     ?? library.map { "\($0.title) — \($0.author)" })
         }
     }
 
     func toggleDrop(_ take: String, in id: String) {
         guard !busy, let i = items.firstIndex(where: { $0.id == id }), items[i].status != .uploaded, items[i].status != .uploading else { return }
-        if items[i].dropped.contains(take) { items[i].dropped.removeAll { $0 == take } } else { items[i].dropped.append(take) }
+        var group = [take]
+        if items[i].isLibraryPilot {
+            let rows = takes(items[i])
+            guard let row = rows.first(where: { $0.id == take }) else { return }
+            group = rows.filter { $0.promptID == row.promptID }.map(\.id)
+            guard group.count == 2 else { return }
+        }
+        if items[i].dropped.contains(take) { items[i].dropped.removeAll { group.contains($0) } }
+        else { items[i].dropped.append(contentsOf: group.filter { !items[i].dropped.contains($0) }) }
         save()
     }
 
@@ -261,6 +329,15 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
             let result = try JSONSerialization.jsonObject(with: Data(contentsOf: output)) as? [String: Any]
             try? FileManager.default.removeItem(at: output)
             guard let j = items.firstIndex(where: { $0.id == id }) else { return }
+            if item.isLibraryPilot {
+                guard let takeIDs = result?["take_ids"] as? [String], !takeIDs.isEmpty,
+                      takeIDs.count.isMultiple(of: 2), Set(takeIDs).count == takeIDs.count else {
+                    throw CocoaError(.fileReadCorruptFile)
+                }
+                items[j].libraryTakeIDs = Set(takeIDs)
+                items[j].takes = takeIDs.count
+                items[j].dropped = []
+            }
             items[j].status = .uploaded
             items[j].prNumber = (result?["pr_num"] as? Int) ?? items[j].prNumber
             items[j].prURL = (result?["pr_url"] as? String) ?? items[j].prURL
@@ -277,12 +354,16 @@ struct CommunityTake: Identifiable, Equatable, Sendable {
     var shared: [CommunityUpload] { items.filter { $0.status == .uploaded } }
 
     func sendReviewed(_ ids: [String], repo: String, token: String, automatic: Bool = false,
+                      library: ContributionSettings.AutomaticGrant? = nil,
                       canContinue: () -> Bool = { true }) async {
         guard !busy else { return }
         var sent = 0
         var failed = 0
         for id in ids {
             guard canContinue(), !Task.isCancelled else { break }
+            if let grantID = items.first(where: { $0.id == id })?.libraryGrantID {
+                guard automatic, let library, library.id == grantID, library.repo == repo else { continue }
+            }
             await send(id, repo: repo, token: token, automatic: automatic)
             if shared.contains(where: { $0.id == id }) { sent += 1 } else { failed += 1 }
         }

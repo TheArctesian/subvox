@@ -1,11 +1,17 @@
 import json
+import shutil
 import tempfile
 import unittest
 import uuid
 from pathlib import Path
 import pyarrow.parquet as pq
 from subvox_ml import camera
-from subvox_ml.community_export import training_phones, export_sessions, validate_session, load_prompt_index, prompt_identity, MOTION_COLUMNS, CAMERA_COLUMNS
+from subvox_ml.community_export import (
+    CAMERA_COLUMNS, LIBRARY_CATALOG, LIBRARY_CONSENT, MOTION_COLUMNS, SESSION_FILES,
+    export_sessions, find_prompts_dir, library_prompt_identity, load_library_pilot, load_prompt_index,
+    prompt_identity, training_phones, upload_session,
+    validate_session,
+)
 from test_camera import reading
 
 COMMUNITY = "The cat sat on the mat."
@@ -282,3 +288,184 @@ class LanguageTagTests(Fixture):
         self.assertIsNone(training_phones(dict(base, speaker_status="learning", produced_phones=None)))
         self.assertEqual(training_phones(dict(base, speaker_status="learning", produced_phones=["s", "y", "i"])), ["s", "y", "i"])
         self.assertEqual(training_phones(dict(base, speaker_status="native", produced_phones=None)), ["s", "ɥ", "i"])
+
+
+class LibraryPilotTests(Fixture):
+    def setUp(self):
+        super().setUp()
+        shutil.copyfile(find_prompts_dir() / LIBRARY_CATALOG, self.prompts / LIBRARY_CATALOG)
+        self.catalog = load_library_pilot(self.prompts)
+        self.sections = sorted((row for row in self.catalog.values() if row["piece_id"] == "invictus"),
+                               key=lambda row: row["section"])
+        self.path = self.root / "sentence-training.json"
+        self.data = json.loads(self.path.read_text())
+        self.reading_grant, self.library_grant = str(uuid.uuid4()), str(uuid.uuid4())
+        self.data["visits"][0].update(automaticContributionID=self.reading_grant, endedAt=815709510,
+                                      recordingSessionID=self.session)
+        self.library_session = str(uuid.uuid4())
+        self.visit = dict(id=str(uuid.uuid4()), libraryContributionID=self.library_grant,
+                          recordingSessionID=self.library_session, endedAt=815709540, pairIDs=[])
+        self.data["visits"].append(self.visit)
+        self.first = self.add_pair(self.sections[0], 200)
+
+    def add_pair(self, section, start):
+        saved = pair(section["text"], self.library_session, 199, camera_on=False)
+        saved.update(visitID=self.visit["id"], promptIDs=[prompt_identity(line) for line in section["lines"]],
+                     literaturePieceID=section["piece_id"], language=section["language"], practiceMode=section["kind"],
+                     spoken=recording("Normal speech", start + 60), silent=recording("Silent mouthing", start),
+                     alignment={"words": [{"word": "out"}]}, transcriptMatchRate=.95, timedWordCoverage=.9,
+                     wordTimingSource="whisperAttention")
+        self.visit["pairIDs"].append(saved["id"])
+        self.data["pairs"].append(saved)
+        return saved
+
+    def pilot(self, **options):
+        self.path.write_text(json.dumps(self.data))
+        return export_sessions(self.root, self.out, "anon-7f3a", "consent-v2-automatic", self.prompts,
+                               library_grant=options.pop("library_grant", self.library_grant), **options)
+
+    def test_exact_unicode_identity_and_separate_grants(self):
+        self.assertNotEqual(library_prompt_identity("zh-Hans", "piece", "你好"),
+                            library_prompt_identity("zh-Hans", "piece", "再见"))
+        self.assertEqual(self.pilot(library_grant=str(uuid.uuid4())), [])
+        [ordinary] = self.pilot(library_grant=None, automatic_grant=self.reading_grant)
+        self.assertEqual({take["prompt_id"] for take in self.takes(ordinary)},
+                         {prompt_identity(COMMUNITY), prompt_identity(CALIBRATION)})
+        [pilot] = self.pilot()
+        self.assertEqual({take["prompt_id"] for take in self.takes(pilot)}, {self.sections[0]["prompt_id"]})
+        self.assertEqual(set(self.pilot(automatic_grant=self.reading_grant)), {ordinary, pilot})
+        self.assertEqual(self.pilot(skip={pilot.name}), [])
+        session = json.loads((pilot / "session.json").read_text())
+        self.assertEqual((session["consent_version"], session["prompts_version"]), (LIBRARY_CONSENT, 2))
+        self.assertEqual(self.problems(pilot), [])
+        self.assertEqual({file.name for file in pilot.iterdir()}, set(SESSION_FILES))
+
+    def test_only_finished_matching_and_verified_same_session_pairs(self):
+        self.visit.pop("endedAt")
+        self.assertEqual(self.pilot(), [])
+        self.visit["endedAt"] = 815709540
+        self.first["needsBackgroundCheck"] = True
+        self.assertEqual(self.pilot(), [])
+        self.first.pop("needsBackgroundCheck")
+        for updates in (
+            {"recordingSessionID": str(uuid.uuid4())},
+            {"silent": None},
+            {"silent": dict(self.first["silent"], samples=self.first["silent"]["samples"][::5])},
+            {"text": self.first["text"] + " Personal addition."},
+            {"promptIDs": [prompt_identity(self.first["text"])]},
+            {"literaturePieceID": "personal-piece"},
+            {"language": "fr"},
+            {"practiceMode": "freeText"},
+            {"review": "Excluded"},
+            {"role": "Final test"},
+            {"timedWordCoverage": .75},
+            {"transcriptMatchRate": .75},
+            {"alignment": None},
+            {"error": "Did not match"},
+        ):
+            with self.subTest(fields=list(updates)):
+                previous = {key: self.first[key] for key in updates if key in self.first}
+                self.first.update(updates)
+                self.assertEqual(self.pilot(), [])
+                for key in updates:
+                    self.first.pop(key)
+                self.first.update(previous)
+        self.data["roles"] = {self.first["promptIDs"][0]: "Final test"}
+        self.assertEqual(self.pilot(), [])
+
+    def test_waits_for_all_checks_and_ignores_incomplete_siblings_and_duplicates(self):
+        later = self.add_pair(self.sections[1], 210)
+        later["needsBackgroundCheck"] = True
+        self.assertEqual(self.pilot(), [])
+        later.pop("needsBackgroundCheck")
+        later["silent"] = None
+        self.add_pair(self.sections[0], 220)
+        [folder] = self.pilot()
+        takes = self.takes(folder)
+        self.assertEqual([(take["prompt_id"], take["mode"]) for take in takes],
+                         [(self.sections[0]["prompt_id"], "spoken"), (self.sections[0]["prompt_id"], "mouthed")])
+
+    def test_preflight_requires_matching_remote_catalog_and_upload_keeps_whole_sections(self):
+        self.add_pair(self.sections[1], 210)
+        [folder] = self.pilot()
+        takes = self.takes(folder)
+        remove = [take["take_id"] for take in takes if take["prompt_id"] == self.sections[0]["prompt_id"]]
+        remote = self.prompts / "remote-catalog.jsonl"
+        remote.write_bytes(b"old catalog")
+        checks = []
+
+        def download(**kwargs):
+            checks.append(kwargs)
+            return remote
+
+        def missing(**kwargs):
+            raise FileNotFoundError()
+
+        hub = FakeHub()
+        for unavailable in (download, missing):
+            with self.assertRaisesRegex(ValueError, "awaiting setup"):
+                upload_session(folder, "r/d", "token", prompts_dir=self.prompts, api=hub, download=unavailable)
+        self.assertEqual(hub.calls, [])
+        remote.write_bytes((self.prompts / LIBRARY_CATALOG).read_bytes())
+        with self.assertRaisesRegex(ValueError, "one spoken and one mouthed"):
+            upload_session(folder, "r/d", "token", drop=remove[:1], prompts_dir=self.prompts, api=hub, download=download)
+        self.assertEqual(hub.calls, [])
+        result = upload_session(folder, "r/d", "token", drop=remove, prompts_dir=self.prompts, api=hub, download=download)
+        self.assertEqual(result["takes"], 2)
+        self.assertEqual(set(result["take_ids"]), {take["take_id"] for take in takes} - set(remove))
+        self.assertEqual(checks[-1], dict(repo_id="r/d", filename=f"prompts/{LIBRARY_CATALOG}", repo_type="dataset",
+                                          token="token", force_download=True))
+        [call] = hub.calls
+        self.assertEqual({Path(path).name for path in call["files"]}, set(SESSION_FILES))
+
+    def test_lost_pilot_receipt_reports_the_original_pr_takes_after_review_changes(self):
+        from types import SimpleNamespace
+
+        self.add_pair(self.sections[1], 210)
+        [folder] = self.pilot()
+        prefix = f"data/anon-7f3a/{folder.name}"
+        remote_takes = self.prompts / "remote-takes.jsonl"
+        tests = self
+
+        class Hub(FakeHub):
+            def create_commit(self, **kwargs):
+                super().create_commit(**kwargs)
+                remote_takes.write_bytes(self.calls[0]["files"][f"{prefix}/takes.jsonl"])
+                raise ConnectionError("PR created, but its receipt was lost")
+
+            def get_repo_discussions(self, repo, **filters):
+                if self.calls:
+                    yield SimpleNamespace(title=self.calls[0]["commit_message"], url="https://hub.test/pr/7", num=7)
+
+        def download(**kwargs):
+            if kwargs["filename"] == f"prompts/{LIBRARY_CATALOG}":
+                return tests.prompts / LIBRARY_CATALOG
+            tests.assertEqual((kwargs["filename"], kwargs["revision"]), (f"{prefix}/takes.jsonl", "refs/pr/7"))
+            return remote_takes
+
+        hub = Hub()
+        options = dict(prompts_dir=self.prompts, api=hub, automatic=True, download=download)
+        with self.assertRaises(ConnectionError):
+            upload_session(folder, "r/d", "token", **options)
+        takes = self.takes(folder)
+        removed = [take["take_id"] for take in takes if take["prompt_id"] == self.sections[0]["prompt_id"]]
+        receipt = upload_session(folder, "r/d", "token", drop=removed, **options)
+        self.assertEqual(receipt["takes"], 4)
+        self.assertEqual(receipt["take_ids"], [take["take_id"] for take in takes])
+        self.assertEqual(len(hub.calls), 1)
+
+    def test_validator_rejects_wrong_scope_and_non_allowlisted_files(self):
+        [folder] = self.pilot()
+        (folder / "audio").write_bytes(b"private")
+        self.assertTrue(any("unexpected files" in problem for problem in self.problems(folder)))
+        (folder / "audio").unlink()
+        session_path = folder / "session.json"
+        session = json.loads(session_path.read_text())
+        session_path.write_text(json.dumps(dict(session, consent_version="consent-v2-automatic")))
+        self.assertIn("unknown prompt or passage", self.problems(folder))
+
+    def takes(self, folder):
+        return [json.loads(line) for line in (folder / "takes.jsonl").read_text().splitlines()]
+
+    def problems(self, folder):
+        return validate_session(folder, *load_prompt_index(self.prompts), library=self.catalog)

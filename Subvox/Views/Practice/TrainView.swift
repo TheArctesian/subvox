@@ -104,7 +104,7 @@ struct PracticePage<Controls: View, Content: View>: View {
     @ViewBuilder private var pageBody: some View {
         if !model.localWhisper.isConfigured {
             HStack {
-                Label("Practice needs speech recognition on this Mac (a local Whisper model) to check what you said. Nothing is uploaded.", systemImage: "exclamationmark.triangle")
+                Label("Practice needs a local Whisper model to check your speech on this Mac.", systemImage: "exclamationmark.triangle")
                     .foregroundStyle(.orange)
                 Button("Set Up Whisper…") { showWhisperSetup = true }
             }
@@ -591,6 +591,11 @@ struct LiteraturePracticeView: View {
                         ScrollView { LazyVStack(alignment: .leading, spacing: 12) {
                             Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
+                            if model.librarySharingGrant != nil,
+                               LibraryPilotCatalog.bundled.allows(pieceID: piece.id, language: language.tag, groups: groups) {
+                                Label("Library sharing is on. Eligible sections are submitted in a public pull request.", systemImage: "arrow.up.circle")
+                                    .font(.callout).foregroundStyle(.secondary)
+                            }
                             if let unfinished {
                                 Button("Continue recording", systemImage: "arrow.right.circle") {
                                     model.resumeLiterature(unfinished)

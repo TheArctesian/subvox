@@ -48,6 +48,16 @@ final class AppModel {
         contribution.activeAutomaticGrant(for: huggingFace.username)
     }
 
+    var librarySharingGrant: ContributionSettings.AutomaticGrant? {
+        contribution.activeLibraryGrant(for: huggingFace.username)
+    }
+
+    func enableLibrarySharing() {
+        if let username = huggingFace.username { contribution.enableLibrarySharing(for: username) }
+    }
+
+    func stopLibrarySharing() { contribution.stopLibrarySharing() }
+
     /// Subvox is a data-collection app first: the main window opens only while the learner is
     /// signed in to Hugging Face and automatic sharing is on. Otherwise Welcome asks for both.
     var canUseApp: Bool { onboarded && huggingFace.username != nil && automaticSharingGrant != nil }
@@ -64,30 +74,40 @@ final class AppModel {
 
     func sendAutomaticContributions() async {
         guard started, !automaticSharingRunning, !uploader.busy, let grant = automaticSharingGrant else { return }
+        let library = librarySharingGrant
         let visits = Set(sentenceTraining.data.visits.lazy.filter {
             $0.automaticContributionID == grant.id && $0.endedAt != nil
         }.map(\.id))
-        guard !visits.isEmpty else { return }
+        let checkingVisits = Set(sentenceTraining.data.pairs.lazy.filter { $0.needsBackgroundCheck == true }.map(\.visitID))
+        let libraryVisits = Set(sentenceTraining.data.visits.lazy.filter { visit in
+            library.map { visit.libraryContributionID == $0.id } == true
+                && visit.endedAt != nil && !checkingVisits.contains(visit.id)
+        }.map(\.id))
+        guard !visits.isEmpty || !libraryVisits.isEmpty else { return }
         let handled = Set(uploader.items.filter { $0.status == .uploaded || ($0.takes > 0 && $0.dropped.count >= $0.takes) }.map(\.id))
         let hasPending = sentenceTraining.data.pairs.contains { pair in
-            guard visits.contains(pair.visitID), pair.role != .finalTest, pair.review != .excluded,
-                  pair.promptIDs.count == 1, sentenceTraining.community.prompt(pair.promptIDs[0]) != nil,
-                  let session = pair.recordingSessionID,
-                  pair.spoken?.samples.isEmpty == false || pair.silent?.samples.isEmpty == false else { return false }
+            guard pair.role != .finalTest, pair.review != .excluded, let session = pair.recordingSessionID else { return false }
+            if libraryVisits.contains(pair.visitID) {
+                guard pair.canAccept, pair.hasReliableTranscript, LibraryPilotCatalog.bundled.prompt(for: pair) != nil else { return false }
+            } else {
+                guard visits.contains(pair.visitID), pair.promptIDs.count == 1,
+                      sentenceTraining.community.prompt(pair.promptIDs[0]) != nil,
+                      pair.spoken?.samples.isEmpty == false || pair.silent?.samples.isEmpty == false else { return false }
+            }
             return !handled.contains(CommunityUploader.publicSessionID(session))
         }
         guard hasPending else { return }
         automaticSharingRunning = true
         defer { automaticSharingRunning = false }
         guard let token = try? await huggingFace.accessToken(),
-              automaticSharingGrant == grant, !Task.isCancelled,
-              let sessions = await uploader.prepare(contributor: grant.username, automatic: grant),
-              automaticSharingGrant == grant, !Task.isCancelled else { return }
+              automaticSharingGrant == grant, librarySharingGrant == library, !Task.isCancelled,
+              let sessions = await uploader.prepare(contributor: grant.username, automatic: grant, library: library),
+              automaticSharingGrant == grant, librarySharingGrant == library, !Task.isCancelled else { return }
         let pending = Set(uploader.pending.map(\.id))
         let ids = sessions.map(\.id).filter { pending.contains($0) }
         guard !ids.isEmpty else { return }
-        await uploader.sendReviewed(ids, repo: grant.repo, token: token, automatic: true) {
-            self.started && self.automaticSharingGrant == grant
+        await uploader.sendReviewed(ids, repo: grant.repo, token: token, automatic: true, library: library) {
+            self.started && self.automaticSharingGrant == grant && self.librarySharingGrant == library
         }
     }
     var trainMode: TrainMode = .reading
@@ -283,7 +303,10 @@ final class AppModel {
         self.sentenceTraining.onCommunitySessionSaved = { [weak self] in
             Task { await self?.sendAutomaticContributions() }
         }
-        self.sentenceTraining.onTrainingChanged = { [weak self] in self?.rebuildDecoder() }
+        self.sentenceTraining.onTrainingChanged = { [weak self] in
+            self?.rebuildDecoder()
+            if self?.librarySharingGrant != nil { Task { await self?.sendAutomaticContributions() } }
+        }
         self.sentenceTraining.onPracticeProcessed = { [weak self] id in await self?.checkPhones(id) }
         self.sentenceTraining.playReference = { [weak self] text, language in await self?.referenceSpeaker.speak(text, language: language) }
         rebuildDecoder()
@@ -363,10 +386,10 @@ final class AppModel {
     }
 
     /// Records a practice round through the shared paired interface: each group is spoken, then mouthed.
-    func startPractice(_ groups: [[SentencePrompt]]) {
+    func startPractice(_ groups: [[SentencePrompt]], libraryContributionID: UUID? = nil) {
         guard !groups.isEmpty, localWhisper.isConfigured else { return }
         sentenceTraining.practicePlan = groups
-        startSentenceTraining()
+        startSentenceTraining(libraryContributionID: libraryContributionID)
         sentenceTraining.practicePlan = nil
     }
 
@@ -381,7 +404,7 @@ final class AppModel {
         guard canResumeLiterature else { return }
         sentenceTraining.literatureSelection = .new(pieceID: pieceID, title: title)
         defer { sentenceTraining.literatureSelection = nil }
-        startPractice(groups)
+        startPractice(groups, libraryContributionID: librarySharingGrant?.id)
     }
 
     func resumeLiterature(_ round: LiteraturePracticeRound) {
@@ -394,7 +417,7 @@ final class AppModel {
         SavedSelection.set(round.kind.rawValue, language, round.pieceID)
         sentenceTraining.literatureSelection = .resume(round.id)
         defer { sentenceTraining.literatureSelection = nil }
-        startPractice(round.groups)
+        startPractice(round.groups, libraryContributionID: librarySharingGrant?.id)
     }
 
     private func checkPhones(_ id: UUID) async {
@@ -403,12 +426,12 @@ final class AppModel {
         await sentenceTraining.setPhoneCheck(result, for: id)
     }
 
-    func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil) {
+    func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil, libraryContributionID: UUID? = nil) {
         guard motion.status == .streaming, localWhisper.isConfigured || sentenceTraining.readingSource == .community, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
         referenceSpeaker.stop()
         sentenceTraining.start(audio: audio, recorder: recorder, whisper: localWhisper,
             canRecord: { [weak self] in self?.motion.status == .streaming }, repairs: repairs, retry: retry,
-            automaticContributionID: automaticSharingGrant?.id)
+            automaticContributionID: automaticSharingGrant?.id, libraryContributionID: libraryContributionID)
     }
 
     func startSignalCheck(againstReference: Bool = false, controlled: Bool = false) {
