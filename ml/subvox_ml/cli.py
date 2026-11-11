@@ -282,6 +282,17 @@ def package_hash(package):
     return digest({p.relative_to(package).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
 
 
+def articulatory_report(language=None):
+    """Chimera's jaw openings beside the hand-coded vowel buckets, plus how many lexicon words each
+    alphabet leaves indistinguishable. A lexical ceiling, never a recognition result."""
+    from .articulatory import chimera_jaw_comparison,cohort_entropy,ALPHABETS
+    report=dict(jaw=chimera_jaw_comparison())
+    if language:
+        lang=json.loads(Path(language).read_text())
+        report["lexical_ceiling"]={a:cohort_entropy(lang,a) for a in ALPHABETS}
+    return report
+
+
 def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented","activity")):
     """Per experiment and condition: one model per cross-validation fold (selected on that fold's
     development rows), their validation rows pooled into one report, then a final refit on every
@@ -489,6 +500,7 @@ def main():
     p.add_argument("--drop",default="");p.add_argument("--pr",type=int);p.add_argument("--prompts-dir");p.add_argument("--automatic",action="store_true")
     p=sub.add_parser("validate-community");p.add_argument("--session",required=True);p.add_argument("--prompts-dir")
     p=sub.add_parser("prepare-teachers");p.add_argument("--dataset",required=True);p.add_argument("--base-run",required=True);p.add_argument("--output",required=True)
+    p=sub.add_parser("articulatory-report");p.add_argument("--language",help="language.json exported by the app; adds cohort entropy per alphabet")
     p=sub.add_parser("phones");p.add_argument("--text",required=True);p.add_argument("--language",required=True);p.add_argument("--output")
     p=sub.add_parser("phone-check");p.add_argument("--text",required=True);p.add_argument("--language",required=True);p.add_argument("--whisper-text",required=True);p.add_argument("--phone-intervals");p.add_argument("--output")
     p = sub.add_parser("align")
@@ -553,6 +565,7 @@ def main():
         is_library = session.is_file() and json.loads(session.read_text()).get("consent_version") == LIBRARY_CONSENT
         library = load_library_pilot(prompts_dir) if is_library else None
         result = dict(session=args.session, problems=validate_session(args.session, index, heldout, library=library))
+    elif args.command=="articulatory-report":result=articulatory_report(args.language)
     elif args.command=="prepare-teachers":
         from .teachers import enrich
         result=enrich(args.dataset,args.base_run,args.output)

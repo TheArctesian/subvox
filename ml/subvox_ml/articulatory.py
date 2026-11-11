@@ -5,7 +5,9 @@ plausibly observe. Voicing, nasality and tongue place are kept only as negative 
 measured transfer for them means an alignment or leakage bug, not a capable sensor."""
 from __future__ import annotations
 import math
+import unicodedata
 from collections import Counter, defaultdict
+from . import chimera_tables
 
 # Diphthongs and centring vowels take the height of their onset, where the jaw sets first.
 VOWEL_JAW = {**{v: "high" for v in ("i", "iː", "ɪ", "u", "uː", "ʊ", "ɪə", "ʊə")},
@@ -58,6 +60,66 @@ ALPHABETS = {
     "observable": lambda p: tuple(features(p)[k] for k in OBSERVABLE),
     "viseme_std": lambda p: next(i for i, group in enumerate(VISEME_STD) if p in group),
 }
+# Added 2026-11-10 after the alphabets above were fixed; its bins are CHIMERA_JAW_BINS, fixed the
+# same day before any result used them. The coarse head never selects it.
+ALPHABETS["jaw_chimera"] = lambda p: chimera_jaw(p)
+
+
+# Chimera's articulator values (chimera_tables.py, male body) are keyed by Chimera's own symbols.
+# These rules were fixed on 2026-11-10, before any result used them.
+# Diphthongs and centring vowels take their onset, as VOWEL_JAW does.
+CHIMERA_ONSET = {"eɪ": "e", "aɪ": "a", "aʊ": "a", "ɔɪ": "ɔ", "oʊ": "o", "əʊ": "ə", "ɪə": "ɪ", "eə": "e", "ʊə": "ʊ"}
+# ɚ is ɝ in Chimera's planner; ɜ has no Chimera target and takes ɝ as the nearest calibrated vowel.
+CHIMERA_SUBSTITUTES = {"ɡ": "g", "ɚ": "ɝ", "ɜ": "ɝ"}
+# Length, nasalisation, aspiration and syllabicity change no stored jaw or lip target in Chimera.
+CHIMERA_IGNORED_MARKS = ("ː", "\u0303", "ʰ", "\u0329")
+
+
+def chimera_key(phone):
+    """Chimera's symbol for a Subvox phone. Raises for a phone Chimera has no target for."""
+    key = unicodedata.normalize("NFC", phone)
+    for mark in CHIMERA_IGNORED_MARKS:
+        key = key.replace(mark, "")
+    key = CHIMERA_ONSET.get(key, key)
+    key = CHIMERA_SUBSTITUTES.get(key, key)
+    if key not in chimera_tables.VOWELS and key not in chimera_tables.CONSONANTS:
+        raise ValueError(f"No Chimera articulator target for {phone!r}")
+    return key
+
+
+def chimera_values(phone):
+    """Chimera's jaw and lip values for a phone, in its template cm. None where Chimera leaves the
+    articulator to coarticulation; these are fitted model targets, never measured positions."""
+    key = chimera_key(phone)
+    values = chimera_tables.VOWELS.get(key) or chimera_tables.CONSONANTS[key]
+    return dict(zip(chimera_tables.KEYS, values))
+
+
+# Vowel jaw bins on Chimera's male incisor opening (cm), fixed on 2026-11-10 before any result.
+CHIMERA_JAW_BINS = ((0.6, "high"), (1.1, "mid"), (math.inf, "low"))
+
+
+def chimera_jaw(phone):
+    """Vowels binned by Chimera's jaw opening; consonants keep the jaw4 class so every phone has a unit."""
+    if phone not in VOWEL_JAW:
+        return features(phone)["jaw"]
+    jaw = chimera_values(phone)["jaw"]
+    return next(label for limit, label in CHIMERA_JAW_BINS if jaw < limit)
+
+
+def chimera_jaw_comparison():
+    """Each VOWEL_JAW vowel's hand-coded bucket beside Chimera's jaw opening and bin."""
+    rows = []
+    for phone in sorted(VOWEL_JAW):
+        key = chimera_key(phone)
+        rows.append(dict(phone=phone, chimera_key=key, bucket=VOWEL_JAW[phone],
+                         chimera_jaw=chimera_tables.VOWELS[key][0], chimera_bin=chimera_jaw(phone)))
+    ranges = {}
+    for bucket in ("high", "mid", "low"):
+        jaws = [r["chimera_jaw"] for r in rows if r["bucket"] == bucket]
+        ranges[bucket] = dict(min=min(jaws), max=max(jaws), vowels=len(jaws))
+    return dict(chimera_rev=chimera_tables.CHIMERA_REV, body=chimera_tables.BODY, bins=[list(b) for b in CHIMERA_JAW_BINS[:-1]],
+                vowels=rows, bucket_ranges=ranges, disagreements=[r["phone"] for r in rows if r["bucket"] != r["chimera_bin"]])
 
 
 def unit_string(phones, alphabet):
