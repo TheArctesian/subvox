@@ -275,6 +275,13 @@ def _experiment_cohort(examples, config):
     return camera_cohort(examples) if config.get("cohort") == "camera" else examples
 
 
+def package_hash(package):
+    """Every file the run snapshot copies, so bundled data counts as code. A package of only
+    top-level .py files hashes exactly as the earlier .py-only digest did."""
+    files=(p for p in sorted(package.rglob("*")) if p.is_file() and "__pycache__" not in p.parts)
+    return digest({p.relative_to(package).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
+
+
 def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented","activity")):
     """Per experiment and condition: one model per cross-validation fold (selected on that fold's
     development rows), their validation rows pooled into one report, then a final refit on every
@@ -291,7 +298,7 @@ def train(dataset, output, epochs=60, experiments=("plain","diphone","augmented"
     for name in ("pyproject.toml","uv.lock"):
         source=Path(__file__).parent.parent/name
         if source.exists():shutil.copy2(source,snapshot/name)
-    code_hash=digest({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path(__file__).parent.glob("*.py")})
+    code_hash=package_hash(Path(__file__).parent)
     folds=[f["fold"] for f in manifest["split"]["folds"] if f["training"] and f["validation"]]
     comparisons=[];model_paths=[];cohorts={}
     for experiment in experiments:

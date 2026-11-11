@@ -1,0 +1,9 @@
+# Montreal Forced Aligner settings for Subvox's fallback phone alignment (mfa align_one).
+# The same take must align the same way on every run, so no boundary depends on chance.
+# dither 0: MFA otherwise adds random noise to its features. Chimera's TSP comparison measured
+# the same file aligning differently on 65 of 120 runs, by up to 120 ms.
+# Unverified: whether a pretrained model's stored feature settings override this key. Check by
+# aligning one take twice and comparing the JSON; --single_speaker is passed regardless.
+dither: 0
+# Speaker adaptation (fMLLR) fits over a speaker's files; each take is aligned on its own.
+uses_speaker_adaptation: false

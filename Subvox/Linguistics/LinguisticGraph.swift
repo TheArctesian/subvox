@@ -103,6 +103,8 @@ struct PhoneAlignmentProvenance: Codable, Sendable {
     var warpCost: Double?
     var note: String
     var phoneMapSHA256: String?
+    /// Aligner settings file, when the backend takes one. Nil in alignments made before it existed.
+    var settingsSHA256: String?
 }
 struct PhoneAlignment: Codable, Identifiable, Sendable {
     var id = UUID()

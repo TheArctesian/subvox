@@ -20,9 +20,18 @@ final class LocalPhonemeAligner {
     var isConfigured: Bool {
         FileManager.default.isExecutableFile(atPath:executablePath) &&
         FileManager.default.isReadableFile(atPath:modelPath) &&
-        FileManager.default.isReadableFile(atPath:phoneMapPath)
+        FileManager.default.isReadableFile(atPath:phoneMapPath) &&
+        FileManager.default.isReadableFile(atPath:Self.deterministicSettingsPath)
     }
-    struct Configuration: Sendable { let executable:String; let model:String; let phoneMap:String }
+    /// Bundled MFA settings that turn off feature dither and speaker adaptation, so a take aligns
+    /// the same way on every run. Alignment refuses to run without them.
+    nonisolated static var deterministicSettingsPath: String {
+        Bundle.main.url(forResource:"align-deterministic",withExtension:"yaml",subdirectory:"Corpus/mfa")?.path ?? ""
+    }
+    struct Configuration: Sendable {
+        let executable:String; let model:String; let phoneMap:String
+        var settings:String=LocalPhonemeAligner.deterministicSettingsPath
+    }
     var configuration: Configuration { .init(executable:executablePath,model:modelPath,phoneMap:phoneMapPath) }
 
     /// JSON map: {"AA1":"ɑ", "P":"p", ...}. Distinct model stress symbols remain intact.
@@ -51,7 +60,8 @@ final class LocalPhonemeAligner {
                                   text:String,profile:PronunciationProfile,lexicon:Lexicon,output:URL) async throws -> PhoneAlignment {
         guard range.lowerBound>=0,range.upperBound>range.lowerBound,sessionAudioOrigin.isFinite,
               FileManager.default.isExecutableFile(atPath:configuration.executable),
-              FileManager.default.fileExists(atPath:configuration.model),!configuration.model.contains("://") else { throw LinguisticFailure.alignment }
+              FileManager.default.fileExists(atPath:configuration.model),!configuration.model.contains("://"),
+              FileManager.default.isReadableFile(atPath:configuration.settings) else { throw LinguisticFailure.alignment }
         let map=try JSONDecoder().decode([String:String].self,from:Data(contentsOf:URL(fileURLWithPath:configuration.phoneMap)))
         let dir=output.appending(path:"phone-alignment-\(UUID())")
         try FileManager.default.createDirectory(at:dir,withIntermediateDirectories:true)
@@ -64,7 +74,8 @@ final class LocalPhonemeAligner {
         let handle=try FileHandle(forWritingTo:log);defer { try? handle.close() }
         child.executableURL=URL(fileURLWithPath:configuration.executable)
         child.arguments=["align_one",wav.path,lab.path,dict.path,configuration.model,result.path,
-                         "--output_format","json","--temporary_directory",dir.appending(path:"temporary").path,"--num_jobs","1"]
+                         "--output_format","json","--temporary_directory",dir.appending(path:"temporary").path,"--num_jobs","1",
+                         "--config_path",configuration.settings,"--single_speaker"]
         child.standardOutput=handle;child.standardError=handle
         try child.run()
         defer { if child.isRunning { child.terminate() } }
@@ -75,11 +86,12 @@ final class LocalPhonemeAligner {
             try await Task.sleep(for:.milliseconds(100))
         }
         guard child.terminationStatus==0 else { throw LinguisticFailure.alignment }
-        var provenance=PhoneAlignmentProvenance(method:.localAcousticAlignment,backend:"MFA 3.x align_one; local acoustic model; uncalibrated confidence",
+        var provenance=PhoneAlignmentProvenance(method:.localAcousticAlignment,backend:"MFA 3.x align_one --single_speaker; bundled settings request dither 0 and no speaker adaptation; local acoustic model; uncalibrated confidence",
             modelSHA256:try digest(URL(fileURLWithPath:configuration.model)),pronunciationSHA256:try profile.fingerprint(),
             audioSHA256:try digest(wav),rawOutputPath:result.path,
             note:"Acoustic forced-alignment estimates, not measured ground-truth boundaries. The selected pronunciation remains uncertain. Missing phone confidence stays nil. Audio hash refers to the exact cropped WAV.")
         provenance.phoneMapSHA256=try digest(URL(fileURLWithPath:configuration.phoneMap))
+        provenance.settingsSHA256=try digest(URL(fileURLWithPath:configuration.settings))
         var aligned=try parse(Data(contentsOf:result),phoneMap:map,origin:sessionAudioOrigin+range.lowerBound,
                              duration:range.upperBound-range.lowerBound,provenance:provenance)
         for index in Set(aligned.phones.compactMap(\.wordIndex)) {

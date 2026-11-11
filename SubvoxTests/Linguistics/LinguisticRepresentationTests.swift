@@ -111,19 +111,43 @@ final class LinguisticRepresentationTests:XCTestCase {
         #!/bin/sh
         [ "$1" = "align_one" ] || exit 8
         [ -f "$5" ] || exit 9
+        settings=""; single=0; previous=""
+        for argument in "$@"; do
+            [ "$previous" = "--config_path" ] && settings="$argument"
+            [ "$argument" = "--single_speaker" ] && single=1
+            previous="$argument"
+        done
+        [ -f "$settings" ] || exit 10
+        [ "$single" = 1 ] || exit 11
         /bin/cat > "$6" <<'JSON'
         {"tiers":{"words":{"entries":[[0.1,0.9,"pack"]]},"phones":{"entries":[[0.1,0.2,"P"],[0.2,0.7,"AE1"],[0.7,0.9,"K"]]}}}
         JSON
         """
         try script.write(to:executable,atomically:true,encoding:.utf8)
         try FileManager.default.setAttributes([.posixPermissions:0o755],ofItemAtPath:executable.path)
-        let aligned=try await LocalPhonemeAligner.align(configuration:.init(executable:executable.path,model:model.path,phoneMap:map.path),
+        let settings=root.appending(path:"settings.yaml")
+        try Data("dither: 0\n".utf8).write(to:settings)
+        let aligned=try await LocalPhonemeAligner.align(configuration:.init(executable:executable.path,model:model.path,phoneMap:map.path,settings:settings.path),
             audio:audio,range:0.2...1.2,sessionAudioOrigin:100,text:"pack",profile:PronunciationProfile(),lexicon:lexicon,output:root)
         XCTAssertEqual(aligned.phones[0].start,100.3,accuracy:1e-8)
         XCTAssertEqual(aligned.provenance.modelSHA256,try LocalPhonemeAligner.digest(model))
         XCTAssertEqual(aligned.provenance.phoneMapSHA256,try LocalPhonemeAligner.digest(map))
+        XCTAssertEqual(aligned.provenance.settingsSHA256,try LocalPhonemeAligner.digest(settings))
         XCTAssertEqual(aligned.provenance.audioSHA256?.count,64)
         XCTAssertEqual(aligned.phones[0].pronunciationVariantIDs,["dictionary:pack"])
         XCTAssertTrue(aligned.phones.allSatisfy {$0.confidence==nil})
+        do {
+            _=try await LocalPhonemeAligner.align(configuration:.init(executable:executable.path,model:model.path,phoneMap:map.path,settings:root.appending(path:"missing.yaml").path),
+                audio:audio,range:0.2...1.2,sessionAudioOrigin:100,text:"pack",profile:PronunciationProfile(),lexicon:lexicon,output:root)
+            XCTFail("Alignment without the deterministic settings file must not run")
+        } catch {}
+    }
+
+    func testBundledAlignerSettingsTurnOffDitherAndSpeakerAdaptation() throws {
+        let path=LocalPhonemeAligner.deterministicSettingsPath
+        XCTAssertFalse(path.isEmpty,"Corpus/mfa/align-deterministic.yaml is missing from the app bundle")
+        let lines=Set(try String(contentsOfFile:path,encoding:.utf8).split(separator:"\n").map(String.init))
+        XCTAssertTrue(lines.contains("dither: 0"))
+        XCTAssertTrue(lines.contains("uses_speaker_adaptation: false"))
     }
 }

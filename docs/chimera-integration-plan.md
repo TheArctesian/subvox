@@ -1,0 +1,207 @@
+# Chimera integration plan
+
+What Subvox takes from [Chimera](https://github.com/jamesondh/chimera-vocal-synth), an articulatory speech synthesiser in Rust (MIT, Copyright (c) 2026 Jameson Hodge), pinned at commit `6259e88`. Every file:line below was read at that commit and at Subvox `14924a3`.
+
+## Decisions already made
+
+- **The practice voice stays `AVSpeechSynthesizer`** (`Subvox/Practice/ReferenceSpeaker.swift`). Whisper gets about 37% of Chimera's words wrong, against 2.7% for real speakers, and Chimera only has an English text front end.
+- **Chimera never ships inside the app.** The Rust code runs as a dev tool under `Tools/chimera/`. The app and `subvox_ml` only consume its generated output: Python literals, JSON tracks and posture outlines.
+- **The existing alphabets don't change.** `ALPHABETS` in `ml/subvox_ml/articulatory.py:52-60` is commented "Fixed before any result was seen". New alphabets are added after it, and their bins are committed before any run uses them.
+- **Each phase lands as its own PR**, in the order below. Phase 3 is an experiment whose result decides whether it reaches the app.
+
+## Phase 0: Shared groundwork (½ day)
+
+| # | Change | Where |
+|---|---|---|
+| 0.1 | Add the Chimera MIT notice as its own dashed block, with the full permission text, and say which files derive from it | `NOTICE` |
+| 0.2 | Make `code_hash` cover non-`.py` package data, so vendored data changes the run's provenance | `ml/subvox_ml/cli.py:294` (today it hashes only `Path(__file__).parent.glob("*.py")`) |
+| 0.3 | Copy `subvox_ml/data/**` into the bundle. Only needed if Phase 2 vendors JSON rather than a `.py` literal (see 2.1) | `project.yml:46` (`cp …/*.py`) and `Subvox/Sequence/SequenceRuntime.swift:29-31` (top level, `.py` only; feeds the runtime hash at `:32-39`) |
+| 0.4 | Add the `Tools/chimera/` Cargo crate: `chimera = { git = "https://github.com/jamesondh/chimera-vocal-synth", rev = "6259e88…" }`, `[profile.dev.package.chimera] opt-level = 3`, Rust ≥ 1.88 (edition 2024 with let-chains), and call `chimera::init()` first | new |
+
+All of Chimera's data is `include_str!`'d (`planner.rs:40`, `inventory.rs:229`, `ipa.rs:126`), its only dependencies are `libm`, `serde` and `serde_json`, and it has no build script. So a pinned git dependency builds offline once fetched, and no upstream change is needed.
+
+## Phase 1: Repeatable MFA fallback alignment (2–3 h)
+
+MFA is now the English fallback. The main aligner is the IPA CTC model in `ml/subvox_ml/forced_align.py`, which has no randomness. Phase 1 is still the cheapest fix of the four.
+
+| # | Change | Where |
+|---|---|---|
+| 1.1 | Add `Corpus/mfa/align-deterministic.yaml` containing `dither: 0` and `uses_speaker_adaptation: false`. `Corpus` is already bundled as a folder (`project.yml:18-22`) | new file |
+| 1.2 | Resolve the file with `Bundle.main.url(forResource:subdirectory:"Corpus/mfa")`, the same pattern as `Lexicon.swift:36` | `Subvox/Linguistics/LocalPhonemeAligner.swift` inside `align` |
+| 1.3 | Append `"--config_path", yaml, "--single_speaker"` to the arguments. Both flags are documented for `align_one`; `--single_speaker` is the documented way to turn speaker adaptation off | `LocalPhonemeAligner.swift:65-67` |
+| 1.4 | Add `var configSHA256: String?` to provenance, optional so old JSON still decodes. Set it next to `phoneMapSHA256`, and mention the config in the backend string | `Subvox/Linguistics/LinguisticGraph.swift:95-107`, set at `LocalPhonemeAligner.swift:78-82` |
+| 1.5 | Extend the fake `mfa-fixture` to require `--config_path <existing file>`, and assert `configSHA256` | `SubvoxTests/Linguistics/LinguisticRepresentationTests.swift:95-129` |
+
+Keep `Configuration` (`:25`) unchanged. Its memberwise initialiser is called at `LinguisticRepresentationTests.swift:120`.
+
+**Must check on a real MFA install:** the docs don't confirm that `dither` exists as a key, or that a `--config_path` YAML can override feature settings stored in a pretrained model. Align one take twice, diff the JSON, and grep `mfa.log` for the effective config. If `dither` is ignored, ship `--single_speaker` alone and say so in the provenance note.
+
+## Phase 2: Chimera's mouth values for each sound (1 day)
+
+### 2.1 Data
+- Add a generator, `Tools/chimera/src/bin/tables.rs`, that writes **`ml/subvox_ml/chimera_tables.py` as a Python literal**. A `.py` file is picked up by both copy paths and by today's `code_hash`, so it doesn't depend on 0.2 or 0.3.
+- It writes the `male` body only. This is fixed now, before any result: the `child` body has odd values, such as `ɝ` jaw 0.05.
+- For each vowel it writes `jaw, lipAp, lipProt, lipWidth`. Source: `vowelTargets.generated.json`, 22 vowels: `i ɪ e ɛ æ a ɑ ɒ ɔ o ʊ u ʌ ə ɐ ɝ y ø œ ɨ ɯ ɤ`.
+- For consonants it writes only the keys Chimera specifies, from `inventory::phoneme(ipa, body).targets` (`inventory.rs:136-218`):
+  - jaw: `k g ŋ` 0.7, `s z` 0.3, `ʃ ʒ` 0.35, `j` 0.25
+  - lipAp: `p b m` −0.25
+  - lips also set for `ʃ ʒ tʃ dʒ`, `w` and `ɹ`; `f v` lipAp comes from `consonantTargets.generated.json`
+  - Everything else is `None`: the planner leaves it to coarticulation, so it is not neutral.
+- Units are template-space cm. Jaw is the opening at the incisors (−0.1 to 2.6), lipAp is the aperture in cm, lipProt is in cm, lipWidth runs 0 (rounded) to 1 (spread). Sources: `anatomy/human.rs:24-56` and `control/articulators.rs:24-46`.
+
+### 2.2 Code (`ml/subvox_ml/articulatory.py`)
+- After `VISEME_STD` (`:50`), add `CHIMERA_ALIASES`, which maps Subvox symbols to Chimera keys:
+
+  | Subvox | Chimera key |
+  |---|---|
+  | `ɡ` | `g` |
+  | anything with `ː` | the same symbol with `ː` stripped |
+  | `ɚ` | `ɝ` |
+  | `ɜ` | `ɝ` (decided now) |
+  | diphthongs `eɪ aɪ aʊ ɔɪ oʊ ɪə eə ʊə əʊ` | the onset, matching the `VOWEL_JAW` comment at `:10` |
+  | fr nasal vowels | the oral vowel |
+  | zh aspirates `pʰ tʰ kʰ tsʰ` | the base consonant |
+
+- Add `chimera_values(phone) -> dict[str, float | None]`. It raises for a phone with no mapping, so gaps stay explicit.
+- Append `"jaw_chimera"` as the **last** `ALPHABETS` key, under its own comment giving the date its bins were fixed.
+  - Vowels go into three bins by male jaw, with cut-offs fixed now at **< 0.6 high, 0.6–1.1 mid, ≥ 1.1 low**.
+  - Preview from the data: high `u ʊ ɪ i ə`, mid `o e ɝ ʌ ɛ`, low `ɔ ɐ æ ɒ a ɑ`. Only `ə` changes bucket compared with `VOWEL_JAW`.
+  - Consonants keep `features(p)["jaw"]`, so the alphabet is defined on every phone. If it raised, `cohort_entropy` would fail at `cli.py:342`, after all folds have trained, and `comparison.json` would never be written.
+- Add `chimera_jaw_comparison()`. For each vowel it returns the `VOWEL_JAW` bucket, Chimera's jaw, the alias used, and the min/max and overlap per bucket.
+- Add a `subvox-ml articulatory-report` subcommand that prints this comparison plus `cohort_entropy` for every alphabet. Add the parser and dispatch next to the others in `cli.py:470-551`.
+
+### 2.3 What picks it up automatically
+- `lexical_ceiling` at `cli.py:341-342` adds a `jaw_chimera` entry to `comparison.json`. Swift's `NeuralComparison` ignores unknown keys.
+- **Not affected:**
+  - `evaluation.feature_transfer` (`evaluation.py:220`) iterates `OBSERVABLE + CONTROLS`, which stay unchanged.
+  - `coarse_units` (`network.py:95-104`) only uses named keys.
+  - `rhythm.py:121,142` and `cli.py:83,108` use `VOWEL_JAW` membership, so don't add keys to it.
+
+### 2.4 Tests (`ml/test_articulatory.py`, unittest, long descriptive names)
+1. A pinned snapshot of every existing alphabet's output over all 60 `ArticulatoryInventory` phones (`Subvox/Linguistics/ArticulatoryInventory.swift:26-74`). This proves nothing pre-registered moved.
+2. `jaw_chimera` is defined on all 60 phones, and `cohort_entropy(language, "jaw_chimera")` runs.
+3. Aliases: `ɡ→g`, `iː→i`, `ɚ→ɝ`, `aɪ→a`. An unspecified consonant jaw gives `None`, and an unmapped phone raises.
+4. The comparison report returns the right buckets on fixture values.
+
+## Phase 3: Synthetic articulator teacher, as an experiment (3–4 days)
+
+**When to run it:** after `cv-run2` finishes and there is more data. Today's cross-validation runs are at 98.6–100% phone error, so any auxiliary loss will show no difference.
+
+### 3.1 Track generator (`Tools/chimera/src/bin/tracks.rs`)
+- **Input:** JSON `[{key, phones:[ipa…]}]`. It is built from a dataset snapshot's distinct `targets[0]` paths, with `|` separators removed.
+- **Output:** `{rev, body, rate:50, keys:[jaw,lipAp,lipProt,lipWidth], tracks:{key:{segments:[[t0,t1]…], values:[[…]…]}}}`.
+- Steps:
+  1. Build **one `Segment::new` per Subvox phone**, after applying `CHIMERA_ALIASES`. Never pass an IPA string: `tokenize_ipa` silently drops unknown symbols (`ipa.rs:86`) and combining marks (`:83`), which would change the phone count.
+  2. Validate each phone with `planner::is_vowel(ipa, body) || inventory::phoneme(ipa, body).is_some()`. Fail on an unknown phone, because the planner otherwise gives it kind `"?"`, about 80 ms and no gestures.
+  3. Call `plan_utterance(&segs, &PlanOptions{ body, t0: 0.0, f0: Some(110.0), rate: 1.0, .. })` (`planner.rs:181`).
+  4. Get phone times from `plan.segments`. Merge diphthong halves back into one phone through `expand()` (`planner.rs:47`), and subtract the 0.06 s breath lead (`planner.rs:215`).
+  5. Get the trajectory with `HumanVoice::new(48000.0, body, 2)`, `set_source`, then `schedule(&plan.gestures)`. Render `plan.end + 0.1` s in 960-sample chunks and record `voice.artic.x.get(k)` after each chunk. 960 samples is exactly 1/50 s, or 15 control steps.
+     - Cost: about 0.2 s of CPU per second of speech (`docs/rust-engine.md:254-256`).
+     - Faster option if needed: step `ArticulatorBank` and `GestureScore` directly and copy the private `enforce_contacts` (`voice/human_voice.rs:524-551`, about 25 lines). It gives identical articulator values.
+  6. Round to 1e-4, as `render_tracked` does. Determinism is only promised on x86-64, so check that two runs on this Mac give identical output.
+- **Phones Chimera can't express** (`tɕ tɕʰ ɕ ʈʂ ɥ ɹ̩ ɻ̩`) get a `null` track. Today's training inventory is English, so this only matters later.
+
+### 3.2 Fitting a track to a take (`ml/subvox_ml/synthetic.py`, new)
+- `fit_to_take(track, frames, start, boundaries=None) -> (target[T,4], weight[T])`. Frame *i* is at `quality.start + i/50` (`data.py:250-301`).
+- **With phone boundaries:**
+  - Map each Chimera segment edge piecewise-linearly onto the real phone's start and end.
+  - Spoken takes take boundaries from `spokenPhones` (forced aligner or MFA). Mouthed takes take them from `mouthedPhones`, method `cameraWarpFromAcoustic`, which only exists when camera points were collected.
+  - Both live only in the source `sentence-training.json` pairs, never in `examples.json` (`data.py:397,401`). So the stage re-reads sources the same way `teachers.enrich` already does (`teachers.py:63-78`).
+  - Match aligner phone labels to `targets[0]` with `edit_alignment`. Unmatched phones are interpolated.
+- **Without boundaries:** stretch linearly over the take. Record `timing: "linear"`, and give the first and last 150 ms half weight to allow for lead-in silence. This value is fixed now.
+- **Weight 0 for:**
+  - NaN values
+  - rest rows (`targets == [[]]`)
+  - a phone with no Chimera support, along with its neighbours' half-segments
+- **Never** time-fit using IMU-DTW word times (`Subvox/Alignment/SentenceMotionAlignment.swift`). They come from the model's own input signal, so it would be leakage.
+
+### 3.3 Enrich stage
+- Factor the cohort guard out of `teachers.py:49-52` into a helper. Add `prepare_synthetic(dataset, base_run, output, tracks)`, a mirror of `enrich` (`teachers.py:40-98`). It refuses an existing output, and refuses a cohort, label or language digest that differs from the base run.
+- It writes `synthetic_teacher`, `synthetic_weight` and `synthetic_provenance` on every row. The provenance holds the Chimera rev, body, alias table hash, timing (`boundaries`/`linear`) and boundary source. It requires at least 100 weighted training frames.
+- Set `manifest["teacher_stage"]` with `method: "chimera-synthetic"`, so the stage merge at `cli.py:347,353-358` works unchanged.
+- Add a CLI parser `prepare-synthetic-teachers --dataset --base-run --output --tracks` next to `prepare-teachers` (`cli.py:484`), with its dispatch at `:549`.
+
+### 3.4 Model (`ml/subvox_ml/network.py`)
+| Line | Edit |
+|---|---|
+| `:41,53` | `MotionCTC(..., synthetic=0)`, with `self.synthetic = nn.Linear(hidden*2, synthetic) if synthetic else None` |
+| `:58-79` | Add a `with_synthetic=False` kwarg that appends the head's output **last**. Leave the 4-tuple alone, because `:419` (`outputs[:4]`), `:422` (`outputs[4]` = coarse) and `:632` (4-way unpack) depend on it |
+| `:395-406` | `synthetic = config.get("synthetic_aux")`. Normalise with training rows only, and raise below 100 frames |
+| `:446-453` | Add a parallel weighted MSE with weight 0.1, the same as the camera teacher. Raise if `config["augmentation"]`, because `batch()` (`:315-324`) drops warped extras |
+| `:561-562`, `:575` | Save `synthetic_normalisation` and `synthetic_channels` in the checkpoint and the manifest |
+| `:617` | `synthetic=checkpoint.get("synthetic_channels") or 0`. Otherwise strict `load_state_dict` fails |
+| `:201` | Reword the `augment` docstring so "no generated speech" stays accurate |
+
+Then add `"synthetic_teacher": dict(synthetic_aux=True)` to `EXPERIMENTS` (`cli.py:246-262`), **not** to `BASE_EXPERIMENT`. It is the diphone base without augmentation, compared against `diphone` and `teacher`.
+
+### 3.5 Tests (mirror `test_sequence.py:240-278, 435-455`)
+1. `fit_to_take`: boundary-based fit against linear stretch, rest rows and NaN at weight 0, and edge half-weights.
+2. The synthetic enrich refuses a changed cohort and leaves `raw`/`targets` byte-identical. It uses an injected tracks fixture, so the tests don't need Rust.
+3. `fit` with `synthetic_aux` saves and loads strictly, and `emission` output doesn't change from the synthetic fields.
+4. Augmentation together with `synthetic_aux` raises. With coarse and synthetic both on, the output indices are correct.
+5. A Rust test in `Tools/chimera`: the frame count equals `ceil((plan.end+0.1)·50)+1`, and an unknown phone fails.
+
+### 3.6 How the experiment is judged (fixed before running)
+- Use the same frozen cross-validation snapshot and folds as `diphone` and `teacher`.
+- The main measure is pooled validation phone error. A gain counts only if it exceeds the spread across folds and the false-accept rate on rest clips doesn't rise.
+- Report the `boundaries` and `linear` timing arms separately.
+- Report the result even if it is null.
+
+### 3.7 Docs that must change if Phase 3 lands
+- `README.md`, end of the "first real training run" paragraph: "No anatomical simulation, synthetic anatomy data or RLHF is used."
+- `README.md`, experiment table: add a row saying the synthetic teacher time-fits a generated curve, and that this fitted timing applies to the auxiliary head only.
+- In-app text at `Subvox/Views/Sequence/SequenceLearningView.swift:202`.
+- `teachers.py:88`, `data.py:401` and `network.py:437`: their "no word-duration / no boundaries" wording.
+- **App wiring, only after a positive result:**
+  - a launcher modelled on `SequenceLearningWorkflow.swift:309-321`
+  - a picker tag at `SequenceLearningView.swift:111-116`
+  - a localization entry in `Subvox/Localizable.xcstrings`
+
+## Phase 4: "How to make this sound" diagrams (2 days)
+
+### 4.1 Generator (`Tools/chimera/src/bin/postures.rs`)
+- **Building the posture for each phone:**
+  - Vowel: `planner::vowel_artic(ipa, body).apply_to(&NEUTRAL)` (`planner.rs:74`, `human.rs:203,421`).
+  - Consonant: `inventory::phoneme(ipa, body).targets` over a schwa context.
+  - Tongue tip: `rest_tip(jaw, tbX, tbY)` (`human.rs:443`) when the phone leaves it unspecified.
+- **Outline:** `HumanVocalTract::new(body).compute_new(&artic)` (`human.rs:644,718,725`) gives `HumanFrame` (`:472-505`), whose parts are `outer`, `inner`, `tongue`, `upper_lip`, `lower_lip`, `upper_teeth`, `lower_teeth`, `velum` and `nasal_cavity`.
+  - Pass the tongue through `clamp_to_wall` (`human.rs:1492`), because stop targets aim past the palate on purpose.
+  - Coordinates are cm with y up, so flip y when drawing.
+- **Per-language overrides for postures Chimera can't express:**
+
+  | Sound | How it is built |
+  |---|---|
+  | fr nasal vowels | oral posture with `Velum` set open |
+  | `ɥ` | `y` lips with a `j` tongue |
+  | `tɕ tɕʰ ɕ` | an alveolo-palatal posture defined in the tool |
+  | `ʈʂ` | `ʂ` posture with closure |
+  | zh syllabic `ɹ̩ ɻ̩` | the consonant posture |
+  | tones `˥ ˧˥ ˨˩˦ ˥˩ ·` | no diagram |
+
+- **Output:** `Corpus/practice/articulation-v1.json`, as `{rev, phones:{"<lang>:<ipa>":{parts:{name:[[x,y]…]}}}}`, plus a `SOURCES` note. It covers the phone lists in `Corpus/practice/practice-v1.json`: en 41, fr 35, es 29, zh 43 minus tones.
+
+### 4.2 App
+- Draw the outlines with a SwiftUI `Canvas`/`Path` straight from the JSON. That way they follow light and dark mode and avoid NSImage's uneven SVG support. Keep text out of the artwork.
+- Add a loader beside `PracticeCorpus` (`Subvox/Practice/PracticeCorpus.swift:201` shows the Bundle pattern). The key is the **practised** language (`model.language.corpus`) plus IPA, not the interface language.
+- Show the diagram in `SoundsView.detail` (`Subvox/Views/Practice/TrainView.swift:1622-1650`), between the `/ipa/` header (`:1625-1631`) and the `ReferenceButton` (`:1633`). Add an accessibility label describing the posture.
+- Optional: small diagrams per contrast row in `MinimalPairsView` (`TrainView.swift:1227-1237`).
+- Tests: every non-tone sound in `practice-v1.json` has a diagram or appears on an explicit "no diagram" list, and the JSON decodes.
+
+## Risks and open questions
+
+| Risk | What we do about it |
+|---|---|
+| MFA ignores `dither` from a YAML | Check on a real install (Phase 1); `--single_speaker` still applies |
+| Chimera's determinism on aarch64 macOS is untested upstream | Two-run identity check in the tool's tests; commit the generated output |
+| Chimera's tongue and jaw values come from fitting vowel sounds, not from measured jaws; the consonant values are hand-set | Use them for coarse bins and as an auxiliary target only, never as labels; say so in docs |
+| A linear stretch assumes speech fills the take | Half-weight edges, a separate `linear` arm, prefer boundaries |
+| Mouthed takes without camera have no phone timing | They fall back to linear or are left out; the two arms are reported separately |
+| Mandarin postures and aspiration | Overrides in Phase 4; Phase 3 gives them weight 0 |
+| AGPL + MIT | Compatible; the NOTICE block covers the derived tables |
+
+## Order and effort
+
+1. Phase 0 (0.1, 0.4) and Phase 1: about 1 day, one PR each.
+2. Phase 2: 1 day. Its comparison report shows how far Chimera's jaw values differ from the hand buckets.
+3. Phase 4: 2 days, a product feature that doesn't depend on Phase 3.
+4. Phase 3: 3–4 days, once the data is ready. App wiring only after a positive result.
