@@ -16,7 +16,7 @@ open build/Build/Products/Release/Subvox.app
 
 If the AirPods are connected but no motion arrives, macOS has head tracking off for them: play something in Music or Safari and set **Spatial Audio → Head Tracked** in the AirPods menu. Ad-hoc builds (`CODE_SIGN_IDENTITY=-`) get a new signature each time, so macOS asks for Motion, Camera and Microphone again after every rebuild.
 
-Use Release: matching thousands of vocabulary templates is much slower in Debug. Grant Motion and Microphone access when requested. All transcription uses existing local Whisper files; no speech-recognition service is used.
+Use Release: matching thousands of vocabulary templates is much slower in Debug. Grant Motion and Microphone access when requested. Transcription runs on this Mac with the app's bundled Whisper server; no speech-recognition service is used. The first time, choose **Download speech recognition model (148 MB)** on a practice page (or in the Whisper setup sheet): the app fetches the pinned model into Application Support and checks its SHA-256 before using it. The first build compiles whisper.cpp for both Mac architectures (about a minute, then cached).
 
 ## Repository layout
 
@@ -306,9 +306,9 @@ Each new signal session streams a numeric `camera-points.ndjson` sidecar continu
 - Frozen diagnostic model: `~/Library/Application Support/Subvox/frozen-signal-reference.json`. Each second-session recording folder also receives an identical reference copy; its latest-run JSON records the reference identity/fingerprint and reseating confirmation.
 - Raw recordings: `~/Documents/Subvox/Sessions/`. New signal checks contain motion, numeric camera-point NDJSON, events and metadata. Paired sentence/historical recordings may also contain audio and aligned-pair sidecars.
 - Recovery archives: `~/Documents/Subvox/Archives/`. These are never loaded as active training.
-- Existing OpenWhispr files: `~/.cache/openwhispr/whisper-models/ggml-base.bin` and `/Applications/OpenWhispr.app/Contents/Resources/bin/whisper-server-darwin-arm64` by default; alternate GGML models can be selected.
+- Whisper: the server is bundled at `Subvox.app/Contents/Helpers/whisper-server` (whisper.cpp 1.9.5, built from its checksum-verified source release by `Tools/runtime/bundle-whisper-server.sh`, universal, statically linked). The model the app downloads is `~/Library/Application Support/Subvox/Whisper/ggml-base.bin` (whisper.cpp's GGML conversion of Whisper base, pinned revision and SHA-256). A model or server chosen under **Use your own model or server** overrides these while it is a usable file.
 
-Whisper runs in an owned child process bound to `127.0.0.1`. Requests contain no expected-text prompt, refuse redirects, and convert CAF audio locally to 16 kHz mono WAV. Model files stay in their existing location.
+Whisper runs in an owned child process bound to `127.0.0.1`. Requests contain no expected-text prompt, refuse redirects, and convert CAF audio locally to 16 kHz mono WAV. A model you choose yourself stays in its existing location.
 
 To start clean again, close Subvox, inspect the reset paths, then archive active training:
 

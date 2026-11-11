@@ -66,10 +66,11 @@ final class LocalWhisperTests: XCTestCase {
         let name = "Subvox.LocalWhisperTests.\(UUID().uuidString)"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
         defer { defaults.removePersistentDomain(forName: name) }
-        let service = LocalWhisper(defaults: defaults)
+        let empty = FileManager.default.temporaryDirectory.appending(path: "no-whisper-model-\(UUID())")
+        let service = LocalWhisper(defaults: defaults, modelDirectory: empty)
         service.modelPath = "/missing/ggml-test.bin"
         service.executablePath = "/missing/whisper-server"
-        let restored = LocalWhisper(defaults: defaults)
+        let restored = LocalWhisper(defaults: defaults, modelDirectory: empty)
         XCTAssertEqual(restored.modelPath, service.modelPath)
         XCTAssertEqual(restored.executablePath, service.executablePath)
         XCTAssertFalse(restored.isConfigured)

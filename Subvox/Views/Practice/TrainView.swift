@@ -111,6 +111,7 @@ struct PracticePage<Controls: View, Content: View>: View {
                     .foregroundStyle(.orange)
                 Button("Set Up Whisper…") { showWhisperSetup = true }
             }
+            WhisperModelSetup(whisper: model.localWhisper)
         }
         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
         PracticeFeedback(mode: mode, again: {
@@ -305,6 +306,33 @@ struct ReferenceButton: View {
     }
 }
 
+/// Downloads the pinned speech recognition model the bundled Whisper server uses, with its size and progress.
+struct WhisperModelSetup: View {
+    var whisper: LocalWhisper
+
+    var body: some View {
+        if !whisper.hasModel {
+            if let progress = whisper.modelDownloadProgress {
+                ProgressView(value: progress) {
+                    Text("Downloading speech recognition model…")
+                } currentValueLabel: {
+                    Text(progress, format: .percent.precision(.fractionLength(0)))
+                }.frame(maxWidth: 360)
+            } else {
+                Button("Download speech recognition model (148 MB)") {
+                    Task { await whisper.downloadModel() }
+                }
+                Text("Whisper base hears what you said on this Mac. The download is checked before it is used.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            if let error = whisper.modelDownloadError {
+                Label(error, systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+            }
+        }
+    }
+}
+
+/// Model download, plus an optional model or server of the user's own that overrides the app's.
 struct WhisperSetupSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
@@ -321,21 +349,30 @@ struct WhisperSetupSheet: View {
         @Bindable var whisper = model.localWhisper
         VStack(alignment: .leading, spacing: 14) {
             Text("Local Whisper").font(.title2.weight(.semibold))
-            Text("Practice uses a Whisper model already on this Mac to hear what you said. Nothing is downloaded.")
+            Text("Practice uses Whisper, which runs inside Subvox, to hear what you said. Audio stays on this Mac.")
                 .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
-            LabeledContent("Whisper model") {
-                TextField("GGML model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
-                Button("Choose…") { if let path = chooseFile("Choose a ggml-*.bin model") { whisper.modelPath = path } }
-                    .accessibilityLabel("Choose Whisper model")
+            WhisperModelSetup(whisper: whisper)
+            if !whisper.hasExecutable {
+                Label(LocalWhisper.Failure.serverMissing.localizedDescription, systemImage: "exclamationmark.triangle")
+                    .foregroundStyle(.orange)
             }
-            if !whisper.hasModel { Text("Choose a readable ggml-*.bin model file.").font(.callout).foregroundStyle(.secondary) }
-            LabeledContent("Whisper server") {
-                TextField("Server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
-                Button("Choose…") { if let path = chooseFile("Choose the whisper-server executable") { whisper.executablePath = path } }
-                    .accessibilityLabel("Choose Whisper server")
-            }
-            if !whisper.hasExecutable { Text("Choose the executable whisper-server file.").font(.callout).foregroundStyle(.secondary) }
             if whisper.isConfigured { Label("Ready", systemImage: "checkmark.circle") }
+            MotionDisclosure("Use your own model or server") {
+                VStack(alignment: .leading, spacing: 10) {
+                    LabeledContent("Whisper model") {
+                        TextField("Downloaded model", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
+                        Button("Choose…") { if let path = chooseFile("Choose a ggml-*.bin model") { whisper.modelPath = path } }
+                            .accessibilityLabel("Choose Whisper model")
+                    }
+                    LabeledContent("Whisper server") {
+                        TextField("Bundled server", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
+                        Button("Choose…") { if let path = chooseFile("Choose the whisper-server executable") { whisper.executablePath = path } }
+                            .accessibilityLabel("Choose Whisper server")
+                    }
+                    Text("Leave these empty to use the app's own. A file that can't be used is ignored.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
             HStack { Spacer(); Button("Done") { dismiss() }.keyboardShortcut(.defaultAction) }
         }
         .padding(24).frame(width: 520)

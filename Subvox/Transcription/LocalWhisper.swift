@@ -1,4 +1,5 @@
 import AVFoundation
+import CryptoKit
 import Darwin
 import Foundation
 import Observation
@@ -21,43 +22,128 @@ struct LocalWhisperTranscript: Codable, Hashable, Sendable {
 
 /// Offline Whisper adapter. Each transcription owns a temporary loopback-only server;
 /// it can take an initial prompt for known-text recordings with independent acoustic alignment.
+///
+/// By default it runs the whisper.cpp server bundled at Contents/Helpers/whisper-server with the
+/// pinned model the app downloads into Application Support. A model or server the user chooses
+/// is an override, used only while it is a valid file.
 @MainActor @Observable
 final class LocalWhisper {
+    /// User-chosen model; empty means the app's downloaded model.
     var modelPath: String { didSet { defaults.set(modelPath, forKey: "LocalWhisper.modelPath") } }
+    /// User-chosen whisper-server; empty means the bundled one.
     var executablePath: String { didSet { defaults.set(executablePath, forKey: "LocalWhisper.executablePath") } }
     private(set) var isTranscribing = false
     private(set) var error: String?
     private(set) var status = "Ready for local transcription"
-    var hasModel: Bool { Self.validModel(URL(fileURLWithPath: Self.expanded(modelPath))) }
-    var hasExecutable: Bool {
-        let path = Self.expanded(executablePath)
-        let url = URL(fileURLWithPath: path)
-        return FileManager.default.isExecutableFile(atPath: path) &&
-            (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true
+    /// The pinned model is on disk at its expected size (its checksum was verified when it was saved).
+    private(set) var hasDownloadedModel: Bool
+    private(set) var isDownloadingModel = false
+    /// Fraction of the model download received, while downloading.
+    private(set) var modelDownloadProgress: Double?
+    private(set) var modelDownloadError: String?
+    var resolvedModel: URL? {
+        Self.resolve(override: modelPath, valid: Self.validModel, fallback: hasDownloadedModel ? modelDirectory.appending(path: Self.pinnedModel.name) : nil)
     }
+    var resolvedExecutable: URL? {
+        Self.resolve(override: executablePath, valid: Self.validExecutable, fallback: Self.validExecutable(serverURL) ? serverURL : nil)
+    }
+    var hasModel: Bool { resolvedModel != nil }
+    var hasExecutable: Bool { resolvedExecutable != nil }
     var isAvailable: Bool { hasModel && hasExecutable }
     var isConfigured: Bool { isAvailable }
     @ObservationIgnored private let defaults: UserDefaults
+    @ObservationIgnored private let modelDirectory: URL
+    @ObservationIgnored private let serverURL: URL
     @ObservationIgnored private var process: Process?
 
-    static let bundledServer = "/Applications/OpenWhispr.app/Contents/Resources/bin/whisper-server-darwin-arm64"
+    nonisolated static var bundledServer: URL { Bundle.main.bundleURL.appending(path: "Contents/Helpers/whisper-server") }
+    nonisolated static var modelsDirectory: URL { SentenceStore.directory.appending(path: "Whisper") }
+    /// OpenAI Whisper base (multilingual) converted to GGML by whisper.cpp, pinned to a revision.
+    nonisolated static let pinnedModel = (name: "ggml-base.bin", revision: "5359861c739e955e79d9a303bcbc70fb988958b1",
+                                          size: 147_951_465, sha256: "60ed5bc3dd14eea856493d334349b405782ddcaf0028d4b5df4088345fba2efe")
+    nonisolated static var pinnedModelURL: URL {
+        URL(string: "https://huggingface.co/ggerganov/whisper.cpp/resolve/\(pinnedModel.revision)/\(pinnedModel.name)")!
+    }
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = .standard, modelDirectory: URL = LocalWhisper.modelsDirectory,
+         server: URL = LocalWhisper.bundledServer) {
         self.defaults = defaults
-        modelPath = defaults.string(forKey: "LocalWhisper.modelPath") ?? Self.discoverModels().first?.path ?? ""
-        executablePath = defaults.string(forKey: "LocalWhisper.executablePath")
-            ?? (FileManager.default.isExecutableFile(atPath: Self.bundledServer) ? Self.bundledServer : "")
+        self.modelDirectory = modelDirectory
+        serverURL = server
+        modelPath = defaults.string(forKey: "LocalWhisper.modelPath") ?? ""
+        executablePath = defaults.string(forKey: "LocalWhisper.executablePath") ?? ""
+        let model = modelDirectory.appending(path: Self.pinnedModel.name)
+        hasDownloadedModel = (try? model.resourceValues(forKeys: [.fileSizeKey]).fileSize) == Self.pinnedModel.size
     }
 
     func stopOwnedProcess() {
         if let process, process.isRunning { process.terminate() }
     }
 
+    /// Downloads the pinned model into Application Support, verifying its size and SHA-256 before
+    /// it replaces anything. Safe to call again after a failure.
+    func downloadModel() async {
+        guard !isDownloadingModel else { return }
+        isDownloadingModel = true
+        modelDownloadProgress = 0
+        modelDownloadError = nil
+        defer { isDownloadingModel = false; modelDownloadProgress = nil }
+        let directory = modelDirectory
+        do {
+            let progress = DownloadProgress { [weak self] fraction in
+                Task { @MainActor in if self?.isDownloadingModel == true { self?.modelDownloadProgress = fraction } }
+            }
+            try await Task.detached(priority: .utility) {
+                try await Self.download(Self.pinnedModelURL, to: directory.appending(path: Self.pinnedModel.name),
+                                        size: Self.pinnedModel.size, sha256: Self.pinnedModel.sha256, progress: progress)
+            }.value
+            hasDownloadedModel = true
+        } catch {
+            modelDownloadError = error is CancellationError ? nil : error.localizedDescription
+        }
+    }
+
+    nonisolated private static func download(_ url: URL, to destination: URL, size: Int, sha256: String,
+                                             progress: DownloadProgress) async throws {
+        let manager = FileManager.default
+        try manager.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
+        let (download, response) = try await URLSession.shared.download(from: url, delegate: progress)
+        defer { try? manager.removeItem(at: download) }
+        guard (response as? HTTPURLResponse)?.statusCode == 200,
+              try verifyModel(download, size: size, sha256: sha256) else { throw Failure.invalidDownload }
+        if manager.fileExists(atPath: destination.path) {
+            _ = try manager.replaceItemAt(destination, withItemAt: download)
+        } else {
+            try manager.moveItem(at: download, to: destination)
+        }
+    }
+
+    nonisolated static func verifyModel(_ file: URL, size: Int, sha256: String) throws -> Bool {
+        guard try file.resourceValues(forKeys: [.fileSizeKey]).fileSize == size else { return false }
+        let handle = try FileHandle(forReadingFrom: file)
+        defer { try? handle.close() }
+        var hash = SHA256()
+        while let data = try handle.read(upToCount: 4 * 1024 * 1024), !data.isEmpty { hash.update(data: data) }
+        return hash.finalize().map { String(format: "%02x", $0) }.joined() == sha256
+    }
+
+    /// A valid override wins; otherwise the app's own file, when present.
+    nonisolated static func resolve(override: String, valid: (URL) -> Bool, fallback: URL?) -> URL? {
+        let trimmed = override.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty {
+            let url = URL(fileURLWithPath: expanded(trimmed))
+            if valid(url) { return url }
+        }
+        return fallback
+    }
+
     enum Failure: LocalizedError {
-        case unavailable, alignmentUnavailable, busy, invalidAudio, conversion(String), server(String), timeout, malformedResponse, nonLoopback
+        case unavailable, serverMissing, invalidDownload, alignmentUnavailable, busy, invalidAudio, conversion(String), server(String), timeout, malformedResponse, nonLoopback
         var errorDescription: String? {
             switch self {
-            case .unavailable: "Choose an existing GGML Whisper model and local whisper-server executable. No models are downloaded automatically."
+            case .unavailable: String(localized: "Download the speech recognition model to transcribe on this Mac.")
+            case .serverMissing: String(localized: "The bundled speech recognition server is missing. Reinstall Subvox.")
+            case .invalidDownload: String(localized: "The speech recognition model download could not be verified.")
             case .alignmentUnavailable: "This model has no supported audio-attention alignment preset. Choose a standard GGML tiny, base, small, medium or versioned large Whisper model."
             case .busy: "Local Whisper is already transcribing."
             case .invalidAudio: "Audio is empty, invalid, or longer than the 15-minute local transcription limit."
@@ -70,45 +156,32 @@ final class LocalWhisper {
         }
     }
 
-    nonisolated static func discoverModels() -> [URL] {
-        let home = FileManager.default.homeDirectoryForCurrentUser
-        let roots = [home.appending(path: ".cache/openwhispr/whisper-models"),
-                     home.appending(path: "Library/Application Support/Recordly/whisper"),
-                     home.appending(path: "Library/Application Support/OpenWhispr/models")]
-        var result: [URL] = []
-        for root in roots {
-            let contents = (try? FileManager.default.contentsOfDirectory(at: root,
-                includingPropertiesForKeys: [.isRegularFileKey], options: [.skipsHiddenFiles])) ?? []
-            result += contents.filter(validModel).sorted { $0.lastPathComponent < $1.lastPathComponent }
-        }
-        // Prefer the user's known OpenWhispr base model, then other compatible files.
-        let preferred = roots[0].appending(path: "ggml-base.bin")
-        if let index = result.firstIndex(of: preferred) { result.insert(result.remove(at: index), at: 0) }
-        return result
-    }
-
     nonisolated private static func expanded(_ path: String) -> String { (path as NSString).expandingTildeInPath }
-    nonisolated private static func validModel(_ url: URL) -> Bool {
+    nonisolated static func validModel(_ url: URL) -> Bool {
         guard url.lastPathComponent.hasPrefix("ggml-"), url.pathExtension.lowercased() == "bin",
               FileManager.default.isReadableFile(atPath: url.path),
               (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true else { return false }
         // ONNX/Parakeet and CoreML directories are deliberately excluded.
         return true
     }
+    nonisolated static func validExecutable(_ url: URL) -> Bool {
+        FileManager.default.isExecutableFile(atPath: url.path) &&
+            (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true
+    }
 
     func transcribe(audioURL: URL, outputDirectory: URL, timeRange: ClosedRange<Double>? = nil, language: String = "en", initialPrompt: String? = nil) async throws -> LocalWhisperTranscript {
         guard !isTranscribing else { throw Failure.busy }
-        guard isAvailable else { error = Failure.unavailable.localizedDescription; throw Failure.unavailable }
+        guard let executableURL = resolvedExecutable else { error = Failure.serverMissing.localizedDescription; throw Failure.serverMissing }
+        guard let modelURL = resolvedModel else { error = Failure.unavailable.localizedDescription; throw Failure.unavailable }
         isTranscribing = true
         error = nil
-        let model = Self.expanded(modelPath)
+        let model = modelURL.path
         guard let preset = Self.alignmentPreset(modelPath: model) else {
             isTranscribing = false
             error = Failure.alignmentUnavailable.localizedDescription
             status = "Audio alignment unavailable"
             throw Failure.alignmentUnavailable
         }
-        let executable = Self.expanded(executablePath)
         let id = UUID().uuidString
         let wav = outputDirectory.appending(path: "local-whisper-\(id).wav")
         let logURL = outputDirectory.appending(path: "local-whisper-\(id)-server.log")
@@ -137,7 +210,7 @@ final class LocalWhisper {
             let port = try Self.unusedPort()
             FileManager.default.createFile(atPath: logURL.path, contents: nil)
             logHandle = try FileHandle(forWritingTo: logURL)
-            child.executableURL = URL(fileURLWithPath: executable)
+            child.executableURL = executableURL
             child.arguments = ["--model", model, "--host", "127.0.0.1", "--port", String(port),
                                "--inference-path", "/inference", "--language", language,
                                "--dtw", preset, "--no-flash-attn"]
@@ -396,5 +469,17 @@ private final class LoopbackOnlyDelegate: NSObject, URLSessionTaskDelegate, @unc
     func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
                     newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
         completionHandler(nil)
+    }
+}
+
+/// Reports a download's received fraction; URLSession calls it on its own queue.
+private final class DownloadProgress: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
+    private let report: @Sendable (Double) -> Void
+    private var observation: NSKeyValueObservation?
+
+    init(_ report: @escaping @Sendable (Double) -> Void) { self.report = report }
+
+    func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
+        observation = task.progress.observe(\.fractionCompleted) { [report] progress, _ in report(progress.fractionCompleted) }
     }
 }

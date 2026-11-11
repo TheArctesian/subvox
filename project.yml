@@ -41,6 +41,12 @@ targets:
           - "$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Helpers/uv"
         script: |
           "$SRCROOT/Tools/runtime/bundle-uv.sh" "$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Helpers/uv"
+      - name: Bundle pinned whisper-server
+        basedOnDependencyAnalysis: false
+        outputFiles:
+          - "$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Helpers/whisper-server"
+        script: |
+          "$SRCROOT/Tools/runtime/bundle-whisper-server.sh" "$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Helpers/whisper-server"
       - name: Bundle pinned neural training runtime
         basedOnDependencyAnalysis: false
         outputFiles:
