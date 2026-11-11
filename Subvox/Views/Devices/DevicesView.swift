@@ -26,6 +26,16 @@ struct DevicesView: View {
                     motionCard
                     MicrophoneCard()
                 }
+                GroupBox("AirPods fit test") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Record a reference session, then check how the signal holds up after taking your AirPods out and putting them back in.")
+                            .foregroundStyle(.secondary)
+                        Button("Open Fit Test", systemImage: "waveform.path.ecg", action: model.openAirPodsFitTest)
+                            .disabled(model.navigationLocked)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(6)
+                }
 
                 GroupBox(motion.status == .streaming ? "Live motion (last 8 s)" : "Motion history") {
                   if motion.history.isEmpty {

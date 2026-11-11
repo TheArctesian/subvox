@@ -39,6 +39,11 @@ final class SavedLanguagePhrases {
     private struct Bookmark: Codable {
         let id: LanguagePhraseID
         var reviewedAt: Date?
+        var schedule: PracticeReviewSchedule?
+
+        var reviewSchedule: PracticeReviewSchedule {
+            schedule ?? reviewedAt.map { PracticeReviewSchedule.new.rated(recalled: true, at: $0) } ?? .new
+        }
     }
 
     private static let storageKey = "practice.savedLanguagePhrases"
@@ -68,7 +73,12 @@ final class SavedLanguagePhrases {
     }
 
     func markReviewed(_ id: LanguagePhraseID, at date: Date = .now) {
+        rate(id, recalled: true, at: date)
+    }
+
+    func rate(_ id: LanguagePhraseID, recalled: Bool, at date: Date = .now) {
         guard let index = bookmarks.firstIndex(where: { $0.id == id }) else { return }
+        bookmarks[index].schedule = bookmarks[index].reviewSchedule.rated(recalled: recalled, at: date)
         bookmarks[index].reviewedAt = date
         save()
     }
@@ -77,13 +87,18 @@ final class SavedLanguagePhrases {
         cards(for: bookmarks, in: drills, language: language)
     }
 
-    func nextRound(in drills: [PracticeCorpus.Drill], language: AppLanguage) -> [LanguageReviewCard] {
-        let ordered = bookmarks.enumerated().sorted { first, second in
-            let lhs = first.element.reviewedAt ?? .distantPast
-            let rhs = second.element.reviewedAt ?? .distantPast
-            return lhs == rhs ? first.offset < second.offset : lhs < rhs
-        }.map(\.element)
-        return Array(cards(for: ordered, in: drills, language: language).prefix(3))
+    func nextRound(in drills: [PracticeCorpus.Drill], language: AppLanguage, now: Date = .now) -> [LanguageReviewCard] {
+        Array(dueCards(in: drills, language: language, now: now).prefix(3)).map(\.card)
+    }
+
+    func dueCards(in drills: [PracticeCorpus.Drill], language: AppLanguage, now: Date) ->
+        [(card: LanguageReviewCard, schedule: PracticeReviewSchedule)] {
+        let ordered = bookmarks.filter { $0.id.language == language && $0.reviewSchedule.dueAt <= now }
+            .sorted { $0.reviewSchedule.dueAt < $1.reviewSchedule.dueAt }
+        let scheduleByID = Dictionary(ordered.map { ($0.id, $0.reviewSchedule) }, uniquingKeysWith: { first, _ in first })
+        return cards(for: ordered, in: drills, language: language).compactMap { card in
+            scheduleByID[card.id].map { (card, $0) }
+        }
     }
 
     private func cards(for bookmarks: [Bookmark], in drills: [PracticeCorpus.Drill],

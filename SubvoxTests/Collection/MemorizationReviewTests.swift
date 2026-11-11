@@ -2,23 +2,23 @@ import XCTest
 @testable import Subvox
 
 final class MemorizationReviewTests: XCTestCase {
-    func testSavedMarksRotateThroughShortRoundsAndMasteredSectionsLeaveReview() throws {
+    func testLegacyMarksMigrateAndRatedSectionsReturnWhenDue() throws {
         let piece = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == "invictus" })
         let sections = MemorizationSection.sections(of: piece, language: .en)
         XCTAssertEqual(sections.count, 4)
-        var review = MemorizationReview()
-        sections.forEach { review.toggle($0.id) }
-
-        var restored = MemorizationReview(saved: review.saved)
-        let first = restored.round(in: [piece], language: .en)
+        let today = Date(timeIntervalSinceReferenceDate: 800_000_000)
+        let tomorrow = today.addingTimeInterval(86_400)
+        var restored = MemorizationReview(saved: try JSONEncoder().encode(sections.map(\.id)))
+        let first = restored.round(in: [piece], language: .en, now: today)
         XCTAssertEqual(first.map(\.id), Array(sections.prefix(3)).map(\.id))
-        restored.complete(first[0].id, keepPractising: true)
-        restored.complete(first[1].id, keepPractising: false)
-        restored.complete(first[2].id, keepPractising: true)
+        restored.complete(first[0].id, keepPractising: true, at: today)
+        restored.complete(first[1].id, keepPractising: false, at: today)
+        restored.complete(first[2].id, keepPractising: true, at: today)
 
         let next = MemorizationReview(saved: restored.saved)
-        XCTAssertEqual(next.round(in: [piece], language: .en).map(\.id), [sections[3].id, sections[0].id, sections[2].id])
-        XCTAssertFalse(next.isMarked(sections[1].id))
+        XCTAssertEqual(next.round(in: [piece], language: .en, now: today).map(\.id), [sections[3].id])
+        XCTAssertEqual(next.round(in: [piece], language: .en, now: tomorrow).map(\.id), [sections[3].id, sections[0].id, sections[1].id])
+        XCTAssertTrue(next.isMarked(sections[1].id))
     }
 
     func testReviewKeepsScriptsSeparateByLocaleAndExactSectionText() throws {

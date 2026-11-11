@@ -29,6 +29,7 @@ final class AppModel {
     let localWhisper = LocalWhisper()
     let signalCheck: SignalCheckWorkflow
     var showSignalCheck = false
+    private(set) var signalCheckFromDevices = false
     let representation = RepresentationWorkflow()
     var showRepresentation = false
     let sequenceLearning = SequenceLearningWorkflow()
@@ -171,11 +172,13 @@ final class AppModel {
     func closeOverlays() {
         showObservability = false; showNonSpeechCollection = false
         showSequenceLearning = false; showRepresentation = false; showSignalCheck = false
+        signalCheckFromDevices = false
     }
     let practice = PracticeCorpus.bundled
     let personalPracticePieces = PracticeCorpus.personalPieces()
     let literaturePins = LiteraturePins()
     let personalScripts = PersonalScripts()
+    let savedLanguagePhrases = SavedLanguagePhrases()
     let voicePractice: VoicePractice
     private(set) var literatureRequest: LiteraturePin?
     private(set) var personalScriptRequest: PersonalScript?
@@ -224,6 +227,18 @@ final class AppModel {
         trainMode = .reading
         showSequenceLearning = showModels
         screen = .train
+    }
+
+    func openAirPodsFitTest() {
+        guard !navigationLocked else { return }
+        openReading()
+        signalCheckFromDevices = true
+        showSignalCheck = true
+    }
+
+    func closeSignalCheck() {
+        if signalCheckFromDevices { screen = .devices }
+        closeOverlays()
     }
     func openHome() {
         guard !navigationLocked else { return }

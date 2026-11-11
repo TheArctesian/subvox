@@ -4,6 +4,7 @@ struct PracticeSuggestion: Identifiable, Equatable {
     enum Destination: Equatable {
         case practice(TrainMode)
         case review(TrainMode, AppLanguage)
+        case dueReview
         case drill(id: String, language: AppLanguage)
         case literature(LiteraturePin)
         case memorize(pieceID: String, language: AppLanguage)
@@ -23,21 +24,24 @@ enum PracticeNext {
                             drills: [PracticeCorpus.Drill], pieces: [PracticeCorpus.Piece],
                             pins: [LiteraturePin], scripts: [PersonalScript], savedPhrases: SavedLanguagePhrases,
                             memorization: MemorizationReview, recentRuns: [VoicePracticeTarget] = [],
+                            includeReviews: Bool = true,
                             selection: (String, AppLanguage) -> String? = SavedSelection.get) -> [PracticeSuggestion] {
         let languages = [language] + practiceLanguages.filter { $0 != language }
         return [
-            languageSuggestion(languages, drills: drills, saved: savedPhrases, recentRuns: recentRuns, selection: selection),
+            languageSuggestion(languages, drills: drills, saved: savedPhrases, recentRuns: recentRuns,
+                               includeReviews: includeReviews, selection: selection),
             speechSuggestion(languages, pieces: pieces, pins: pins, recentRuns: recentRuns, selection: selection),
             memorizationSuggestion(languages, pieces: pieces, scripts: scripts, review: memorization,
-                                   recentRuns: recentRuns, selection: selection),
+                                   recentRuns: recentRuns, includeReviews: includeReviews, selection: selection),
             materialSuggestion(scripts, recentRuns: recentRuns)
         ]
     }
 
     private static func languageSuggestion(_ languages: [AppLanguage], drills: [PracticeCorpus.Drill],
                                            saved: SavedLanguagePhrases, recentRuns: [VoicePracticeTarget],
+                                           includeReviews: Bool,
                                            selection: (String, AppLanguage) -> String?) -> PracticeSuggestion {
-        for language in languages {
+        for language in languages where includeReviews {
             let count = saved.nextRound(in: drills, language: language).count
             if count > 0 {
                 let title = count == 1 ? String(localized: "Review 1 saved phrase")
@@ -48,7 +52,7 @@ enum PracticeNext {
         }
         for run in recentRuns where run.mode == TrainMode.language.rawValue && languages.contains(run.language) {
             if let drill = drills.first(where: {
-                $0.id == run.itemID && $0.language == run.language.corpus && run.language.shows(region: $0.region)
+                $0.id == run.drillID && $0.language == run.language.corpus && run.language.shows(region: $0.region)
             }) {
                 return PracticeSuggestion(id: .language, title: String(localized: "Continue language practice"),
                                           detail: drill.title(run.language), destination: .drill(id: drill.id, language: run.language))
@@ -68,7 +72,7 @@ enum PracticeNext {
                                          selection: (String, AppLanguage) -> String?) -> PracticeSuggestion {
         let recent = recentRuns.compactMap { run -> LiteraturePin? in
             guard let mode = TrainMode(rawValue: run.mode), mode == .speech || mode == .poetry else { return nil }
-            return LiteraturePin(pieceID: run.itemID, language: run.language, mode: mode)
+            return LiteraturePin(pieceID: run.pieceID, language: run.language, mode: mode)
         }
         let candidates = (recent + pins).filter { languages.contains($0.language) } + languages.flatMap { language in
             [("speech", TrainMode.speech), ("poetry", TrainMode.poetry)].compactMap { key, mode in
@@ -90,8 +94,9 @@ enum PracticeNext {
     private static func memorizationSuggestion(_ languages: [AppLanguage], pieces: [PracticeCorpus.Piece],
                                                 scripts: [PersonalScript], review: MemorizationReview,
                                                 recentRuns: [VoicePracticeTarget],
+                                                includeReviews: Bool,
                                                 selection: (String, AppLanguage) -> String?) -> PracticeSuggestion {
-        for language in languages {
+        for language in languages where includeReviews {
             let available = pieces + scripts.filter { $0.language == language }.map(\.memoryPiece)
             let round = review.round(in: available, language: language)
             if let first = round.first {
@@ -117,7 +122,7 @@ enum PracticeNext {
 
     private static func materialSuggestion(_ scripts: [PersonalScript], recentRuns: [VoicePracticeTarget]) -> PracticeSuggestion {
         let recent = recentRuns.lazy.filter { $0.mode == TrainMode.free.rawValue }.compactMap { run in
-            scripts.first { $0.pieceID == run.itemID && $0.language == run.language }
+            scripts.first { $0.pieceID == run.pieceID && $0.language == run.language }
         }.first
         if let script = recent ?? scripts.first {
             return PracticeSuggestion(id: .free, title: String(localized: "Rehearse \(script.title)"), detail: TrainMode.free.title,

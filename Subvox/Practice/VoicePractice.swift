@@ -7,6 +7,20 @@ struct VoicePracticeTarget: Codable, Hashable {
     let language: AppLanguage
     let itemID: String
     let text: String
+
+    var drillID: String? {
+        guard mode == TrainMode.language.rawValue else { return nil }
+        return itemID.split(separator: "/").last.map(String.init)
+    }
+
+    var pieceID: String {
+        let parts = itemID.split(separator: "/")
+        return parts.count == 3 && parts[0] == "section" ? String(parts[1]) : itemID
+    }
+
+    static func section(mode: TrainMode, language: AppLanguage, pieceID: String, index: Int, text: String) -> Self {
+        Self(mode: mode.rawValue, language: language, itemID: "section/\(pieceID)/\(index)", text: text)
+    }
 }
 
 struct VoicePracticeRun: Codable, Identifiable, Equatable {
@@ -87,10 +101,16 @@ final class VoicePractice: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDeleg
     private var requestID: UUID?
     private var recording: Recording?
     @ObservationIgnored private var player: AVAudioPlayer?
+    private(set) var errorTarget: VoicePracticeTarget?
 
     private(set) var runs: [VoicePracticeRun]
     private(set) var playingRunID: UUID?
+    private(set) var playbackPaused = false
+    private(set) var playbackRate: Float = 1
+    private(set) var playbackLoops = false
     private(set) var error: String?
+    var playbackPosition: TimeInterval { player?.currentTime ?? 0 }
+    var playbackDuration: TimeInterval { player?.duration ?? 0 }
     var recordingTarget: VoicePracticeTarget? { recording?.target }
     var starting: Bool { requestID != nil }
     var isBusy: Bool { starting || recording != nil }
@@ -117,10 +137,13 @@ final class VoicePractice: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDeleg
         runs.filter { $0.target == target }
     }
 
+    func audioURL(for run: VoicePracticeRun) -> URL { store.audioURL(for: run) }
+
     func start(_ target: VoicePracticeTarget) async {
         guard !isBusy, !target.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         stopPlayback()
         error = nil
+        errorTarget = target
         let id = UUID()
         requestID = id
         let authorized = await requestAccess()
@@ -196,9 +219,12 @@ final class VoicePractice: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDeleg
         guard !isBusy, runs.contains(run) else { return }
         stopPlayback()
         error = nil
+        errorTarget = run.target
         do {
             let player = try AVAudioPlayer(contentsOf: store.audioURL(for: run))
             player.delegate = self
+            player.enableRate = true
+            player.rate = playbackRate
             if player.play() {
                 self.player = player
                 playingRunID = run.id
@@ -215,9 +241,48 @@ final class VoicePractice: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDeleg
         player?.stop()
         player = nil
         playingRunID = nil
+        playbackPaused = false
+        playbackLoops = false
     }
 
-    func clearError() { error = nil }
+    func togglePlaybackLoop() {
+        guard let player else { return }
+        playbackLoops.toggle()
+        player.numberOfLoops = playbackLoops ? -1 : 0
+    }
+
+    func togglePlaybackPause() {
+        guard let player else { return }
+        if playbackPaused {
+            if player.play() {
+                playbackPaused = false
+            } else {
+                stopPlayback()
+                error = String(localized: "This recording couldn’t be played.")
+            }
+        } else {
+            player.pause()
+            playbackPaused = true
+        }
+    }
+
+    func seekPlayback(to time: TimeInterval) {
+        guard let player, time.isFinite else { return }
+        // AAC seeks in 1,024-frame packets. The last partial packet can wrap to the start.
+        let packetDuration = 1_024 / player.format.sampleRate
+        player.currentTime = min(max(0, time), max(0, player.duration - packetDuration))
+    }
+
+    func setPlaybackRate(_ rate: Float) {
+        guard rate.isFinite, (0.5...2).contains(rate) else { return }
+        playbackRate = rate
+        player?.rate = rate
+    }
+
+    func clearError() {
+        error = nil
+        errorTarget = nil
+    }
 
     nonisolated func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         let id = ObjectIdentifier(recorder)

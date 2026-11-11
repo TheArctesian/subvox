@@ -55,4 +55,48 @@ final class SavedLanguagePhrasesTests: XCTestCase {
         XCTAssertEqual(reopened.nextRound(in: [drill], language: .fr).map(\.id), [ids[3], ids[0], ids[1]])
         XCTAssertTrue(reopened.nextRound(in: [drill], language: .en).isEmpty)
     }
+
+    @MainActor
+    func testMixedRoundReturnsForListeningAndRetriesOnlyOnce() throws {
+        let suite = "mixed-review-tests-\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let line = PracticeCorpus.Line(text: "Bonjour", ipa: [], gloss: "Hello")
+        let drill = PracticeCorpus.Drill(id: "greetings", language: "fr", title: "Greetings", phrases: [line])
+        let phrase = LanguagePhraseID(line, drillID: drill.id, language: .fr)
+        let piece = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == "invictus" })
+        let section = try XCTUnwrap(MemorizationSection.sections(of: piece, language: .en).first)
+        let today = Date(timeIntervalSinceReferenceDate: 800_000_000)
+        let tomorrow = today.addingTimeInterval(86_400)
+        let saved = SavedLanguagePhrases(defaults: defaults)
+        saved.toggle(phrase)
+        var marks = MemorizationReview()
+        marks.toggle(section.id)
+        func due(_ date: Date) -> [DueReviewCard] {
+            DueReviewQueue.cards(languages: [.fr, .en], nativeLanguage: "en", drills: [drill],
+                                 pieces: [piece], saved: SavedLanguagePhrases(defaults: defaults),
+                                 memorization: marks, now: date)
+        }
+
+        let initial = due(today)
+        XCTAssertEqual(initial.map(\.id), [.phrase(phrase), .section(section.id)])
+        guard case .phrase(_, listening: false) = initial.first else { return XCTFail("Expected a recall card") }
+        var round = DueReviewRound(due: initial)
+        round.advance(recalled: false)
+        XCTAssertEqual(round.current?.id, .section(section.id))
+        round.advance(recalled: true)
+        XCTAssertEqual(round.current?.id, .phrase(phrase))
+        round.advance(recalled: false)
+        XCTAssertNil(round.current)
+        saved.rate(phrase, recalled: true, at: today)
+        marks.complete(section.id, keepPractising: false, at: today)
+        XCTAssertTrue(due(today).isEmpty)
+
+        let next = due(tomorrow)
+        guard case .phrase(_, listening: true) = next.first else { return XCTFail("Expected a listening card") }
+        XCTAssertEqual(next.map(\.id), [.phrase(phrase), .section(section.id)])
+        saved.rate(phrase, recalled: true, at: tomorrow)
+        XCTAssertFalse(due(tomorrow.addingTimeInterval(86_400)).contains { $0.id == .phrase(phrase) })
+        XCTAssertTrue(due(tomorrow.addingTimeInterval(3 * 86_400)).contains { $0.id == .phrase(phrase) })
+    }
 }

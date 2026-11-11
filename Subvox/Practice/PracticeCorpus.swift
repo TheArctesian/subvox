@@ -267,18 +267,19 @@ extension PracticeCorpus {
 }
 
 /// Progress that's visible on every practice page: takes today, a day streak, and which sounds
-/// have been practised. Counted from saved pairs with a mouthed take, so abandoned attempts don't count.
+/// have been practised. Only saved microphone takes and pairs with a mouthed take count.
 struct PracticeProgress: Equatable {
-    /// Words or phrases (spoken and mouthed) a day; about ten minutes of practice.
+    /// Saved practice takes per day.
     static let dailyGoal = 10
     var today = 0
     var streak = 0
     var practisedTexts: Set<String> = []
 
-    init(pairs: [SentencePair], calendar: Calendar = .current, now: Date = Date()) {
+    init(pairs: [SentencePair], voiceRuns: [VoicePracticeRun] = [], calendar: Calendar = .current, now: Date = Date()) {
         let done = pairs.filter { $0.silent != nil }
-        today = done.filter { calendar.isDate($0.createdAt, inSameDayAs: now) }.count
-        let days = Set(done.map { calendar.startOfDay(for: $0.createdAt) })
+        let dates = done.map(\.createdAt) + voiceRuns.map(\.createdAt)
+        today = dates.count { calendar.isDate($0, inSameDayAs: now) }
+        let days = Set(dates.map { calendar.startOfDay(for: $0) })
         var day = calendar.startOfDay(for: now)
         if !days.contains(day) { day = calendar.date(byAdding: .day, value: -1, to: day)! }
         while days.contains(day) { streak += 1; day = calendar.date(byAdding: .day, value: -1, to: day)! }
