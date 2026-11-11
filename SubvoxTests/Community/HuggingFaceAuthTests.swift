@@ -263,6 +263,86 @@ final class CommunityUploaderTests: XCTestCase {
         XCTAssertNil(settings.activeAutomaticGrant(for: "alice"))
     }
 
+    @MainActor func testLibraryQueueRequiresTheOriginalGrantAndKeepsSectionTakesTogether() async throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "library-uploader-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let suite = "subvox-test-\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let settings = ContributionSettings(defaults: defaults)
+        settings.enableAutomaticSharing(for: "alice")
+        XCTAssertNil(settings.activeLibraryGrant(for: "alice"))
+        settings.enableLibrarySharing(for: "alice")
+        let automatic = try XCTUnwrap(settings.activeAutomaticGrant(for: "alice"))
+        let library = try XCTUnwrap(settings.activeLibraryGrant(for: "alice"))
+        XCTAssertEqual(ContributionSettings(defaults: defaults).activeLibraryGrant(for: "alice"), library)
+        XCTAssertNil(settings.activeLibraryGrant(for: "bob"))
+        let prompt = try XCTUnwrap(LibraryPilotCatalog.bundled.sections(pieceID: "invictus", language: "en").first)
+        var uploads = 0
+        let uploader = CommunityUploader(root: root, runtimeRoot: root, export: { arguments in
+            func argument(_ name: String) throws -> String {
+                arguments[try XCTUnwrap(arguments.firstIndex(of: name)) + 1]
+            }
+            XCTAssertEqual(try argument("--automatic-grant"), automatic.id.uuidString)
+            XCTAssertEqual(try argument("--library-grant"), library.id.uuidString)
+            let folder = URL(fileURLWithPath: try argument("--output")).appending(path: "data/alice/pilot")
+            try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            try Data(#"{"session_id":"pilot","consent_version":"consent-v3-library-pilot","takes":2}"#.utf8)
+                .write(to: folder.appending(path: "session.json"))
+            let rows = ["spoken", "mouthed"].map { mode in
+                #"{"take_id":"\#(mode)","prompt_id":"\#(prompt.promptID)","mode":"\#(mode)","eligible":true}"#
+            }.joined(separator: "\n")
+            try Data(rows.utf8).write(to: folder.appending(path: "takes.jsonl"))
+            try JSONEncoder().encode([folder.path]).write(to: URL(fileURLWithPath: try argument("--manifest")))
+        }, upload: { _, _ in
+            uploads += 1
+            throw URLError(.notConnectedToInternet)
+        })
+        let prepared = await uploader.prepare(contributor: "alice", automatic: automatic, library: library)
+        let item = try XCTUnwrap(prepared?.first)
+        XCTAssertEqual(item.libraryGrantID, library.id)
+        XCTAssertEqual(item.libraryTakeIDs, Set(["spoken", "mouthed"]))
+        XCTAssertEqual(uploader.takes(item).first?.text, prompt.text)
+        uploader.toggleDrop("spoken", in: item.id)
+        XCTAssertEqual(Set(uploader.items[0].dropped), Set(["spoken", "mouthed"]))
+        uploader.restoreTakes(in: item.id)
+
+        await uploader.sendReviewed([item.id], repo: library.repo, token: "fixture")
+        XCTAssertEqual(uploads, 0)
+        settings.stopLibrarySharing()
+        settings.enableLibrarySharing(for: "alice")
+        let renewed = try XCTUnwrap(settings.activeLibraryGrant(for: "alice"))
+        XCTAssertNotEqual(renewed.id, library.id)
+        await uploader.sendReviewed([item.id], repo: renewed.repo, token: "fixture", automatic: true, library: renewed)
+        XCTAssertEqual(uploads, 0)
+        settings.repo = "test/new-dataset"
+        XCTAssertNil(settings.activeLibraryGrant(for: "alice"))
+    }
+
+    @MainActor func testRecoveredLibraryReceiptUsesSubmittedTakeIDs() async throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "library-receipt-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let grant = ContributionSettings.AutomaticGrant(id: UUID(), username: "alice", repo: "test/dataset",
+                                                         version: ContributionSettings.libraryConsentVersion)
+        let uploader = CommunityUploader(root: root, runtimeRoot: root) { arguments, _ in
+            let index = try XCTUnwrap(arguments.firstIndex(of: "--output"))
+            let result = URL(fileURLWithPath: arguments[index + 1])
+            try Data(#"{"pr_num":7,"take_ids":["a","b","c","d"]}"#.utf8).write(to: result)
+        }
+        var item = CommunityUpload(id: "pilot", folder: "fixture", takes: 4, month: "2026-11")
+        item.libraryGrantID = grant.id
+        item.libraryTakeIDs = ["a", "b", "c", "d"]
+        item.dropped = ["c", "d"]
+        uploader.merge([item])
+        await uploader.sendReviewed([item.id], repo: grant.repo, token: "fixture", automatic: true, library: grant)
+
+        let reopened = CommunityUploader(root: root, runtimeRoot: root)
+        let receipt = try XCTUnwrap(reopened.shared.first)
+        XCTAssertEqual(receipt.prNumber, 7)
+        XCTAssertEqual(receipt.libraryTakeIDs, Set(["a", "b", "c", "d"]))
+        XCTAssertTrue(receipt.dropped.isEmpty)
+    }
+
     @MainActor func testSharingDefaultsToHuggingFaceAndConsentIsVersioned() {
         let defaults = UserDefaults(suiteName: "subvox-test-\(UUID())")!
         let settings = ContributionSettings(defaults: defaults)

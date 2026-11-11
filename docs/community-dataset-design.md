@@ -218,6 +218,14 @@ Steps 1–3 are fully local and useful for your own recordings before anyone els
   - **AirPods metadata:** each visit records vendor/product ID, model and firmware, and each take records its native rate. Ingestion accepts 20 Hz and up, interpolated onto the 50 Hz grid and flagged.
   - **Test dataset:** `stephenokita/subvox-community-test` (public, CC BY 4.0).
   - **Live test (7 Nov 2026):** signed in through the app; two sessions (52 and 3 takes) became PRs #1 and #2 on `stephenokita/subvox-community-test`, authored by `stephenokita`, with the Parquet files stored as large files. A token with only `write-discussions` (plus openid/profile) opened PRs carrying large files, on a dataset the contributor owns; a non-owner account is still untested. Data removal requests go to me@stephenokita.com.
+
+### Library sharing pilot
+
+Sharing Settings offers a separate, optional grant for new English recordings of *Invictus* and the bundled *Gettysburg Address* excerpt. The grant is tied to the signed-in account and dataset. Stopping library sharing retires the grant and its unsent submissions. A later opt-in applies to new recording sessions.
+
+The exporter waits for local checks and sends only complete, eligible section pairs captured in the same physical session. The local resume feature can preserve a spoken take and a silent take recorded in different sessions for practice. Those halves cannot form a pilot submission. Each exported section uses the exact text and ID from `Corpus/community/library-pilot-v1.jsonl`. The pilot keeps session schema version 2, uses `prompts_version: 2` and records `consent-v3-library-pilot`. A receipt confirms submission as a PR. Dataset acceptance happens when the PR merges.
+
+To enable submissions for a dataset, deploy the validator from this version with the dataset prompt directory, and publish the byte-for-byte bundled catalog as `prompts/library-pilot-v1.jsonl` on the dataset's default branch. The uploader checks for that exact catalog before it creates a pilot PR. The catalog includes the source for each approved text.
 - **Not done:** a non-owner PR test, which also settles the `write-discussions` question (section 1); the first-launch contribution prompt; and anonymous mode with the relay (step 5).
 
 ## Open questions

@@ -88,6 +88,41 @@ final class PracticeTests: XCTestCase {
         XCTAssertEqual(Array(parts.prefix(2)), opening.map { [$0] })
     }
 
+    func testLibraryPilotCatalogMatchesTheExactSectionsRecordedByTheApp() throws {
+        let catalog = LibraryPilotCatalog.bundled
+        for pieceID in ["gettysburg", "invictus"] {
+            let piece = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == pieceID })
+            let groups = piece.parts(language: .en).map { part in
+                part.map { SentencePrompt($0, kind: piece.practiceKind, language: .en) }
+            }
+            let sections = catalog.sections(pieceID: pieceID, language: "en")
+            XCTAssertEqual(sections.count, pieceID == "invictus" ? 4 : 3)
+            XCTAssertEqual(sections.map(\.lines), groups.map { $0.map(\.text) })
+            XCTAssertTrue(catalog.allows(pieceID: pieceID, language: "en", groups: groups))
+            XCTAssertTrue(catalog.allows(pieceID: pieceID, language: "en", groups: Array(groups.dropFirst())))
+            XCTAssertFalse(catalog.allows(pieceID: pieceID, language: "en", groups: [groups[0], groups[2]]))
+            XCTAssertFalse(catalog.allows(pieceID: pieceID, language: "fr", groups: groups))
+
+            var changed = groups
+            changed[0][0].text += "!"
+            XCTAssertFalse(catalog.allows(pieceID: pieceID, language: "en", groups: changed))
+
+            let group = groups[0]
+            var pair = SentencePair(visitID: UUID(), promptIDs: group.map(\.id),
+                                    text: group.map(\.text).joined(separator: " "), role: .training)
+            pair.practiceMode = piece.practiceKind
+            pair.literaturePieceID = pieceID
+            pair.language = "en"
+            XCTAssertEqual(catalog.prompt(for: pair)?.promptID, sections.first?.promptID)
+            pair.promptIDs.append("extra")
+            XCTAssertNil(catalog.prompt(for: pair))
+        }
+        XCTAssertNotEqual(
+            LibraryPilotCatalog.identity(pieceID: "example", language: "zh-Hans", text: "你好"),
+            LibraryPilotCatalog.identity(pieceID: "example", language: "zh-Hans", text: "再见")
+        )
+    }
+
     func testBundledGageAccountIncludesTheWholeSpeechInReadableParts() throws {
         let piece = try XCTUnwrap(PracticeCorpus.bundled.pieces.first { $0.id == "aint-i-a-woman" })
         let parts = piece.parts(language: .en)

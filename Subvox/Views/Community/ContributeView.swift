@@ -70,7 +70,8 @@ struct ContributeView: View {
 
     private var queueSection: some View {
         let unsent = uploader.unsent.filter(belongsToCurrentAccount)
-        let pending = unsent.filter { $0.takes > $0.dropped.count }
+        let pending = unsent.filter { !$0.isLibraryPilot && $0.takes > $0.dropped.count }
+        let submitted = uploader.shared.filter(belongsToCurrentAccount)
         return VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text(model.automaticSharingGrant == nil ? "Ready to send" : "Community submissions").font(.title3.weight(.semibold))
@@ -88,19 +89,22 @@ struct ContributeView: View {
                 Text("Nothing new to send. Record more community passages and they'll appear here.").font(.callout).foregroundStyle(.secondary)
             }
             if model.automaticSharingGrant != nil {
-                Text("Turn off automatic sharing above to choose which takes go into future pull requests.")
+                Text("To review community reading takes before sending, turn off automatic sharing above.")
                     .font(.callout).foregroundStyle(.secondary)
             }
             ForEach(unsent) { item in sessionRow(item) }
-            if !uploader.shared.isEmpty {
-                MotionDisclosure("Sent pull requests (\(uploader.shared.count))") {
+            if !submitted.isEmpty {
+                MotionDisclosure("Submitted pull requests (\(submitted.count))") {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Open a pull request on Hugging Face to edit its details or close it.")
                             .font(.caption).foregroundStyle(.secondary)
-                        ForEach(uploader.shared) { item in
+                        ForEach(submitted) { item in
                             HStack {
-                                Label("Session \(item.id.prefix(8)) · \(item.month) · \(item.takes - item.dropped.count) takes", systemImage: "checkmark.circle.fill")
-                                    .foregroundStyle(.secondary)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Label(item.isLibraryPilot ? "Library session submitted" : "Community session submitted", systemImage: "arrow.up.circle.fill")
+                                    Text("\(item.month) · \(item.takes - item.dropped.count) takes · \(item.id.prefix(8))")
+                                }
+                                .foregroundStyle(.secondary)
                                 Spacer()
                                 if let url = item.prURL.flatMap(URL.init(string:)) {
                                     Link(destination: url) {
@@ -128,7 +132,8 @@ struct ContributeView: View {
     }
 
     private func prepareReview(_ items: [CommunityUpload]) {
-        guard let username = account.username, canShare, !working, items.allSatisfy(belongsToCurrentAccount) else { return }
+        guard let username = account.username, canShare, !working,
+              items.allSatisfy({ !$0.isLibraryPilot && belongsToCurrentAccount($0) }) else { return }
         let sessions = items.map { item in
             UploadReview.Session(id: item.id, takes: uploader.takes(item).filter { !item.dropped.contains($0.id) })
         }
@@ -143,10 +148,16 @@ struct ContributeView: View {
     }
 
     private func sessionRow(_ item: CommunityUpload) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        let pilotActive = item.isLibraryPilot && item.libraryGrantID == model.librarySharingGrant?.id
+        return VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Session \(item.id.prefix(8)) · \(item.month)").font(.headline)
-                Text("\(item.takes - item.dropped.count) of \(item.takes) takes").foregroundStyle(.secondary)
+                Text(item.isLibraryPilot ? "Library session · \(item.month)" : "Session \(item.id.prefix(8)) · \(item.month)")
+                    .font(.headline)
+                if item.isLibraryPilot {
+                    Text("\((item.takes - item.dropped.count) / 2) eligible sections").foregroundStyle(.secondary)
+                } else {
+                    Text("\(item.takes - item.dropped.count) of \(item.takes) takes").foregroundStyle(.secondary)
+                }
                 Spacer()
                 switch item.status {
                 case .uploaded:
@@ -154,11 +165,19 @@ struct ContributeView: View {
                     else { Label("Sent", systemImage: "checkmark") }
                 case .uploading: ProgressView().controlSize(.small)
                 case .review, .failed:
-                    Button(expanded == item.id ? "Hide takes" : "Review takes") {
+                    let reviewTitle: LocalizedStringKey = item.isLibraryPilot
+                        ? (expanded == item.id ? "Hide sections" : "Review sections")
+                        : (expanded == item.id ? "Hide takes" : "Review takes")
+                    Button(reviewTitle) {
                         expanded = expanded == item.id ? nil : item.id
                         expandedTakes = expanded == nil ? [] : uploader.takes(item)
                     }
-                    if model.automaticSharingGrant != nil {
+                    if item.isLibraryPilot {
+                        if !pilotActive { Text("Sharing ended").foregroundStyle(.secondary) }
+                        else if item.takes == item.dropped.count {
+                            Button("Restore sections") { uploader.restoreTakes(in: item.id) }.disabled(working)
+                        } else if item.status == .failed { Text("Will retry").foregroundStyle(.secondary) }
+                    } else if model.automaticSharingGrant != nil {
                         if item.status == .failed { Text("Will retry").foregroundStyle(.secondary) }
                     } else if item.takes == item.dropped.count {
                         Button("Restore all") { uploader.restoreTakes(in: item.id) }.disabled(working)
@@ -170,23 +189,41 @@ struct ContributeView: View {
             }
             if let error = item.error, item.status == .failed { Text(error).font(.caption).foregroundStyle(.orange).lineLimit(3) }
             if expanded == item.id {
-                ForEach(expandedTakes) { take in
-                    Toggle(isOn: Binding(get: { !item.dropped.contains(take.id) }, set: { _ in uploader.toggleDrop(take.id, in: item.id) })) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("\(take.mode == "spoken" ? "Spoken" : "Mouthed"): \(take.text)")
-                            Text([take.source, take.eligible ? nil : "motion not eligible", take.cameraEligible ? nil : "no camera points"]
-                                .compactMap { $0 }.joined(separator: " · ")).font(.caption).foregroundStyle(.secondary)
+                if item.isLibraryPilot {
+                    ForEach(expandedTakes.filter { $0.mode == "spoken" }) { take in
+                        Toggle(isOn: includeTake(take, in: item)) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(take.text)
+                                if let source = take.source { Text(source).font(.caption).foregroundStyle(.secondary) }
+                            }
                         }
                     }
+                    .disabled(working || !pilotActive)
+                    Text("Each section includes both the spoken and mouthed takes. Your local recordings stay on this Mac.")
+                        .font(.caption).foregroundStyle(.secondary)
+                } else {
+                    ForEach(expandedTakes) { take in
+                        Toggle(isOn: includeTake(take, in: item)) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("\(take.mode == "spoken" ? "Spoken" : "Mouthed"): \(take.text)")
+                                Text([take.source, take.eligible ? nil : "motion not eligible", take.cameraEligible ? nil : "no camera points"]
+                                    .compactMap { $0 }.joined(separator: " · ")).font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .disabled(working || model.automaticSharingGrant != nil)
+                    Text(model.automaticSharingGrant == nil
+                         ? "Untick any take you don't want to share. Dropped takes are left out of the upload; your local recording isn't changed."
+                         : "Turn off automatic sharing to change which takes are included.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
-                .disabled(working || model.automaticSharingGrant != nil)
-                Text(model.automaticSharingGrant == nil
-                     ? "Untick any take you don't want to share. Dropped takes are left out of the upload; your local recording isn't changed."
-                     : "Turn off automatic sharing to change which takes are included.")
-                    .font(.caption).foregroundStyle(.secondary)
             }
         }
         .padding(12).background(Color(nsColor: .controlBackgroundColor).opacity(0.6), in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func includeTake(_ take: CommunityTake, in item: CommunityUpload) -> Binding<Bool> {
+        Binding(get: { !item.dropped.contains(take.id) }, set: { _ in uploader.toggleDrop(take.id, in: item.id) })
     }
 
     private func send(_ selection: UploadReview) {
@@ -237,6 +274,7 @@ struct LocalRecordingHistory: View {
             if let playbackError = playback.error { Text(playbackError).font(.caption).foregroundStyle(.orange) }
             ForEach(pairs.prefix(30)) { pair in
                 let title = title(for: pair)
+                let library = libraryReceipt(for: pair, uploads: uploads)
                 VStack(alignment: .leading, spacing: 3) {
                     HStack {
                         Text(title ?? pair.text).font(.headline).lineLimit(2)
@@ -252,12 +290,17 @@ struct LocalRecordingHistory: View {
                     }
                     if title != nil { Text(pair.text).lineLimit(2) }
                     Text(pair.createdAt.formatted(date: .abbreviated, time: .shortened))
-                    Text(status(for: pair, uploads: uploads))
+                    HStack {
+                        Text(status(for: pair, uploads: uploads, library: library))
+                        if let library, library.status == .uploaded,
+                           let url = library.prURL.flatMap(URL.init(string:)) {
+                            Link("Open pull request", destination: url)
+                        }
+                    }
                 }
                 .font(.caption).padding(.vertical, 4)
             }
             if pairs.count > 30 { Text("Showing the 30 most recent recordings.").font(.caption).foregroundStyle(.secondary) }
-            Text("Only eligible community readings appear in the upload queue.").font(.callout).foregroundStyle(.secondary)
         }
     }
 
@@ -265,7 +308,8 @@ struct LocalRecordingHistory: View {
         if pair.practiceMode?.isLiterature == true {
             let language = AppLanguage(rawValue: pair.language ?? "en") ?? .en
             for piece in model.practice.pieces + model.personalPracticePieces
-            where piece.practiceKind == pair.practiceMode && piece.language == language.corpus {
+            where piece.practiceKind == pair.practiceMode && piece.language == language.corpus
+                && (pair.literaturePieceID == nil || pair.literaturePieceID == piece.id) {
                 let parts = piece.parts(language: language)
                 if let index = parts.firstIndex(where: {
                     $0.map { $0.text(language) }.joined(separator: " ") == pair.text
@@ -280,7 +324,17 @@ struct LocalRecordingHistory: View {
         return prompt.passageID == nil ? String(localized: "Community calibration") : prompt.title
     }
 
-    private func status(for pair: SentencePair, uploads: [String: CommunityUpload]) -> String {
+    private func libraryReceipt(for pair: SentencePair, uploads: [String: CommunityUpload]) -> CommunityUpload? {
+        guard pair.practiceMode?.isLiterature == true,
+              let session = pair.recordingSessionID, let spoken = pair.spoken, let silent = pair.silent,
+              let item = uploads[CommunityUploader.publicSessionID(session)],
+              let exported = item.libraryTakeIDs else { return nil }
+        let takeIDs = [CommunityUploader.publicTakeID(spoken.id), CommunityUploader.publicTakeID(silent.id)]
+        guard takeIDs.allSatisfy({ exported.contains($0) && !item.dropped.contains($0) }) else { return nil }
+        return item
+    }
+
+    private func status(for pair: SentencePair, uploads: [String: CommunityUpload], library: CommunityUpload?) -> String {
         let checking: String
         if model.sentenceTraining.checkingPairIDs.contains(pair.id) {
             checking = String(localized: "Checking")
@@ -292,6 +346,17 @@ struct LocalRecordingHistory: View {
             checking = String(localized: "Checked")
         } else {
             checking = String(localized: "Saved")
+        }
+        if let library {
+            if library.status != .uploaded, library.libraryGrantID != model.librarySharingGrant?.id {
+                return String(localized: "\(checking) · Library sharing ended")
+            }
+            switch library.status {
+            case .uploaded: return String(localized: "\(checking) · Submitted as a pull request")
+            case .uploading: return String(localized: "\(checking) · Uploading section")
+            case .failed: return String(localized: "\(checking) · Eligible section, upload failed")
+            case .review: return String(localized: "\(checking) · Eligible section, queued for sharing")
+            }
         }
         guard pair.practiceMode == nil, pair.role != .finalTest, pair.promptIDs.count == 1,
               model.sentenceTraining.community.prompt(pair.promptIDs[0]) != nil,
@@ -317,6 +382,7 @@ struct SharingSetupView: View {
     @State private var adult = false
     @State private var confirmAutomatic = false
     @State private var confirmStop = false
+    @State private var confirmLibrary = false
 
     private var settings: ContributionSettings { model.contribution }
     private var uploader: CommunityUploader { model.uploader }
@@ -328,8 +394,38 @@ struct SharingSetupView: View {
             if account.username != nil {
                 if showsDataset { datasetSection }
                 automaticSharingSection
+                if showsDataset, let grant = model.automaticSharingGrant { libraryPilotSection(grant) }
             }
         }
+    }
+
+    private func libraryPilotSection(_ grant: ContributionSettings.AutomaticGrant) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Library sharing pilot").font(.title3.weight(.semibold))
+            Text("Share new English recordings of Invictus and the Gettysburg Address excerpt. Subvox opens a pull request on \(grant.repo) under \(grant.username) when at least one section has both a spoken and a mouthed take from the same recording session and passes recording and alignment checks.")
+                .fixedSize(horizontal: false, vertical: true)
+            if model.librarySharingGrant != nil {
+                HStack {
+                    Label("Library sharing is on", systemImage: "arrow.up.circle.fill")
+                    Spacer()
+                    Button("Stop library sharing", action: model.stopLibrarySharing)
+                }
+                Text("Turning this off stops new and queued library submissions. A submission already in progress may finish.")
+                    .font(.callout).foregroundStyle(.secondary)
+            } else {
+                Text("The public dataset receives AirPods motion, numeric points for the lips, jaw, and nose if recorded, prompt and pronunciation labels, language and headphone details, and the recording month. Audio, images, and video stay on this Mac.")
+                    .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                Toggle("I agree to share future pilot recordings under CC BY 4.0, linked to my Hugging Face username.", isOn: $confirmLibrary)
+                Button("Enable library sharing", systemImage: "arrow.up.circle") {
+                    model.enableLibrarySharing()
+                    confirmLibrary = false
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!confirmLibrary || uploader.busy || model.navigationLocked)
+            }
+        }
+        .onChange(of: grant) { confirmLibrary = false }
+        .onDisappear { confirmLibrary = false }
     }
 
     private var accountSection: some View {

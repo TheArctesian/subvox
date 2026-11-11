@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 
 /// Public-domain reading prompts built by Tools/corpus/community.py (Corpus/community/*.jsonl).
@@ -100,5 +101,92 @@ struct CommunityCorpus: Sendable {
             for pair in best.prompts.flatMap(\.diphones) { counts[pair, default: 0] += 1 }
         }
         return chosen
+    }
+}
+
+/// The public IDs refer to exact library sections, independently of local sentence IDs.
+struct LibraryPilotPrompt: Decodable, Sendable {
+    let promptID: String
+    let passageID: String
+    let pieceID: String
+    let language: String
+    let practiceKind: SentencePromptKind
+    let section: Int
+    let text: String
+    let lines: [String]
+    let title: String
+    let author: String
+    let sourceURL: URL
+
+    enum CodingKeys: String, CodingKey {
+        case promptID = "prompt_id", passageID = "passage_id", pieceID = "piece_id"
+        case practiceKind = "kind", sourceURL = "source_url"
+        case language, section, text, lines, title, author
+    }
+}
+
+struct LibraryPilotCatalog: Sendable {
+    static let version = "library-pilot-v1"
+    static let bundled = load()
+    private let prompts: [LibraryPilotPrompt]
+
+    static func load(bundle: Bundle = .main) -> Self {
+        guard let url = bundle.url(forResource: version, withExtension: "jsonl", subdirectory: "Corpus/community"),
+              let jsonl = try? String(contentsOf: url, encoding: .utf8) else { return Self(prompts: []) }
+        let decoder = JSONDecoder()
+        do {
+            let prompts = try jsonl.split(separator: "\n").map {
+                try decoder.decode(LibraryPilotPrompt.self, from: Data($0.utf8))
+            }
+            let kinds: [String: SentencePromptKind] = ["invictus": .poetry, "gettysburg": .speech]
+            let byPiece = Dictionary(grouping: prompts, by: \.pieceID)
+            let expectedSections = ["invictus": [1, 2, 3, 4], "gettysburg": [1, 2, 3]]
+            guard Set(prompts.map(\.promptID)).count == prompts.count,
+                  byPiece.mapValues({ $0.map(\.section).sorted() }) == expectedSections,
+                  prompts.allSatisfy({ prompt in
+                      return prompt.language == "en" && kinds[prompt.pieceID] == prompt.practiceKind
+                          && !prompt.lines.isEmpty
+                          && prompt.passageID == "\(version):\(prompt.pieceID)"
+                          && prompt.text.utf8.elementsEqual(prompt.lines.joined(separator: " ").utf8)
+                          && prompt.promptID == identity(pieceID: prompt.pieceID, language: prompt.language, text: prompt.text)
+                  }) else { return Self(prompts: []) }
+            return Self(prompts: prompts)
+        } catch {
+            return Self(prompts: [])
+        }
+    }
+
+    static func identity(pieceID: String, language: String, text: String) -> String {
+        let material = [version, language, pieceID, text].joined(separator: "\n")
+        return SHA256.hash(data: Data(material.utf8)).map { String(format: "%02x", $0) }.joined()
+    }
+
+    func prompt(_ id: String) -> LibraryPilotPrompt? { prompts.first { $0.promptID == id } }
+
+    func sections(pieceID: String, language: String) -> [LibraryPilotPrompt] {
+        prompts.filter { $0.pieceID == pieceID && $0.language == language }.sorted { $0.section < $1.section }
+    }
+
+    func allows(pieceID: String, language: String, groups: [[SentencePrompt]]) -> Bool {
+        guard let first = groups.first else { return false }
+        let sections = sections(pieceID: pieceID, language: language)
+        guard let start = sections.firstIndex(where: { Self.matches(first, $0) }),
+              groups.count <= sections.count - start else { return false }
+        return zip(groups, sections.dropFirst(start)).allSatisfy { Self.matches($0, $1) }
+    }
+
+    func prompt(for pair: SentencePair) -> LibraryPilotPrompt? {
+        guard let pieceID = pair.literaturePieceID, let language = pair.language,
+              let prompt = prompt(Self.identity(pieceID: pieceID, language: language, text: pair.text)),
+              pair.practiceMode == prompt.practiceKind,
+              pair.promptIDs == prompt.lines.map(SentencePrompt.identity) else { return nil }
+        return prompt
+    }
+
+    private static func matches(_ group: [SentencePrompt], _ prompt: LibraryPilotPrompt) -> Bool {
+        group.count == prompt.lines.count && zip(group, prompt.lines).allSatisfy { line, text in
+            line.kind == prompt.practiceKind && line.language == prompt.language
+                && line.text.utf8.elementsEqual(text.utf8)
+        }
     }
 }
