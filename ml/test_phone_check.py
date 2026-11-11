@@ -1,5 +1,4 @@
 import unittest
-from subvox_ml import ipa
 from subvox_ml.phone_check import align, check, mispronounced
 
 
@@ -32,7 +31,6 @@ class PhoneCheck(unittest.TestCase):
         with self.assertRaises(ValueError):
             check("tu", "fr", "tu", [dict(phone="ʘ", start=0, end=.1)])
 
-    @unittest.skipUnless(ipa.espeak_available(), "needs espeak-ng")
     def test_wrong_word_shows_up_in_whisper_word_phones(self):
         result = check("la rue", "fr", "la roue")
         self.assertEqual(mispronounced(result), [("y", "u")])

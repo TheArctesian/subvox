@@ -7,8 +7,24 @@ import unittest
 from subvox_ml import ipa
 
 
-@unittest.skipUnless(ipa.espeak_available(), "espeak-ng not installed (brew install espeak-ng)")
 class EspeakLanguages(unittest.TestCase):
+    def test_uses_the_espeak_ng_shipped_in_the_runtime(self):
+        # A bare PATH and no override: nothing outside the app's Python runtime may be needed.
+        command = """
+import os
+from subvox_ml import ipa
+import espeakng_loader
+from phonemizer.backend import EspeakBackend
+assert os.environ["PHONEMIZER_ESPEAK_LIBRARY"] == espeakng_loader.get_library_path()
+assert os.environ["PHONEMIZER_ESPEAK_DATA_PATH"] == espeakng_loader.get_data_path()
+print(".".join(map(str, EspeakBackend.version())), ipa.phonemize("bonjour", "fr"))
+"""
+        result = subprocess.run(
+            [sys.executable, "-c", command], cwd=Path(__file__).parent, env={"PATH": "/usr/bin:/bin"},
+            capture_output=True, text=True, check=True,
+        )
+        self.assertEqual(result.stdout.split()[0], "1.52.0")  # pinned version; a new one can change the IPA
+
     def test_french_liaison_comes_from_the_whole_phrase(self):
         self.assertEqual(ipa.phonemize("je suis", "fr"), [["ʒ", "ə"], ["s", "ɥ", "i"]])
         self.assertEqual(ipa.phones("tu es", "fr"), ["t", "y", "ɛ"])

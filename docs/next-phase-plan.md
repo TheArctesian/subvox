@@ -30,7 +30,7 @@ A take enters training only if:
 
 ### 1. Multilingual IPA layer (English, French, Spanish, Mandarin)
 - Install and pin the tools in `ml/pyproject.toml`, with `uv lock`:
-  - `phonemizer` with the `espeak-ng` system binary (`brew install espeak-ng`) for French and Spanish (and English as a fallback);
+  - `phonemizer` with eSpeak NG from the `espeakng-loader` wheel (no system install) for French and Spanish (and English as a fallback);
   - `pypinyin` for Mandarin (characters to pinyin, using phrase context so characters with more than one reading come out right), plus a pinyin-to-IPA table.
 - **Universal phone set:** replace the 39-unit ARPAbet inventory with a shared IPA inventory, with a mapping from ARPAbet for existing English data and labels. Old checkpoints keep a compatibility path.
 - **Language tag** per take, prompt and session. Add it to the community schema (bump `schema_version`) and the validator.

@@ -247,8 +247,7 @@ class LanguageTagTests(Fixture):
         for take in self.takes(folder):
             self.assertEqual((take["language"], take["speaker_status"], take["speaking_style"]), ("en", "unknown", "natural"))
         community = next(t for t in self.takes(folder) if t["passage_id"] == "book-0001")
-        if community["expected_phones"] is not None:  # needs espeak-ng
-            self.assertEqual(community["expected_phones"][:3], ["ð", "ə", "k"])
+        self.assertEqual(community["expected_phones"][:3], ["ð", "ə", "k"])
 
     def test_exports_verified_timing_and_complete_phone_labels(self):
         path = self.root / "sentence-training.json"

@@ -103,6 +103,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --------------------------------------------------------------------------------
 
+The app's local Python runtime installs eSpeak NG 1.52.0 (https://github.com/espeak-ng/espeak-ng),
+a library and its language data, from the espeakng-loader 0.2.4 wheel
+(https://github.com/thewh1teagle/espeakng-loader). eSpeak NG is Copyright (C) Jonathan Duddington,
+Reece H. Dunn and the eSpeak NG contributors, licensed under the GNU General Public License,
+version 3 or later; its source is at https://github.com/espeak-ng/espeak-ng/tree/1.52.0. The
+espeakng-loader wrapper is under the MIT License. Subvox loads the library unmodified through
+phonemizer (GPL-3.0-or-later) to turn English, French and Spanish text into IPA.
+
 Charis SIL 6.200 (Subvox/Fonts/CharisSIL-Regular.ttf) is Copyright (c) 1997-2023 SIL International,
 with Reserved Font Names "Charis" and "SIL", licensed under the SIL Open Font License 1.1
 (Subvox/Fonts/CharisSIL-OFL.txt). It is used unmodified to display IPA.

@@ -74,10 +74,23 @@ def _split(token, language):
     return phones
 
 
-for _library in ("/opt/homebrew/lib/libespeak-ng.dylib", "/usr/local/lib/libespeak-ng.dylib"):
-    # Apps launched from Finder don't have Homebrew on PATH; point phonemizer at the library directly.
-    if "PHONEMIZER_ESPEAK_LIBRARY" not in os.environ and os.path.exists(_library):
-        os.environ["PHONEMIZER_ESPEAK_LIBRARY"] = _library
+def _use_packaged_espeak():
+    """Point phonemizer at the eSpeak NG library and data shipped in the `espeakng-loader` wheel, so the
+    app's own Python runtime needs nothing installed on the Mac. A library already named in
+    PHONEMIZER_ESPEAK_LIBRARY wins; its data path is then left to that installation."""
+    if "PHONEMIZER_ESPEAK_LIBRARY" in os.environ:
+        return
+    try:
+        import espeakng_loader
+        library, data = espeakng_loader.get_library_path(), espeakng_loader.get_data_path()
+    except (ImportError, RuntimeError):
+        return
+    if os.path.exists(library):
+        os.environ["PHONEMIZER_ESPEAK_LIBRARY"] = library
+        os.environ["PHONEMIZER_ESPEAK_DATA_PATH"] = data
+
+
+_use_packaged_espeak()
 
 
 def espeak_available():

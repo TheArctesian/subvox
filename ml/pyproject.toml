@@ -5,6 +5,7 @@ description = "Local real-motion phoneme CTC training and decoding for Subvox"
 requires-python = ">=3.11,<3.14"
 license = "AGPL-3.0-or-later"
 dependencies = [
+    "espeakng-loader==0.2.4",  # eSpeak NG 1.52.0 library and data, no Homebrew needed
     "huggingface-hub>=0.34,<2",
     "numpy>=1.26,<3",
     "opencc-python-reimplemented>=0.1.7,<0.2",
