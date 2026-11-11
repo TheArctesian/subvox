@@ -53,13 +53,23 @@ struct ContentView: View {
             .motion(.state, value: model.backgroundActivity != nil)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
         } detail: {
-            switch model.screen {
-            case .home: PracticeHomeView()
-            case .train: TrainView()
-            case .decode: DecodeView()
-            case .devices: DevicesView()
+            Group {
+                switch model.screen {
+                case .home: PracticeHomeView()
+                case .train: TrainView()
+                case .decode: DecodeView()
+                case .devices: DevicesView()
+                }
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if model.voicePractice.isBusy { voiceRecordingBar }
             }
         }
+        .onChange(of: model.referenceSpeaker.playing) {
+            if model.referenceSpeaker.playing != nil { model.voicePractice.stopPlayback() }
+        }
+        .onChange(of: model.language) { model.voicePractice.stopPlayback() }
+        .onDisappear { model.voicePractice.prepareForTermination() }
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
                 if model.screen != .home {
@@ -86,6 +96,31 @@ struct ContentView: View {
         // Each page carries its own large heading, so the window title would only repeat it.
         .navigationTitle(model.screen == .train ? model.trainMode.rawValue : model.screen.rawValue)
         .modifier(HiddenWindowTitle())
+    }
+
+    private var voiceRecordingBar: some View {
+        let voice = model.voicePractice
+        return VStack(spacing: 0) {
+            Divider()
+            HStack(spacing: 12) {
+                if voice.starting {
+                    ProgressView().controlSize(.small).accessibilityHidden(true)
+                    Text("Opening microphone…")
+                } else {
+                    Label("Recording practice run", systemImage: "record.circle")
+                        .foregroundStyle(.red)
+                }
+                Spacer()
+                Button("Cancel recording", action: voice.cancel)
+                    .keyboardShortcut(.cancelAction)
+                Button("Finish recording", action: voice.finish)
+                    .buttonStyle(.borderedProminent)
+                    .disabled(voice.recordingTarget == nil)
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+        }
+        .background(.bar)
     }
 
     private var selection: Binding<SidebarItem?> {

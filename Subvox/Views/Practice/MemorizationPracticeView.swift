@@ -32,11 +32,11 @@ struct MemorizationPracticeView: View {
                 AppPageHeading(title: "Memorization", subtitle: "Learn a piece section by section.")
                 Spacer()
                 if !reviewSections.isEmpty {
-                    Button("End review", action: endReview)
+                    Button("End review", action: endReview).disabled(model.voicePractice.isBusy)
                 } else {
                     Button("Review marked sections", systemImage: "arrow.clockwise") { beginReview(round) }
                         .buttonStyle(.borderedProminent)
-                        .disabled(round.isEmpty)
+                        .disabled(round.isEmpty || model.voicePractice.isBusy)
                         .help("Mark a section to include it in a short review.")
                 }
             }
@@ -52,11 +52,16 @@ struct MemorizationPracticeView: View {
                                        description: Text("Choose another language or add your own material."))
             }
         }
-        .onAppear { restoreSelection() }
+        .onAppear {
+            restoreSelection()
+            openRequestedReview()
+        }
         .onChange(of: language) {
             endReview()
             restoreSelection()
+            openRequestedReview()
         }
+        .onChange(of: model.practiceReviewRequest) { openRequestedReview() }
         .onDisappear { model.referenceSpeaker.stop() }
     }
 
@@ -72,6 +77,7 @@ struct MemorizationPracticeView: View {
                     ForEach(pieces) { piece in Text(piece.title(language)).tag(piece.id) }
                 }
                 .frame(maxWidth: 460)
+                .disabled(model.voicePractice.isBusy)
 
                 HStack(spacing: 16) {
                     Picker("Section", selection: Binding(get: { index }, set: { position = $0 })) {
@@ -103,6 +109,10 @@ struct MemorizationPracticeView: View {
             }
             .id(section.id)
             .onChange(of: section.id) { model.referenceSpeaker.stop() }
+
+            let target = VoicePracticeTarget(mode: TrainMode.memorization.rawValue, language: language, itemID: piece.id,
+                                             text: piece.lines.map { $0.text(language) }.joined(separator: "\n"))
+            VoicePracticePanel(target: target, title: piece.title(language))
         }
         .frame(maxWidth: PageMetrics.contentWidth, maxHeight: .infinity, alignment: .topLeading)
         .padding(PageMetrics.padding)
@@ -149,6 +159,12 @@ struct MemorizationPracticeView: View {
         reviewIndex = 0
     }
 
+    private func openRequestedReview() {
+        if model.takePracticeReview(.memorization) {
+            beginReview(MemorizationReview(saved: savedMarks).round(in: pieces, language: model.language))
+        }
+    }
+
     private func finish(_ section: MemorizationSection, keepPractising: Bool) {
         model.referenceSpeaker.stop()
         updateMarks { $0.complete(section.id, keepPractising: keepPractising) }
@@ -188,6 +204,7 @@ private struct MemorizationCard: View {
                 if playing { model.referenceSpeaker.stop() }
                 else { Task { await model.referenceSpeaker.speak(text, language: language.tag) } }
             }
+            .disabled(model.voicePractice.isBusy)
 
             ForEach(section.lines.indices, id: \.self) { index in
                 if !hidesLines || revealed.contains(index) {

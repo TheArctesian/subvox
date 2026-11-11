@@ -28,7 +28,7 @@ targets:
         NSMotionUsageDescription: Subvox reads AirPods head-motion data to study whether mouthed words can be decoded into text.
         NSCameraUsageDescription: Subvox reads your lip and jaw shape from the camera while you record. Frames are processed on this Mac and only numeric points are saved, never images or video.
         ATSApplicationFontsPath: "."
-        NSMicrophoneUsageDescription: Subvox records what you say aloud, on this Mac only, to check it with on-device speech recognition and line it up with your mouthed take.
+        NSMicrophoneUsageDescription: Subvox uses your microphone to record practice runs for playback and to check the spoken part of paired recordings. Audio stays on this Mac.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.joeblau.subvox

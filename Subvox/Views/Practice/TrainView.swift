@@ -63,6 +63,7 @@ struct PracticePage<Controls: View, Content: View>: View {
     var unit: LocalizedStringResource = "takes"
     /// Pages with their own scrolling panes (Sounds) turn the page scroll off.
     var scrolls = true
+    var offersMicrophone = false
     var startRound: (() -> Void)? = nil
     @ViewBuilder var controls: () -> Controls
     @ViewBuilder var content: () -> Content
@@ -77,7 +78,7 @@ struct PracticePage<Controls: View, Content: View>: View {
         else { model.startPractice(groups) }
     }
     private var canStart: Bool {
-        motionReady && model.localWhisper.isConfigured && !groups.isEmpty && workflow.storageReady && workflow.data.reservedUnlockedAt == nil && workflow.canStartRecording && !model.recorder.isRecording
+        !groups.isEmpty && model.canRecordPractice
     }
     /// "6 words · about 2 min": each is said aloud, then mouthed.
     private var cost: String {
@@ -103,7 +104,7 @@ struct PracticePage<Controls: View, Content: View>: View {
     }
 
     @ViewBuilder private var pageBody: some View {
-        if !model.localWhisper.isConfigured {
+        if !offersMicrophone && !model.localWhisper.isConfigured {
             HStack {
                 Label("Practice needs a local Whisper model to check your speech on this Mac.", systemImage: "exclamationmark.triangle")
                     .foregroundStyle(.orange)
@@ -123,6 +124,7 @@ struct PracticePage<Controls: View, Content: View>: View {
             }
         })
         HStack(spacing: 16) { controls(); Spacer() }
+            .disabled(model.voicePractice.isBusy)
         content()
         if mode.isLiterature {
             MotionDisclosure("Word alignment settings") { ForcedAlignerSetup(aligner: workflow.forcedAligner) }
@@ -136,16 +138,21 @@ struct PracticePage<Controls: View, Content: View>: View {
                 AppPageHeading(title: title, subtitle: subtitle)
                 Spacer()
                 VStack(alignment: .trailing, spacing: 4) {
-                    Button(action: start) { Label(startTitle, systemImage: "record.circle") }
+                    Button(action: start) {
+                        Label(offersMicrophone ? "Record with AirPods" : startTitle, systemImage: offersMicrophone ? "airpods" : "record.circle")
+                    }
+                        .tint(offersMicrophone ? .secondary : .accentColor)
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .disabled(!canStart)
                         .help(blocker ?? String(localized: "Starts a practice session. ⌘↩"))
                         .accessibilityHint(blocker ?? String(localized: "Starts a practice session. Command Return."))
                     if let blocker, !motionReady {
                         Button(blocker + " ›") { model.screen = .devices }.buttonStyle(.link).font(.callout)
+                            .disabled(model.voicePractice.isBusy)
                             .accessibilityLabel(blocker + ". " + String(localized: "Opens Devices."))
                     } else if let blocker, !model.localWhisper.isConfigured {
                         Button(blocker + " ›") { showWhisperSetup = true }.buttonStyle(.link).font(.callout)
+                            .disabled(model.voicePractice.isBusy)
                     } else if !groups.isEmpty {
                         Text(cost).font(.callout).foregroundStyle(.secondary)
                     }
@@ -293,6 +300,7 @@ struct ReferenceButton: View {
         .motion(.state, value: active)
         .help(active ? "Stop reference" : "Listen to reference")
         .accessibilityLabel(active ? "Stop reference" : "Listen to \(subject ?? text)")
+        .disabled(model.voicePractice.isBusy)
     }
 }
 
@@ -566,11 +574,11 @@ struct LiteraturePracticeView: View {
         let startTitle: LocalizedStringKey = partial ? "Record Selected Sections"
             : (unfinished == nil ? (isSpeech ? "Start Speech" : "Start Poem") : "Start New Round")
         return PracticePage(title: isSpeech ? "Speech" : "Poetry",
-                     subtitle: isSpeech ? "Mouth the speech silently from start to finish, then read it aloud."
-                         : "Mouth the poem silently from start to finish, then read it aloud.",
+                     subtitle: isSpeech ? "Rehearse the whole speech or a selected range."
+                         : "Rehearse the whole poem or a selected range.",
                      startTitle: startTitle,
                      groups: groups,
-                     mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false,
+                     mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false, offersMicrophone: true,
                      startRound: {
                          if let piece {
                              model.startLiterature(groups, pieceID: piece.id, title: piece.title(language), isSectionRetry: partial)
@@ -599,6 +607,7 @@ struct LiteraturePracticeView: View {
                         }
                         } }
                     }.frame(width: 255)
+                        .disabled(model.voicePractice.isBusy)
                     if let piece {
                         ScrollView { LazyVStack(alignment: .leading, spacing: 12) {
                             HStack(alignment: .firstTextBaseline) {
@@ -607,6 +616,11 @@ struct LiteraturePracticeView: View {
                                 pinButton(piece, language: language)
                             }
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
+                            if !groups.isEmpty {
+                                let target = VoicePracticeTarget(mode: tab.rawValue, language: language, itemID: piece.id,
+                                                                 text: groups.map { $0.map(\.text).joined(separator: "\n") }.joined(separator: "\n\n"))
+                                VoicePracticePanel(target: target, title: partial ? String(localized: "selected sections") : piece.title(language))
+                            }
                             if !partial, model.librarySharingGrant != nil,
                                LibraryPilotCatalog.bundled.allows(pieceID: piece.id, language: language.tag, groups: groups) {
                                 Label("Library sharing is on. Eligible sections are submitted in a public pull request.", systemImage: "arrow.up.circle")
@@ -629,7 +643,9 @@ struct LiteraturePracticeView: View {
                                     model.openPractice(.memorization)
                                 }
                             }
+                            .disabled(model.voicePractice.isBusy)
                             rehearsalControls(parts, range: range, language: language, key: partKey)
+                                .disabled(model.voicePractice.isBusy)
                             if let error = playback.error {
                                 Text(error).font(.callout).foregroundStyle(.orange)
                             }
@@ -745,6 +761,7 @@ struct LiteraturePracticeView: View {
                     sectionPlayback(lines, language: language, title: title, latest: latest, previous: previous)
                 }
             }
+            .disabled(model.voicePractice.isBusy)
             HStack {
                 Button(latest == nil ? "Record section" : "Retry section", systemImage: latest == nil ? "record.circle" : "arrow.counterclockwise") {
                     let prompts = lines.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }
@@ -764,6 +781,7 @@ struct LiteraturePracticeView: View {
                     }
                 }
             }
+            .disabled(model.voicePractice.isBusy)
             ForEach(lines.indices, id: \.self) { index in
                 PracticeLineView(line: lines[index], language: language, showIPA: showIPA)
             }
@@ -858,7 +876,12 @@ struct LanguagePracticeView: View {
         }
         .onChange(of: showingSaved) {
             resetPreview()
-            resetReview()
+            if !showingSaved { resetReview() }
+        }
+        .task(id: model.practiceReviewRequest) {
+            guard model.takePracticeReview(.language) else { return }
+            showingSaved = true
+            startSavedReview()
         }
     }
 
@@ -879,15 +902,21 @@ struct LanguagePracticeView: View {
         let preferredRound = selectedRound ?? savedRound ?? 0
         let roundIndex = rounds.indices.contains(preferredRound) ? preferredRound : 0
         let phrases = rounds.indices.contains(roundIndex) ? rounds[roundIndex] : []
-        return PracticePage(title: "Language", subtitle: "Practise a few phrases for a situation. Listen, say each phrase aloud, then mouth it silently.",
+        return PracticePage(title: "Language", subtitle: "Listen to a few phrases, then try saying them aloud.",
                      startTitle: "Start Round",
                      groups: phrases.map { [SentencePrompt($0, kind: .drill, language: language, translationLanguage: model.nativeLanguage)] },
-                     mode: .drill, unit: phrases.count == 1 ? "phrase" : "phrases") {
+                     mode: .drill, unit: phrases.count == 1 ? "phrase" : "phrases", offersMicrophone: true) {
             languageTabs
         } content: {
             if let drill {
                 VStack(alignment: .leading, spacing: 16) {
                     drillControls(rounds: rounds, roundIndex: roundIndex, language: language)
+                        .disabled(model.voicePractice.isBusy)
+                    if !phrases.isEmpty {
+                        let target = VoicePracticeTarget(mode: TrainMode.language.rawValue, language: language, itemID: drill.id,
+                                                         text: phrases.map { $0.text(language) }.joined(separator: "\n"))
+                        VoicePracticePanel(target: target, title: drill.title(language))
+                    }
                     Label(listeningTip(for: drill, language: language, roundIndex: roundIndex), systemImage: "ear")
                         .font(.callout).fixedSize(horizontal: false, vertical: true)
                     if let note = drill.note(language) {
@@ -898,8 +927,9 @@ struct LanguagePracticeView: View {
                     if !phrases.isEmpty {
                         Toggle("Try from memory", isOn: $recall)
                             .onChange(of: recall) { clearPreview() }
+                            .disabled(model.voicePractice.isBusy)
                         if recall {
-                            Text("Say the phrase from memory, then reveal it and listen. Start Round records the scripted phrases.")
+                            Text("Say the phrase from memory, then reveal it and listen.")
                                 .font(.callout).foregroundStyle(.secondary)
                         }
                         if let error = playback.error {
@@ -994,6 +1024,7 @@ struct LanguagePracticeView: View {
                 }
                 actions()
             }
+            .disabled(model.voicePractice.isBusy)
         }
     }
 
@@ -1009,6 +1040,7 @@ struct LanguagePracticeView: View {
                         languageTabs
                         IPAToggle(isOn: $showIPA)
                     }
+                    .disabled(model.voicePractice.isBusy)
                     if reviewCards.indices.contains(reviewIndex) {
                         reviewCard(reviewCards[reviewIndex], language: language)
                     } else {
@@ -1032,10 +1064,7 @@ struct LanguagePracticeView: View {
                         .accessibilityAddTraits(.isHeader)
                 }
                 Spacer()
-                Button(reviewCompleted ? "Start another review" : "Start review", systemImage: "arrow.clockwise") {
-                    resetReview()
-                    reviewCards = saved.nextRound(in: drills, language: language)
-                }
+                Button(reviewCompleted ? "Start another review" : "Start review", systemImage: "arrow.clockwise", action: startSavedReview)
                 .buttonStyle(.borderedProminent)
             }
             LazyVStack(alignment: .leading, spacing: 12) {
@@ -1055,6 +1084,11 @@ struct LanguagePracticeView: View {
         }
     }
 
+    private func startSavedReview() {
+        resetReview()
+        reviewCards = saved.nextRound(in: drills, language: model.language)
+    }
+
     private func reviewCard(_ card: LanguageReviewCard, language: AppLanguage) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -1062,10 +1096,14 @@ struct LanguagePracticeView: View {
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
                 Button("Back to saved phrases") { resetReview() }
+                    .disabled(model.voicePractice.isBusy)
             }
             Text(card.drillTitle).font(.callout).foregroundStyle(.secondary)
             if reviewRevealed {
                 phraseAnswer(card.line, language: language) { EmptyView() }
+                VoicePracticePanel(target: VoicePracticeTarget(mode: TrainMode.language.rawValue, language: language,
+                                                               itemID: "review/\(card.id.drillID)", text: card.id.text),
+                                   title: String(localized: "saved phrase"))
                 if let error = playback.error { Text(error).font(.callout).foregroundStyle(.orange) }
                 Button(reviewIndex + 1 == reviewCards.count ? "Finish review" : "Next phrase",
                        systemImage: "arrow.right") {
@@ -1076,6 +1114,7 @@ struct LanguagePracticeView: View {
                     reviewCompleted = reviewIndex == reviewCards.count
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(model.voicePractice.isBusy)
             } else {
                 if let clue = card.translationCue(in: model.nativeLanguage) {
                     Text(clue).font(.title2)
@@ -1313,10 +1352,9 @@ struct FreePracticeView: View {
             [SentencePrompt(text: sentence, kind: .freeText, language: language.tag,
                             pinyin: language.isChinese ? readings[language.tag + sentence]?.pinyin : nil)]
         }
-        let subtitle: LocalizedStringKey = savedDraft == nil ? "Practise a script, presentation or interview answer."
-            : "Mouth your script silently, then read it aloud."
-        PracticePage(title: "My Material", subtitle: subtitle,
-                     startTitle: "Start Practice", groups: groups, mode: .freeText, unit: "sentences", startRound: {
+        let scriptText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        PracticePage(title: "My Material", subtitle: "Practise a script, presentation or interview answer.",
+                     startTitle: "Start Practice", groups: groups, mode: .freeText, unit: "sentences", offersMicrophone: true, startRound: {
                          if let script = savedDraft { model.startPersonalScript(script, groups: groups) }
                          else { model.startPractice(groups) }
                      }) {
@@ -1324,29 +1362,46 @@ struct FreePracticeView: View {
         } content: {
             VStack(alignment: .leading, spacing: 10) {
                 scriptControls
+                    .disabled(model.voicePractice.isBusy)
+                if !scriptText.isEmpty {
+                    let draftTarget = VoicePracticeTarget(mode: TrainMode.free.rawValue, language: language, itemID: "draft", text: scriptText)
+                    let savedTarget = savedDraft.map {
+                        VoicePracticeTarget(mode: TrainMode.free.rawValue, language: language, itemID: $0.pieceID, text: scriptText)
+                    }
+                    VoicePracticePanel(target: savedTarget ?? draftTarget, title: savedDraft?.title ?? String(localized: "script"),
+                                       draftTarget: savedTarget == nil ? nil : draftTarget)
+                }
                 HStack {
                     Button("Paste", systemImage: "doc.on.clipboard") { replaceDraft(with: NSPasteboard.general.string(forType: .string) ?? text) }
                     Button("Try an Example", systemImage: "text.badge.plus") { replaceDraft(with: Self.example(language)) }
                     if !text.isEmpty { Button("Clear", systemImage: "xmark.circle") { replaceDraft(with: "") } }
                 }
+                .disabled(model.voicePractice.isBusy)
                 TextField("Script title", text: $title).textFieldStyle(.roundedBorder)
                     .accessibilityLabel("Script title")
+                    .disabled(model.voicePractice.isBusy)
                 Text("Practice text").font(.headline)
-                TextEditor(text: $text)
-                    .font(.title2).frame(minHeight: 140).scrollContentBackground(.hidden).padding(6)
-                    .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
-                    .overlay(alignment: .topLeading) {
-                        if text.isEmpty {
-                            Text("Type or paste text in \(language.localizedName)").font(.title2).foregroundStyle(.tertiary)
-                                .padding(.horizontal, 11).padding(.vertical, 6).allowsHitTesting(false)
+                if model.voicePractice.isBusy {
+                    Text(scriptText).font(.title2).textSelection(.enabled)
+                } else {
+                    TextEditor(text: $text)
+                        .font(.title2).frame(minHeight: 140).scrollContentBackground(.hidden).padding(6)
+                        .background(.quaternary.opacity(0.35), in: RoundedRectangle(cornerRadius: 8))
+                        .overlay(alignment: .topLeading) {
+                            if text.isEmpty {
+                                Text("Type or paste text in \(language.localizedName)").font(.title2).foregroundStyle(.tertiary)
+                                    .padding(.horizontal, 11).padding(.vertical, 6).allowsHitTesting(false)
+                            }
                         }
-                    }
-                    .accessibilityLabel("Practice text")
+                        .accessibilityLabel("Practice text")
+                }
                 if !sentences.isEmpty {
                     ReferenceButton(text: sentences.joined(separator: " "), language: language, compact: false, listenTitle: "Hear script")
+                        .disabled(model.voicePractice.isBusy)
                 }
                 if let script = savedDraft {
                     savedScriptPractice(script, groups: groups)
+                        .disabled(model.voicePractice.isBusy)
                 } else if !sentences.isEmpty {
                     Text("Save this script to resume it and replay individual takes.")
                         .font(.callout).foregroundStyle(.secondary)

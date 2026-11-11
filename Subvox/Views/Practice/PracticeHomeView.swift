@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PracticeHomeView: View {
     @Environment(AppModel.self) private var model
+    @AppStorage("practice.memorization.marks") private var memorizationMarks = Data()
 
     var body: some View {
         ScrollView {
@@ -45,18 +46,9 @@ struct PracticeHomeView: View {
                     }
                 }
 
-                Grid(alignment: .leading, horizontalSpacing: 24, verticalSpacing: 10) {
-                    GridRow {
-                        practiceRow(.language, title: "Learn a language", detail: "Listen, speak and review saved phrases")
-                        practiceRow(.speech, title: "Practise a speech", detail: "Rehearse a section and compare takes")
-                    }
-                    GridRow {
-                        practiceRow(.memorization, title: "Memorize a piece", detail: "Recall lines and revisit tricky sections")
-                        practiceRow(.free, title: "Bring your own material", detail: "Save a script, presentation or interview answer")
-                    }
-                }
-
                 let pieces = model.practice.pieces + model.personalPracticePieces
+                practiseNext(pieces: pieces)
+
                 let pins = model.literaturePins.items.compactMap { pin in
                     pieces.first { $0.id == pin.pieceID }.map { (pin, $0) }
                 }
@@ -104,20 +96,57 @@ struct PracticeHomeView: View {
             .padding(.bottom, 8)
     }
 
-    private func practiceRow(_ mode: TrainMode, title: LocalizedStringKey, detail: LocalizedStringKey) -> some View {
+    private func practiseNext(pieces: [PracticeCorpus.Piece]) -> some View {
+        let suggestions = PracticeNext.suggestions(language: model.language, practiceLanguages: model.practiceLanguages,
+                                                   drills: model.practice.drills, pieces: pieces, pins: model.literaturePins.items,
+                                                   scripts: model.personalScripts.items, savedPhrases: SavedLanguagePhrases(),
+                                                   memorization: MemorizationReview(saved: memorizationMarks),
+                                                   recentRuns: model.voicePractice.runs.map(\.target))
+        return VStack(alignment: .leading, spacing: 4) {
+            sectionTitle("Practise Next")
+            Grid(alignment: .leading, horizontalSpacing: 24, verticalSpacing: 10) {
+                GridRow { ForEach(suggestions.prefix(2)) { practiceRow($0) } }
+                GridRow { ForEach(suggestions.dropFirst(2)) { practiceRow($0) } }
+            }
+        }
+    }
+
+    private func open(_ destination: PracticeSuggestion.Destination) {
+        guard !model.navigationLocked else { return }
+        switch destination {
+        case .practice(let mode):
+            model.openPractice(mode)
+        case .review(let mode, let language):
+            model.openPracticeReview(mode, language: language)
+        case .drill(let id, let language):
+            model.language = language
+            SavedSelection.set("drill", language, id)
+            model.openPractice(.language)
+        case .literature(let pin):
+            model.openLiterature(pieceID: pin.pieceID, language: pin.language, mode: pin.mode)
+        case .memorize(let pieceID, let language):
+            model.language = language
+            MemorizationPracticeView.select(pieceID: pieceID, language: language)
+            model.openPractice(.memorization)
+        case .script(let script):
+            model.openPersonalScript(script)
+        }
+    }
+
+    private func practiceRow(_ suggestion: PracticeSuggestion) -> some View {
         VStack(spacing: 0) {
             Divider()
             Button {
-                model.openPractice(mode)
+                open(suggestion.destination)
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: mode.symbol)
+                    Image(systemName: suggestion.id.symbol)
                         .foregroundStyle(Color.accentColor)
                         .frame(width: 24)
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(title).font(.title3.weight(.semibold))
-                        Text(detail).font(.callout).foregroundStyle(.secondary)
+                        Text(suggestion.title).font(.title3.weight(.semibold)).lineLimit(2)
+                        Text(suggestion.detail).font(.callout).foregroundStyle(.secondary).lineLimit(2)
                     }
                     Spacer(minLength: 8)
                     Image(systemName: "chevron.right")
