@@ -92,6 +92,15 @@ struct SpokenPlaybackLifecycle: ViewModifier {
             .onChange(of: model.sentenceTraining.canStartRecording) {
                 if !model.sentenceTraining.canStartRecording { playback.stop() }
             }
+            .onChange(of: model.voicePractice.isBusy) {
+                if model.voicePractice.isBusy { playback.stop() }
+            }
+            .onChange(of: model.voicePractice.playingRunID) {
+                if model.voicePractice.playingRunID != nil { playback.stop() }
+            }
+            .onChange(of: playback.playing) {
+                if playback.playing != nil { model.voicePractice.stopPlayback() }
+            }
             .onChange(of: model.referenceSpeaker.playing) {
                 if model.referenceSpeaker.playing != nil { playback.stop() }
             }

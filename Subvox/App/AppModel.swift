@@ -176,8 +176,10 @@ final class AppModel {
     let personalPracticePieces = PracticeCorpus.personalPieces()
     let literaturePins = LiteraturePins()
     let personalScripts = PersonalScripts()
+    let voicePractice: VoicePractice
     private(set) var literatureRequest: LiteraturePin?
     private(set) var personalScriptRequest: PersonalScript?
+    private(set) var practiceReviewRequest: TrainMode?
     var personalScriptPieces: [PracticeCorpus.Piece] {
         personalScripts.items.filter { $0.language == language }.map(\.memoryPiece)
     }
@@ -207,7 +209,7 @@ final class AppModel {
     var captureShortcutsSuspended = false
 
     var navigationLocked: Bool {
-        sentenceTraining.isAcquiring || sentenceTraining.phase == .preparing ||
+        voicePractice.isBusy || sentenceTraining.isAcquiring || sentenceTraining.phase == .preparing ||
         signalCheck.showsCaptureCue || signalCheck.phase == .preparing ||
         representation.isAcquiring || sequenceLearning.isAcquiring || observability.isAcquiring
     }
@@ -234,9 +236,23 @@ final class AppModel {
         if mode != trainMode {
             closeOverlays()
             referenceSpeaker.stop()
+            voicePractice.stopPlayback()
         }
         trainMode = mode
         screen = .train
+    }
+
+    func openPracticeReview(_ mode: TrainMode, language: AppLanguage) {
+        guard !navigationLocked, mode == .language || mode == .memorization else { return }
+        self.language = language
+        practiceReviewRequest = mode
+        openPractice(mode)
+    }
+
+    func takePracticeReview(_ mode: TrainMode) -> Bool {
+        guard practiceReviewRequest == mode else { return false }
+        practiceReviewRequest = nil
+        return true
     }
 
     func openLiterature(pieceID: String, language: AppLanguage, mode: TrainMode) {
@@ -261,7 +277,10 @@ final class AppModel {
 
     var screen: Screen = .home {
         didSet {
-            if oldValue != screen { referenceSpeaker.stop() }
+            if oldValue != screen {
+                referenceSpeaker.stop()
+                voicePractice.stopPlayback()
+            }
             if oldValue == .decode && screen != .decode {
                 capture.cancelCapture()
                 decodeGeneration += 1
@@ -307,9 +326,11 @@ final class AppModel {
     @ObservationIgnored private var terminationObserver: NSObjectProtocol?
     @ObservationIgnored private var started = false
 
-    init(sentenceTraining: SentenceTrainingWorkflow? = nil, signalCheck: SignalCheckWorkflow? = nil) {
+    init(sentenceTraining: SentenceTrainingWorkflow? = nil, signalCheck: SignalCheckWorkflow? = nil,
+         voicePractice: VoicePractice? = nil) {
         self.signalCheck = signalCheck ?? SignalCheckWorkflow()
         self.sentenceTraining = sentenceTraining ?? SentenceTrainingWorkflow()
+        self.voicePractice = voicePractice ?? VoicePractice()
         if sentenceTraining == nil {
             self.sentenceTraining.guidedRecording=true
             self.sentenceTraining.variedSentences=true
@@ -365,6 +386,7 @@ final class AppModel {
 
     func prepareForTermination() {
         started = false
+        voicePractice.prepareForTermination()
         automaticSharingTimer?.cancel()
         uploader.stop()
         observability.stop()
@@ -421,6 +443,19 @@ final class AppModel {
 
     var canResumeLiterature: Bool { canRecordPractice }
 
+    var canStartVoicePractice: Bool {
+        screen == .train && !navigationLocked && !recorder.isRecording
+            && sentenceTraining.canStartRecording && !signalCheck.isBusy && !representation.isBusy
+            && !sequenceLearning.isBusy && !observability.isBusy
+    }
+
+    func startVoicePractice(_ target: VoicePracticeTarget) async {
+        guard canStartVoicePractice, target.mode == trainMode.rawValue, target.language == language else { return }
+        referenceSpeaker.stop()
+        audio.stop()
+        await voicePractice.start(target)
+    }
+
     func startLiterature(_ groups: [[SentencePrompt]], pieceID: String, title: String, isSectionRetry: Bool = false) {
         guard canRecordPractice else { return }
         sentenceTraining.literatureSelection = .new(pieceID: pieceID, title: title, isSectionRetry: isSectionRetry)
@@ -461,7 +496,8 @@ final class AppModel {
     }
 
     func startSentenceTraining(repairs: Bool = false, retry: UUID? = nil, libraryContributionID: UUID? = nil) {
-        guard motion.status == .streaming, localWhisper.isConfigured || sentenceTraining.readingSource == .community, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
+        guard !voicePractice.isBusy, motion.status == .streaming, localWhisper.isConfigured || sentenceTraining.readingSource == .community, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
+        voicePractice.stopPlayback()
         referenceSpeaker.stop()
         sentenceTraining.start(audio: audio, recorder: recorder, whisper: localWhisper,
             canRecord: { [weak self] in self?.motion.status == .streaming }, repairs: repairs, retry: retry,
@@ -469,7 +505,7 @@ final class AppModel {
     }
 
     func startSignalCheck(againstReference: Bool = false, controlled: Bool = false) {
-        guard !sentenceTraining.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy, motion.status == .streaming else { return }
+        guard !voicePractice.isBusy, !sentenceTraining.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy, motion.status == .streaming else { return }
         signalCheck.start(audio: audio, recorder: recorder, againstReference: againstReference, controlled: controlled,
             canRecord: { [weak self] in self?.motion.status == .streaming })
     }
@@ -545,7 +581,7 @@ final class AppModel {
         lastSegment = []
     }
     func toggleMic() async {
-        guard !sentenceTraining.isBusy, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
+        guard !voicePractice.isBusy, !sentenceTraining.isBusy, !signalCheck.isBusy, !representation.isBusy, !sequenceLearning.isBusy, !observability.isBusy else { return }
         if audio.isRunning { audio.stop() }
         else { await audio.start() }
     }
