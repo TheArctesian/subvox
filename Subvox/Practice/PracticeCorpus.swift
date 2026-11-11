@@ -3,7 +3,7 @@ import Foundation
 /// The Train tabs (docs/next-phase-plan.md, item 3). Every tab records through the same paired
 /// interface: the text is shown first, spoken aloud, then mouthed.
 enum TrainMode: String, CaseIterable, Identifiable {
-    case reading = "Reading", sounds = "Sounds", speech = "Speech", poetry = "Poetry", language = "Language", minimalPairs = "Minimal Pairs", free = "Free Practice"
+    case reading = "Reading", sounds = "Sounds", speech = "Speech", poetry = "Poetry", language = "Language", minimalPairs = "Minimal Pairs", free = "Free Practice", memorization = "Memorization"
     var id: String { rawValue }
     var symbol: String {
         switch self {
@@ -14,10 +14,11 @@ enum TrainMode: String, CaseIterable, Identifiable {
         case .language: "character.bubble"
         case .minimalPairs: "circle.grid.2x1"
         case .free: "square.and.pencil"
+        case .memorization: "brain.head.profile"
         }
     }
     var shortcut: Character {
-        let order: [Self] = [.reading, .sounds, .speech, .language, .minimalPairs, .free, .poetry]
+        let order: [Self] = [.reading, .sounds, .speech, .language, .minimalPairs, .free, .poetry, .memorization]
         return Character(String((order.firstIndex(of: self) ?? 0) + 1))
     }
     /// The mode's name in the interface language.
@@ -29,7 +30,8 @@ enum TrainMode: String, CaseIterable, Identifiable {
         case .poetry: String(localized: "Poetry")
         case .language: String(localized: "Language")
         case .minimalPairs: String(localized: "Minimal Pairs")
-        case .free: String(localized: "Free Practice")
+        case .free: String(localized: "My Material")
+        case .memorization: String(localized: "Memorization")
         }
     }
 }

@@ -2,6 +2,25 @@ import XCTest
 @testable import Subvox
 
 final class PracticeTests: XCTestCase {
+    @MainActor func testPersonalScriptReopensAndKeepsProgressBoundToItsTextRevision() throws {
+        let suite = "personal-script-\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let scripts = PersonalScripts(defaults: defaults)
+        let script = try XCTUnwrap(scripts.save(id: nil, title: "Mon entretien", text: "Bonjour. Je m’appelle Claire.", language: .fr))
+        XCTAssertEqual(script.sections, ["Bonjour.", "Je m’appelle Claire."])
+        XCTAssertEqual(script.memoryPiece.parts(language: .fr).map { $0.map(\.text) }, script.sections.map { [$0] })
+
+        let reopened = PersonalScripts(defaults: defaults)
+        XCTAssertEqual(reopened.items, [script])
+        let renamed = try XCTUnwrap(reopened.save(id: script.id, title: "Mon introduction", text: script.text, language: .fr))
+        XCTAssertEqual(renamed.pieceID, script.pieceID)
+        let revised = try XCTUnwrap(reopened.save(id: script.id, title: renamed.title, text: "Bonsoir.", language: .fr))
+        XCTAssertEqual(revised.id, script.id)
+        XCTAssertNotEqual(revised.pieceID, script.pieceID)
+        XCTAssertEqual(PersonalScripts(defaults: defaults).items, [revised])
+    }
+
     func testWordsKeepEnglishIdentitiesAndSplitAccentsAndHan() {
         XCTAssertEqual(Lexicon.words(in: "Don't stop, Mr. Smith!"), ["don't", "stop", "mr", "smith"])
         XCTAssertEqual(Lexicon.words(in: "Vous êtes là"), ["vous", "êtes", "là"])

@@ -20,6 +20,7 @@ struct TrainView: View {
             case .language: LanguagePracticeView()
             case .minimalPairs: MinimalPairsView()
             case .free: FreePracticeView()
+            case .memorization: MemorizationPracticeView()
             }
         }
     }
@@ -111,8 +112,12 @@ struct PracticePage<Controls: View, Content: View>: View {
         }
         if let error = workflow.error { Label(error, systemImage: "xmark.octagon").foregroundStyle(.red) }
         PracticeFeedback(mode: mode, again: {
-            if mode.isLiterature, let round = workflow.lastLiteratureRound {
-                model.startLiterature(round.groups, pieceID: round.pieceID, title: round.title)
+            if let round = workflow.lastLiteratureRound, round.kind == mode, mode.isLiterature {
+                model.startLiterature(round.groups, pieceID: round.pieceID, title: round.title, isSectionRetry: round.isSectionRetry == true)
+            } else if let round = workflow.lastLiteratureRound, round.kind == .freeText, mode == .freeText {
+                if let script = model.personalScripts.items.first(where: { $0.pieceID == round.pieceID }) {
+                    model.startPersonalScript(script, groups: round.groups, isSectionRetry: round.isSectionRetry == true)
+                }
             } else {
                 model.startPractice(workflow.lastPracticePlan)
             }
@@ -249,7 +254,7 @@ struct ForcedAlignerSetup: View {
     }
 }
 
-private struct ReferenceButton: View {
+struct ReferenceButton: View {
     @Environment(AppModel.self) private var model
     let text: String
     let language: AppLanguage
@@ -509,6 +514,15 @@ struct PortraitCircle: View {
     }
 }
 
+enum LiteratureSectionRange {
+    static func selection(start: Int, end: Int?, count: Int) -> Range<Int> {
+        guard count > 0 else { return 0..<0 }
+        let first = min(max(0, start), count - 1)
+        let last = min(max(first, end ?? count - 1), count - 1)
+        return first..<(last + 1)
+    }
+}
+
 struct LiteraturePracticeView: View {
     var tab: TrainMode
     private var kind: SentencePromptKind { tab == .poetry ? .poetry : .speech }
@@ -516,10 +530,14 @@ struct LiteraturePracticeView: View {
     @Environment(AppModel.self) private var model
     @State private var selection: String?
     @State private var startPart = 0
+    @State private var endPart: Int?
+    @State private var repeatSelection = false
+    @State private var rehearsalTask: Task<Void, Never>?
     @State private var search = ""
     @State private var showHistory = false
     @State private var playback = SpokenTakePlayer()
     @AppStorage("practice.showIPA") private var showIPA = true
+    @AppStorage("practice.slowLiteratureReference") private var slowReference = false
 
     private var pieces: [PracticeCorpus.Piece] {
         (model.practice.pieces + model.personalPracticePieces).filter {
@@ -531,23 +549,22 @@ struct LiteraturePracticeView: View {
     var body: some View {
         let language = model.language
         let isSpeech = kind == .speech
-        let isInvictus = piece?.id == "invictus"
         let parts = piece.map { $0.parts(language: language) } ?? []
         let partKey = "\(language.tag)/\(piece?.id ?? "")"
-        let partIndex = !isInvictus && parts.indices.contains(startPart) ? startPart : 0
+        let range = LiteratureSectionRange.selection(start: startPart, end: endPart, count: parts.count)
+        let partial = range.count != parts.count
         let visiblePieces = search.isEmpty ? pieces : pieces.filter {
             $0.title(language).localizedStandardContains(search) || $0.author(language).localizedStandardContains(search)
         }
         let previewLines = piece?.lines ?? []
-        let groups = parts.dropFirst(partIndex).map { part in
+        let groups = parts[range].map { part in
             part.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }
         }
         let unfinished = model.sentenceTraining.resumableLiterature.first {
             $0.pieceID == piece?.id && $0.language == language.tag
         }
-        let startTitle: LocalizedStringKey = partIndex == 0
-            ? (unfinished == nil ? (isSpeech ? "Start Speech" : "Start Poem") : "Start New Round")
-            : "Start at Part \(partIndex + 1)"
+        let startTitle: LocalizedStringKey = partial ? "Record Selected Sections"
+            : (unfinished == nil ? (isSpeech ? "Start Speech" : "Start Poem") : "Start New Round")
         return PracticePage(title: isSpeech ? "Speech" : "Poetry",
                      subtitle: isSpeech ? "Mouth the speech silently from start to finish, then read it aloud."
                          : "Mouth the poem silently from start to finish, then read it aloud.",
@@ -555,15 +572,10 @@ struct LiteraturePracticeView: View {
                      groups: groups,
                      mode: kind, unit: groups.count == 1 ? "part" : "parts", scrolls: false,
                      startRound: {
-                         if let piece { model.startLiterature(groups, pieceID: piece.id, title: piece.title(language)) }
+                         if let piece {
+                             model.startLiterature(groups, pieceID: piece.id, title: piece.title(language), isSectionRetry: partial)
+                         }
                      }) {
-            if parts.count > 1 && !isInvictus {
-                Picker("Start at", selection: $startPart) {
-                    ForEach(parts.indices, id: \.self) { index in
-                        Text("\(index + 1) of \(parts.count) · \(String(parts[index].first?.text(language).prefix(30) ?? ""))").tag(index)
-                    }
-                }.frame(maxWidth: 245)
-            }
             IPAToggle(isOn: $showIPA)
             Button("Recording history", systemImage: "clock.arrow.circlepath") { showHistory.toggle() }
                 .labelStyle(.iconOnly).help("Recording history")
@@ -589,9 +601,13 @@ struct LiteraturePracticeView: View {
                     }.frame(width: 255)
                     if let piece {
                         ScrollView { LazyVStack(alignment: .leading, spacing: 12) {
-                            Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                            HStack(alignment: .firstTextBaseline) {
+                                Text(piece.title(language)).font(.title2.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                                Spacer(minLength: 8)
+                                pinButton(piece, language: language)
+                            }
                             Text("\(piece.author(language)) · \(piece.when)").font(.subheadline).foregroundStyle(.secondary)
-                            if model.librarySharingGrant != nil,
+                            if !partial, model.librarySharingGrant != nil,
                                LibraryPilotCatalog.bundled.allows(pieceID: piece.id, language: language.tag, groups: groups) {
                                 Label("Library sharing is on. Eligible sections are submitted in a public pull request.", systemImage: "arrow.up.circle")
                                     .font(.callout).foregroundStyle(.secondary)
@@ -604,16 +620,24 @@ struct LiteraturePracticeView: View {
                                 .disabled(!model.canResumeLiterature)
                                 .accessibilityLabel("Continue recording \(piece.title(language))")
                             }
-                            ReferenceButton(text: previewLines.map { $0.text(language) }.joined(separator: " "), language: language, compact: false,
-                                            subject: String(localized: "the full text"))
+                            HStack {
+                                ReferenceButton(text: previewLines.map { $0.text(language) }.joined(separator: " "),
+                                                language: language, compact: false,
+                                                subject: String(localized: "the full text"))
+                                Button("Memorize", systemImage: TrainMode.memorization.symbol) {
+                                    MemorizationPracticeView.select(pieceID: piece.id, language: language)
+                                    model.openPractice(.memorization)
+                                }
+                            }
+                            rehearsalControls(parts, range: range, language: language, key: partKey)
                             if let error = playback.error {
                                 Text(error).font(.callout).foregroundStyle(.orange)
                             }
                             ForEach(parts.indices, id: \.self) { index in
                                 section(parts[index], index: index, language: language,
-                                        pieceID: piece.id,
+                                        piece: piece,
                                         usesStanzas: kind == .poetry && piece.stanzaEnds?.last == previewLines.count,
-                                        canChooseStart: !isInvictus && parts.count > 1)
+                                        canChooseStart: parts.count > 1)
                             }
                             Text(model.personalPracticePieces.contains(where: { $0.id == piece.id })
                                  ? "Personal library" : "Public domain in the UK and US.")
@@ -630,8 +654,16 @@ struct LiteraturePracticeView: View {
         .modifier(SpokenPlaybackLifecycle(playback: playback))
         .onChange(of: partKey) {
             startPart = 0
+            endPart = nil
             playback.stop()
             model.referenceSpeaker.stop()
+        }
+        .onChange(of: range) { rehearsalTask?.cancel() }
+        .onDisappear { rehearsalTask?.cancel() }
+        .onChange(of: model.literatureRequest) {
+            guard let request = model.literatureRequest, request.mode == tab, request.language == model.language else { return }
+            selection = request.pieceID
+            search = ""
         }
         .onChange(of: selection) { SavedSelection.set(selectionKey, model.language, selection) }
         .onChange(of: model.language) {
@@ -640,28 +672,87 @@ struct LiteraturePracticeView: View {
         }
     }
 
-    private func section(_ lines: [PracticeCorpus.Line], index: Int, language: AppLanguage, pieceID: String,
+    private func pinButton(_ piece: PracticeCorpus.Piece, language: AppLanguage) -> some View {
+        let pin = LiteraturePin(pieceID: piece.id, language: language, mode: tab)
+        let pinned = model.literaturePins.contains(pin)
+        return Button(pinned ? "Unpin from Home" : "Pin to Home", systemImage: pinned ? "pin.fill" : "pin") {
+            model.literaturePins.toggle(pin)
+        }
+        .labelStyle(.iconOnly)
+        .help(pinned ? "Unpin from Home" : "Pin to Home")
+        .accessibilityLabel(pinned ? "Unpin \(piece.title(language)) from Home" : "Pin \(piece.title(language)) to Home")
+    }
+
+    private func rehearsalControls(_ parts: [[PracticeCorpus.Line]], range: Range<Int>,
+                                   language: AppLanguage, key: String) -> some View {
+        let referenceKey = "rehearsal/\(key)"
+        let isPlaying = model.referenceSpeaker.playing == referenceKey
+        return MotionDisclosure("Rehearsal controls") {
+            VStack(alignment: .leading, spacing: 10) {
+                if parts.count > 1 {
+                    HStack {
+                        Picker("First section", selection: Binding(get: { range.lowerBound }, set: { first in
+                            startPart = first
+                            if let endPart, endPart < first { self.endPart = first }
+                        })) {
+                            ForEach(parts.indices, id: \.self) { index in Text("\(index + 1)").tag(index) }
+                        }
+                        Picker("Last section", selection: Binding(get: { range.upperBound - 1 }, set: { endPart = $0 })) {
+                            ForEach(range.lowerBound..<parts.count, id: \.self) { index in Text("\(index + 1)").tag(index) }
+                        }
+                        Button("Whole piece") { startPart = 0; endPart = nil }
+                            .disabled(range.count == parts.count)
+                    }
+                }
+                Toggle("Slower example", isOn: $slowReference)
+                Toggle("Repeat selection", isOn: $repeatSelection)
+                Button(isPlaying ? "Stop example" : "Hear selected sections", systemImage: isPlaying ? "stop.fill" : "speaker.wave.2") {
+                    if isPlaying {
+                        rehearsalTask?.cancel()
+                        model.referenceSpeaker.stop()
+                    } else {
+                        let text = parts[range].map { part in part.map { $0.text(language) }.joined(separator: "\n") }
+                            .joined(separator: "\n\n")
+                        rehearsalTask?.cancel()
+                        rehearsalTask = Task {
+                            await model.referenceSpeaker.rehearse(text, language: language.tag, slower: slowReference,
+                                                                  repeats: repeatSelection, key: referenceKey)
+                        }
+                    }
+                }
+                .disabled(range.isEmpty)
+                .onChange(of: slowReference) { if isPlaying { rehearsalTask?.cancel(); model.referenceSpeaker.stop() } }
+                .onChange(of: repeatSelection) { if isPlaying { rehearsalTask?.cancel(); model.referenceSpeaker.stop() } }
+            }
+            .padding(.vertical, 4)
+        }
+    }
+
+    private func section(_ lines: [PracticeCorpus.Line], index: Int, language: AppLanguage, piece: PracticeCorpus.Piece,
                          usesStanzas: Bool, canChooseStart: Bool) -> some View {
         let number = index + 1
         let title = usesStanzas ? String(localized: "Stanza \(number)") : String(localized: "Section \(number)")
-        let take = SpokenTakePlayer.latestTake(for: lines, mode: kind, language: language, pieceID: pieceID,
-                                              in: model.sentenceTraining.data.pairs)
-        let isPlaying = take != nil && take?.id == playback.playing
+        let takes = SpokenTakePlayer.recentTakes(for: lines, mode: kind, language: language, pieceID: piece.id,
+                                                in: model.sentenceTraining.data.pairs)
+        let latest = takes.first
+        let previous = takes.dropFirst().first
         return VStack(alignment: .leading, spacing: 8) {
             Divider()
             Text(title).font(.headline).accessibilityAddTraits(.isHeader)
-            HStack {
-                ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: "\n"),
-                                language: language, compact: false,
-                                subject: title, listenTitle: "Hear example")
-                Button(isPlaying ? "Stop" : "Play my take", systemImage: isPlaying ? "stop.fill" : "play.fill") {
-                    guard let take else { return }
-                    model.referenceSpeaker.stop()
-                    playback.toggle(take.clip, id: take.id)
+            ViewThatFits(in: .horizontal) {
+                HStack { sectionPlayback(lines, language: language, title: title, latest: latest, previous: previous) }
+                VStack(alignment: .leading, spacing: 6) {
+                    sectionPlayback(lines, language: language, title: title, latest: latest, previous: previous)
                 }
-                .disabled(take == nil || !model.sentenceTraining.canStartRecording)
-                .help(take == nil ? "Record this section aloud to hear your take." : "Play your latest spoken take")
-                .accessibilityLabel(isPlaying ? "Stop your take for \(title)" : "Play your take for \(title)")
+            }
+            HStack {
+                Button(latest == nil ? "Record section" : "Retry section", systemImage: latest == nil ? "record.circle" : "arrow.counterclockwise") {
+                    let prompts = lines.map { SentencePrompt($0, kind: kind, language: language, translationLanguage: model.nativeLanguage) }
+                    model.startLiterature([prompts], pieceID: piece.id, title: piece.title(language), isSectionRetry: true)
+                }
+                .disabled(!model.canResumeLiterature)
+                .accessibilityLabel(latest == nil ? "Record \(title)" : "Retry \(title)")
+                .help("Record a new silent and spoken take of this section.")
                 if canChooseStart {
                     if startPart == index {
                         Label("Starts here", systemImage: "checkmark.circle")
@@ -678,6 +769,28 @@ struct LiteraturePracticeView: View {
             }
         }
         .padding(.vertical, 4)
+    }
+
+    @ViewBuilder
+    private func sectionPlayback(_ lines: [PracticeCorpus.Line], language: AppLanguage, title: String,
+                                 latest: (id: UUID, clip: SpokenTakePlayer.Clip)?,
+                                 previous: (id: UUID, clip: SpokenTakePlayer.Clip)?) -> some View {
+        ReferenceButton(text: lines.map { $0.text(language) }.joined(separator: "\n"),
+                        language: language, compact: false, subject: title, listenTitle: "Hear example")
+        takeButton(latest, title: previous == nil ? String(localized: "Play my take") : String(localized: "Play latest"), section: title)
+        if let previous { takeButton(previous, title: String(localized: "Play previous"), section: title) }
+    }
+
+    private func takeButton(_ take: (id: UUID, clip: SpokenTakePlayer.Clip)?, title: String, section: String) -> some View {
+        let isPlaying = take != nil && take?.id == playback.playing
+        return Button(isPlaying ? String(localized: "Stop") : title, systemImage: isPlaying ? "stop.fill" : "play.fill") {
+            guard let take else { return }
+            model.referenceSpeaker.stop()
+            playback.toggle(take.clip, id: take.id)
+        }
+        .disabled(take == nil || !model.sentenceTraining.canStartRecording)
+        .help(take == nil ? "Record this section aloud to hear your take." : title)
+        .accessibilityLabel(isPlaying ? "Stop playback for \(section)" : "\(title), \(section)")
     }
 
     private func pieceRow(_ p: PracticeCorpus.Piece, selected: Bool) -> some View {
@@ -713,6 +826,12 @@ struct LanguagePracticeView: View {
     @State private var recall = false
     @State private var revealed: Set<Int> = []
     @State private var playback = SpokenTakePlayer()
+    @State private var saved = SavedLanguagePhrases()
+    @State private var showingSaved = false
+    @State private var reviewCards: [LanguageReviewCard] = []
+    @State private var reviewIndex = 0
+    @State private var reviewRevealed = false
+    @State private var reviewCompleted = false
     @AppStorage("practice.showIPA") private var showIPA = true
 
     private var drills: [PracticeCorpus.Drill] { model.practice.drills.filter { $0.language == model.language.corpus && model.language.shows(region: $0.region) } }
@@ -724,16 +843,81 @@ struct LanguagePracticeView: View {
     }
 
     var body: some View {
+        Group {
+            if showingSaved { savedPage }
+            else { practicePage }
+        }
+        .modifier(SpokenPlaybackLifecycle(playback: playback))
+        .onAppear { if selection == nil { selection = SavedSelection.get("drill", model.language) } }
+        .onChange(of: selection) { SavedSelection.set("drill", model.language, selection) }
+        .onChange(of: model.language) {
+            selection = SavedSelection.get("drill", model.language)
+            selectedRound = nil
+            resetPreview()
+            resetReview()
+        }
+        .onChange(of: showingSaved) {
+            resetPreview()
+            resetReview()
+        }
+    }
+
+    private var languageTabs: some View {
+        Picker("Language activity", selection: $showingSaved) {
+            Text("Practice").tag(false)
+            Text("Saved phrases").tag(true)
+        }
+        .pickerStyle(.segmented)
+        .labelsHidden()
+        .fixedSize()
+    }
+
+    private var practicePage: some View {
         let language = model.language
         let rounds = drill.map { LanguageDrillRounds.phrases(in: $0, language: language) } ?? []
         let savedRound = drill.flatMap { SavedSelection.get("drill-round-\($0.id)", language) }.flatMap(Int.init)
         let preferredRound = selectedRound ?? savedRound ?? 0
         let roundIndex = rounds.indices.contains(preferredRound) ? preferredRound : 0
         let phrases = rounds.indices.contains(roundIndex) ? rounds[roundIndex] : []
-        PracticePage(title: "Language", subtitle: "Practise a few phrases for a situation. Listen, say each phrase aloud, then mouth it silently.",
+        return PracticePage(title: "Language", subtitle: "Practise a few phrases for a situation. Listen, say each phrase aloud, then mouth it silently.",
                      startTitle: "Start Round",
                      groups: phrases.map { [SentencePrompt($0, kind: .drill, language: language, translationLanguage: model.nativeLanguage)] },
                      mode: .drill, unit: phrases.count == 1 ? "phrase" : "phrases") {
+            languageTabs
+        } content: {
+            if let drill {
+                VStack(alignment: .leading, spacing: 16) {
+                    drillControls(rounds: rounds, roundIndex: roundIndex, language: language)
+                    Label(listeningTip(for: drill, language: language, roundIndex: roundIndex), systemImage: "ear")
+                        .font(.callout).fixedSize(horizontal: false, vertical: true)
+                    if let note = drill.note(language) {
+                        MotionDisclosure("Usage note") {
+                            Text(note).font(.callout).foregroundStyle(.secondary)
+                        }
+                    }
+                    if !phrases.isEmpty {
+                        Toggle("Try from memory", isOn: $recall)
+                            .onChange(of: recall) { clearPreview() }
+                        if recall {
+                            Text("Say the phrase from memory, then reveal it and listen. Start Round records the scripted phrases.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        if let error = playback.error {
+                            Text(error).font(.callout).foregroundStyle(.orange)
+                        }
+                        ForEach(phrases.indices, id: \.self) { index in
+                            phraseRow(phrases[index], drillID: drill.id, index: index, language: language)
+                        }
+                    }
+                }
+            } else {
+                ContentUnavailableView("No drills in \(language.localizedName) yet", systemImage: "character.bubble", description: Text("Choose another language from the toolbar."))
+            }
+        }
+    }
+
+    private func drillControls(rounds: [[PracticeCorpus.Line]], roundIndex: Int, language: AppLanguage) -> some View {
+        HStack(spacing: 16) {
             Picker("Practice goal", selection: Binding(get: { drill?.id }, set: { id in
                 selection = id
                 selectedRound = nil
@@ -763,49 +947,11 @@ struct LanguagePracticeView: View {
                 }.fixedSize()
             }
             IPAToggle(isOn: $showIPA)
-        } content: {
-            if let drill {
-                VStack(alignment: .leading, spacing: 16) {
-                    Label(listeningTip(for: drill, language: language, roundIndex: roundIndex), systemImage: "ear")
-                        .font(.callout).fixedSize(horizontal: false, vertical: true)
-                    if let note = drill.note(language) {
-                        MotionDisclosure("Usage note") {
-                            Text(note).font(.callout).foregroundStyle(.secondary)
-                        }
-                    }
-                    if !phrases.isEmpty {
-                        Toggle("Try from memory", isOn: $recall)
-                            .onChange(of: recall) { clearPreview() }
-                        if recall {
-                            Text("Say the phrase from memory, then reveal it and listen. Start Round records the scripted phrases.")
-                                .font(.callout).foregroundStyle(.secondary)
-                        }
-                        if let error = playback.error {
-                            Text(error).font(.callout).foregroundStyle(.orange)
-                        }
-                        ForEach(phrases.indices, id: \.self) { index in
-                            phraseRow(phrases[index], index: index, language: language)
-                        }
-                    }
-                }
-            } else {
-                ContentUnavailableView("No drills in \(language.localizedName) yet", systemImage: "character.bubble", description: Text("Choose another language from the toolbar."))
-            }
-        }
-        .modifier(SpokenPlaybackLifecycle(playback: playback))
-        .onAppear { if selection == nil { selection = SavedSelection.get("drill", model.language) } }
-        .onChange(of: selection) { SavedSelection.set("drill", model.language, selection) }
-        .onChange(of: model.language) {
-            selection = SavedSelection.get("drill", model.language)
-            selectedRound = nil
-            resetPreview()
         }
     }
 
-    private func phraseRow(_ line: PracticeCorpus.Line, index: Int, language: AppLanguage) -> some View {
-        let take = SpokenTakePlayer.latestTake(for: [line], mode: .drill, language: language,
-                                               in: model.sentenceTraining.data.pairs)
-        let playing = take != nil && take?.id == playback.playing
+    private func phraseRow(_ line: PracticeCorpus.Line, drillID: String, index: Int, language: AppLanguage) -> some View {
+        let id = LanguagePhraseID(line, drillID: drillID, language: language)
         return VStack(alignment: .leading, spacing: 8) {
             Divider()
             if recall && !revealed.contains(index) {
@@ -817,22 +963,139 @@ struct LanguagePracticeView: View {
                 Button("Reveal phrase", systemImage: "eye") { revealed.insert(index) }
                     .accessibilityHint("Shows the phrase to compare with what you said")
             } else {
-                PracticeLineView(line: line, language: language, showIPA: showIPA)
-                HStack {
-                    ReferenceButton(text: line.text(language), language: language,
-                                    compact: false, listenTitle: "Hear example")
-                    if let take {
-                        Button(playing ? "Stop" : "Play my take", systemImage: playing ? "stop.fill" : "play.fill") {
-                            model.referenceSpeaker.stop()
-                            playback.toggle(take.clip, id: take.id)
+                phraseAnswer(line, language: language) {
+                    let bookmarked = saved.contains(id)
+                    Button(bookmarked ? "Saved" : "Save phrase",
+                           systemImage: bookmarked ? "bookmark.fill" : "bookmark") { saved.toggle(id) }
+                        .accessibilityLabel(bookmarked ? "Remove saved phrase \(id.text)" : "Save phrase \(id.text)")
+                }
+            }
+        }
+    }
+
+    private func phraseAnswer<Actions: View>(_ line: PracticeCorpus.Line, language: AppLanguage,
+                                             @ViewBuilder actions: () -> Actions) -> some View {
+        let take = SpokenTakePlayer.latestTake(for: [line], mode: .drill, language: language,
+                                               in: model.sentenceTraining.data.pairs)
+        let playing = take != nil && take?.id == playback.playing
+        return VStack(alignment: .leading, spacing: 8) {
+            PracticeLineView(line: line, language: language, showIPA: showIPA)
+            HStack {
+                ReferenceButton(text: line.text(language), language: language,
+                                compact: false, listenTitle: "Hear example")
+                if let take {
+                    Button(playing ? "Stop" : "Play my take", systemImage: playing ? "stop.fill" : "play.fill") {
+                        model.referenceSpeaker.stop()
+                        playback.toggle(take.clip, id: take.id)
+                    }
+                    .disabled(!model.sentenceTraining.canStartRecording)
+                    .accessibilityLabel(playing ? Text("Stop playback") : Text("Play my take of \(line.text(language))"))
+                    .accessibilityHint("Plays your latest spoken recording of this phrase")
+                }
+                actions()
+            }
+        }
+    }
+
+    private var savedPage: some View {
+        let language = model.language
+        let cards = saved.cards(in: drills, language: language)
+        return AppPageLayout(showsMotion: false) {
+            AppPageHeading(title: "Language", subtitle: "Revisit phrases you saved and try them from memory.")
+        } content: {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    HStack(spacing: 16) {
+                        languageTabs
+                        IPAToggle(isOn: $showIPA)
+                    }
+                    if reviewCards.indices.contains(reviewIndex) {
+                        reviewCard(reviewCards[reviewIndex], language: language)
+                    } else {
+                        savedList(cards, language: language)
+                    }
+                }
+                .frame(maxWidth: PageMetrics.contentWidth, alignment: .leading)
+                .padding(PageMetrics.padding).frame(maxWidth: .infinity)
+            }
+        }
+    }
+
+    @ViewBuilder private func savedList(_ cards: [LanguageReviewCard], language: AppLanguage) -> some View {
+        if cards.isEmpty {
+            ContentUnavailableView("No saved phrases", systemImage: "bookmark",
+                                   description: Text("Save a phrase in Practice to review it here."))
+        } else {
+            HStack {
+                if reviewCompleted {
+                    Label("Review complete", systemImage: "checkmark.circle")
+                        .accessibilityAddTraits(.isHeader)
+                }
+                Spacer()
+                Button(reviewCompleted ? "Start another review" : "Start review", systemImage: "arrow.clockwise") {
+                    resetReview()
+                    reviewCards = saved.nextRound(in: drills, language: language)
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            LazyVStack(alignment: .leading, spacing: 12) {
+                ForEach(cards) { card in
+                    Divider()
+                    HStack(alignment: .firstTextBaseline) {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(PracticeLineView.spoken(card.id.text, language)).font(.headline)
+                            Text(card.drillTitle).font(.callout).foregroundStyle(.secondary)
                         }
-                        .disabled(!model.sentenceTraining.canStartRecording)
-                        .accessibilityLabel(playing ? Text("Stop playback") : Text("Play my take of \(line.text(language))"))
-                        .accessibilityHint("Plays your latest spoken recording of this phrase")
+                        Spacer()
+                        Button("Remove", systemImage: "bookmark.slash") { saved.remove(card.id) }
+                            .accessibilityLabel("Remove saved phrase \(card.id.text)")
                     }
                 }
             }
         }
+    }
+
+    private func reviewCard(_ card: LanguageReviewCard, language: AppLanguage) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Phrase \(reviewIndex + 1) of \(reviewCards.count)").font(.headline)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                Button("Back to saved phrases") { resetReview() }
+            }
+            Text(card.drillTitle).font(.callout).foregroundStyle(.secondary)
+            if reviewRevealed {
+                phraseAnswer(card.line, language: language) { EmptyView() }
+                if let error = playback.error { Text(error).font(.callout).foregroundStyle(.orange) }
+                Button(reviewIndex + 1 == reviewCards.count ? "Finish review" : "Next phrase",
+                       systemImage: "arrow.right") {
+                    saved.markReviewed(card.id)
+                    clearPreview()
+                    reviewRevealed = false
+                    reviewIndex += 1
+                    reviewCompleted = reviewIndex == reviewCards.count
+                }
+                .buttonStyle(.borderedProminent)
+            } else {
+                if let clue = card.translationCue(in: model.nativeLanguage) {
+                    Text(clue).font(.title2)
+                } else if let first = card.id.text.first(where: { $0.isLetter || $0.isNumber }) {
+                    Text("Starts with \(String(first))").font(.title2)
+                }
+                Text("Say the phrase from memory, then reveal it to check.")
+                    .font(.callout).foregroundStyle(.secondary)
+                Button("Reveal phrase", systemImage: "eye") { reviewRevealed = true }
+                    .buttonStyle(.borderedProminent)
+            }
+        }
+    }
+
+    private func resetReview() {
+        reviewCards = []
+        reviewIndex = 0
+        reviewRevealed = false
+        reviewCompleted = false
+        clearPreview()
     }
 
     private func clearPreview() {
@@ -957,8 +1220,59 @@ struct FreePracticeView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.undoManager) private var undoManager
     @AppStorage("practice.free.text") private var text = ""
+    @AppStorage("practice.free.title") private var title = ""
+    @AppStorage("practice.free.selectedScript") private var selectedID = ""
     @AppStorage("practice.showIPA") private var showIPA = true
     @State private var readings: [String: PracticeChecker.Reading] = [:]
+    @State private var playback = SpokenTakePlayer()
+    @State private var confirmDelete = false
+    @State private var confirmDiscard = false
+    @State private var nextScript: PersonalScript?
+
+    private var selected: PersonalScript? { model.personalScripts.items.first { $0.id.uuidString == selectedID } }
+
+    private var savedDraft: PersonalScript? {
+        guard let selected, selected.language == model.language,
+              selected.text.utf8.elementsEqual(text.trimmingCharacters(in: .whitespacesAndNewlines).utf8) else { return nil }
+        return selected
+    }
+
+    private func load(_ script: PersonalScript) {
+        model.referenceSpeaker.stop()
+        playback.stop()
+        model.language = script.language
+        selectedID = script.id.uuidString
+        title = script.title
+        text = script.text
+    }
+
+    private func newDraft() {
+        model.referenceSpeaker.stop()
+        playback.stop()
+        selectedID = ""
+        title = ""
+        text = ""
+    }
+
+    private func saveDraft() {
+        guard let script = model.personalScripts.save(id: selected?.id, title: title, text: text, language: model.language) else { return }
+        load(script)
+    }
+
+    private func switchDraft(to script: PersonalScript?) {
+        if let script, savedDraft == script, title == script.title { return }
+        let hasDraft = !text.isEmpty || !title.isEmpty
+        if hasDraft && (savedDraft == nil || selected?.title != title) {
+            nextScript = script
+            confirmDiscard = true
+        } else {
+            applyScript(script)
+        }
+    }
+
+    private func applyScript(_ script: PersonalScript?) {
+        if let script { load(script) } else { newDraft() }
+    }
 
     private func replaceDraft(with replacement: String) {
         let draft = $text
@@ -989,31 +1303,34 @@ struct FreePracticeView: View {
 
     /// One take per sentence, so a long passage is broken into speakable pieces.
     static func sentences(_ text: String) -> [String] {
-        var out: [String] = []
-        text.enumerateSubstrings(in: text.startIndex..., options: .bySentences) { s, _, _, _ in
-            if let s = s?.trimmingCharacters(in: .whitespacesAndNewlines), !s.isEmpty { out.append(s) }
-        }
-        return out
+        PersonalScript.sections(in: text)
     }
 
     var body: some View {
         let language = model.language
-        let sentences = Self.sentences(text)
-        PracticePage(title: "Free Practice", subtitle: "Type or paste anything you want to memorise.",
-                     startTitle: "Start Practice",
-                     groups: sentences.map { sentence in
-                         [SentencePrompt(text: sentence, kind: .freeText, language: language.tag,
-                                         pinyin: language.isChinese ? readings[language.tag + sentence]?.pinyin : nil)]
-                     },
-                     mode: .freeText, unit: "sentences") {
+        let sentences = Self.sentences(text).filter { !Lexicon.words(in: $0).isEmpty }
+        let groups = sentences.map { sentence in
+            [SentencePrompt(text: sentence, kind: .freeText, language: language.tag,
+                            pinyin: language.isChinese ? readings[language.tag + sentence]?.pinyin : nil)]
+        }
+        let subtitle: LocalizedStringKey = savedDraft == nil ? "Practise a script, presentation or interview answer."
+            : "Mouth your script silently, then read it aloud."
+        PracticePage(title: "My Material", subtitle: subtitle,
+                     startTitle: "Start Practice", groups: groups, mode: .freeText, unit: "sentences", startRound: {
+                         if let script = savedDraft { model.startPersonalScript(script, groups: groups) }
+                         else { model.startPractice(groups) }
+                     }) {
             IPAToggle(isOn: $showIPA)
         } content: {
             VStack(alignment: .leading, spacing: 10) {
+                scriptControls
                 HStack {
                     Button("Paste", systemImage: "doc.on.clipboard") { replaceDraft(with: NSPasteboard.general.string(forType: .string) ?? text) }
                     Button("Try an Example", systemImage: "text.badge.plus") { replaceDraft(with: Self.example(language)) }
                     if !text.isEmpty { Button("Clear", systemImage: "xmark.circle") { replaceDraft(with: "") } }
                 }
+                TextField("Script title", text: $title).textFieldStyle(.roundedBorder)
+                    .accessibilityLabel("Script title")
                 Text("Practice text").font(.headline)
                 TextEditor(text: $text)
                     .font(.title2).frame(minHeight: 140).scrollContentBackground(.hidden).padding(6)
@@ -1025,10 +1342,15 @@ struct FreePracticeView: View {
                         }
                     }
                     .accessibilityLabel("Practice text")
-                Text(sentences.isEmpty ? "Each sentence becomes one take."
-                     : sentences.count == 1 ? "1 sentence. A take trains only when Whisper agrees with at least 85% of it; otherwise it stays practice."
-                     : "\(sentences.count) sentences. A take trains only when Whisper agrees with at least 85% of it; otherwise it stays practice.")
-                    .font(.caption).foregroundStyle(.secondary)
+                if !sentences.isEmpty {
+                    ReferenceButton(text: sentences.joined(separator: " "), language: language, compact: false, listenTitle: "Hear script")
+                }
+                if let script = savedDraft {
+                    savedScriptPractice(script, groups: groups)
+                } else if !sentences.isEmpty {
+                    Text("Save this script to resume it and replay individual takes.")
+                        .font(.callout).foregroundStyle(.secondary)
+                }
                 if !sentences.isEmpty && (showIPA || language.isChinese) {
                     VStack(alignment: .leading, spacing: 8) {
                         ForEach(sentences, id: \.self) { s in
@@ -1043,6 +1365,23 @@ struct FreePracticeView: View {
                 }
             }
         }
+        .modifier(SpokenPlaybackLifecycle(playback: playback))
+        .onAppear(perform: openRequestedScript)
+        .onChange(of: model.personalScriptRequest) { openRequestedScript() }
+        .onChange(of: language) { model.referenceSpeaker.stop(); playback.stop() }
+        .confirmationDialog("Delete this saved script?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Delete Script", role: .destructive) {
+                guard let selected else { return }
+                model.personalScripts.remove(selected.id)
+                newDraft()
+            }
+        } message: {
+            Text("Saved recordings remain in your recording history.")
+        }
+        .confirmationDialog("Discard unsaved edits?", isPresented: $confirmDiscard, titleVisibility: .visible) {
+            Button("Discard Edits", role: .destructive) { applyScript(nextScript); nextScript = nil }
+            Button("Keep Editing", role: .cancel) { nextScript = nil }
+        }
         .task(id: "\(showIPA)|\(language.tag)|\(text)") {
             guard showIPA || language.isChinese else { return }
             try? await Task.sleep(for: .milliseconds(700))  // wait for typing to pause
@@ -1051,6 +1390,76 @@ struct FreePracticeView: View {
                 if let reading = await model.practiceChecker.phones(text: s, language: language.tag) { readings[language.tag + s] = reading }
             }
         }
+    }
+
+    private func openRequestedScript() {
+        if let request = model.takePersonalScriptRequest() { switchDraft(to: request) }
+    }
+
+    private var scriptControls: some View {
+        HStack {
+            if !model.personalScripts.items.isEmpty {
+                Menu("Saved scripts", systemImage: "folder") {
+                    ForEach(model.personalScripts.items) { script in
+                        Button("\(script.title) (\(script.language.name))") { switchDraft(to: script) }
+                    }
+                }.fixedSize()
+            }
+            Button("New Script", systemImage: "plus") { switchDraft(to: nil) }
+            Button(selected == nil ? "Save Script" : "Save Changes", systemImage: "checkmark", action: saveDraft)
+                .buttonStyle(.borderedProminent)
+                .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                          || text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                          || (savedDraft != nil && selected?.title == title))
+            if selected != nil {
+                Button("Delete Script…", systemImage: "trash") { confirmDelete = true }
+            }
+        }
+    }
+
+    private func savedScriptPractice(_ script: PersonalScript, groups: [[SentencePrompt]]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Button("Memorize Script", systemImage: TrainMode.memorization.symbol) {
+                    MemorizationPracticeView.select(pieceID: script.pieceID, language: script.language)
+                    model.openPractice(.memorization)
+                }
+                if let round = model.resumablePractice.first(where: { $0.pieceID == script.pieceID }) {
+                    Button("Continue Recording") { model.resumeLiterature(round) }
+                        .disabled(!model.canRecordPractice)
+                }
+            }
+            if let error = playback.error { Text(error).foregroundStyle(.orange).font(.callout) }
+            LazyVStack(alignment: .leading, spacing: 12) {
+                ForEach(groups.indices, id: \.self) { index in
+                    if let sentence = groups[index].first?.text {
+                        let lines = [PracticeCorpus.Line(text: sentence, ipa: [])]
+                        let takes = SpokenTakePlayer.recentTakes(for: lines, mode: .freeText, language: script.language,
+                                                                pieceID: script.pieceID, in: model.sentenceTraining.data.pairs)
+                        Divider()
+                        Text(sentence).font(.body).textSelection(.enabled)
+                        HStack {
+                            ReferenceButton(text: sentence, language: script.language, compact: false, listenTitle: "Hear section")
+                            if let latest = takes.first { playTake(latest, title: takes.count == 1 ? "Play my take" : "Play latest") }
+                            if takes.count > 1 { playTake(takes[1], title: "Play previous") }
+                            Button("Record Section", systemImage: "record.circle") {
+                                model.startPersonalScript(script, groups: [groups[index]], isSectionRetry: true)
+                            }
+                            .disabled(!model.canRecordPractice)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func playTake(_ take: (id: UUID, clip: SpokenTakePlayer.Clip), title: LocalizedStringKey) -> some View {
+        let playing = playback.playing == take.id
+        return Button(playing ? "Stop" : title, systemImage: playing ? "stop.fill" : "play.fill") {
+            model.referenceSpeaker.stop()
+            playback.toggle(take.clip, id: take.id)
+        }
+        .disabled(!model.sentenceTraining.canStartRecording)
     }
 }
 

@@ -5,8 +5,9 @@ import Observation
 @MainActor @Observable
 final class ReferenceSpeaker: NSObject, AVSpeechSynthesizerDelegate {
     private let synthesizer = AVSpeechSynthesizer()
-    private var finished: CheckedContinuation<Void, Never>?
+    private var finished: CheckedContinuation<Bool, Never>?
     private var utteranceID: ObjectIdentifier?
+    private var rehearsalID: UUID?
     private(set) var playing: String?
 
     override init() { super.init(); synthesizer.delegate = self }
@@ -16,27 +17,43 @@ final class ReferenceSpeaker: NSObject, AVSpeechSynthesizerDelegate {
     }
 
     func stop() {
-        if let utteranceID { complete(utteranceID) }
+        rehearsalID = nil
+        if let utteranceID { complete(utteranceID, playedToEnd: false) }
         synthesizer.stopSpeaking(at: .immediate)
     }
 
     func speak(_ text: String, language: String) async {
-        await play(AVSpeechUtterance(string: text), key: text, language: language, rate: 0.9)
+        await rehearse(text, language: language, slower: false, repeats: false)
+    }
+
+    func rehearse(_ text: String, language: String, slower: Bool, repeats: Bool, key: String? = nil) async {
+        guard !text.isEmpty, !Task.isCancelled else { return }
+        stop()
+        let rehearsal = UUID()
+        rehearsalID = rehearsal
+        defer { if rehearsalID == rehearsal { rehearsalID = nil } }
+        repeat {
+            let utterance = AVSpeechUtterance(string: text)
+            if repeats { utterance.postUtteranceDelay = 0.5 }
+            let completed = await play(utterance, key: key ?? text, language: language, rate: slower ? 0.68 : 0.9)
+            if !completed { return }
+        } while repeats && rehearsalID == rehearsal && !Task.isCancelled
     }
 
     func speakIPA(_ ipa: String, language: String) async {
-        let text = NSMutableAttributedString(string: "sound")
-        text.addAttribute(NSAttributedString.Key(AVSpeechSynthesisIPANotationAttribute), value: ipa, range: NSRange(location: 0, length: text.length))
-        await play(AVSpeechUtterance(attributedString: text), key: ipa, language: language, rate: 0.75)
-    }
-
-    private func play(_ utterance: AVSpeechUtterance, key: String, language: String, rate: Float) async {
         guard !Task.isCancelled else { return }
         stop()
+        let text = NSMutableAttributedString(string: "sound")
+        text.addAttribute(NSAttributedString.Key(AVSpeechSynthesisIPANotationAttribute), value: ipa, range: NSRange(location: 0, length: text.length))
+        _ = await play(AVSpeechUtterance(attributedString: text), key: ipa, language: language, rate: 0.75)
+    }
+
+    private func play(_ utterance: AVSpeechUtterance, key: String, language: String, rate: Float) async -> Bool {
+        guard !Task.isCancelled else { return false }
         utterance.voice = AVSpeechSynthesisVoice(language: Self.voiceLanguage(language))
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate * rate
         let id = ObjectIdentifier(utterance)
-        await withTaskCancellationHandler {
+        return await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
                 finished = continuation
                 utteranceID = id
@@ -48,21 +65,21 @@ final class ReferenceSpeaker: NSObject, AVSpeechSynthesizerDelegate {
         }
     }
 
-    private func complete(_ id: ObjectIdentifier) {
+    private func complete(_ id: ObjectIdentifier, playedToEnd: Bool) {
         guard utteranceID == id else { return }
         utteranceID = nil
         playing = nil
         let continuation = finished
         finished = nil
-        continuation?.resume()
+        continuation?.resume(returning: playedToEnd)
     }
 
     nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         let id = ObjectIdentifier(utterance)
-        Task { @MainActor in self.complete(id) }
+        Task { @MainActor in self.complete(id, playedToEnd: true) }
     }
     nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
         let id = ObjectIdentifier(utterance)
-        Task { @MainActor in self.complete(id) }
+        Task { @MainActor in self.complete(id, playedToEnd: false) }
     }
 }

@@ -108,6 +108,42 @@ final class TrainingAdvanceTests: XCTestCase {
     }
 
     @MainActor
+    func testSectionRetryKeepsTheOriginalResumeCheckpoint() throws {
+        let root = FileManager.default.temporaryDirectory.appending(path: "literature-section-retry-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        let store = root.appending(path: "sentences.json")
+        let groups = ["Opening.", "Closing."].map { [SentencePrompt(text: $0, kind: .speech, language: "en")] }
+        var data = SentenceTrainingData()
+        data.addPractice(groups.flatMap { $0 })
+        try SentenceStore.save(data, to: store)
+
+        let workflow = SentenceTrainingWorkflow(storeURL: store)
+        let session = RecordingSession(id: UUID(), directory: root, startUptime: 100, audioOffset: 0)
+        let visit = try workflow.beginVisit(session: session, audioDevice: nil, timing: .comfortable, presentation: .sentences)
+        let pair = try workflow.beginPair(prompts: groups[0], visit: visit, session: session, literaturePieceID: "fixture")
+        let round = LiteraturePracticeRound(pieceID: "fixture", title: "Fixture", language: "en", kind: .speech, groups: groups)
+        let silent = SentenceRecording(condition: .silent, samples: [], cueStart: 101, cueEnd: 102)
+        _ = try workflow.saveLiteratureHalf(silent, pairID: pair.id, session: session, round: round, section: 0)
+
+        let retrySession = RecordingSession(id: UUID(), directory: root, startUptime: 200, audioOffset: 0)
+        let retryVisit = try workflow.beginVisit(session: retrySession, audioDevice: nil, timing: .comfortable, presentation: .sentences)
+        let retryPair = try workflow.beginPair(prompts: groups[0], visit: retryVisit, session: retrySession, literaturePieceID: "fixture")
+        let retry = LiteraturePracticeRound(pieceID: "fixture", title: "Fixture", language: "en", kind: .speech,
+                                           groups: [groups[0]], isSectionRetry: true)
+        let newSilent = SentenceRecording(condition: .silent, samples: [], cueStart: 201, cueEnd: 202)
+        let progress = try workflow.saveLiteratureHalf(newSilent, pairID: retryPair.id, session: retrySession, round: retry, section: 0)
+        let newSpoken = SentenceRecording(condition: .normal, samples: [], cueStart: 203, cueEnd: 204)
+        _ = try workflow.saveLiteratureHalf(newSpoken, pairID: retryPair.id, session: retrySession, round: progress, section: 0)
+
+        let reopened = SentenceTrainingWorkflow(storeURL: store)
+        let resumable = try XCTUnwrap(reopened.resumableLiterature.first)
+        XCTAssertEqual(resumable.id, round.id)
+        XCTAssertEqual(reopened.nextLiteratureTake(in: resumable)?.group, 1)
+        XCTAssertEqual(reopened.data.pairs.first { $0.id == pair.id }?.silent?.id, silent.id)
+        XCTAssertEqual(reopened.data.pairs.first { $0.id == retryPair.id }?.spoken?.id, newSpoken.id)
+    }
+
+    @MainActor
     func testResumeUsesSavedHalvesAndPreservesEachPhysicalSessionClock() throws {
         let root = FileManager.default.temporaryDirectory.appending(path: "literature-resume-\(UUID())")
         defer { try? FileManager.default.removeItem(at: root) }

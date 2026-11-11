@@ -457,7 +457,7 @@ struct SharingSetupView: View {
                     Spacer()
                     Button("Stop sharing…") { confirmStop = true }.disabled(model.navigationLocked)
                 }
-                Text("New community reading and calibration sessions are submitted to \(grant.repo) after you finish recording. Subvox collects recordings for research, so practice needs sharing on. A submission already in progress may finish.")
+                Text("New community reading and calibration sessions are submitted to \(grant.repo) after you finish recording. A submission already in progress may finish after you stop sharing.")
                     .font(.callout).foregroundStyle(.secondary)
             } else if let username = account.username {
                 Text("Share future sessions automatically").font(.title3.weight(.semibold))
@@ -479,7 +479,7 @@ struct SharingSetupView: View {
         .confirmationDialog("Stop sharing recordings?", isPresented: $confirmStop, titleVisibility: .visible) {
             Button("Stop sharing", role: .destructive, action: model.stopAutomaticSharing)
         } message: {
-            Text("Subvox will return to the welcome screen until you turn sharing back on. Recordings already shared stay in the public dataset.")
+            Text("Future practice stays on this Mac. Recordings already shared stay in the public dataset.")
         }
         .onChange(of: account.username) { adult = false; confirmAutomatic = false }
         .onChange(of: settings.repo) { confirmAutomatic = false }

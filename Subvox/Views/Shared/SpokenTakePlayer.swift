@@ -20,16 +20,27 @@ final class SpokenTakePlayer {
     static func latestTake(for lines: [PracticeCorpus.Line], mode: SentencePromptKind,
                            language: AppLanguage, pieceID: String? = nil,
                            in pairs: [SentencePair]) -> (id: UUID, clip: Clip)? {
+        recentTakes(for: lines, mode: mode, language: language, pieceID: pieceID, in: pairs, limit: 1).first
+    }
+
+    static func recentTakes(for lines: [PracticeCorpus.Line], mode: SentencePromptKind,
+                            language: AppLanguage, pieceID: String? = nil, in pairs: [SentencePair],
+                            limit: Int = 2) -> [(id: UUID, clip: Clip)] {
         let text = lines.map { $0.text(language) }
         let ids = text.map(SentencePrompt.identity)
         let exactText = text.joined(separator: " ")
+        var takes: [(id: UUID, clip: Clip)] = []
+        guard limit > 0 else { return takes }
         for pair in pairs.reversed()
         where pair.practiceMode == mode && (pair.language ?? "en") == language.tag
             && pair.promptIDs == ids && pair.text == exactText
-            && (pieceID == nil || pair.literaturePieceID == nil || pair.literaturePieceID == pieceID) {
-            if let clip = clip(for: pair) { return (pair.id, clip) }
+            && (pieceID == nil || pair.literaturePieceID == pieceID || (mode != .freeText && pair.literaturePieceID == nil)) {
+            if let clip = clip(for: pair) {
+                takes.append((pair.id, clip))
+                if takes.count == limit { break }
+            }
         }
-        return nil
+        return takes
     }
 
     static func clip(for pair: SentencePair) -> Clip? {
