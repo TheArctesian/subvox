@@ -152,7 +152,7 @@ struct SentenceTrainingView: View {
                 Label("Connect your AirPods to start.", systemImage: "headphones").foregroundStyle(.orange)
             }
             if !model.localWhisper.isConfigured && workflow.readingSource == .banks {
-                Label("Choose a local Whisper model in recording settings.", systemImage: "exclamationmark.triangle")
+                Label("Download the speech recognition model in recording settings.", systemImage: "exclamationmark.triangle")
                     .foregroundStyle(.orange)
             }
             Picker("Read from", selection: $workflow.readingSource) {
@@ -227,9 +227,10 @@ struct SentenceTrainingView: View {
                     TextField("Session notes: fit, posture or pronunciation", text: $workflow.notes).textFieldStyle(.roundedBorder)
                     PhoneAlignmentSettingsView(workflow: workflow)
                     MotionDisclosure("Local transcription" + (whisper.isConfigured ? " · ready" : " · setup needed")) {
-                        TextField("Whisper model path", text: $whisper.modelPath).textFieldStyle(.roundedBorder)
-                        TextField("Whisper server path", text: $whisper.executablePath).textFieldStyle(.roundedBorder)
-                        Text("Existing local model files are reused; no download is required.").font(.caption).foregroundStyle(.secondary)
+                        WhisperModelSetup(whisper: whisper)
+                        TextField("Whisper model path", text: $whisper.modelPath, prompt: Text("Downloaded model")).textFieldStyle(.roundedBorder)
+                        TextField("Whisper server path", text: $whisper.executablePath, prompt: Text("Bundled server")).textFieldStyle(.roundedBorder)
+                        Text("Leave these empty to use the app's own. A file that can't be used is ignored.").font(.caption).foregroundStyle(.secondary)
                     }
                 }.padding(.top, 8)
             }

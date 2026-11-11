@@ -1905,6 +1905,40 @@
         }
       }
     },
+    "Bundled server": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servidor incluido"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servidor incluido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serveur intégré"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内置服务器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "內建伺服器"
+          }
+        }
+      }
+    },
     "Camera access is needed to record": {
       "localizations": {
         "es": {
@@ -2343,40 +2377,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "中文"
-          }
-        }
-      }
-    },
-    "Choose a local Whisper model in recording settings.": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige un modelo de Whisper local en los ajustes de grabación."
-          }
-        },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige un modelo de Whisper local en los ajustes de grabación."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisissez un modèle Whisper local dans les réglages d’enregistrement."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "请在录音设置中选择本机的 Whisper 模型。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "請在錄音設定中選擇本機的 Whisper 模型。"
           }
         }
       }
@@ -2959,6 +2959,108 @@
         }
       }
     },
+    "Download speech recognition model (148 MB)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargar el modelo de reconocimiento de voz (148 MB)"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargar el modelo de reconocimiento de voz (148 MB)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Télécharger le modèle de reconnaissance vocale (148 Mo)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载语音识别模型（148 MB）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載語音辨識模型（148 MB）"
+          }
+        }
+      }
+    },
+    "Download the speech recognition model in recording settings.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descarga el modelo de reconocimiento de voz en los ajustes de grabación."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descarga el modelo de reconocimiento de voz en la configuración de grabación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Téléchargez le modèle de reconnaissance vocale dans les réglages d’enregistrement."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在录音设置中下载语音识别模型。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請在錄音設定中下載語音辨識模型。"
+          }
+        }
+      }
+    },
+    "Download the speech recognition model to transcribe on this Mac.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descarga el modelo de reconocimiento de voz para transcribir en este Mac."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descarga el modelo de reconocimiento de voz para transcribir en esta Mac."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Téléchargez le modèle de reconnaissance vocale pour transcrire sur ce Mac."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载语音识别模型即可在这台 Mac 上转写。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載語音辨識模型即可在這台 Mac 上轉寫。"
+          }
+        }
+      }
+    },
     "Download word alignment model (1.26 GB)": {
       "localizations": {
         "es": {
@@ -2989,6 +3091,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "下載詞語對齊模型（1.26 GB）"
+          }
+        }
+      }
+    },
+    "Downloaded model": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modelo descargado"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modelo descargado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modèle téléchargé"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已下载的模型"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已下載的模型"
+          }
+        }
+      }
+    },
+    "Downloading speech recognition model…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargando el modelo de reconocimiento de voz…"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargando el modelo de reconocimiento de voz…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Téléchargement du modèle de reconnaissance vocale…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在下载语音识别模型…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在下載語音辨識模型…"
           }
         }
       }
@@ -3567,40 +3737,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "已排除或保留的錄音（%lld）"
-          }
-        }
-      }
-    },
-    "Existing local model files are reused; no download is required.": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se reutilizan los archivos de modelo locales existentes; no hace falta descargar nada."
-          }
-        },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se reutilizan los archivos de modelo locales existentes; no hace falta descargar nada."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les fichiers de modèle locaux existants sont réutilisés ; aucun téléchargement n’est nécessaire."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "会直接使用本机已有的模型文件，无需下载。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "會直接使用本機已有的模型檔案，無需下載。"
           }
         }
       }
@@ -4961,6 +5097,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "學習方式"
+          }
+        }
+      }
+    },
+    "Leave these empty to use the app's own. A file that can't be used is ignored.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déjalos vacíos para usar los de la app. Un archivo que no se pueda usar se ignora."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déjalos vacíos para usar los de la app. Un archivo que no se pueda usar se ignora."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laissez ces champs vides pour utiliser ceux de l’app. Un fichier inutilisable est ignoré."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "留空则使用应用自带的文件。无法使用的文件会被忽略。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "留空即使用 App 內建的檔案。無法使用的檔案會被忽略。"
           }
         }
       }
@@ -7073,36 +7243,36 @@
         }
       }
     },
-    "Practice uses a Whisper model already on this Mac to hear what you said. Nothing is downloaded.": {
+    "Practice uses Whisper, which runs inside Subvox, to hear what you said. Audio stays on this Mac.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La práctica usa un modelo de Whisper que ya está en este Mac para oír lo que dices. No se descarga nada."
+            "value": "La práctica usa Whisper, que se ejecuta dentro de Subvox, para reconocer lo que dices. El audio se queda en este Mac."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "La práctica usa un modelo de Whisper que ya está en este Mac para oír lo que dices. No se descarga nada."
+            "value": "La práctica usa Whisper, que se ejecuta dentro de Subvox, para reconocer lo que dices. El audio se queda en esta Mac."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "L’entraînement utilise un modèle Whisper déjà présent sur ce Mac pour entendre ce que vous dites. Rien n’est téléchargé."
+            "value": "L’entraînement utilise Whisper, qui s’exécute dans Subvox, pour reconnaître ce que vous dites. L’audio reste sur ce Mac."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "练习会使用这台 Mac 上已有的 Whisper 模型来听你说的内容。不会下载任何内容。"
+            "value": "练习使用在 Subvox 内运行的 Whisper 来识别你说的话。音频保留在这台 Mac 上。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "練習會使用這台 Mac 上已有的 Whisper 模型來聽你說的內容。不會下載任何內容。"
+            "value": "練習使用在 Subvox 內執行的 Whisper 來辨識你說的話。音訊會保留在這台 Mac 上。"
           }
         }
       }
@@ -12139,6 +12309,40 @@
         }
       }
     },
+    "The bundled speech recognition server is missing. Reinstall Subvox.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta el servidor de reconocimiento de voz incluido. Vuelve a instalar Subvox."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta el servidor de reconocimiento de voz incluido. Vuelve a instalar Subvox."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le serveur de reconnaissance vocale intégré est introuvable. Réinstallez Subvox."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "缺少内置的语音识别服务器。请重新安装 Subvox。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "缺少內建的語音辨識伺服器。請重新安裝 Subvox。"
+          }
+        }
+      }
+    },
     "The language you're practising (⌥⌘1–6), and the language you speak": {
       "localizations": {
         "es": {
@@ -12203,6 +12407,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "這一輪會以隨機順序播放這些詞。"
+          }
+        }
+      }
+    },
+    "The speech recognition model download could not be verified.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo verificar la descarga del modelo de reconocimiento de voz."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo verificar la descarga del modelo de reconocimiento de voz."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le téléchargement du modèle de reconnaissance vocale n’a pas pu être vérifié."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法校验语音识别模型的下载内容。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法驗證語音辨識模型的下載內容。"
           }
         }
       }
@@ -13091,6 +13329,40 @@
         }
       }
     },
+    "Use your own model or server": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar tu propio modelo o servidor"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar tu propio modelo o servidor"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser votre propre modèle ou serveur"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用自己的模型或服务器"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用自己的模型或伺服器"
+          }
+        }
+      }
+    },
     "Validation sentences are added separately; passages join up to three sentences.": {
       "localizations": {
         "es": {
@@ -13563,6 +13835,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "保存了什麼？"
+          }
+        }
+      }
+    },
+    "Whisper base hears what you said on this Mac. The download is checked before it is used.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whisper base reconoce lo que dices en este Mac. La descarga se comprueba antes de usarla."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whisper base reconoce lo que dices en esta Mac. La descarga se verifica antes de usarla."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whisper base reconnaît ce que vous dites sur ce Mac. Le téléchargement est vérifié avant d’être utilisé."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whisper base 在这台 Mac 上识别你说的话。下载内容会在使用前经过校验。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whisper base 在這台 Mac 上辨識你說的話。下載內容會在使用前經過驗證。"
           }
         }
       }
