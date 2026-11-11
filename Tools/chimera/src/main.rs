@@ -6,6 +6,11 @@
 //!
 //! `subvox-chimera tables <out.py>` writes the male body's calibrated vowel articulations and the
 //! consonant targets for jaw and lips as a Python module (ml/subvox_ml/chimera_tables.py).
+//!
+//! `subvox-chimera postures <practice-v1.json> <out.json>` writes side-view mouth outlines for the
+//! practice sounds (Corpus/practice/articulation-v1.json).
+
+mod postures;
 
 use chimera::anatomy::human::{ArticKey, ArticPatch, BodyMix};
 use chimera::phonetics::{inventory, planner, vowel_data};
@@ -79,6 +84,22 @@ CHIMERA_REV = \"{rev}\"\nBODY = \"male\"\nKEYS = (\"jaw\", \"lipAp\", \"lipProt\
     out
 }
 
+fn write_postures(practice: &str, out: &str) -> Result<(), String> {
+    let text = std::fs::read_to_string(practice).map_err(|e| format!("cannot read {practice}: {e}"))?;
+    let corpus: serde_json::Value = serde_json::from_str(&text).map_err(|e| format!("{practice}: {e}"))?;
+    let lists = corpus["sounds"].as_object().ok_or("practice corpus has no sounds")?;
+    let mut sounds = std::collections::BTreeMap::new();
+    for (language, list) in lists {
+        let symbols = list.as_array().ok_or("sounds must be lists")?.iter()
+            .map(|s| s["ipa"].as_str().map(String::from).ok_or("sound without ipa"))
+            .collect::<Result<Vec<_>, _>>()?;
+        sounds.insert(language.clone(), symbols);
+    }
+    let mut body = serde_json::to_string(&postures::build(&sounds, CHIMERA_REV)).map_err(|e| e.to_string())?;
+    body.push('\n');
+    std::fs::write(out, body).map_err(|e| format!("cannot write {out}: {e}"))
+}
+
 fn main() -> std::process::ExitCode {
     chimera::init();
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -102,8 +123,15 @@ fn main() -> std::process::ExitCode {
                 std::process::ExitCode::FAILURE
             }
         },
+        Some((command, rest)) if command == "postures" && rest.len() == 2 => match write_postures(&rest[0], &rest[1]) {
+            Ok(()) => std::process::ExitCode::SUCCESS,
+            Err(e) => {
+                eprintln!("{e}");
+                std::process::ExitCode::FAILURE
+            }
+        },
         _ => {
-            eprintln!("usage: subvox-chimera coverage <ipa>... | tables <out.py>");
+            eprintln!("usage: subvox-chimera coverage <ipa>... | tables <out.py> | postures <practice-v1.json> <out.json>");
             std::process::ExitCode::from(2)
         }
     }

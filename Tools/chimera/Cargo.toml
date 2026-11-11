@@ -10,6 +10,7 @@ license = "AGPL-3.0-or-later"
 [dependencies]
 # MIT, Copyright (c) 2026 Jameson Hodge (see NOTICE). Pinned: generated tables record this rev.
 chimera = { git = "https://github.com/jamesondh/chimera-vocal-synth", rev = "6259e880f5d0108b862e98cefd930aa8c5bc0dc5" }
+serde_json = "1"
 
 [profile.dev.package.chimera]
 opt-level = 3

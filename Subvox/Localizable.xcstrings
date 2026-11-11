@@ -10541,6 +10541,142 @@
         }
       }
     },
+    "Side view of the mouth for %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral de la boca para %@"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral de la boca para %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vue de profil de la bouche pour %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 的口腔侧视图"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 的口腔側視圖"
+          }
+        }
+      }
+    },
+    "Side view, lips on the right.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral, labios a la derecha."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral, labios a la derecha."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vue de profil, lèvres à droite."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "侧视图，嘴唇在右边。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "側視圖，嘴唇在右邊。"
+          }
+        }
+      }
+    },
+    "Side view, lips on the right. Approximate: drawn from closely related mouth shapes.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral, labios a la derecha. Aproximado: dibujado a partir de posiciones de la boca muy parecidas."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral, labios a la derecha. Aproximado: dibujado a partir de posiciones de la boca muy parecidas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vue de profil, lèvres à droite. Approximatif : dessiné à partir de positions de la bouche très proches."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "侧视图，嘴唇在右边。近似图：根据非常接近的口形绘制。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "側視圖，嘴唇在右邊。近似圖：根據非常接近的口形繪製。"
+          }
+        }
+      }
+    },
+    "Side view, lips on the right. This sound moves; the drawing shows where it starts.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral, labios a la derecha. Este sonido se mueve; el dibujo muestra dónde empieza."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista lateral, labios a la derecha. Este sonido se mueve; el dibujo muestra dónde empieza."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vue de profil, lèvres à droite. Ce son bouge ; le dessin montre où il commence."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "侧视图，嘴唇在右边。这个音会移动；图中显示的是它的起始位置。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "側視圖，嘴唇在右邊。這個音會移動；圖中顯示的是它的起始位置。"
+          }
+        }
+      }
+    },
     "Sign in with Hugging Face": {
       "localizations": {
         "es": {

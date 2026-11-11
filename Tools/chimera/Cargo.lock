@@ -96,6 +96,7 @@ name = "subvox-chimera"
 version = "0.1.0"
 dependencies = [
  "chimera",
+ "serde_json",
 ]
 
 [[package]]

@@ -1713,6 +1713,9 @@ struct SoundsView: View {
                     Text(local.guide).foregroundStyle(.secondary)
                 }
             }
+            if let diagrams = ArticulationDiagrams.bundled, let shown = diagrams.diagram(language: language.corpus, ipa: s.ipa) {
+                MouthDiagram(diagrams: diagrams, posture: shown.posture, note: shown.sound.note, soundName: local.name)
+            }
             HStack {
                 ReferenceButton(text: s.say, language: language, compact: false, phonetic: true).controlSize(.large)
             }
