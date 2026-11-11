@@ -3,12 +3,14 @@ import Foundation
 
 /// The app's local Python runtime (ml/subvox_ml, run with `uv`). Shared by neural training and
 /// community upload. Source files are content-hashed and copied once into Application Support.
+/// uv ships inside the app (Contents/Helpers/uv, pinned by Tools/runtime/bundle-uv.sh); the Python
+/// it downloads, its package cache and each environment live under `root`, so users install nothing.
 @MainActor final class SequenceRuntime {
     enum Failure: LocalizedError {
         case runtime, backend(String)
         var errorDescription: String? {
             switch self {
-            case .runtime: "Install uv locally to run the pinned Python runtime."
+            case .runtime: "This copy of Subvox is missing its bundled Python runner. Reinstall Subvox."
             case .backend(let message): "Local Python operation failed: " + message
             }
         }
@@ -79,16 +81,28 @@ import Foundation
 
     /// Runs `subvox-ml <arguments>`. `environment` is added to the app's own (secrets go here, never
     /// in arguments, which other processes can read). `status` receives the latest log line.
+    /// The uv inside the app bundle.
+    nonisolated static var bundledUV: URL { Bundle.main.bundleURL.appending(path: "Contents/Helpers/uv") }
+
+    /// Settings that keep uv to the app's own files: Python it installs itself (never one found on the
+    /// Mac, so every user gets the same interpreter), caches under `root`, and no user uv config.
+    nonisolated static func uvEnvironment(root: URL) -> [String: String] {
+        ["UV_PYTHON_PREFERENCE": "only-managed",
+         "UV_PYTHON_INSTALL_DIR": root.appending(path: "uv/python").path,
+         "UV_CACHE_DIR": root.appending(path: "uv/cache").path,
+         "UV_NO_CONFIG": "1"]
+    }
+
     func run(_ arguments: [String], environment: [String: String] = [:], offline: Bool = false, status: (String) -> Void = { _ in }) async throws {
-        let uv = ["/opt/homebrew/bin/uv", "/usr/local/bin/uv"].first { FileManager.default.isExecutableFile(atPath: $0) }
-        guard let uv else { throw Failure.runtime }
+        let uv = Self.bundledUV.path
+        guard FileManager.default.isExecutableFile(atPath: uv) else { throw Failure.runtime }
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         let project = try project(), child = Process(), log = root.appending(path: "process-\(UUID()).log")
         FileManager.default.createFile(atPath: log.path, contents: nil)
         let handle = try FileHandle(forWritingTo: log); defer { try? handle.close() }
         child.executableURL = URL(fileURLWithPath: uv)
         child.arguments = ["run", "--frozen"] + (offline ? ["--offline"] : []) + ["--project", project.path, "subvox-ml"] + arguments
-        if !environment.isEmpty { child.environment = ProcessInfo.processInfo.environment.merging(environment) { $1 } }
+        child.environment = ProcessInfo.processInfo.environment.merging(Self.uvEnvironment(root: root)) { $1 }.merging(environment) { $1 }
         child.standardOutput = handle; child.standardError = handle
         try child.run(); process = child
         defer { if child.isRunning { child.terminate() }; process = nil }

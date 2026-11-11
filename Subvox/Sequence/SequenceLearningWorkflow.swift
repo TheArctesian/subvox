@@ -557,7 +557,7 @@ struct NeuralVisit:Codable,Identifiable,Sendable {
     enum Failure:LocalizedError {
         case runtime,backend(String)
         var errorDescription:String? {switch self {
-        case .runtime:"Install uv locally to run the pinned Python/PyTorch runtime."
+        case .runtime:"This copy of Subvox is missing its bundled Python runner. Reinstall Subvox."
         case .backend(let message):"Local neural training/decoding failed: "+message
         }}
     }

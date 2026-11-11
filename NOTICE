@@ -67,6 +67,11 @@ Data and model weights are licensed separately: contributed recordings in the
 community dataset are released under CC BY 4.0, and released model weights are
 openly licensed as stated on their Hugging Face model card.
 
+The app bundles uv 0.13.6 (Contents/Helpers/uv) from Astral Software Inc.
+(https://github.com/astral-sh/uv), unmodified, under the MIT License (Copyright (c) 2025 Astral
+Software Inc.; uv is also available under the Apache License 2.0). The MIT permission notice is
+the same as the one above. It runs the app's local Python runtime.
+
 Charis SIL 6.200 (Subvox/Fonts/CharisSIL-Regular.ttf) is Copyright (c) 1997-2023 SIL International,
 with Reserved Font Names "Charis" and "SIL", licensed under the SIL Open Font License 1.1
 (Subvox/Fonts/CharisSIL-OFL.txt). It is used unmodified to display IPA.

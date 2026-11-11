@@ -252,7 +252,7 @@ struct ForcedAlignerSetup: View {
                 Button("Download word alignment model (1.26 GB)") {
                     Task { await aligner.install() }
                 }
-                Text("Matches the words you read to your audio on this Mac. Requires uv and eSpeak NG.")
+                Text("Matches the words you read to your audio on this Mac. Requires eSpeak NG.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             if let error = aligner.installError {

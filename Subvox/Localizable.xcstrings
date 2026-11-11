@@ -5407,36 +5407,36 @@
         }
       }
     },
-    "Matches the words you read to your audio on this Mac. Requires uv and eSpeak NG.": {
+    "Matches the words you read to your audio on this Mac. Requires eSpeak NG.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alinea las palabras que lees con tu grabación en este Mac. Requiere uv y eSpeak NG."
+            "value": "Alinea las palabras que lees con tu grabación en este Mac. Requiere eSpeak NG."
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alinea las palabras que lees con tu grabación en esta Mac. Requiere uv y eSpeak NG."
+            "value": "Alinea las palabras que lees con tu grabación en esta Mac. Requiere eSpeak NG."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Associe les mots lus à votre enregistrement sur ce Mac. Nécessite uv et eSpeak NG."
+            "value": "Associe les mots lus à votre enregistrement sur ce Mac. Nécessite eSpeak NG."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在这台 Mac 上将你朗读的词语与录音对齐。需要 uv 和 eSpeak NG。"
+            "value": "在这台 Mac 上将你朗读的词语与录音对齐。需要 eSpeak NG。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在這部 Mac 上將你朗讀的詞語與錄音對齊。需要 uv 和 eSpeak NG。"
+            "value": "在這部 Mac 上將你朗讀的詞語與錄音對齊。需要 eSpeak NG。"
           }
         }
       }
