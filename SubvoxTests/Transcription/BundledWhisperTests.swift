@@ -16,13 +16,18 @@ final class BundledWhisperTests: XCTestCase {
     func testAppBundlesAUniversalWhisperServerThatRuns() throws {
         let server = LocalWhisper.bundledServer
         XCTAssertTrue(LocalWhisper.validExecutable(server), "Build phase 'Bundle pinned whisper-server' did not run")
-        let lipo = Process(), pipe = Pipe()
-        lipo.executableURL = URL(fileURLWithPath: "/usr/bin/lipo")
-        lipo.arguments = ["-archs", server.path]
-        lipo.standardOutput = pipe
-        try lipo.run(); lipo.waitUntilExit()
-        let archs = Set(String(decoding: pipe.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self).split(separator: " ").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) })
-        XCTAssertEqual(archs, ["arm64", "x86_64"])
+        func archs(_ url: URL) throws -> Set<String> {
+            let lipo = Process(), pipe = Pipe()
+            lipo.executableURL = URL(fileURLWithPath: "/usr/bin/lipo")
+            lipo.arguments = ["-archs", url.path]
+            lipo.standardOutput = pipe
+            try lipo.run(); lipo.waitUntilExit()
+            return Set(String(decoding: pipe.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self).split(whereSeparator: \.isWhitespace).map(String.init))
+        }
+        // Release builds are universal; Debug builds only the active architecture. Either way the
+        // helper must run everywhere the app itself does.
+        let app = try XCTUnwrap(Bundle.main.executableURL)
+        XCTAssertTrue(try archs(app).isSubset(of: archs(server)), "whisper-server lacks an architecture the app has")
         let help = Process(), output = Pipe()
         help.executableURL = server
         help.arguments = ["--help"]
