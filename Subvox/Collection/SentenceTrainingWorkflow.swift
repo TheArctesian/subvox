@@ -289,10 +289,12 @@ final class SentenceTrainingWorkflow {
         try saveCompletedHalf(recording, pairID: pairID, session: session, persistImmediately: false)
         var updated = round
         updated.record(recording.condition, section: section, pairID: pairID)
-        var rounds = data.literatureRounds ?? []
-        rounds.removeAll { $0.pieceID == round.pieceID && $0.language == round.language }
-        rounds.append(updated)
-        data.literatureRounds = rounds
+        if round.isSectionRetry != true {
+            var rounds = data.literatureRounds ?? []
+            rounds.removeAll { $0.pieceID == round.pieceID && $0.language == round.language }
+            rounds.append(updated)
+            data.literatureRounds = rounds
+        }
         if persistImmediately { try persist() }
         return updated
     }
@@ -545,7 +547,8 @@ final class SentenceTrainingWorkflow {
                   data.roles[$0.id] == .training || data.roles[$0.id] == .validation
               } }) else { return }
         // Literature visits can run to the end because recognition converts one cue at a time.
-        let fullPiece = practiceMode && planned.first?.first?.kind.isLiterature == true
+        let firstKind = planned.first?.first?.kind
+        let fullPiece = practiceMode && (firstKind?.isLiterature == true || (firstKind == .freeText && literatureSelection != nil))
         var batch: [[SentencePrompt]] = []
         var duration = 0.0
         for group in planned {
@@ -560,9 +563,9 @@ final class SentenceTrainingWorkflow {
         let round: LiteraturePracticeRound?
         if fullPiece, let first = batch.first?.first, let literatureSelection {
             switch literatureSelection {
-            case .new(let pieceID, let title):
+            case .new(let pieceID, let title, let isSectionRetry):
                 round = LiteraturePracticeRound(pieceID: pieceID, title: title, language: first.language ?? "en",
-                                               kind: first.kind, groups: batch)
+                                               kind: first.kind, groups: batch, isSectionRetry: isSectionRetry)
             case .resume(let id):
                 guard let saved = resumableLiterature.first(where: { $0.id == id }), saved.groups == batch else { return }
                 round = saved
@@ -579,7 +582,8 @@ final class SentenceTrainingWorkflow {
         }
         guard !order.isEmpty else { return }
         let libraryID = round.flatMap { round in
-            LibraryPilotCatalog.bundled.allows(pieceID: round.pieceID, language: round.language, groups: batch)
+            round.isSectionRetry != true
+                && LibraryPilotCatalog.bundled.allows(pieceID: round.pieceID, language: round.language, groups: batch)
                 ? libraryContributionID : nil
         }
         recordsLiteratureInPasses = fullPiece

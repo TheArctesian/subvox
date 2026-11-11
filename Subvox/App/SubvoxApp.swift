@@ -19,11 +19,11 @@ struct SubvoxApp: App {
             CommandMenu("Practice") {
                 Button("Home", action: model.openHome)
                     .keyboardShortcut("0", modifiers: .command)
-                    .disabled(!model.canUseApp || model.navigationLocked)
+                    .disabled(model.navigationLocked)
                 Button("Start") {
                     if model.screen == .train && model.trainMode == .reading { model.startSentenceTraining() } else { model.startRequest += 1 }
                 }.keyboardShortcut(.return, modifiers: .command)
-                    .disabled(model.screen != .train || !model.sentenceTraining.canStartRecording)
+                    .disabled(model.screen != .train || model.trainMode == .memorization || !model.sentenceTraining.canStartRecording)
                 Button("Show or Hide IPA") {
                     let defaults = UserDefaults.standard
                     defaults.set(!(defaults.object(forKey: "practice.showIPA") as? Bool ?? true), forKey: "practice.showIPA")

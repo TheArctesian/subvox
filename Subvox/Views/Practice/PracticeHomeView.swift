@@ -14,14 +14,15 @@ struct PracticeHomeView: View {
                         .font(.title3).foregroundStyle(.secondary)
                 }
 
-                let unfinished = model.sentenceTraining.resumableLiterature
+                let unfinished = model.resumablePractice
                 if !unfinished.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
                         sectionTitle("Continue practising")
                         ForEach(unfinished) { round in
                             HStack {
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Label(round.title, systemImage: round.kind == .poetry ? "text.alignleft" : "text.quote")
+                                    Label(round.title, systemImage: round.kind == .freeText ? TrainMode.free.symbol
+                                          : round.kind == .poetry ? TrainMode.poetry.symbol : TrainMode.speech.symbol)
                                         .font(.headline)
                                     if let next = model.sentenceTraining.nextLiteratureTake(in: round) {
                                         Text(next.condition == .silent
@@ -44,50 +45,46 @@ struct PracticeHomeView: View {
                     }
                 }
 
-                HStack(spacing: 32) {
+                Grid(alignment: .leading, horizontalSpacing: 24, verticalSpacing: 10) {
+                    GridRow {
+                        practiceRow(.language, title: "Learn a language", detail: "Listen, speak and review saved phrases")
+                        practiceRow(.speech, title: "Practise a speech", detail: "Rehearse a section and compare takes")
+                    }
+                    GridRow {
+                        practiceRow(.memorization, title: "Memorize a piece", detail: "Recall lines and revisit tricky sections")
+                        practiceRow(.free, title: "Bring your own material", detail: "Save a script, presentation or interview answer")
+                    }
+                }
+
+                let pieces = model.practice.pieces + model.personalPracticePieces
+                let pins = model.literaturePins.items.compactMap { pin in
+                    pieces.first { $0.id == pin.pieceID }.map { (pin, $0) }
+                }
+                let scripts = model.personalScripts.items.prefix(4)
+                if !pins.isEmpty || !scripts.isEmpty {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Speech and poetry").font(.title.weight(.semibold)).accessibilityAddTraits(.isHeader)
-                        Text("Mouth a piece silently, then read it aloud.")
-                            .foregroundStyle(.secondary)
-                        HStack(spacing: 12) {
-                            Button("Open Speech", systemImage: TrainMode.speech.symbol) {
-                                model.openPractice(.speech)
+                        sectionTitle("My repertoire")
+                        ForEach(pins, id: \.0.id) { pin, piece in
+                            Button {
+                                model.openLiterature(pieceID: pin.pieceID, language: pin.language, mode: pin.mode)
+                            } label: {
+                                Label(piece.title(pin.language), systemImage: "pin")
                             }
-                            Button("Open Poetry", systemImage: TrainMode.poetry.symbol) {
-                                model.openPractice(.poetry)
-                            }
+                            .buttonStyle(.link)
                         }
-                        .buttonStyle(.borderedProminent).controlSize(.large)
-                        .padding(.top, 4)
+                        ForEach(scripts) { script in
+                            Button { model.openPersonalScript(script) } label: {
+                                Label(script.title, systemImage: TrainMode.free.symbol)
+                            }
+                            .buttonStyle(.link)
+                        }
                     }
-                    Spacer()
-                    Image(systemName: "text.quote")
-                        .font(.system(size: 66, weight: .light))
-                        .foregroundStyle(Color.accentColor)
-                        .accessibilityHidden(true)
-                }
-                .padding(24)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.accentColor.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
-
-                HStack(alignment: .top, spacing: 32) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        sectionTitle("Reading practice")
-                        practiceRow(.reading, detail: "Read short passages with your AirPods")
-                        practiceRow(.free, detail: "Practise with your own text")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    VStack(alignment: .leading, spacing: 0) {
-                        sectionTitle("Language and pronunciation")
-                        practiceRow(.language, detail: "Practise phrases in your chosen language")
-                        practiceRow(.sounds, detail: "Work on individual sounds")
-                        practiceRow(.minimalPairs, detail: "Compare similar sounds")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
-                HStack(spacing: 16) {
+                HStack(spacing: 12) {
+                    ForEach([TrainMode.poetry, .reading, .sounds, .minimalPairs]) { mode in
+                        Button(mode.title, systemImage: mode.symbol) { model.openPractice(mode) }
+                    }
                     Button("Devices", systemImage: AppModel.Screen.devices.symbol) { model.screen = .devices }
                     if model.researchTools {
                         Button("Try model", systemImage: AppModel.Screen.decode.symbol) { model.screen = .decode }
@@ -107,7 +104,7 @@ struct PracticeHomeView: View {
             .padding(.bottom, 8)
     }
 
-    private func practiceRow(_ mode: TrainMode, detail: LocalizedStringKey) -> some View {
+    private func practiceRow(_ mode: TrainMode, title: LocalizedStringKey, detail: LocalizedStringKey) -> some View {
         VStack(spacing: 0) {
             Divider()
             Button {
@@ -119,7 +116,7 @@ struct PracticeHomeView: View {
                         .frame(width: 24)
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(mode.title).font(.headline)
+                        Text(title).font(.title3.weight(.semibold))
                         Text(detail).font(.callout).foregroundStyle(.secondary)
                     }
                     Spacer(minLength: 8)
@@ -127,7 +124,7 @@ struct PracticeHomeView: View {
                         .font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
                         .accessibilityHidden(true)
                 }
-                .padding(.vertical, 12)
+                .padding(.vertical, 14)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)

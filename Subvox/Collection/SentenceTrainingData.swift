@@ -285,16 +285,19 @@ struct LiteraturePracticeRound: Codable, Identifiable, Sendable {
     let language: String
     let kind: SentencePromptKind
     let groups: [[SentencePrompt]]
+    var isSectionRetry: Bool?
     var updatedAt = Date()
     private var silentPairs: [Int: UUID] = [:]
     private var spokenPairs: [Int: UUID] = [:]
 
-    init(pieceID: String, title: String, language: String, kind: SentencePromptKind, groups: [[SentencePrompt]]) {
+    init(pieceID: String, title: String, language: String, kind: SentencePromptKind, groups: [[SentencePrompt]],
+         isSectionRetry: Bool = false) {
         self.pieceID = pieceID
         self.title = title
         self.language = language
         self.kind = kind
         self.groups = groups
+        self.isSectionRetry = isSectionRetry ? true : nil
     }
 
     mutating func record(_ condition: SpeechCondition, section: Int, pairID: UUID) {
@@ -323,7 +326,7 @@ struct LiteraturePracticeRound: Codable, Identifiable, Sendable {
 }
 
 enum LiteraturePracticeSelection {
-    case new(pieceID: String, title: String)
+    case new(pieceID: String, title: String, isSectionRetry: Bool = false)
     case resume(UUID)
 }
 

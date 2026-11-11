@@ -8,15 +8,16 @@ struct ContentView: View {
     enum SidebarItem: Hashable { case train(TrainMode), screen(AppModel.Screen) }
 
     var body: some View {
-        if model.canUseApp { main } else { WelcomeView() }
-    }
-
-    private var main: some View {
         NavigationSplitView {
             List(selection: selection) {
                 Label("Home", systemImage: AppModel.Screen.home.symbol).tag(SidebarItem.screen(.home))
-                Section("Train") {
-                    ForEach(TrainMode.allCases) { mode in
+                Section("Practice") {
+                    ForEach([TrainMode.language, .speech, .poetry, .memorization, .free]) { mode in
+                        Label(mode.title, systemImage: mode.symbol).tag(SidebarItem.train(mode))
+                    }
+                }
+                Section("Exercises") {
+                    ForEach([TrainMode.reading, .sounds, .minimalPairs]) { mode in
                         Label(mode.title, systemImage: mode.symbol).tag(SidebarItem.train(mode))
                     }
                 }

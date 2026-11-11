@@ -61,6 +61,13 @@ class Fixture(unittest.TestCase):
 
 class CommunityExportTests(Fixture):
 
+    def test_practice_using_the_same_text_as_a_community_prompt_stays_local(self):
+        path = self.root / "sentence-training.json"
+        data = json.loads(path.read_text())
+        data["pairs"] = [dict(data["pairs"][0], practiceMode=mode) for mode in ("freeText", "drill", "minimalPair", "sound")]
+        path.write_text(json.dumps(data))
+        self.assertEqual(self.export(), [])
+
     def test_automatic_export_requires_the_current_grant_and_finished_visit(self):
         path = self.root / "sentence-training.json"
         data = json.loads(path.read_text())

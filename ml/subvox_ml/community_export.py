@@ -236,6 +236,8 @@ def export_sessions(root, output, contributor, consent_version, prompts_dir=None
             if prompt_id is not None:
                 sessions.setdefault(pair["recordingSessionID"], []).append((pair, prompt_id))
             continue
+        if pair.get("practiceMode") is not None:
+            continue  # A practice take can reuse the text of a community prompt.
         if automatic_grant is None and library_grant is not None:
             continue  # A library-only export is not permission to include any other visits.
         if automatic_grant is not None:

@@ -35,6 +35,11 @@ final class LiteraturePlaybackTests: XCTestCase {
         newerOtherLocale.id = UUID()
         newerOtherLocale.language = "fr"
 
+        var retry = saved
+        retry.id = UUID()
+        retry.sessionStartUptime = 50
+        retry.spoken = SentenceRecording(condition: .normal, samples: [], cueStart: 55, cueEnd: 56)
+
         let take = try XCTUnwrap(SpokenTakePlayer.latestTake(
             for: section, mode: .speech, language: .en, pieceID: piece.id,
             in: [saved, newerSilentOnly, newerOtherPiece, newerOtherLocale]
@@ -43,6 +48,13 @@ final class LiteraturePlaybackTests: XCTestCase {
         XCTAssertEqual(take.clip.url, audioURL)
         XCTAssertEqual(take.clip.range, 1.5...2.5)
 
+        let comparison = SpokenTakePlayer.recentTakes(
+            for: section, mode: .speech, language: .en, pieceID: piece.id,
+            in: [saved, newerSilentOnly, retry, newerOtherPiece, newerOtherLocale]
+        )
+        XCTAssertEqual(comparison.map(\.id), [retry.id, saved.id])
+        XCTAssertEqual(comparison.map { $0.clip.range }, [4.5...5.5, 1.5...2.5])
+
         saved.literaturePieceID = nil
         XCTAssertEqual(SpokenTakePlayer.latestTake(
             for: section, mode: .speech, language: .en, pieceID: piece.id, in: [saved]
@@ -50,5 +62,20 @@ final class LiteraturePlaybackTests: XCTestCase {
         XCTAssertNil(SpokenTakePlayer.latestTake(
             for: section, mode: .poetry, language: .en, pieceID: piece.id, in: [saved]
         ))
+    }
+
+    @MainActor
+    func testPinnedPieceReopensInTheSelectedLocale() throws {
+        let suite = "LiteraturePins-\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let simplified = LiteraturePin(pieceID: "fixture", language: .zhHans, mode: .poetry)
+        let traditional = LiteraturePin(pieceID: "fixture", language: .zhHant, mode: .poetry)
+        let pins = LiteraturePins(defaults: defaults)
+        pins.toggle(simplified)
+        pins.toggle(traditional)
+        XCTAssertEqual(LiteraturePins(defaults: defaults).items, [traditional, simplified])
+        pins.toggle(traditional)
+        XCTAssertEqual(LiteraturePins(defaults: defaults).items, [simplified])
     }
 }

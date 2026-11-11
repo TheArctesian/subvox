@@ -58,10 +58,6 @@ final class AppModel {
 
     func stopLibrarySharing() { contribution.stopLibrarySharing() }
 
-    /// Subvox is a data-collection app first: the main window opens only while the learner is
-    /// signed in to Hugging Face and automatic sharing is on. Otherwise Welcome asks for both.
-    var canUseApp: Bool { onboarded && huggingFace.username != nil && automaticSharingGrant != nil }
-
     func stopAutomaticSharing() {
         contribution.stopAutomaticSharing()
         if automaticSharingRunning { uploader.stop() }
@@ -178,6 +174,13 @@ final class AppModel {
     }
     let practice = PracticeCorpus.bundled
     let personalPracticePieces = PracticeCorpus.personalPieces()
+    let literaturePins = LiteraturePins()
+    let personalScripts = PersonalScripts()
+    private(set) var literatureRequest: LiteraturePin?
+    private(set) var personalScriptRequest: PersonalScript?
+    var personalScriptPieces: [PracticeCorpus.Piece] {
+        personalScripts.items.filter { $0.language == language }.map(\.memoryPiece)
+    }
     @ObservationIgnored lazy var practiceChecker = PracticeChecker()
     @ObservationIgnored let referenceSpeaker = ReferenceSpeaker()
     /// Off for new installs: the Train page shows one recording path. Research tools (sentence
@@ -187,10 +190,6 @@ final class AppModel {
             UserDefaults.standard.set(researchTools, forKey: "ui.researchTools")
             if !researchTools { sentenceTraining.readingSource = .community; if screen == .decode { screen = .train } }
         }
-    }
-    /// False until the first-run welcome (sharing choice) has been completed.
-    var onboarded = UserDefaults.standard.bool(forKey: "ui.onboarded") {
-        didSet { UserDefaults.standard.set(onboarded, forKey: "ui.onboarded") }
     }
     let sentenceTraining: SentenceTrainingWorkflow
     var backgroundActivity: String? {
@@ -238,6 +237,26 @@ final class AppModel {
         }
         trainMode = mode
         screen = .train
+    }
+
+    func openLiterature(pieceID: String, language: AppLanguage, mode: TrainMode) {
+        guard !navigationLocked, mode == .speech || mode == .poetry else { return }
+        self.language = language
+        SavedSelection.set((mode == .poetry ? SentencePromptKind.poetry : .speech).rawValue, language, pieceID)
+        literatureRequest = LiteraturePin(pieceID: pieceID, language: language, mode: mode)
+        openPractice(mode)
+    }
+
+    func openPersonalScript(_ script: PersonalScript) {
+        guard !navigationLocked else { return }
+        language = script.language
+        personalScriptRequest = script
+        openPractice(.free)
+    }
+
+    func takePersonalScriptRequest() -> PersonalScript? {
+        defer { personalScriptRequest = nil }
+        return personalScriptRequest
     }
 
     var screen: Screen = .home {
@@ -387,37 +406,52 @@ final class AppModel {
 
     /// Records a practice round through the shared paired interface: each group is spoken, then mouthed.
     func startPractice(_ groups: [[SentencePrompt]], libraryContributionID: UUID? = nil) {
-        guard !groups.isEmpty, localWhisper.isConfigured else { return }
+        guard !groups.isEmpty, canRecordPractice else { return }
         sentenceTraining.practicePlan = groups
         startSentenceTraining(libraryContributionID: libraryContributionID)
         sentenceTraining.practicePlan = nil
     }
 
-    var canResumeLiterature: Bool {
-        canUseApp && !navigationLocked && motion.status == .streaming && localWhisper.isConfigured
+    var canRecordPractice: Bool {
+        !navigationLocked && motion.status == .streaming && localWhisper.isConfigured
             && sentenceTraining.storageReady && sentenceTraining.data.reservedUnlockedAt == nil
             && sentenceTraining.canStartRecording && !recorder.isRecording
             && !signalCheck.isBusy && !representation.isBusy && !sequenceLearning.isBusy && !observability.isBusy
     }
 
-    func startLiterature(_ groups: [[SentencePrompt]], pieceID: String, title: String) {
-        guard canResumeLiterature else { return }
-        sentenceTraining.literatureSelection = .new(pieceID: pieceID, title: title)
+    var canResumeLiterature: Bool { canRecordPractice }
+
+    func startLiterature(_ groups: [[SentencePrompt]], pieceID: String, title: String, isSectionRetry: Bool = false) {
+        guard canRecordPractice else { return }
+        sentenceTraining.literatureSelection = .new(pieceID: pieceID, title: title, isSectionRetry: isSectionRetry)
         defer { sentenceTraining.literatureSelection = nil }
-        startPractice(groups, libraryContributionID: librarySharingGrant?.id)
+        startPractice(groups, libraryContributionID: isSectionRetry ? nil : librarySharingGrant?.id)
+    }
+
+    func startPersonalScript(_ script: PersonalScript, groups: [[SentencePrompt]], isSectionRetry: Bool = false) {
+        guard canRecordPractice, personalScripts.items.contains(script) else { return }
+        sentenceTraining.literatureSelection = .new(pieceID: script.pieceID, title: script.title, isSectionRetry: isSectionRetry)
+        defer { sentenceTraining.literatureSelection = nil }
+        startPractice(groups)
+    }
+
+    var resumablePractice: [LiteraturePracticeRound] {
+        let scriptIDs = Set(personalScripts.items.map(\.pieceID))
+        return sentenceTraining.resumableLiterature.filter { $0.kind != .freeText || scriptIDs.contains($0.pieceID) }
     }
 
     func resumeLiterature(_ round: LiteraturePracticeRound) {
         guard canResumeLiterature,
-              sentenceTraining.resumableLiterature.contains(where: { $0.id == round.id }),
+              resumablePractice.contains(where: { $0.id == round.id }),
               let language = AppLanguage(rawValue: round.language) else { return }
-        self.language = language
-        openPractice(round.kind == .poetry ? .poetry : .speech)
-        // Use the same selection key as the library so the piece is visible after the round.
-        SavedSelection.set(round.kind.rawValue, language, round.pieceID)
+        if let script = personalScripts.items.first(where: { $0.pieceID == round.pieceID }), round.kind == .freeText {
+            openPersonalScript(script)
+        } else {
+            openLiterature(pieceID: round.pieceID, language: language, mode: round.kind == .poetry ? .poetry : .speech)
+        }
         sentenceTraining.literatureSelection = .resume(round.id)
         defer { sentenceTraining.literatureSelection = nil }
-        startPractice(round.groups, libraryContributionID: librarySharingGrant?.id)
+        startPractice(round.groups, libraryContributionID: round.kind.isLiterature ? librarySharingGrant?.id : nil)
     }
 
     private func checkPhones(_ id: UUID) async {
