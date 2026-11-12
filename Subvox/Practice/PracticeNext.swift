@@ -20,6 +20,9 @@ struct PracticeSuggestion: Identifiable, Equatable {
 /// Reuses the material and queues already saved by each practice mode.
 @MainActor
 enum PracticeNext {
+    /// The poem Home features, and the Poetry page opens on, until the learner records or pins something.
+    nonisolated static let featuredPoem: [String: String] = ["en": "invictus"]
+
     static func suggestions(language: AppLanguage, practiceLanguages: [AppLanguage],
                             drills: [PracticeCorpus.Drill], pieces: [PracticeCorpus.Piece],
                             pins: [LiteraturePin], scripts: [PersonalScript], savedPhrases: SavedLanguagePhrases,
@@ -74,7 +77,11 @@ enum PracticeNext {
             guard let mode = TrainMode(rawValue: run.mode), mode == .speech || mode == .poetry else { return nil }
             return LiteraturePin(pieceID: run.pieceID, language: run.language, mode: mode)
         }
-        let candidates = (recent + pins).filter { languages.contains($0.language) } + languages.flatMap { language in
+        // What the learner recorded or pinned wins; then the featured poem; then the page they last browsed.
+        let featured = languages.compactMap { language in
+            featuredPoem[language.corpus].map { LiteraturePin(pieceID: $0, language: language, mode: .poetry) }
+        }
+        let candidates = (recent + pins).filter { languages.contains($0.language) } + featured + languages.flatMap { language in
             [("speech", TrainMode.speech), ("poetry", TrainMode.poetry)].compactMap { key, mode in
                 selection(key, language).map { LiteraturePin(pieceID: $0, language: language, mode: mode) }
             }

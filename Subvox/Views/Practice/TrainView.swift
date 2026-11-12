@@ -591,7 +591,11 @@ struct LiteraturePracticeView: View {
             $0.language == model.language.corpus && $0.practiceKind == kind
         }
     }
-    private var piece: PracticeCorpus.Piece? { pieces.first { $0.id == selection } ?? pieces.first }
+    private var piece: PracticeCorpus.Piece? {
+        pieces.first { $0.id == selection }
+            ?? (kind == .poetry ? PracticeNext.featuredPoem[model.language.corpus].flatMap { id in pieces.first { $0.id == id } } : nil)
+            ?? pieces.first
+    }
 
     var body: some View {
         let language = model.language

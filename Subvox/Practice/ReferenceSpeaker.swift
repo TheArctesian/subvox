@@ -12,8 +12,11 @@ final class ReferenceSpeaker: NSObject, AVSpeechSynthesizerDelegate {
 
     override init() { super.init(); synthesizer.delegate = self }
 
+    /// English uses the US voice: the practice IPA is General American, and the British system voice
+    /// (Daniel) breaks long isolated vowels into two pulses (/ɑː/ dips to 8% mid-vowel), heard as the
+    /// sound playing twice.
     static func voiceLanguage(_ language: String) -> String {
-        ["en": "en-GB", "fr": "fr-FR", "es": "es-ES", "zh": "zh-CN", "es-MX": "es-MX", "zh-Hans": "zh-CN", "zh-Hant": "zh-TW"][language] ?? language
+        ["en": "en-US", "fr": "fr-FR", "es": "es-ES", "zh": "zh-CN", "es-MX": "es-MX", "zh-Hans": "zh-CN", "zh-Hant": "zh-TW"][language] ?? language
     }
 
     func stop() {

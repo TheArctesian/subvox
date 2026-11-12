@@ -58,6 +58,24 @@ final class PracticeNextTests: XCTestCase {
         }
     }
 
+    @MainActor func testHomeFeaturesInvictusUntilSomethingIsRecordedOrPinned() throws {
+        try withEmptyBookmarks { saved in
+            let invictus = PracticeCorpus.Piece(id: "invictus", language: "en", kind: "poem", title: "Invictus",
+                                                author: "", lines: [.init(text: "Out of the night that covers me,", ipa: [])])
+            @MainActor func speechChoice(runs: [VoicePracticeTarget]) -> PracticeSuggestion.Destination? {
+                PracticeNext.suggestions(language: .en, practiceLanguages: [.en], drills: [], pieces: [speech, invictus], pins: [],
+                                         scripts: [], savedPhrases: saved, memorization: MemorizationReview(), recentRuns: runs,
+                                         selection: { page, _ in page == "speech" ? self.speech.id : nil })
+                    .first { $0.id == .speech }?.destination
+            }
+            // A page the learner only browsed doesn't outrank the featured poem.
+            XCTAssertEqual(speechChoice(runs: []), .literature(LiteraturePin(pieceID: "invictus", language: .en, mode: .poetry)))
+            // Something they recorded does.
+            let run = VoicePracticeTarget(mode: TrainMode.speech.rawValue, language: .en, itemID: speech.id, text: "Here is my speech.")
+            XCTAssertEqual(speechChoice(runs: [run]), .literature(LiteraturePin(pieceID: speech.id, language: .en, mode: .speech)))
+        }
+    }
+
     @MainActor private func withEmptyBookmarks(_ body: (SavedLanguagePhrases) throws -> Void) throws {
         let suite = "practice-next-\(UUID())"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
